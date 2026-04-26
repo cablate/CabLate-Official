@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npx astro build
+
+      - name: Generate search index
+        run: npx pagefind --site dist --glob "**/*.html"
+
+      - name: Check HTML output
+        run: |
+          echo "Build output:"
+          ls -la dist/
+          echo ""
+          echo "Pages built:"
+          find dist -name "*.html" | wc -l
+          echo ""
+          echo "Sitemap check:"
+          cat dist/sitemap.xml | head -20

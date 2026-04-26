@@ -1,0 +1,22 @@
+# CabLate
+
+> AI 時代的軟體開發洞察 — 判斷力才是你的護城河。由 Cab 經營，專注 AI 工具實戰、Agent 架構、自動化整合。
+
+## 主要頁面
+
+- [首頁](https://cablate.com/): CabLate 官網首頁，介紹核心理念與服務
+- [關於](https://cablate.com/about/): 關於 Cab — 背景、經歷、理念
+- [文章](https://cablate.com/articles/): 技術觀點與 AI 工具實戰文章
+- [課程](https://cablate.com/courses/): 線上課程與教學資源
+- [服務](https://cablate.com/services/): 自動化整合、AI 導入諮詢服務
+- [入門懶人包](https://cablate.com/starter-pack/): Claude Code 新手起步資源
+
+## 文章
+
+- [逆向 Claude Agent SDK：找出每則訊息 2-3% 額度消耗的根因與解法](https://cablate.com/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/): Agent SDK V1 query() cache miss 根因分析與 V2 persistent session 解法
+- [Agent SDK diff 注入修復：逆向 C26 函數用 JSONL 預處理解決](https://cablate.com/articles/agent-sdk-system-reminder-diff-fix/): Agent SDK readFileState diff 重複注入的逆向分析與修復
+- [我逆向了 Claude Code v2.1.71，找到 token 消耗暴增的根因](https://cablate.com/articles/claude-code-token-drain-system-reminder/): system-reminder diff 注入機制逆向分析
+- [OpenClaw 爆火讓我不解：AI Agent 這些底層架構一年前就有了](https://cablate.com/articles/openclaw-agent-fundamentals/): AI Agent 五層架構解析
+- [AI 取代工作？從 Anthropic 雷達圖看理論與現實的落差](https://cablate.com/articles/anthropic-radar-ai-cannot-replace/): AI 職業取代的理論覆蓋率 vs 實際落差分析
+- [你可能不需要龍蝦：自動化跟 Agent 是兩件事](https://cablate.com/articles/blog-writing-openclaw/): 自動化 vs AI Agent 的需求差異分析
+- [Claude Code 實戰：我怎麼用 AI 寫完一整個網站](https://cablate.com/articles/claude-code-workflow/): 從零建站的 AI 輔助開發工作流

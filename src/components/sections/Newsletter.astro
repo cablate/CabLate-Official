@@ -1,0 +1,190 @@
+---
+/**
+ * Newsletter Section - 電子報訂閱區塊（簡化版）
+ */
+
+import KitForm from '../common/KitForm.astro';
+import { siteConfig } from '../../config/siteConfig';
+---
+
+<section class="newsletter-section" id="newsletter">
+    <div class="newsletter-inner">
+        <div class="newsletter-text">
+            <span class="newsletter-label">NEWSLETTER</span>
+            <h2 class="newsletter-title">電子報</h2>
+            <p class="newsletter-hook">
+                不想被 AI 新聞搞焦慮？每週一篇有觀點的觀察。
+            </p>
+            <p class="newsletter-desc">
+                關於 AI 協作、架構決策、職涯思考、最新活動消息
+            </p>
+            <p class="newsletter-proof">{siteConfig.newsletterSubscribers} 人已訂閱</p>
+        </div>
+        <div class="newsletter-form">
+            <KitForm />
+        </div>
+    </div>
+</section>
+
+<style>
+    .newsletter-section {
+        padding: 4rem 2rem;
+        background: var(--bg-soft);
+    }
+
+    .newsletter-inner {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+    }
+
+    .newsletter-text {
+        flex: 1;
+    }
+
+    .newsletter-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        letter-spacing: 0.15em;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .newsletter-title {
+        font-family: 'Noto Serif TC', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .newsletter-hook {
+        font-size: 1rem;
+        color: var(--text-primary);
+        font-weight: 500;
+        line-height: 1.65;
+        margin-bottom: 0.5rem;
+    }
+
+    .newsletter-desc {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        margin-bottom: 0.25rem;
+    }
+
+    .newsletter-proof {
+        font-size: 0.8rem;
+        color: var(--accent);
+        font-weight: 500;
+    }
+
+    .newsletter-form {
+        flex: 1;
+    }
+
+    /* Kit Form Override Styles */
+    .kit-form-wrapper {
+        margin-top: 0;
+    }
+
+    .kit-form-wrapper .formkit-form {
+        background: transparent !important;
+        padding: 0 !important;
+    }
+
+    .kit-form-wrapper .formkit-fields {
+        display: flex !important;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin: 0 !important;
+    }
+
+    .kit-form-wrapper .formkit-field {
+        flex: 1;
+        margin: 0 !important;
+    }
+
+    .kit-form-wrapper .formkit-input {
+        width: 100% !important;
+        padding: 0.85rem 1.25rem !important;
+        background: var(--bg) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        color: var(--text-primary) !important;
+        font-size: 0.9rem !important;
+        font-family: inherit !important;
+        font-weight: 400 !important;
+    }
+
+    .kit-form-wrapper .formkit-input:focus {
+        outline: none !important;
+        border-color: var(--accent) !important;
+        box-shadow: var(--shadow-sm) !important;
+    }
+
+    .kit-form-wrapper .formkit-input::placeholder {
+        color: var(--text-muted) !important;
+        opacity: 1 !important;
+    }
+
+    .kit-form-wrapper .formkit-submit {
+        background: var(--text-primary) !important;
+        border: none !important;
+        border-radius: 8px !important;
+        color: var(--bg) !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        padding: 0.85rem 2rem !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+        margin: 0 !important;
+    }
+
+    .kit-form-wrapper .formkit-submit:hover {
+        opacity: 0.85 !important;
+    }
+
+    .kit-form-wrapper .formkit-submit span {
+        padding: 0 !important;
+    }
+
+    .kit-form-wrapper .formkit-alert-success {
+        background: rgba(16, 191, 122, 0.1) !important;
+        border-color: #10bf7a !important;
+        color: #10bf7a !important;
+        border-radius: 8px !important;
+        margin-top: 0.75rem !important;
+    }
+
+    .kit-form-wrapper .formkit-alert-error {
+        background: rgba(242, 100, 59, 0.1) !important;
+        border-color: #f2643b !important;
+        color: #f2643b !important;
+        border-radius: 8px !important;
+        margin-top: 0.75rem !important;
+    }
+
+    .kit-form-wrapper .formkit-powered-by-convertkit-container {
+        display: none !important;
+    }
+
+    @media (max-width: 600px) {
+        .newsletter-section {
+            padding: 3rem 1.5rem;
+        }
+
+        .newsletter-inner {
+            flex-direction: column;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .newsletter-form {
+            width: 100%;
+        }
+    }
+</style>

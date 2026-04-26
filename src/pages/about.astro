@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const personJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Cab（庹永祺）',
+    alternateName: 'CabLate',
+    url: 'https://cablate.com',
+    jobTitle: '全端工程師 / 技術顧問',
+    description: '工程師出身，靠架構思維跟 AI 協作，把技術翻譯成人話。幫創作者和小團隊把想法落地。',
+    knowsAbout: ['軟體架構', 'AI 協作', '全端開發', 'MCP', 'Agent 架構', 'TypeScript', 'Node.js'],
+    sameAs: [
+        'https://threads.net/@cab_late',
+        'https://github.com/cablate'
+    ],
+    image: 'https://cablate.com/images/avatar-placeholder.webp',
+    worksFor: {
+        '@type': 'Organization',
+        name: 'CabLate',
+        url: 'https://cablate.com'
+    },
+    alumniOf: [],
+    hasOccupation: {
+        '@type': 'Occupation',
+        name: '技術顧問',
+        description: '一對一諮詢、Coffee Chat、線上課程'
+    }
+};
+---
+
+<BaseLayout title="關於我" description="我是 Cab，全端工程師出身，現在做技術顧問和線上課程。用架構思維跟 AI 協作，把技術翻譯成人話，幫創作者和小團隊把想法落地。">
+    <script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+
+    <article class="about-page">
+        <div class="about-container">
+            <h1>關於我</h1>
+
+            <section class="about-intro">
+                <p>我是 Cab，全端工程師出身。</p>
+                <p>四年多的開發與系統架構經驗，做過千萬級預算的政府標案，也幫荷蘭外商建構過 AI 諮詢服務。2025 年辭職，全職做自媒體和線上課程。</p>
+                <p>現在在做的事情很簡單：<strong>把技術翻譯成人話，幫創作者和小團隊把想法落地。</strong></p>
+            </section>
+
+            <section class="about-belief">
+                <h2>我相信的事</h2>
+                <p>工具會不斷過時，概念跟觀點才會留下。</p>
+                <p>AI 不會取代你，但你需要知道怎麼跟它協作。判斷力比執行力重要，知道選錯的代價比知道怎麼選更重要。我不追逐新工具，新資訊已經夠多人在分享了，不缺我一個。</p>
+                <p>我只教自己真正做過的東西，只賣自己真正能交付的服務。</p>
+            </section>
+
+            <section class="about-cablate">
+                <h2>CabLate 是什麼</h2>
+                <p>CabLate 是我的個人品牌。這裡放的是我對 AI 協作、軟體架構、開發實戰的觀察和觀點。</p>
+                <p>文章不追熱點，寫的是我實際遇到的問題、實際想通的事情。如果你看完覺得「這跟我想的一樣」或「原來可以這樣想」，那就對了。</p>
+            </section>
+
+            <section class="about-work">
+                <h2>目前在做的事</h2>
+                <ul>
+                    <li><strong>線上課程</strong>：VibeCoding、金流串接、AgentSkill 講座</li>
+                    <li><strong>技術顧問</strong>：一對一諮詢、Coffee Chat</li>
+                    <li><strong>內容創作</strong>：部落格文章、電子報、Threads</li>
+                </ul>
+            </section>
+
+            <section class="about-contact">
+                <h2>聯絡方式</h2>
+                <p>最快的方式是 <a href="https://threads.net/@cab_late" target="_blank" rel="noopener">Threads</a> 私訊。</p>
+                <p>想看程式碼的可以逛 <a href="https://github.com/cablate" target="_blank" rel="noopener">GitHub</a>。</p>
+            </section>
+        </div>
+    </article>
+</BaseLayout>
+
+<style>
+    .about-page {
+        padding: 6rem 0 4rem;
+    }
+
+    .about-container {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .about-container h1 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .about-container h2 {
+        font-size: 1.4rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .about-container p {
+        line-height: 1.8;
+        margin-bottom: 0.8rem;
+        color: var(--text-primary);
+    }
+
+    .about-container ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .about-container li {
+        padding: 0.5rem 0;
+        line-height: 1.6;
+    }
+
+    .about-container a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+
+    .about-container a:hover {
+        text-decoration: underline;
+    }
+</style>

@@ -1,0 +1,180 @@
+---
+/**
+ * TableOfContents - 文章目錄（sticky sidebar）
+ * 只顯示 h2 / h3，h3 縮排於所屬 h2 底下
+ * 使用 IntersectionObserver 做 scroll-spy
+ */
+
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+
+// 只保留 h2 和 h3
+const filtered = headings.filter(h => h.depth === 2 || h.depth === 3);
+
+// 建立巢狀結構：h2 帶有 children（h3[]）
+interface TocItem {
+  depth: number;
+  slug: string;
+  text: string;
+  children: { depth: number; slug: string; text: string }[];
+}
+
+const nested: TocItem[] = [];
+for (const heading of filtered) {
+  if (heading.depth === 2) {
+    nested.push({ ...heading, children: [] });
+  } else if (heading.depth === 3 && nested.length > 0) {
+    nested[nested.length - 1].children.push(heading);
+  } else {
+    // h3 without a parent h2 — treat as top-level
+    nested.push({ ...heading, children: [] });
+  }
+}
+---
+
+{filtered.length > 0 && (
+  <nav class="toc" aria-label="目錄">
+    <h2 class="toc-title">目錄</h2>
+    <ul class="toc-list">
+      {nested.map(item => (
+        <li>
+          <a href={`#${item.slug}`} class="toc-link" data-slug={item.slug}>
+            {item.text}
+          </a>
+          {item.children.length > 0 && (
+            <ul class="toc-sublist">
+              {item.children.map(child => (
+                <li>
+                  <a href={`#${child.slug}`} class="toc-link toc-link-sub" data-slug={child.slug}>
+                    {child.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<script is:inline>
+  // Scroll-spy：用 IntersectionObserver 追蹤目前可見的 heading
+  (function () {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    if (!tocLinks.length) return;
+
+    const slugs = Array.from(tocLinks).map(a => a.getAttribute('data-slug'));
+    const headingEls = slugs
+      .map(slug => document.getElementById(slug))
+      .filter(Boolean);
+
+    if (!headingEls.length) return;
+
+    let currentSlug = '';
+
+    function setActive(slug) {
+      if (slug === currentSlug) return;
+      currentSlug = slug;
+      tocLinks.forEach(link => {
+        if (link.getAttribute('data-slug') === slug) {
+          link.classList.add('toc-active');
+        } else {
+          link.classList.remove('toc-active');
+        }
+      });
+    }
+
+    const observer = new IntersectionObserver(
+      entries => {
+        // 找到第一個進入視口的 heading
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActive(entry.target.id);
+            return;
+          }
+        }
+      },
+      {
+        rootMargin: '-80px 0px -60% 0px',
+        threshold: 0,
+      }
+    );
+
+    headingEls.forEach(el => observer.observe(el));
+  })();
+</script>
+
+<style>
+  .toc {
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    padding: 1.25rem;
+    border-left: 2px solid var(--border, #e2e8f0);
+  }
+
+  .toc-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary, #1e293b);
+    margin-bottom: 0.75rem;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .toc-sublist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+  }
+
+  .toc-link {
+    display: block;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--text-muted, #94a3b8);
+    text-decoration: none;
+    padding: 0.2rem 0;
+    transition: color var(--transition-fast, 0.15s ease);
+  }
+
+  .toc-link:hover {
+    color: var(--text-primary, #1e293b);
+  }
+
+  .toc-link-sub {
+    padding-left: 1rem;
+    font-size: 0.75rem;
+  }
+
+  .toc-link.toc-active {
+    color: var(--accent, #8b5cf6);
+    font-weight: 600;
+  }
+
+  /* 隱藏 scrollbar（保留滾動能力） */
+  .toc::-webkit-scrollbar {
+    width: 0;
+  }
+
+  .toc {
+    scrollbar-width: none;
+  }
+</style>

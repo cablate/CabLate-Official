@@ -1,0 +1,116 @@
+/* ═══════════════════════════════════════════════════════════
+   CABLATE BASE STYLES — Clean Minimal Theme
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+    /* 強調色 — 淡紫，極少使用 */
+    --accent: #8b5cf6;
+    --accent-light: #a78bfa;
+    --accent-subtle: #faf8ff;
+    --accent-border: #ede9fe;
+
+    /* 中性色 — 深藍灰為主調 */
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --bg: #ffffff;
+    --bg-soft: #fafafa;
+    --bg-muted: #f1f5f9;
+    --border: #e2e8f0;
+    --border-light: #f1f5f9;
+
+    /* 點綴 */
+    --gold: #f59e0b;
+
+    /* 向後相容 */
+    --purple-900: #1e293b;
+    --purple-800: #334155;
+    --purple-700: #475569;
+    --purple-600: #8b5cf6;
+    --purple-500: #a78bfa;
+    --purple-400: #c4b5fd;
+    --purple-300: #ddd6fe;
+    --purple-200: #ede9fe;
+    --purple-100: #f5f3ff;
+    --white: #ffffff;
+    --white-90: rgba(255, 255, 255, 0.9);
+    --white-60: rgba(100, 116, 139, 1);
+    --white-30: rgba(148, 163, 184, 1);
+    --white-10: rgba(226, 232, 240, 1);
+    --dark: #1e293b;
+    --gold-light: #fde68a;
+    --cyan: #06b6d4;
+
+    /* 間距 */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 4rem;
+    --spacing-2xl: 6rem;
+
+    /* 圓角 */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+
+    /* 陰影 — 柔和 */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+    /* 過渡 */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text-primary);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+

@@ -1,0 +1,227 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  noSEO?: boolean;
+  noindex?: boolean;
+}
+
+import { ViewTransitions } from 'astro:transitions';
+import { Compass } from '@lucide/astro';
+import SEO from '../components/SEO.astro';
+import { siteConfig } from '../config/siteConfig';
+import '@fontsource/noto-sans-tc/400.css';
+import '@fontsource/noto-sans-tc/500.css';
+import '@fontsource/noto-sans-tc/700.css';
+import '@fontsource/noto-serif-tc/400.css';
+import '@fontsource/noto-serif-tc/700.css';
+
+const { title, description = 'AI 時代的軟體開發洞察 - 判斷力才是你的護城河', noSEO = false, noindex = false } = Astro.props;
+const currentYear = new Date().getFullYear();
+const siteUrl = import.meta.env.SITE || 'https://cablate.com';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+---
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {!noSEO && (
+      <SEO title={title === 'CabLate' ? title : `${title} | CabLate`} description={description} noindex={noindex} />
+    )}
+    {/* noSEO 模式：title 由子 layout 透過 slot="head" 的 SEO 元件提供 */}
+    <slot name="head" />
+    <ViewTransitions />
+    <link rel="icon" type="image/webp" href="/favicon.webp">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32">
+    <link rel="alternate" type="application/rss+xml" title="CabLate" href="/rss.xml" />
+
+    <!-- Google Search Console 驗證 -->
+    <meta name="google-site-verification" content={siteConfig.gscVerification} />
+
+    <!-- GA4 追蹤碼 -->
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.ga4Id}`}></script>
+    <script define:vars={{ ga4Id: siteConfig.ga4Id }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', ga4Id);
+    </script>
+
+    <!-- GA4 滾動深度追蹤 -->
+    <script is:inline>
+      (function() {
+        // 只在文章頁面初始化
+        if (!document.querySelector('.article-content')) {
+          return;
+        }
+
+        const scrollThresholds = [25, 50, 75, 100];
+        const trackedDepths = new Set();
+        const articleElement = document.querySelector('.article-content');
+
+        if (!articleElement) return;
+
+        // 計算文章內容的實際高度（考慮文章開始位置）
+        function getArticleScrollDepth() {
+          const rect = articleElement.getBoundingClientRect();
+          const scrollTop = window.scrollY || document.documentElement.scrollTop;
+          const articleTop = rect.top + scrollTop;
+          const articleBottom = articleTop + articleElement.offsetHeight;
+          const viewportHeight = window.innerHeight;
+
+          // 如果文章還沒進入視窗，深度為 0
+          if (articleBottom < scrollTop) {
+            return 0;
+          }
+
+          // 計算用戶在文章中的相對位置
+          const userPosition = scrollTop + viewportHeight;
+          const relativeScroll = userPosition - articleTop;
+          const depth = Math.max(0, Math.min(100, (relativeScroll / articleElement.offsetHeight) * 100));
+
+          return Math.floor(depth);
+        }
+
+        function handleScroll() {
+          const currentDepth = getArticleScrollDepth();
+
+          // 檢查是否達到任何未追蹤的里程碑
+          scrollThresholds.forEach((threshold) => {
+            if (currentDepth >= threshold && !trackedDepths.has(threshold)) {
+              trackedDepths.add(threshold);
+              window.gtag('event', 'scroll_depth', { percent: threshold });
+            }
+          });
+        }
+
+        // 監聽滾動事件（使用節流以提高效能）
+        let throttleTimer;
+        window.addEventListener('scroll', () => {
+          if (!throttleTimer) {
+            throttleTimer = setTimeout(() => {
+              handleScroll();
+              throttleTimer = null;
+            }, 100);
+          }
+        }, { passive: true });
+      })();
+    </script>
+
+</head>
+<body>
+    <a href="#main-content" class="skip-link">跳到主要內容</a>
+
+    <!-- Navigation -->
+    <nav class="nav" aria-label="主導覽列">
+        <div class="nav-inner">
+            <a href="/" class="logo" aria-label="CabLate 首頁">
+                <span class="logo-icon" aria-hidden="true">
+                    <Compass size={22} strokeWidth={2} />
+                </span>
+                <span class="logo-text">CabLate</span>
+            </a>
+            <ul class="nav-links" role="list">
+                <li><a href="/articles/">文章</a></li>
+                <li><a href="/courses/">課程</a></li>
+                <li><a href="/services/">服務</a></li>
+                <li><a href="/about/">關於我</a></li>
+                <li><a href="/search/">搜尋</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="footer-inner">
+            <div class="footer-brand">CabLate</div>
+            <nav class="footer-nav" aria-label="網站連結">
+                <a href="/articles/" class="footer-nav-link">文章</a>
+                <a href="/courses/" class="footer-nav-link">課程</a>
+                <a href="/services/" class="footer-nav-link">服務</a>
+                <a href="/about/" class="footer-nav-link">關於我</a>
+                <a href="/search/" class="footer-nav-link">搜尋</a>
+                <a href="/rss.xml" class="footer-nav-link">RSS</a>
+            </nav>
+            <nav class="footer-social" aria-label="社群連結">
+                <a href="https://threads.net/@cab_late" class="footer-social-link" target="_blank" rel="noopener">Threads</a>
+                <a href="https://github.com/cablate" class="footer-social-link" target="_blank" rel="noopener">GitHub</a>
+            </nav>
+            <p class="footer-copy">&copy; {currentYear} CabLate · <a href="/privacy/" class="footer-link">隱私權政策</a></p>
+        </div>
+    </footer>
+
+    <!-- Scroll Reveal Observer -->
+    <script is:inline>
+      (function initReveal() {
+        const selectors = '.reveal, .reveal-left, .reveal-right, .reveal-scale';
+        const els = document.querySelectorAll(selectors);
+        if (!els.length) return;
+
+        if (!('IntersectionObserver' in window)) {
+          // Fallback：不支援的瀏覽器直接顯示
+          els.forEach(el => el.classList.add('visible'));
+          return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        els.forEach(el => observer.observe(el));
+
+        // ViewTransitions：頁面切換後重新觀察
+        document.addEventListener('astro:after-swap', () => {
+          const newEls = document.querySelectorAll(selectors);
+          newEls.forEach(el => {
+            if (!el.classList.contains('visible')) {
+              observer.observe(el);
+            }
+          });
+        });
+      })();
+    </script>
+</body>
+</html>
+
+<style is:global>
+    /* Phase 1: 模組化 CSS 載入順序 */
+    @import '../styles/base.css';       /* CSS Variables + Reset + Typography */
+    @import '../styles/utilities.css';  /* Layout + Section + Reveal */
+    @import '../styles/animations.css'; /* @keyframes + Animation Utilities */
+    @import '../styles/global.css';     /* 元件樣式（待 Phase 2 遷移） */
+
+    /* Accessibility: Skip Link */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 0;
+      z-index: 9999;
+      padding: 0.75rem 1.5rem;
+      background: var(--accent, #6d28d9);
+      color: #fff;
+      font-size: 0.9rem;
+      text-decoration: none;
+      border-radius: 0 0 8px 0;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* Accessibility: Focus Visible */
+    :focus-visible {
+      outline: 2px solid var(--accent, #6d28d9);
+      outline-offset: 2px;
+    }
+</style>

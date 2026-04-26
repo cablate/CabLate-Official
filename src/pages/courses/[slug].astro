@@ -1,0 +1,26 @@
+---
+/**
+ * Courses [slug] Page - 動態課程頁面
+ */
+
+import { getCollection } from 'astro:content';
+import CourseLayout from '../../layouts/CourseLayout.astro';
+
+// 取得所有課程
+export async function getStaticPaths() {
+  const courses = await getCollection('courses');
+
+  // 過濾掉草稿
+  const publishedCourses = courses.filter(entry => !entry.data.draft);
+
+  return publishedCourses.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { headings } = await entry.render();
+---
+
+<CourseLayout entry={entry} headings={headings} />

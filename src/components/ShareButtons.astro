@@ -1,0 +1,243 @@
+---
+/**
+ * ShareButtons - 文章分享按鈕元件
+ * 優先使用 Web Share API，降級至複製連結 / X / Facebook / LINE
+ *
+ * @prop {string} title - 文章標題
+ * @prop {string} url   - 完整分享網址
+ */
+
+import Share2 from '@lucide/astro/icons/share-2';
+import Link from '@lucide/astro/icons/link';
+
+interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+---
+
+<div class="share-buttons" data-title={title} data-url={url}>
+  <!-- Web Share API 按鈕（僅在支援時顯示） -->
+  <button
+    class="share-btn share-btn--native"
+    id="shareNative"
+    aria-label="分享文章"
+  >
+    <Share2 size={16} />
+    <span>分享</span>
+  </button>
+
+  <!-- 降級按鈕群組 -->
+  <div class="share-fallback" id="shareFallback">
+    <button
+      class="share-btn share-btn--copy"
+      id="shareCopy"
+      aria-label="複製連結"
+    >
+      <Link size={16} />
+      <span>複製連結</span>
+    </button>
+
+    <a
+      class="share-btn share-btn--x"
+      href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="分享到 X（Twitter）"
+    >
+      <span class="share-icon-text">𝕏</span>
+      <span>X</span>
+    </a>
+
+    <a
+      class="share-btn share-btn--fb"
+      href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="分享到 Facebook"
+    >
+      <span class="share-icon-text">f</span>
+      <span>FB</span>
+    </a>
+
+    <a
+      class="share-btn share-btn--line"
+      href={`https://social-plugins.line.me/lineit/share?url=${encodedUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="分享到 LINE"
+    >
+      <span class="share-icon-text">L</span>
+      <span>LINE</span>
+    </a>
+  </div>
+
+  <!-- 複製成功提示 -->
+  <div class="share-toast" id="shareToast" aria-live="polite">已複製!</div>
+</div>
+
+<script>
+  const wrapper = document.querySelector('.share-buttons') as HTMLElement;
+  if (!wrapper) throw new Error('ShareButtons wrapper not found');
+
+  const title = wrapper.dataset.title ?? '';
+  const url = wrapper.dataset.url ?? '';
+
+  const nativeBtn = document.getElementById('shareNative') as HTMLButtonElement;
+  const fallback = document.getElementById('shareFallback') as HTMLElement;
+  const copyBtn = document.getElementById('shareCopy') as HTMLButtonElement;
+  const toast = document.getElementById('shareToast') as HTMLElement;
+
+  // 判斷是否支援 Web Share API
+  const canShare = typeof navigator.share === 'function';
+
+  if (canShare) {
+    // 顯示原生分享按鈕，隱藏降級按鈕群
+    nativeBtn.style.display = 'inline-flex';
+    fallback.style.display = 'none';
+
+    nativeBtn.addEventListener('click', async () => {
+      try {
+        await navigator.share({ title, url });
+      } catch {
+        // 使用者取消或 API 失敗，不作任何處理
+      }
+    });
+  } else {
+    // 不支援 Web Share API：顯示降級按鈕群
+    nativeBtn.style.display = 'none';
+    fallback.style.display = 'flex';
+  }
+
+  // 複製連結
+  copyBtn?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      showToast();
+    } catch {
+      // clipboard API 失敗時的 fallback
+      const ta = document.createElement('textarea');
+      ta.value = url;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast();
+    }
+  });
+
+  function showToast() {
+    toast.classList.add('visible');
+    setTimeout(() => toast.classList.remove('visible'), 2000);
+  }
+</script>
+
+<style>
+  .share-buttons {
+    position: relative;
+    max-width: 820px;
+    margin: 2.5rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border, #e2e8f0);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .share-fallback {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid var(--accent-border, #e9e5f5);
+    background: var(--accent-subtle, #f5f3ff);
+    color: var(--accent, #6d28d9);
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .share-btn:hover {
+    background: var(--accent, #6d28d9);
+    border-color: var(--accent, #6d28d9);
+    color: #fff;
+  }
+
+  .share-icon-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* 各平台按鈕的 hover 微調 */
+  .share-btn--x:hover {
+    background: #000;
+    border-color: #000;
+    color: #fff;
+  }
+
+  .share-btn--fb:hover {
+    background: #1877f2;
+    border-color: #1877f2;
+    color: #fff;
+  }
+
+  .share-btn--line:hover {
+    background: #06c755;
+    border-color: #06c755;
+    color: #fff;
+  }
+
+  /* Toast */
+  .share-toast {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 0;
+    padding: 0.4rem 0.8rem;
+    background: var(--text-primary, #1a1a2e);
+    color: #fff;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .share-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    .share-buttons {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+    }
+
+    .share-btn {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8rem;
+    }
+  }
+</style>

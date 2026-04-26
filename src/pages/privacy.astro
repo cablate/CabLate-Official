@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="隱私權政策" description="CabLate 隱私權政策——說明本站如何收集和使用訪客資料。">
+    <article class="privacy-page">
+        <div class="privacy-container">
+            <h1>隱私權政策</h1>
+            <p class="privacy-updated">最後更新：2026 年 3 月</p>
+
+            <section>
+                <h2>資料收集</h2>
+                <p>本站使用 Google Analytics 4（GA4）收集匿名的網站使用數據，包括：頁面瀏覽量、訪問時間、裝置類型、大致地理位置。這些數據用於了解內容表現和改善網站體驗，不會用於識別個人身份。</p>
+            </section>
+
+            <section>
+                <h2>Cookie 使用</h2>
+                <p>本站透過 GA4 使用 Cookie 追蹤訪客行為。你可以透過瀏覽器設定停用 Cookie，停用後網站功能不受影響。</p>
+            </section>
+
+            <section>
+                <h2>第三方服務</h2>
+                <p>本站使用以下第三方服務：</p>
+                <ul>
+                    <li><strong>Google Analytics 4</strong>：網站流量分析</li>
+                    <li><strong>Cloudflare Pages</strong>：網站託管與 CDN</li>
+                    <li><strong>自託管字體 (Fontsource)</strong>：字型載入（不向第三方伺服器請求）</li>
+                </ul>
+                <p>這些服務各有其隱私權政策，建議參閱其官方說明。</p>
+            </section>
+
+            <section>
+                <h2>電子報</h2>
+                <p>如果你訂閱了電子報，我會收集你提供的 Email 地址，僅用於寄送電子報內容。你可以隨時取消訂閱。</p>
+            </section>
+
+            <section>
+                <h2>聯絡方式</h2>
+                <p>對隱私權政策有疑問，可以透過 <a href="https://threads.net/@cab_late" target="_blank" rel="noopener">Threads</a> 聯絡我。</p>
+            </section>
+        </div>
+    </article>
+</BaseLayout>
+
+<style>
+    .privacy-page {
+        padding: 6rem 0 4rem;
+    }
+
+    .privacy-container {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .privacy-container h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .privacy-updated {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 2rem;
+    }
+
+    .privacy-container h2 {
+        font-size: 1.3rem;
+        margin-top: 2rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .privacy-container p {
+        line-height: 1.8;
+        margin-bottom: 0.8rem;
+        color: var(--text-primary);
+    }
+
+    .privacy-container ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .privacy-container li {
+        padding: 0.3rem 0;
+        line-height: 1.6;
+    }
+
+    .privacy-container a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+
+    .privacy-container a:hover {
+        text-decoration: underline;
+    }
+</style>

@@ -1,0 +1,15 @@
+/* ═══════════════════════════════════════════════════════════
+   CABLATE ANIMATIONS — Minimal
+   Only keep functional animations, remove all decorative effects
+   ═══════════════════════════════════════════════════════════ */
+
+/* Bounce Down — for hints/arrows */
+@keyframes bounce-down {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+}
+
+.animate-bounce {
+    animation: bounce-down 1.5s ease-in-out infinite;
+}
+

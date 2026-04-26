@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ChevronUp } from '@lucide/astro';
+
+// Section Components
+import Hero from '../components/sections/Hero.astro';
+import RoleSelector from '../components/sections/RoleSelector.astro';
+import Portfolio from '../components/sections/Portfolio.astro';
+import Newsletter from '../components/sections/Newsletter.astro';
+import LatestArticles from '../components/sections/LatestArticles.astro';
+
+// 首頁 FAQ 結構化資料
+const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+        {
+            '@type': 'Question',
+            name: 'CabLate 是誰？',
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'CabLate（Cab）是全端工程師與技術顧問，專注 AI 協作、軟體架構與自動化整合。在 Threads 上擁有 5K+ 追蹤者，分享 AI 工具實戰與技術觀點。',
+            },
+        },
+        {
+            '@type': 'Question',
+            name: 'CabLate 提供什麼服務？',
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: '提供 AI 導入諮詢、自動化整合開發、企業內訓、以及 Claude Code 等 AI 工具的線上課程與教學資源。',
+            },
+        },
+        {
+            '@type': 'Question',
+            name: '如何開始學習 AI 協作開發？',
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: '可以從 CabLate 的入門懶人包（Starter Pack）開始，裡面包含 Claude Code 新手起步所需的設定指南與實戰範例。也可以閱讀文章專區的 AI 工具實戰系列。',
+            },
+        },
+    ],
+};
+
+// 首頁 WebSite 結構化資料
+const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'CabLate',
+    url: 'https://cablate.com',
+    description: 'AI 時代的軟體開發洞察 — 判斷力才是你的護城河',
+    inLanguage: 'zh-TW',
+    publisher: {
+        '@type': 'Person',
+        name: 'CabLate',
+        url: 'https://cablate.com',
+    },
+};
+
+// 首頁 Person 結構化資料
+const personJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'CabLate',
+    url: 'https://cablate.com',
+    jobTitle: '全端工程師 / 技術顧問',
+    description: '工程師出身，靠架構思維跟 AI 協作，把技術翻譯成人話。',
+    knowsAbout: ['軟體架構', 'AI 協作', '全端開發', '技術顧問', '開源貢獻'],
+    sameAs: [
+        'https://threads.net/@cab_late',
+        'https://github.com/cablate'
+    ]
+};
+
+---
+
+<BaseLayout title="CabLate — AI 協作・技術觀點・開發實戰" description="CabLate — 全端工程師、技術顧問與社群創作者。分享 AI 協作、軟體架構、開發實戰與職涯觀點，用架構思維把技術翻譯成人話。">
+    <script slot="head" type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
+    <script slot="head" type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+    <script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+
+    <!-- HERO -->
+    <Hero />
+
+    <!-- ROLE SELECTOR -->
+    <RoleSelector />
+
+    <!-- PORTFOLIO -->
+    <Portfolio />
+
+    <!-- LATEST ARTICLES -->
+    <LatestArticles />
+
+    <!-- NEWSLETTER -->
+    <Newsletter />
+
+    <!-- 回到頂部按鈕 -->
+    <button class="back-to-top" id="backToTop" aria-label="回到頂部">
+        <ChevronUp size={24} />
+    </button>
+</BaseLayout>
+
+<script>
+    // 回到頂部按鈕
+    const backToTopBtn = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) {
+            backToTopBtn?.classList.add('visible');
+        } else {
+            backToTopBtn?.classList.remove('visible');
+        }
+    });
+
+    backToTopBtn?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>

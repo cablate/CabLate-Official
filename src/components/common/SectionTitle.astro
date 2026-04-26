@@ -1,0 +1,102 @@
+---
+/**
+ * SectionTitle - 區塊標題組合元件
+ * 包含主標題、副標題、菱形裝飾
+ *
+ * @prop {string} title - 主標題文字
+ * @prop {string} subtitle - 副標題文字（英文）
+ * @prop {boolean} reveal - 是否啟用滾動揭示動畫（預設 true）
+ * @prop {'dark' | 'light'} theme - 主題色系（預設 dark）
+ */
+
+interface Props {
+    title: string;
+    subtitle: string;
+    reveal?: boolean;
+    theme?: 'dark' | 'light';
+}
+
+const {
+    title,
+    subtitle,
+    reveal = true,
+    theme = 'dark'
+} = Astro.props;
+
+const containerClass = reveal ? 'section-title-group reveal' : 'section-title-group';
+---
+
+<div class={containerClass} data-theme={theme}>
+    <h2 class="section-title-main">{title}</h2>
+    <p class="section-title-sub">{subtitle}</p>
+    <div class="title-decoration">
+        <span class="title-line"></span>
+        <div class="title-diamond">
+            <span></span><span></span><span></span>
+        </div>
+        <span class="title-line"></span>
+    </div>
+</div>
+
+<style>
+    .section-title-group {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-title-main {
+        font-family: 'Noto Serif TC', serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+
+    .section-title-sub {
+        font-size: 0.75rem;
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        opacity: 0.8;
+    }
+
+    /* 標題裝飾 */
+    .title-decoration {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .title-line {
+        width: 60px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent-border), transparent);
+    }
+
+    .title-diamond {
+        display: flex;
+        gap: 4px;
+    }
+
+    .title-diamond span {
+        width: 8px;
+        height: 8px;
+        background: var(--accent);
+        border-radius: 50%;
+    }
+
+    .title-diamond span:nth-child(1) {
+        background: var(--text-muted);
+    }
+
+    .title-diamond span:nth-child(2) {
+        background: var(--accent);
+    }
+
+    .title-diamond span:nth-child(3) {
+        background: var(--text-muted);
+    }
+</style>

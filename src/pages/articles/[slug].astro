@@ -1,0 +1,26 @@
+---
+/**
+ * Articles [slug] Page - 動態文章頁面
+ */
+
+import { getCollection } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+
+// 取得所有文章
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+
+  // 過濾掉草稿
+  const publishedArticles = articles.filter(entry => !entry.data.draft);
+
+  return publishedArticles.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { headings } = await entry.render();
+---
+
+<ArticleLayout entry={entry} headings={headings} />

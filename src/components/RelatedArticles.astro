@@ -1,0 +1,140 @@
+---
+/**
+ * RelatedArticles - 相關文章推薦
+ * 用 category + tags 交集排序，取前 3 篇
+ */
+
+import { getCollection } from 'astro:content';
+import { formatDate } from '../utils/format';
+
+interface Props {
+  currentSlug: string;
+  category: string;
+  tags: string[];
+}
+
+const { currentSlug, category, tags } = Astro.props;
+
+const allArticles = await getCollection('articles');
+const published = allArticles.filter(a => !a.data.draft && a.slug !== currentSlug);
+
+// 計算相關度分數：同 category +3, 每個共同 tag +1
+const scored = published.map(article => {
+  let score = 0;
+  if (article.data.category === category) score += 3;
+  score += article.data.tags.filter(t => tags.includes(t)).length;
+  return { article, score };
+});
+
+const related = scored
+  .filter(s => s.score > 0)
+  .sort((a, b) => b.score - a.score || b.article.data.publishDate.valueOf() - a.article.data.publishDate.valueOf())
+  .slice(0, 3)
+  .map(s => s.article);
+
+// 不足 3 篇就用最新文章補
+if (related.length < 3) {
+  const remaining = published
+    .filter(a => !related.includes(a))
+    .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+  related.push(...remaining.slice(0, 3 - related.length));
+}
+
+---
+
+{related.length > 0 && (
+  <nav class="related-articles" aria-label="相關文章">
+    <h2>相關文章</h2>
+    <ul>
+      {related.map(article => (
+        <li>
+          <a href={`/articles/${article.slug}/`}>
+            <span class="related-category">{article.data.category}</span>
+            <span class="related-title">{article.data.title}</span>
+            <time datetime={article.data.publishDate.toISOString()}>
+              {formatDate(article.data.publishDate)}
+            </time>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .related-articles {
+    max-width: 820px;
+    margin: 3rem auto 0;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border, #e2e8f0);
+  }
+
+  .related-articles h2 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary, #1a1a2e);
+    margin-bottom: 1.5rem;
+  }
+
+  .related-articles ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .related-articles li a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-muted, #f1f5f9);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .related-articles li a:hover {
+    background: var(--accent-subtle, #f5f3ff);
+  }
+
+  .related-category {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent, #6d28d9);
+  }
+
+  .related-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary, #1a1a2e);
+    line-height: 1.5;
+  }
+
+  .related-articles time {
+    font-size: 0.8rem;
+    color: var(--text-muted, #94a3b8);
+  }
+
+  @media (max-width: 768px) {
+    .related-articles {
+      padding-top: 2rem;
+      margin-top: 2rem;
+    }
+
+    .related-articles h2 {
+      font-size: 1.3rem;
+    }
+
+    .related-articles li a {
+      padding: 1rem 1.25rem;
+    }
+
+    .related-title {
+      font-size: 0.95rem;
+    }
+  }
+</style>

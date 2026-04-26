@@ -1,0 +1,316 @@
+---
+/**
+ * Courses Index Page - 課程列表
+ */
+
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionTitle from '../../components/common/SectionTitle.astro';
+import KitForm from '../../components/common/KitForm.astro';
+
+// 取得所有已發布課程
+const allCourses = await getCollection('courses');
+const publishedCourses = allCourses
+  .filter(entry => !entry.data.draft && entry.data.status !== 'archived')
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+// 格式化價格
+const formatPrice = (price: number) => {
+  if (price === 0) return '免費';
+  return `NT$ ${price.toLocaleString()}`;
+};
+
+// 狀態對應
+const statusMap = {
+  'pre-sale': '预售中',
+  'active': '開放報名'
+};
+---
+
+<BaseLayout title="課程 | CabLate">
+  <section class="section section-light">
+    <div class="container">
+      <SectionTitle
+        title="課程"
+        subtitle="Courses"
+      />
+
+      <div class="courses-grid">
+        {publishedCourses.map((entry, index) => (
+          <a href={`/courses/${entry.slug}`} class={`course-card reveal`} style={`animation-delay: ${index * 0.1}s`}>
+            <div class="course-card-header">
+              <span class={`course-badge level-${entry.data.level.toLowerCase()}`}>
+                {entry.data.level}
+              </span>
+              {entry.data.status !== 'draft' && (
+                <span class={`course-badge status-${entry.data.status}`}>
+                  {statusMap[entry.data.status]}
+                </span>
+              )}
+            </div>
+
+            <h2 class="course-card-title">{entry.data.title}</h2>
+
+            <p class="course-card-description">
+              {entry.data.excerpt || entry.data.description}
+            </p>
+
+            <div class="course-card-footer">
+              <div class="course-info">
+                <span class="duration">{entry.data.duration}</span>
+                <span class="price">{formatPrice(entry.data.price)}</span>
+              </div>
+              <span class="view-details">查看詳情 →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      {publishedCourses.length === 0 && (
+        <div class="empty-state">
+          <div class="empty-content">
+            <div class="empty-icon">
+              <div class="pulse-ring"></div>
+              <div class="pulse-ring pulse-ring-delay"></div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+            <h2 class="empty-title">課程籌備中</h2>
+
+            <p class="empty-note">訂閱電子報，開課時會專屬通知</p>
+
+            <KitForm />
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .course-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .course-card:hover {
+    border-color: var(--text-muted);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  .course-card-header {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .course-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .level-初級 {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #16a34a;
+  }
+
+  .level-中級 {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    color: #d97706;
+  }
+
+  .level-高級 {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+
+  .status-active {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #16a34a;
+  }
+
+  .status-pre-sale {
+    background: var(--accent-subtle);
+    border-color: var(--accent-border);
+    color: var(--accent);
+  }
+
+  .course-card-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+
+  .course-card-description {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+
+  .course-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .course-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .duration {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .view-details {
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5rem 2rem;
+    min-height: 50vh;
+  }
+
+  .empty-content {
+    text-align: center;
+    max-width: 600px;
+  }
+
+  .empty-icon {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+  }
+
+  .empty-icon svg {
+    width: 56px;
+    height: 56px;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.3));
+  }
+
+  .pulse-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--accent-border);
+    animation: pulse-scale 2s ease-out infinite;
+  }
+
+  .pulse-ring-delay {
+    animation-delay: 1s;
+  }
+
+  @keyframes pulse-scale {
+    0% {
+      transform: scale(0.8);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  .empty-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .empty-note {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .empty-content :global(.kit-form-wrapper) {
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .courses-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .course-card {
+      padding: 1.5rem;
+    }
+
+    .course-card-title {
+      font-size: 1.3rem;
+    }
+
+    .empty-state {
+      padding: 4rem 1.5rem;
+      min-height: 40vh;
+    }
+
+    .empty-icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1.25rem;
+    }
+
+    .empty-icon svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .empty-title {
+      font-size: 1.5rem;
+    }
+  }
+</style>

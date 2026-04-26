@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 年度回顧 | CabLate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════════════════════
+           CSS Variables
+           ═══════════════════════════════════════════════════════════ */
+        :root {
+            --purple-900: #0f0a1a;
+            --purple-800: #1a1128;
+            --purple-700: #2d1f47;
+            --purple-600: #4c2889;
+            --purple-500: #7c3aed;
+            --purple-400: #a78bfa;
+            --purple-300: #c4b5fd;
+            --purple-200: #ddd6fe;
+            --gold: #fbbf24;
+            --gold-light: #fde68a;
+            --gold-dark: #d97706;
+            --cyan: #22d3ee;
+            --white: #ffffff;
+            --white-90: rgba(255, 255, 255, 0.9);
+            --white-60: rgba(255, 255, 255, 0.6);
+            --white-30: rgba(255, 255, 255, 0.3);
+            --white-10: rgba(255, 255, 255, 0.1);
+            --white-05: rgba(255, 255, 255, 0.05);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Reset & Base
+           ═══════════════════════════════════════════════════════════ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: var(--purple-900);
+            color: var(--white);
+            line-height: 1.7;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Noto Serif TC', serif;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Section Base - 每個區塊可獨立截圖
+           ═══════════════════════════════════════════════════════════ */
+        .section {
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 3rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 120% 80% at 50% 0%, rgba(124, 58, 237, 0.12) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .section-content {
+            position: relative;
+            z-index: 1;
+            max-width: 380px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* 分隔線 */
+        .section + .section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.4rem;
+            color: var(--gold);
+            margin-bottom: 1.75rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--purple-500), var(--gold));
+            margin: 0.75rem auto 0;
+            border-radius: 1px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Section 1: Hero
+           ═══════════════════════════════════════════════════════════ */
+        .hero {
+            text-align: center;
+        }
+
+        .hero::before {
+            background:
+                radial-gradient(ellipse 100% 60% at 50% 0%, rgba(251, 191, 36, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 120% 80% at 50% 100%, rgba(124, 58, 237, 0.15) 0%, transparent 50%);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: var(--gold);
+            letter-spacing: 0.25em;
+            padding: 0.5rem 1.25rem;
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            background: linear-gradient(135deg, var(--white), var(--purple-200));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.35rem;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .hero-tagline {
+            font-size: 1rem;
+            color: var(--white-60);
+        }
+
+        .hero-divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 2.5rem auto;
+        }
+
+        .hero-author {
+            color: var(--purple-300);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Section 2: Goals vs Results
+           ═══════════════════════════════════════════════════════════ */
+        .goals-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .goals-header .year-label {
+            font-size: 0.75rem;
+            color: var(--white-60);
+            letter-spacing: 0.15em;
+            margin-bottom: 0.25rem;
+        }
+
+        .goals-header .plan-title {
+            font-size: 1.1rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .goals-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.625rem;
+        }
+
+        .goal-item {
+            background: var(--white-05);
+            border: 1px solid var(--white-10);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .goal-item.achieved {
+            border-color: rgba(34, 197, 94, 0.3);
+            background: linear-gradient(135deg, var(--white-05), rgba(34, 197, 94, 0.05));
+        }
+
+        .goal-item.partial {
+            border-color: rgba(251, 191, 36, 0.3);
+            background: linear-gradient(135deg, var(--white-05), rgba(251, 191, 36, 0.05));
+        }
+
+        .goal-status {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .goal-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .goal-name {
+            font-size: 0.9rem;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .goal-result {
+            font-size: 0.75rem;
+            color: var(--white-60);
+            margin-top: 0.15rem;
+        }
+
+        .goal-result .highlight {
+            color: var(--gold-light);
+        }
+
+        .goals-summary {
+            text-align: center;
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--white-10);
+        }
+
+        .goals-summary-text {
+            font-size: 1.1rem;
+            color: var(--white);
+        }
+
+        .goals-summary-text strong {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Section 3 & 4: Milestones
+           ═══════════════════════════════════════════════════════════ */
+        .timeline {
+            position: relative;
+            padding-left: 1.75rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            bottom: 0.5rem;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--purple-500), var(--gold));
+            border-radius: 1px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+            padding-left: 1.25rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.75rem;
+            top: 0.6rem;
+            width: 12px;
+            height: 12px;
+            background: var(--purple-900);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            transform: translateX(-5px);
+        }
+
+        .timeline-month {
+            font-size: 0.8rem;
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .timeline-event {
+            font-size: 1.05rem;
+            color: var(--white);
+            margin-top: 0.2rem;
+            font-weight: 500;
+        }
+
+        .timeline-detail {
+            font-size: 0.9rem;
+            color: var(--white-60);
+            margin-top: 0.3rem;
+            line-height: 1.5;
+        }
+
+        .timeline-highlight {
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Section 4: Threads Stats
+           ═══════════════════════════════════════════════════════════ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.875rem;
+        }
+
+        .stat-card {
+            background: var(--white-05);
+            border: 1px solid var(--white-10);
+            border-radius: 14px;
+            padding: 1.25rem 1rem;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card.featured {
+            grid-column: span 2;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(251, 191, 36, 0.15));
+            border: 1px solid var(--gold);
+            padding: 1.5rem;
+        }
+
+        .stat-value {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card.featured .stat-value {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--white-60);
+        }
+
+        .stat-card.featured .stat-label {
+            font-size: 0.9rem;
+            color: var(--white-90);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Section 5: Revenue
+           ═══════════════════════════════════════════════════════════ */
+        .revenue-card {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(124, 58, 237, 0.08));
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            border-radius: 16px;
+            padding: 1.75rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .revenue-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+        }
+
+        .revenue-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .revenue-label {
+            font-size: 0.85rem;
+            color: var(--white-60);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .revenue-value {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 2.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .revenue-note {
+            font-size: 0.85rem;
+            color: var(--white-60);
+            margin-top: 0.5rem;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Section 6: Open Source
+           ═══════════════════════════════════════════════════════════ */
+        .opensource-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .opensource-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .opensource-label {
+            font-size: 0.8rem;
+            color: var(--purple-300);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+        }
+
+        .project-card {
+            background: var(--white-05);
+            border: 1px solid var(--white-10);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.625rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .project-card.has-stars {
+            border-color: rgba(251, 191, 36, 0.3);
+            background: linear-gradient(135deg, var(--white-05), rgba(251, 191, 36, 0.05));
+        }
+
+        .project-info {
+            flex: 1;
+        }
+
+        .project-name {
+            font-size: 0.95rem;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .project-desc {
+            font-size: 0.8rem;
+            color: var(--white-60);
+            margin-top: 0.15rem;
+        }
+
+        .project-stars {
+            font-size: 0.9rem;
+            color: var(--gold);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .project-stars::before {
+            content: '★';
+            font-size: 0.85rem;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Section 7: Skills
+           ═══════════════════════════════════════════════════════════ */
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, var(--purple-700), var(--purple-600));
+            border: 1px solid var(--purple-400);
+            border-radius: 22px;
+            padding: 0.6rem 1.1rem;
+            font-size: 0.9rem;
+            color: var(--white-90);
+            font-weight: 500;
+        }
+
+        .skill-tag.highlight {
+            background: linear-gradient(135deg, var(--purple-600), var(--purple-500));
+            border-color: var(--gold);
+            color: var(--gold-light);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.15);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Section 8: Connections
+           ═══════════════════════════════════════════════════════════ */
+        .connections-subtitle {
+            text-align: center;
+            color: var(--white-60);
+            font-size: 0.9rem;
+            margin-top: -1rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .connection-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .connection-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .connection-label {
+            font-size: 0.75rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        .connection-names {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .connection-name {
+            background: var(--white-05);
+            border: 1px solid var(--white-10);
+            border-radius: 8px;
+            padding: 0.4rem 0.85rem;
+            font-size: 0.85rem;
+            color: var(--white-90);
+        }
+
+        .connection-name.special {
+            border-color: rgba(251, 191, 36, 0.3);
+            background: linear-gradient(135deg, var(--white-05), rgba(251, 191, 36, 0.05));
+        }
+
+        a.connection-name {
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        a.connection-name:hover {
+            border-color: var(--purple-400);
+            background: rgba(124, 58, 237, 0.2);
+            transform: translateY(-2px);
+        }
+
+        a.connection-name.special:hover {
+            border-color: var(--gold);
+            background: rgba(251, 191, 36, 0.15);
+        }
+
+        .thanks-followers {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--white-10);
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Section 9: Outlook
+           ═══════════════════════════════════════════════════════════ */
+        .outlook {
+            text-align: center;
+        }
+
+        .outlook::before {
+            background:
+                radial-gradient(ellipse 100% 60% at 50% 100%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse 120% 80% at 50% 0%, rgba(124, 58, 237, 0.15) 0%, transparent 50%);
+        }
+
+        .outlook-year {
+            font-size: 4rem;
+            font-family: 'Noto Serif TC', serif;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .outlook-message {
+            font-size: 1.35rem;
+            color: var(--white);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .outlook-closing {
+            color: var(--white-60);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .outlook-signature {
+            margin-top: 2.5rem;
+            color: var(--purple-300);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Section 1: Hero -->
+    <section class="section hero">
+        <div class="section-content">
+            <span class="hero-badge">YEAR IN REVIEW</span>
+            <h1 class="hero-title">2025</h1>
+            <p class="hero-subtitle">證明專業值得付費的一年</p>
+            <p class="hero-tagline">從工程師到創作者</p>
+            <div class="hero-divider"></div>
+            <p class="hero-author">@CabLate</p>
+        </div>
+    </section>
+
+    <!-- Section 2: Goals vs Results -->
+    <section class="section">
+        <div class="section-content">
+            <div class="goals-header">
+                <p class="year-label">2025 年初企劃</p>
+                <p class="plan-title">六大目標達成度</p>
+            </div>
+
+            <div class="goals-list">
+                <div class="goal-item achieved">
+                    <span class="goal-status">✅</span>
+                    <div class="goal-content">
+                        <p class="goal-name">AI 應用開發</p>
+                        <p class="goal-result">MCP 工具 <span class="highlight">159★ + 109★</span></p>
+                    </div>
+                </div>
+
+                <div class="goal-item achieved">
+                    <span class="goal-status">✅</span>
+                    <div class="goal-content">
+                        <p class="goal-name">AI 教學與分享</p>
+                        <p class="goal-result">課程 <span class="highlight">42 份</span> + 電子報 <span class="highlight">462 人</span></p>
+                    </div>
+                </div>
+
+                <div class="goal-item achieved">
+                    <span class="goal-status">✅</span>
+                    <div class="goal-content">
+                        <p class="goal-name">建立官方網站</p>
+                        <p class="goal-result">02 月上線，品牌形象建立</p>
+                    </div>
+                </div>
+
+                <div class="goal-item achieved">
+                    <span class="goal-status">✅</span>
+                    <div class="goal-content">
+                        <p class="goal-name">擴展人脈與曝光</p>
+                        <p class="goal-result"><span class="highlight">1081 萬</span>曝光 + 講座 + 夥伴</p>
+                    </div>
+                </div>
+
+                <div class="goal-item achieved">
+                    <span class="goal-status">✅</span>
+                    <div class="goal-content">
+                        <p class="goal-name">協助企業 AI 轉型</p>
+                        <p class="goal-result">付費諮詢服務啟動</p>
+                    </div>
+                </div>
+
+                <div class="goal-item achieved">
+                    <span class="goal-status">✅</span>
+                    <div class="goal-content">
+                        <p class="goal-name">發展台灣 AI 社群</p>
+                        <p class="goal-result"><span class="highlight">4,713</span> 追蹤 + 主辦講座</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="goals-summary">
+                <p class="goals-summary-text">年初設定 6 項，達成 <strong>6 / 6</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Milestones 上半年 -->
+    <section class="section">
+        <div class="section-content">
+            <h2 class="section-title">里程碑（上）</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <p class="timeline-month">02 月</p>
+                    <p class="timeline-event">個人網站上線</p>
+                    <p class="timeline-detail">品牌形象的第一步</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-month">03 月</p>
+                    <p class="timeline-event">開始經營 Threads</p>
+                    <p class="timeline-detail">從零開始的社群之路</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-month">07 月</p>
+                    <p class="timeline-event">首次受邀講座分享</p>
+                    <p class="timeline-detail">研討會、開發者社群</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-month">08 月</p>
+                    <p class="timeline-event">付費諮詢服務啟動</p>
+                    <p class="timeline-detail"><span class="timeline-highlight">證實專業值得付費</span></p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-month">08 月</p>
+                    <p class="timeline-event">電子報創刊</p>
+                    <p class="timeline-detail">累計 <span class="timeline-highlight">462</span> 人訂閱</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Milestones 下半年 -->
+    <section class="section">
+        <div class="section-content">
+            <h2 class="section-title">里程碑（下）</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <p class="timeline-month">08 月</p>
+                    <p class="timeline-event">與志同道合夥伴合作</p>
+                    <p class="timeline-detail">從 0 到 Pitch 僅 <span class="timeline-highlight">13 天</span><br>多企劃案規劃中</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-month">10 月</p>
+                    <p class="timeline-event">主辦第一場講座</p>
+                    <p class="timeline-detail">免費網站資安入門<br><span class="timeline-highlight">200 人報名、50% 參與率</span></p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-month">11 月</p>
+                    <p class="timeline-event">第一個課程上線</p>
+                    <p class="timeline-detail">《從串接金流到架構》<br>一個月販售 <span class="timeline-highlight">42 份</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Threads Stats -->
+    <section class="section">
+        <div class="section-content">
+            <h2 class="section-title">Threads 成績單</h2>
+            <div class="stats-grid">
+                <div class="stat-card featured">
+                    <p class="stat-value">1,081 萬</p>
+                    <p class="stat-label">累計個人曝光</p>
+                </div>
+
+                <div class="stat-card">
+                    <p class="stat-value">4,713</p>
+                    <p class="stat-label">追蹤者</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-value">420+</p>
+                    <p class="stat-label">篇貼文</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-value">178 萬</p>
+                    <p class="stat-label">累計貼文瀏覽</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-value">12.5 萬</p>
+                    <p class="stat-label">讚數</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-value">2.5 萬</p>
+                    <p class="stat-label">留言互動</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Revenue -->
+    <section class="section">
+        <div class="section-content">
+            <h2 class="section-title">副業收入</h2>
+            <div class="revenue-card">
+                <p class="revenue-label">接案副業</p>
+                <p class="revenue-value">3X 萬</p>
+                <p class="revenue-note">既有技術服務持續變現</p>
+            </div>
+            <div class="revenue-card">
+                <p class="revenue-label">自媒體變現</p>
+                <p class="revenue-value">6 位數</p>
+                <p class="revenue-note">諮詢 + 課程 + 內容創作</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Open Source -->
+    <section class="section">
+        <div class="section-content">
+            <h2 class="section-title">開源貢獻</h2>
+
+            <div class="opensource-section">
+                <p class="opensource-label">持續維護的專案</p>
+                <div class="project-card has-stars">
+                    <div class="project-info">
+                        <p class="project-name">Google Map MCP</p>
+                        <p class="project-desc">MCP 協議整合工具</p>
+                    </div>
+                    <p class="project-stars">159</p>
+                </div>
+                <div class="project-card has-stars">
+                    <div class="project-info">
+                        <p class="project-name">Claude Code Board</p>
+                        <p class="project-desc">Claude Code 視覺化面板</p>
+                    </div>
+                    <p class="project-stars">109</p>
+                </div>
+            </div>
+
+            <div class="opensource-section">
+                <p class="opensource-label">參與的開源專案</p>
+                <div class="project-card">
+                    <div class="project-info">
+                        <p class="project-name">RiceCall</p>
+                        <p class="project-desc">RC 語音復刻</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-info">
+                        <p class="project-name">SDD.OS</p>
+                        <p class="project-desc">自動化開發工具</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-info">
+                        <p class="project-name">MaiMBot</p>
+                        <p class="project-desc">AI 社群聊天機器人</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: Skills -->
+    <section class="section">
+        <div class="section-content">
+            <h2 class="section-title">技能點亮</h2>
+            <div class="skills-list">
+                <span class="skill-tag highlight">Context Engineering</span>
+                <span class="skill-tag highlight">MCP 協議開發</span>
+                <span class="skill-tag">知識管理</span>
+                <span class="skill-tag">n8n 自動化</span>
+                <span class="skill-tag">WordPress</span>
+                <span class="skill-tag">SEO</span>
+                <span class="skill-tag">社群經營</span>
+                <span class="skill-tag">行銷策略</span>
+                <span class="skill-tag">英語口說</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: Connections -->
+    <section class="section">
+        <div class="section-content">
+            <h2 class="section-title">感謝相遇</h2>
+            <p class="connections-subtitle">這一年認識的重要夥伴</p>
+
+            <div class="connection-group">
+                <p class="connection-label">願景導師</p>
+                <div class="connection-names">
+                    <a href="https://www.threads.com/@cat__soc" target="_blank" rel="noopener" class="connection-name special">@cat__soc</a>
+                </div>
+            </div>
+
+            <div class="connection-group">
+                <p class="connection-label">創業夥伴</p>
+                <div class="connection-names">
+                    <a href="https://www.threads.com/@tsukinolasker" target="_blank" rel="noopener" class="connection-name">@tsukinolasker</a>
+                    <a href="https://www.threads.com/@liccabobo" target="_blank" rel="noopener" class="connection-name">@liccabobo</a>
+                </div>
+            </div>
+
+            <div class="connection-group">
+                <p class="connection-label">行銷導師</p>
+                <div class="connection-names">
+                    <a href="https://www.threads.com/@miss_marketing" target="_blank" rel="noopener" class="connection-name">@miss_marketing</a>
+                    <a href="https://www.threads.com/@billy4select" target="_blank" rel="noopener" class="connection-name">@billy4select</a>
+                    <a href="https://www.threads.com/@billy_nien" target="_blank" rel="noopener" class="connection-name">@billy_nien</a>
+                </div>
+            </div>
+
+            <div class="connection-group">
+                <p class="connection-label">技術達人</p>
+                <div class="connection-names">
+                    <a href="https://www.threads.com/@darrell_tw_" target="_blank" rel="noopener" class="connection-name">@darrell_tw</a>
+                    <a href="https://www.threads.com/@ironv.careerlife" target="_blank" rel="noopener" class="connection-name">@ironv.careerlife</a>
+                </div>
+            </div>
+
+            <div class="connection-group">
+                <p class="connection-label">講座領路人</p>
+                <div class="connection-names">
+                    <a href="https://www.threads.com/@bytech719" target="_blank" rel="noopener" class="connection-name special">@bytech719</a>
+                </div>
+            </div>
+
+            <div class="connection-group">
+                <p class="connection-label">玩賺小隊</p>
+                <div class="connection-names">
+                    <a href="https://www.threads.com/@cassie8wealth" target="_blank" rel="noopener" class="connection-name">@cassie8wealth</a>
+                    <a href="https://www.threads.com/@bath_helloword" target="_blank" rel="noopener" class="connection-name">@bath_helloword</a>
+                    <a href="https://www.threads.com/@leisure_zzz" target="_blank" rel="noopener" class="connection-name">@leisure_zzz</a>
+                </div>
+            </div>
+
+            <div class="connection-group">
+                <p class="connection-label">Coffee Chat</p>
+                <div class="connection-names">
+                    <a href="https://www.threads.com/@33.shan" target="_blank" rel="noopener" class="connection-name">@33.shan.design</a>
+                    <a href="https://www.threads.com/@mky_riceinlife" target="_blank" rel="noopener" class="connection-name">@mky_riceinlife</a>
+                    <a href="https://www.threads.com/@cecelove1209" target="_blank" rel="noopener" class="connection-name">@cecelove1209</a>
+                    <span class="connection-name">...等</span>
+                </div>
+            </div>
+
+            <p class="thanks-followers">還有，感謝每一位追蹤者的支持與陪伴</p>
+        </div>
+    </section>
+
+    <!-- Section 10: Outlook -->
+    <section class="section outlook">
+        <div class="section-content">
+            <p class="outlook-year">2026</p>
+            <p class="outlook-message">繼續累積、持續輸出</p>
+            <p class="outlook-closing">
+                感謝每一位看到這裡的你<br>
+                我們明年見
+            </p>
+            <p class="outlook-signature">— CabLate</p>
+        </div>
+    </section>
+
+</body>
+</html>

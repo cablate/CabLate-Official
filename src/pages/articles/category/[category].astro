@@ -1,0 +1,154 @@
+---
+/**
+ * Category Page - 分類文章列表
+ * 為 Topic Cluster 建立分類入口頁
+ */
+
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SectionTitle from '../../../components/common/SectionTitle.astro';
+import { formatDate } from '../../../utils/format';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  const published = articles.filter(entry => !entry.data.draft);
+
+  // 取得所有不重複的分類
+  const categories = [...new Set(published.map(entry => entry.data.category))];
+
+  return categories.map(category => ({
+    params: { category },
+    props: {
+      category,
+      articles: published
+        .filter(entry => entry.data.category === category)
+        .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()),
+    },
+  }));
+}
+
+const { category, articles } = Astro.props;
+
+// BreadcrumbList 結構化資料
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://cablate.com/' },
+    { '@type': 'ListItem', position: 2, name: '文章', item: 'https://cablate.com/articles/' },
+    { '@type': 'ListItem', position: 3, name: category, item: `https://cablate.com/articles/category/${encodeURIComponent(category)}/` }
+  ]
+};
+---
+
+<BaseLayout
+  title={`${category} | 文章分類`}
+  description={`CabLate 的 ${category} 相關文章，共 ${articles.length} 篇`}
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+  <section class="section section-light">
+    <div class="container">
+      <SectionTitle
+        title={category}
+        subtitle={`${articles.length} 篇文章`}
+      />
+
+      <div class="articles-grid">
+        {articles.map((entry: CollectionEntry<'articles'>, index: number) => (
+          <a href={`/articles/${entry.slug}/`} class="article-card reveal" style={`animation-delay: ${index * 0.1}s`}>
+            <div class="article-card-header">
+              <span class="article-category">{entry.data.category}</span>
+              <time class="article-date">{formatDate(entry.data.publishDate)}</time>
+            </div>
+            <h2 class="article-card-title">{entry.data.title}</h2>
+            <p class="article-card-excerpt">{entry.data.excerpt || entry.data.description}</p>
+            <div class="article-card-footer">
+              <div class="article-tags">
+                {entry.data.tags.slice(0, 3).map((tag: string) => (
+                  <span class="tag">#{tag}</span>
+                ))}
+              </div>
+              <span class="read-more">閱讀全文 →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="back-link">
+        <a href="/articles/">← 返回所有文章</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .article-card:hover {
+    border-color: var(--text-muted);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  .article-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .article-category { color: var(--text-muted); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em; }
+  .article-date { font-size: 0.8rem; color: var(--text-muted); }
+  .article-card-title { font-family: 'Noto Serif TC', serif; font-size: 1.25rem; font-weight: 700; color: var(--text-primary); line-height: 1.4; margin-bottom: 0.5rem; }
+  .article-card-excerpt { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.5rem; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+  .article-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .article-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .tag { padding: 0.25rem 0.75rem; background: var(--accent-subtle); border: 1px solid var(--accent-border); border-radius: 20px; font-size: 0.8rem; color: var(--accent); text-decoration: none; transition: all 0.15s ease; }
+  .tag:hover { background: var(--accent-border); }
+  .read-more { color: var(--accent); font-size: 0.9rem; font-weight: 600; }
+
+  .back-link {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  .back-link a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+  }
+
+  .back-link a:hover { color: var(--text-primary); }
+
+  @media (max-width: 768px) {
+    .articles-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .article-card { padding: 1.5rem; }
+    .article-card-title { font-size: 1.3rem; }
+  }
+</style>

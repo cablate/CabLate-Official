@@ -1,0 +1,263 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/siteConfig';
+import { Building2, MessageCircle, GraduationCap, Mail } from '@lucide/astro';
+---
+
+<BaseLayout title="服務總覽 — 我能幫你什麼" description="AI 導入諮詢、企業內訓、一對一諮詢、線上課程、免費資源。CabLate 提供從入門到企業級的 AI 協作服務。">
+
+<section class="services-hero">
+    <div class="services-hero-inner">
+        <h1 class="services-hero-title">我能幫你什麼</h1>
+        <p class="services-hero-desc">從免費資源到企業內訓，找到適合你的路徑。</p>
+    </div>
+</section>
+
+<!-- 企業 & 諮詢 -->
+<section class="services-group">
+    <div class="services-group-inner">
+        <span class="group-label">ENTERPRISE & CONSULTING</span>
+        <h2 class="group-title">企業 & 諮詢</h2>
+
+        <div class="service-cards">
+            <div class="service-card">
+                <div class="service-card-icon">
+                    <Building2 size={28} />
+                </div>
+                <h3 class="service-card-title">AI 導入諮詢 / 企業內訓</h3>
+                <p class="service-card-desc">
+                    幫你的團隊搞懂 Claude Code、MCP、Agent Skill——不是教工具，是教判斷力。
+                </p>
+                <a href={siteConfig.threadsUrl} target="_blank" rel="noopener" class="service-card-cta">
+                    私訊聊聊 &rarr;
+                </a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-card-icon">
+                    <MessageCircle size={28} />
+                </div>
+                <h3 class="service-card-title">一對一諮詢</h3>
+                <p class="service-card-desc">
+                    AI 協作、技術架構、產品方向——不確定的事聊一次就有方向。
+                </p>
+                <a href={siteConfig.threadsUrl} target="_blank" rel="noopener" class="service-card-cta">
+                    私訊聊聊 &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 課程 -->
+<section class="services-group services-group-alt">
+    <div class="services-group-inner">
+        <span class="group-label">COURSES</span>
+        <h2 class="group-title">課程</h2>
+
+        <div class="service-cards">
+            <div class="service-card">
+                <div class="service-card-icon">
+                    <GraduationCap size={28} />
+                </div>
+                <h3 class="service-card-title">VibeCoding 線上課</h3>
+                <p class="service-card-desc">
+                    四週從入門到實戰，學會用 AI 寫出能上線的東西。
+                </p>
+                <a href={siteConfig.vibeCodingUrl} class="service-card-cta">
+                    查看課程 &rarr;
+                </a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-card-icon">
+                    <GraduationCap size={28} />
+                </div>
+                <h3 class="service-card-title">金流串接課程</h3>
+                <p class="service-card-desc">
+                    從零到上線的完整金流系統，附 Starter Kit。
+                </p>
+                <a href={siteConfig.paymentCourseUrl} class="service-card-cta">
+                    查看課程 &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 免費資源 -->
+<section class="services-group">
+    <div class="services-group-inner">
+        <span class="group-label">FREE RESOURCES</span>
+        <h2 class="group-title">免費資源</h2>
+
+        <div class="service-cards">
+            <div class="service-card">
+                <div class="service-card-icon">
+                    <Mail size={28} />
+                </div>
+                <h3 class="service-card-title">電子報</h3>
+                <p class="service-card-desc">
+                    每週一篇，不焦慮的 AI 觀點。
+                </p>
+                <a href="/#newsletter" class="service-card-cta">
+                    訂閱 &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+</BaseLayout>
+
+<style>
+    /* Hero */
+    .services-hero {
+        padding: 8rem 2rem 3rem;
+        text-align: center;
+        background: var(--bg);
+    }
+
+    .services-hero-inner {
+        max-width: 640px;
+        margin: 0 auto;
+    }
+
+    .services-hero-title {
+        font-family: 'Noto Serif TC', serif;
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+    }
+
+    .services-hero-desc {
+        font-size: 1.05rem;
+        color: var(--text-secondary);
+        line-height: 1.7;
+    }
+
+    /* Group */
+    .services-group {
+        padding: 3rem 2rem;
+        background: var(--bg);
+    }
+
+    .services-group-alt {
+        background: var(--bg-soft);
+    }
+
+    .services-group-inner {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .group-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        letter-spacing: 0.15em;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .group-title {
+        font-family: 'Noto Serif TC', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+    }
+
+    /* Cards */
+    .service-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .service-card {
+        padding: 1.75rem;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .services-group-alt .service-card {
+        background: var(--bg);
+    }
+
+    .service-card:hover {
+        border-color: var(--accent-border);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .service-card-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        background: var(--bg-soft);
+        border-radius: 10px;
+        color: var(--accent);
+        margin-bottom: 1rem;
+    }
+
+    .service-card-title {
+        font-family: 'Noto Serif TC', serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .service-card-desc {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        margin-bottom: auto;
+        padding-bottom: 1.25rem;
+    }
+
+    .service-card-cta {
+        display: inline-block;
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-primary);
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        width: fit-content;
+    }
+
+    .service-card-cta:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: var(--accent-subtle);
+    }
+
+    @media (max-width: 600px) {
+        .services-hero {
+            padding: 7rem 1.5rem 2rem;
+        }
+
+        .services-group {
+            padding: 2.5rem 1.5rem;
+        }
+
+        .service-cards {
+            grid-template-columns: 1fr;
+        }
+
+        .service-card {
+            padding: 1.5rem;
+        }
+    }
+</style>
