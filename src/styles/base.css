@@ -41,6 +41,17 @@
     --gold-light: #fde68a;
     --cyan: #06b6d4;
 
+    /* 狀態色 */
+    --status-success: #16a34a;
+    --status-success-bg: #f0fdf4;
+    --status-success-border: #bbf7d0;
+    --status-error: #dc2626;
+    --status-error-bg: #fef2f2;
+    --status-error-border: #fecaca;
+    --status-warning: #d97706;
+    --status-warning-bg: #fffbeb;
+    --status-warning-border: #fde68a;
+
     /* 間距 */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
