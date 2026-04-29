@@ -86,9 +86,9 @@ const hasFaq = data.faq && data.faq.length > 0;
       <!-- 1. 課程標頭 -->
       <header class="course-header reveal">
         <div class="course-badges">
-          <span class="course-badge level-badge">{data.level}</span>
+          <span class="badge badge-accent">{data.level}</span>
           {data.status !== 'draft' && (
-            <span class={`course-badge status-badge status-${data.status}`}>
+            <span class={`badge ${data.status === 'active' ? 'badge-success' : 'badge-warning'}`}>
               {statusMap[data.status]}
             </span>
           )}
@@ -255,31 +255,6 @@ const hasFaq = data.faq && data.faq.length > 0;
     justify-content: center;
     margin-bottom: 1.5rem;
     flex-wrap: wrap;
-  }
-
-  .course-badge {
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-  }
-
-  .level-badge {
-    background: var(--accent-subtle);
-    border: 1px solid var(--accent-border);
-    color: var(--accent);
-  }
-
-  .status-badge {
-    background: var(--status-warning-bg);
-    border: 1px solid var(--status-warning-border);
-    color: var(--status-warning);
-  }
-
-  .status-active {
-    background: var(--status-success-bg);
-    border-color: var(--status-success-border);
-    color: var(--status-success);
   }
 
   .course-title {

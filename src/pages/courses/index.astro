@@ -21,9 +21,21 @@ const formatPrice = (price: number) => {
 };
 
 // 狀態對應
-const statusMap = {
+const statusMap: Record<string, string> = {
   'pre-sale': '預售中',
-  'active': '開放報名'
+  'active': '開放報名',
+};
+
+// Badge class 對應
+const levelBadgeMap: Record<string, string> = {
+  '初級': 'badge-success',
+  '中級': 'badge-warning',
+  '高級': 'badge-error',
+};
+
+const statusBadgeMap: Record<string, string> = {
+  'active': 'badge-success',
+  'pre-sale': 'badge-accent',
 };
 ---
 
@@ -39,11 +51,11 @@ const statusMap = {
         {publishedCourses.map((entry, index) => (
           <a href={`/courses/${entry.slug}`} class={`course-card reveal`} style={`animation-delay: ${index * 0.1}s`}>
             <div class="course-card-header">
-              <span class={`course-badge level-${entry.data.level.toLowerCase()}`}>
+              <span class={`badge ${levelBadgeMap[entry.data.level] || 'badge-accent'}`}>
                 {entry.data.level}
               </span>
               {entry.data.status !== 'draft' && (
-                <span class={`course-badge status-${entry.data.status}`}>
+                <span class={`badge ${statusBadgeMap[entry.data.status] || 'badge-warning'}`}>
                   {statusMap[entry.data.status]}
                 </span>
               )}
@@ -121,41 +133,10 @@ const statusMap = {
     flex-wrap: wrap;
   }
 
-  .course-badge {
+  /* 列表卡片內的 badge 較小 */
+  .course-card-header :global(.badge) {
     padding: 0.3rem 0.8rem;
-    border-radius: 20px;
     font-size: 0.75rem;
-    font-weight: 600;
-  }
-
-  .level-初級 {
-    background: var(--status-success-bg);
-    border: 1px solid var(--status-success-border);
-    color: var(--status-success);
-  }
-
-  .level-中級 {
-    background: var(--status-warning-bg);
-    border: 1px solid var(--status-warning-border);
-    color: var(--status-warning);
-  }
-
-  .level-高級 {
-    background: var(--status-error-bg);
-    border: 1px solid var(--status-error-border);
-    color: var(--status-error);
-  }
-
-  .status-active {
-    background: var(--status-success-bg);
-    border-color: var(--status-success-border);
-    color: var(--status-success);
-  }
-
-  .status-pre-sale {
-    background: var(--accent-subtle);
-    border-color: var(--accent-border);
-    color: var(--accent);
   }
 
   .course-card-title {
