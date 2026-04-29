@@ -201,3 +201,8 @@
     border: 1px solid var(--status-error-border);
     color: var(--status-error);
 }
+
+.badge-sm {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.75rem;
+}

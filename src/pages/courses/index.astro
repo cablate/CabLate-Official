@@ -7,36 +7,20 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionTitle from '../../components/common/SectionTitle.astro';
 import KitForm from '../../components/common/KitForm.astro';
+import {
+  type CourseStatus,
+  type CourseLevel,
+  getStatusLabel,
+  getStatusBadgeClass,
+  getLevelBadgeClass,
+  formatPrice,
+} from '../../config/courseDisplay';
 
 // 取得所有已發布課程
 const allCourses = await getCollection('courses');
 const publishedCourses = allCourses
   .filter(entry => !entry.data.draft && entry.data.status !== 'archived')
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
-
-// 格式化價格
-const formatPrice = (price: number) => {
-  if (price === 0) return '免費';
-  return `NT$ ${price.toLocaleString()}`;
-};
-
-// 狀態對應
-const statusMap: Record<string, string> = {
-  'pre-sale': '預售中',
-  'active': '開放報名',
-};
-
-// Badge class 對應
-const levelBadgeMap: Record<string, string> = {
-  '初級': 'badge-success',
-  '中級': 'badge-warning',
-  '高級': 'badge-error',
-};
-
-const statusBadgeMap: Record<string, string> = {
-  'active': 'badge-success',
-  'pre-sale': 'badge-accent',
-};
 ---
 
 <BaseLayout title="課程 | CabLate">
@@ -51,12 +35,12 @@ const statusBadgeMap: Record<string, string> = {
         {publishedCourses.map((entry, index) => (
           <a href={`/courses/${entry.slug}`} class={`course-card reveal`} style={`animation-delay: ${index * 0.1}s`}>
             <div class="course-card-header">
-              <span class={`badge ${levelBadgeMap[entry.data.level] || 'badge-accent'}`}>
+              <span class={`badge badge-sm ${getLevelBadgeClass(entry.data.level as CourseLevel)}`}>
                 {entry.data.level}
               </span>
               {entry.data.status !== 'draft' && (
-                <span class={`badge ${statusBadgeMap[entry.data.status] || 'badge-warning'}`}>
-                  {statusMap[entry.data.status]}
+                <span class={`badge badge-sm ${getStatusBadgeClass(entry.data.status as CourseStatus)}`}>
+                  {getStatusLabel(entry.data.status as CourseStatus)}
                 </span>
               )}
             </div>
@@ -131,12 +115,6 @@ const statusBadgeMap: Record<string, string> = {
     gap: 0.75rem;
     margin-bottom: 1rem;
     flex-wrap: wrap;
-  }
-
-  /* 列表卡片內的 badge 較小 */
-  .course-card-header :global(.badge) {
-    padding: 0.3rem 0.8rem;
-    font-size: 0.75rem;
   }
 
   .course-card-title {

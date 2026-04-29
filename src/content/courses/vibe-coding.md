@@ -10,6 +10,7 @@ price: 3900
 level: "初級"
 duration: "4 週"
 status: "pre-sale"
+draft: true
 tags: ["AI", "Claude Code", "VibeCoding", "程式開發"]
 category: "AI 開發"
 excerpt: "四週從入門到實戰，學會用 AI 寫出能上線的東西。"
@@ -54,7 +55,7 @@ testimonials:
 
 ## 為什麼要上這堂課
 
-[TEST] 這裡會放正式的課程價值主張和銷售文案���
+[TEST] 這裡會放正式的課程價值主張和銷售文案。
 
 大多數人學 AI 輔助開發的方式是錯的——看教學影片、讀文件、然後試著自己做。問題是，你不知道「什麼時候該讓 AI 做、什麼時候該自己來」。
 

@@ -15,7 +15,7 @@ export async function GET(context: APIContext) {
   return rss({
     title: 'CabLate',
     description: 'AI 時代的軟體開發洞察 - 判斷力才是你的護城河',
-    site: context.site,
+    site: context.site ?? 'https://cablate.com',
     items: published.map(entry => ({
       title: entry.data.title,
       pubDate: entry.data.publishDate,

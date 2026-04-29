@@ -126,11 +126,11 @@ const faqJsonLd = entry.data.faq?.length ? {
           <NewsletterCTA />
 
           <!-- FAQ 區塊 -->
-          {entry.data.faq?.length > 0 && (
+          {(entry.data.faq?.length ?? 0) > 0 && (
             <div class="article-faq">
               <h2>常見問題</h2>
               <dl class="faq-list">
-                {entry.data.faq.map(item => (
+                {entry.data.faq!.map(item => (
                   <div class="faq-item">
                     <dt>{item.question}</dt>
                     <dd>{item.answer}</dd>

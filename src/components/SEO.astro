@@ -11,6 +11,8 @@
  * FAQ Schema：任何頁面只要傳入 faq prop 即可自動生成 FAQPage JSON-LD
  */
 
+import { type CourseStatus, getCourseOfferConfig } from '../config/courseDisplay';
+
 interface FaqItem {
   question: string;
   answer: string;
@@ -29,6 +31,7 @@ interface Props {
   // Course-specific
   coursePrice?: number;
   courseDuration?: string;
+  courseStatus?: CourseStatus;
   checkoutUrl?: string;
   // FAQ（可用於 article 和 course）
   faq?: FaqItem[];
@@ -46,6 +49,7 @@ const {
   author = 'CabLate',
   coursePrice,
   courseDuration,
+  courseStatus,
   checkoutUrl,
   faq,
 } = Astro.props;
@@ -63,7 +67,11 @@ const jsonLdHeadline = title.replace(/\s*\|\s*CabLate$/, '').replace(/\s*\|\s*�
 let jsonLd: Record<string, unknown>;
 
 if (type === 'course') {
-  // Course Schema.org
+  // Course Schema.org — offer availability driven by courseStatus + checkoutUrl
+  const offerConfig = courseStatus
+    ? getCourseOfferConfig(courseStatus, checkoutUrl)
+    : null;
+
   jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Course',
@@ -76,15 +84,13 @@ if (type === 'course') {
       name: author,
       url: siteUrl,
     },
-    ...(coursePrice !== undefined && {
+    ...(coursePrice !== undefined && offerConfig && {
       offers: {
         '@type': 'Offer',
         price: coursePrice,
         priceCurrency: 'TWD',
-        availability: checkoutUrl
-          ? 'https://schema.org/InStock'
-          : 'https://schema.org/PreOrder',
-        ...(checkoutUrl && { url: checkoutUrl }),
+        availability: offerConfig.availability,
+        ...(offerConfig.includeUrl && checkoutUrl && { url: checkoutUrl }),
       },
     }),
     ...(courseDuration && {
@@ -152,13 +158,18 @@ if (type === 'course') {
 }
 
 // ─── FAQ JSON-LD（獨立 script，任何 type 都可使用）───
+// Filter out FAQ items containing [TEST] markers to prevent placeholder data in structured data
 
-const hasFaq = faq && faq.length > 0;
+const productionFaq = faq
+  ? faq.filter((item: FaqItem) =>
+      !item.question.includes('[TEST]') && !item.answer.includes('[TEST]'))
+  : [];
+const hasFaq = productionFaq.length > 0;
 const faqJsonLd = hasFaq
   ? {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
-      mainEntity: faq.map((item: FaqItem) => ({
+      mainEntity: productionFaq.map((item: FaqItem) => ({
         '@type': 'Question',
         name: item.question,
         acceptedAnswer: {

@@ -10,6 +10,7 @@ price: 4900
 level: "中級"
 duration: "自主學習"
 status: "pre-sale"
+draft: true
 tags: ["金流", "Portaly", "Payment", "串接", "訂閱制"]
 category: "金流串接"
 excerpt: "從零到上線的完整金流系統，附 Starter Kit。"
@@ -21,7 +22,7 @@ features:
   - "附 Next.js Starter Kit（可直接部署）"
   - "涵蓋一次性購買 + 訂閱制兩種模式"
   - "Callback 驗證、錯誤處理完整教學"
-  - "��� Portaly Payment API 串接指南"
+  - "Portaly Payment API 串接指南"
   - "專屬學員 Discord 問答"
 
 targetAudience:

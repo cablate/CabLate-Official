@@ -2,15 +2,24 @@ import { execSync } from 'child_process';
 import { readdirSync, statSync } from 'fs';
 import { join } from 'path';
 
+// 0. Content validation — fail fast before building
+execSync('node scripts/validate-content.js', { stdio: 'inherit' });
+
 // 1. Astro build
 execSync('npx astro build', { stdio: 'inherit' });
 
-// 2. Pagefind — build search index (may fail on Windows)
-try {
-  execSync('npx pagefind --site dist --glob "**/*.html"', { stdio: 'inherit' });
-  console.log('[postbuild] Pagefind index built');
-} catch {
-  console.log('[postbuild] Pagefind skipped (unsupported platform)');
+// 2. Pagefind — build search index
+// Skip on Windows unless ENABLE_PAGEFIND=1 (pagefind binary not available for windows-x64)
+const skipPagefind = process.platform === 'win32' && process.env.ENABLE_PAGEFIND !== '1';
+if (skipPagefind) {
+  console.log('[postbuild] Pagefind skipped (Windows — set ENABLE_PAGEFIND=1 to override)');
+} else {
+  try {
+    execSync('npx pagefind --site dist --glob "**/*.html"', { stdio: 'inherit' });
+    console.log('[postbuild] Pagefind index built');
+  } catch {
+    console.log('[postbuild] Pagefind failed — search index not generated');
+  }
 }
 
 // 3. Sitemap ping

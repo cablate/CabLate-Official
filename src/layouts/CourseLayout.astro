@@ -17,7 +17,13 @@ import type { CollectionEntry } from 'astro:content';
 import type { MarkdownHeading } from 'astro';
 import BaseLayout from './BaseLayout.astro';
 import SEO from '../components/SEO.astro';
-import { siteConfig } from '../config/siteConfig';
+import {
+  type CourseStatus,
+  getStatusLabel,
+  getStatusBadgeClass,
+  getCourseCtaConfig,
+  formatPrice,
+} from '../config/courseDisplay';
 
 interface Props {
   entry: CollectionEntry<'courses'>;
@@ -28,35 +34,9 @@ const { entry, headings } = Astro.props;
 const { Content } = await entry.render();
 const { data } = entry;
 
-// 格式化價格
-const formatPrice = (price: number) => {
-  if (price === 0) return '免費';
-  return `NT$ ${price.toLocaleString()}`;
-};
-
-// 狀態對應
-const statusMap: Record<string, string> = {
-  'pre-sale': '預售中',
-  'active': '開放報名',
-  'archived': '已結束',
-};
-
-// CTA 邏輯
-const isActive = data.status === 'active';
-const isPreSale = data.status === 'pre-sale';
-const showCta = isActive || isPreSale;
-
-const ctaHref = isActive && data.checkoutUrl
-  ? data.checkoutUrl
-  : siteConfig.threadsUrl;
-
-const ctaText = isActive && data.checkoutUrl
-  ? '立即購買'
-  : isActive
-    ? '聯繫購買'
-    : '搶先預購';
-
-const ctaIsExternal = ctaHref.startsWith('http');
+// Centralized display logic
+const status = data.status as CourseStatus;
+const cta = getCourseCtaConfig(status, data.checkoutUrl);
 
 // 區塊顯示判斷
 const hasFeatures = data.features && data.features.length > 0;
@@ -76,6 +56,7 @@ const hasFaq = data.faq && data.faq.length > 0;
     tags={data.tags}
     coursePrice={data.price}
     courseDuration={data.duration}
+    courseStatus={status}
     checkoutUrl={data.checkoutUrl}
     faq={data.faq}
   />
@@ -87,9 +68,9 @@ const hasFaq = data.faq && data.faq.length > 0;
       <header class="course-header reveal">
         <div class="course-badges">
           <span class="badge badge-accent">{data.level}</span>
-          {data.status !== 'draft' && (
-            <span class={`badge ${data.status === 'active' ? 'badge-success' : 'badge-warning'}`}>
-              {statusMap[data.status]}
+          {status !== 'draft' && (
+            <span class={`badge ${getStatusBadgeClass(status)}`}>
+              {getStatusLabel(status)}
             </span>
           )}
         </div>
@@ -114,17 +95,17 @@ const hasFaq = data.faq && data.faq.length > 0;
       </header>
 
       <!-- 2. 頂部 CTA -->
-      {showCta && (
+      {cta.show && (
         <div class="course-cta reveal">
           <a
-            href={ctaHref}
+            href={cta.href}
             class="btn btn-primary btn-large"
-            {...(ctaIsExternal ? { target: '_blank', rel: 'noopener' } : {})}
+            {...(cta.isExternal ? { target: '_blank', rel: 'noopener' } : {})}
           >
-            {ctaText} &rarr;
+            {cta.text} &rarr;
           </a>
-          {isPreSale && (
-            <p class="cta-hint">課程準備中，私訊即可搶先預購</p>
+          {cta.hint && (
+            <p class="cta-hint">{cta.hint}</p>
           )}
         </div>
       )}
@@ -183,7 +164,7 @@ const hasFaq = data.faq && data.faq.length > 0;
         <section class="course-section reveal">
           <h2 class="section-heading">學員怎麼說</h2>
           <div class="testimonials-grid">
-            {data.testimonials.map((t: { name: string; role: string; quote: string }) => (
+            {data.testimonials?.map((t: { name: string; role: string; quote: string }) => (
               <blockquote class="testimonial-card">
                 <p class="testimonial-quote">&ldquo;{t.quote}&rdquo;</p>
                 <footer class="testimonial-author">
@@ -201,7 +182,7 @@ const hasFaq = data.faq && data.faq.length > 0;
         <section class="course-section reveal">
           <h2 class="section-heading">常見問題</h2>
           <div class="faq-list">
-            {data.faq.map((item: { question: string; answer: string }) => (
+            {data.faq?.map((item: { question: string; answer: string }) => (
               <details class="faq-item">
                 <summary class="faq-question">{item.question}</summary>
                 <p class="faq-answer">{item.answer}</p>
@@ -212,15 +193,15 @@ const hasFaq = data.faq && data.faq.length > 0;
       )}
 
       <!-- 8. 底部 CTA -->
-      {showCta && (
+      {cta.show && (
         <div class="course-cta course-cta-bottom reveal">
           <p class="cta-closing">準備好了嗎？</p>
           <a
-            href={ctaHref}
+            href={cta.href}
             class="btn btn-primary btn-large"
-            {...(ctaIsExternal ? { target: '_blank', rel: 'noopener' } : {})}
+            {...(cta.isExternal ? { target: '_blank', rel: 'noopener' } : {})}
           >
-            {ctaText} &rarr;
+            {cta.text} &rarr;
           </a>
         </div>
       )}
@@ -420,13 +401,13 @@ const hasFaq = data.faq && data.faq.length > 0;
   }
 
   .audience-yes {
-    background: #fafff9;
-    border-color: #d1e7dd;
+    background: var(--status-success-bg);
+    border-color: var(--status-success-border);
   }
 
   .audience-no {
-    background: #fffbfa;
-    border-color: #f5c6cb;
+    background: var(--status-error-bg);
+    border-color: var(--status-error-border);
   }
 
   .audience-label {
@@ -653,7 +634,8 @@ const hasFaq = data.faq && data.faq.length > 0;
 
   /* ═══════════════════════════════════════════════════════════
      MOBILE
-     ═════��═════════════════════════════════════════════════════ */
+     MOBILE
+     ═══════════════════════════════════════════════════════════ */
 
   @media (max-width: 768px) {
     .course-container {
