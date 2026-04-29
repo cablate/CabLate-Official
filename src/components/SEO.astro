@@ -2,18 +2,36 @@
 /**
  * SEO Component - 通用 SEO 元件
  * 處理 Meta Tags、Open Graph、Twitter Cards、結構化數據
+ *
+ * 支援類型：
+ * - website：預設，首頁/通用頁
+ * - article：文章頁
+ * - course：課程銷售頁（Course + Offer Schema.org）
+ *
+ * FAQ Schema：任何頁面只要傳入 faq prop 即可自動生成 FAQPage JSON-LD
  */
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
 
 interface Props {
   title: string;
   description: string;
   image?: string;
-  type?: 'website' | 'article';
+  type?: 'website' | 'article' | 'course';
   noindex?: boolean;
   publishDate?: Date;
   modifiedDate?: Date;
   tags?: string[];
   author?: string;
+  // Course-specific
+  coursePrice?: number;
+  courseDuration?: string;
+  checkoutUrl?: string;
+  // FAQ（可用於 article 和 course）
+  faq?: FaqItem[];
 }
 
 const {
@@ -25,7 +43,11 @@ const {
   publishDate,
   modifiedDate,
   tags = [],
-  author = 'CabLate'
+  author = 'CabLate',
+  coursePrice,
+  courseDuration,
+  checkoutUrl,
+  faq,
 } = Astro.props;
 
 // 網站基礎資訊
@@ -34,36 +56,121 @@ const fullUrl = new URL(Astro.url.pathname, siteUrl);
 const fullImageUrl = image.startsWith('http') ? image : new URL(image, siteUrl).href;
 
 // JSON-LD headline 不含站名後綴（Google 要求 headline 與 h1 一致）
-const jsonLdHeadline = title.replace(/\s*\|\s*CabLate$/, '');
+const jsonLdHeadline = title.replace(/\s*\|\s*CabLate$/, '').replace(/\s*\|\s*課程\s*\|\s*CabLate$/, '');
 
-// JSON-LD 結構化數據
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': type === 'article' ? 'Article' : 'WebSite',
-  headline: jsonLdHeadline,
-  description: description,
-  url: fullUrl.href,
-  image: fullImageUrl,
-  author: {
-    '@type': 'Person',
-    name: author,
-    url: siteUrl
-  },
-  publisher: {
-    '@type': 'Organization',
-    name: 'CabLate',
-    url: siteUrl,
-    logo: {
-      '@type': 'ImageObject',
-      url: new URL('/favicon.webp', siteUrl).href
+// ─── 主要 JSON-LD ───
+
+let jsonLd: Record<string, unknown>;
+
+if (type === 'course') {
+  // Course Schema.org
+  jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: jsonLdHeadline,
+    description,
+    url: fullUrl.href,
+    image: fullImageUrl,
+    provider: {
+      '@type': 'Person',
+      name: author,
+      url: siteUrl,
+    },
+    ...(coursePrice !== undefined && {
+      offers: {
+        '@type': 'Offer',
+        price: coursePrice,
+        priceCurrency: 'TWD',
+        availability: checkoutUrl
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/PreOrder',
+        ...(checkoutUrl && { url: checkoutUrl }),
+      },
+    }),
+    ...(courseDuration && {
+      hasCourseInstance: {
+        '@type': 'CourseInstance',
+        courseMode: 'online',
+        courseWorkload: courseDuration,
+      },
+    }),
+    ...(publishDate && { datePublished: publishDate.toISOString() }),
+    ...(modifiedDate && { dateModified: modifiedDate.toISOString() }),
+    ...(tags.length > 0 && { keywords: tags.join(', ') }),
+  };
+} else if (type === 'article') {
+  // Article Schema.org
+  jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: jsonLdHeadline,
+    description,
+    url: fullUrl.href,
+    image: fullImageUrl,
+    author: {
+      '@type': 'Person',
+      name: author,
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'CabLate',
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: new URL('/favicon.webp', siteUrl).href,
+      },
+    },
+    ...(publishDate && { datePublished: publishDate.toISOString() }),
+    ...(modifiedDate && { dateModified: modifiedDate.toISOString() }),
+    ...(tags.length > 0 && { keywords: tags.join(', ') }),
+  };
+} else {
+  // WebSite Schema.org
+  jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: jsonLdHeadline,
+    description,
+    url: fullUrl.href,
+    image: fullImageUrl,
+    author: {
+      '@type': 'Person',
+      name: author,
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'CabLate',
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: new URL('/favicon.webp', siteUrl).href,
+      },
+    },
+  };
+}
+
+// ─── FAQ JSON-LD（獨立 script，任何 type 都可使用）───
+
+const hasFaq = faq && faq.length > 0;
+const faqJsonLd = hasFaq
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((item: FaqItem) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
     }
-  },
-  ...(type === 'article' && {
-    datePublished: publishDate?.toISOString(),
-    dateModified: modifiedDate?.toISOString(),
-    keywords: tags.join(', ')
-  })
-};
+  : null;
+
+// OG type mapping
+const ogType = type === 'article' || type === 'course' ? 'article' : 'website';
 ---
 
 <!-- Primary Meta Tags -->
@@ -73,7 +180,7 @@ const jsonLd = {
 {noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow" />}
 
 <!-- Open Graph / Facebook -->
-<meta property="og:type" content={type} />
+<meta property="og:type" content={ogType} />
 <meta property="og:url" content={fullUrl.href} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
@@ -93,8 +200,13 @@ const jsonLd = {
 <link rel="alternate" hreflang="zh-TW" href={fullUrl.href} />
 <link rel="alternate" hreflang="x-default" href={fullUrl.href} />
 
-<!-- JSON-LD 結構化數據 -->
+<!-- JSON-LD 主結構化數據 -->
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+<!-- JSON-LD FAQ（獨立 script，不衝突） -->
+{faqJsonLd && (
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+)}
 
 <!-- Additional Meta Tags -->
 <meta name="author" content={author} />
