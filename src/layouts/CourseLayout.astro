@@ -1,12 +1,23 @@
 ---
 /**
- * Course Layout - 課程佈局
+ * Course Layout - 課程銷售頁佈局
+ *
+ * 結構（上到下）：
+ * 1. Header（badge + title + description + meta）
+ * 2. CTA（checkoutUrl → shop 站 / pre-sale → Threads）
+ * 3. Features（課程包含什麼）
+ * 4. Target Audience（適合誰 / 不適合誰）
+ * 5. Markdown Content（.md body）
+ * 6. Testimonials（學員見證）
+ * 7. FAQ（結構化 FAQ）
+ * 8. 底部 CTA（重複頂部，長頁面需要）
  */
 
 import type { CollectionEntry } from 'astro:content';
 import type { MarkdownHeading } from 'astro';
 import BaseLayout from './BaseLayout.astro';
 import SEO from '../components/SEO.astro';
+import { siteConfig } from '../config/siteConfig';
 
 interface Props {
   entry: CollectionEntry<'courses'>;
@@ -15,6 +26,7 @@ interface Props {
 
 const { entry, headings } = Astro.props;
 const { Content } = await entry.render();
+const { data } = entry;
 
 // 格式化價格
 const formatPrice = (price: number) => {
@@ -23,85 +35,217 @@ const formatPrice = (price: number) => {
 };
 
 // 狀態對應
-const statusMap = {
+const statusMap: Record<string, string> = {
   'pre-sale': '預售中',
   'active': '開放報名',
-  'archived': '已結束'
+  'archived': '已結束',
 };
+
+// CTA 邏輯
+const isActive = data.status === 'active';
+const isPreSale = data.status === 'pre-sale';
+const showCta = isActive || isPreSale;
+
+const ctaHref = isActive && data.checkoutUrl
+  ? data.checkoutUrl
+  : siteConfig.threadsUrl;
+
+const ctaText = isActive && data.checkoutUrl
+  ? '立即購買'
+  : isActive
+    ? '聯繫購買'
+    : '搶先預購';
+
+const ctaIsExternal = ctaHref.startsWith('http');
+
+// 區塊顯示判斷
+const hasFeatures = data.features && data.features.length > 0;
+const hasTargetAudience = data.targetAudience && data.targetAudience.length > 0;
+const hasNotFor = data.notFor && data.notFor.length > 0;
+const hasTestimonials = data.testimonials && data.testimonials.length > 0;
+const hasFaq = data.faq && data.faq.length > 0;
 ---
 
-<BaseLayout title={entry.data.title} noSEO={true}>
+<BaseLayout title={data.title} noSEO={true}>
   <SEO
-    title={`${entry.data.title} | 課程 | CabLate`}
-    description={entry.data.description}
-    image={entry.data.ogImage}
-    type="article"
-    publishDate={entry.data.publishDate}
-    tags={entry.data.tags}
+    title={`${data.title} | 課程 | CabLate`}
+    description={data.description}
+    image={data.ogImage}
+    type="course"
+    publishDate={data.publishDate}
+    tags={data.tags}
+    coursePrice={data.price}
+    courseDuration={data.duration}
+    checkoutUrl={data.checkoutUrl}
+    faq={data.faq}
   />
 
   <article class="course-container section section-light">
     <div class="container">
-      <!-- 課程標頭 -->
+
+      <!-- 1. 課程標頭 -->
       <header class="course-header reveal">
         <div class="course-badges">
-          <span class="course-badge level-badge">{entry.data.level}</span>
-          {entry.data.status !== 'draft' && (
-            <span class={`course-badge status-badge status-${entry.data.status}`}>
-              {statusMap[entry.data.status]}
+          <span class="course-badge level-badge">{data.level}</span>
+          {data.status !== 'draft' && (
+            <span class={`course-badge status-badge status-${data.status}`}>
+              {statusMap[data.status]}
             </span>
           )}
         </div>
 
-        <h1 class="course-title">{entry.data.title}</h1>
-
-        <p class="course-description">{entry.data.description}</p>
+        <h1 class="course-title">{data.title}</h1>
+        <p class="course-description">{data.description}</p>
 
         <div class="course-meta">
           <div class="meta-item">
             <span class="meta-label">價格</span>
-            <span class="meta-value price">{formatPrice(entry.data.price)}</span>
+            <span class="meta-value price">{formatPrice(data.price)}</span>
           </div>
           <div class="meta-item">
             <span class="meta-label">時長</span>
-            <span class="meta-value">{entry.data.duration}</span>
+            <span class="meta-value">{data.duration}</span>
           </div>
-          {entry.data.tags.length > 0 && (
-            <div class="meta-item tags">
-              {entry.data.tags.map(tag => (
-                <span class="tag">#{tag}</span>
-              ))}
-            </div>
-          )}
+          <div class="meta-item">
+            <span class="meta-label">難度</span>
+            <span class="meta-value">{data.level}</span>
+          </div>
         </div>
       </header>
 
-      <!-- 課程內容 -->
+      <!-- 2. 頂部 CTA -->
+      {showCta && (
+        <div class="course-cta reveal">
+          <a
+            href={ctaHref}
+            class="btn btn-primary btn-large"
+            {...(ctaIsExternal ? { target: '_blank', rel: 'noopener' } : {})}
+          >
+            {ctaText} &rarr;
+          </a>
+          {isPreSale && (
+            <p class="cta-hint">課程準備中，私訊即可搶先預購</p>
+          )}
+        </div>
+      )}
+
+      <!-- 3. Features（課程包含什麼）-->
+      {hasFeatures && (
+        <section class="course-section reveal">
+          <h2 class="section-heading">這堂課包含什麼</h2>
+          <ul class="feature-list">
+            {data.features.map((feature: string) => (
+              <li class="feature-item">
+                <span class="feature-check" aria-hidden="true">&#10003;</span>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <!-- 4. Target Audience（適合誰 / 不適合誰）-->
+      {(hasTargetAudience || hasNotFor) && (
+        <section class="course-section reveal">
+          <h2 class="section-heading">這堂課適合你嗎</h2>
+          <div class="audience-grid">
+            {hasTargetAudience && (
+              <div class="audience-card audience-yes">
+                <h3 class="audience-label">適合你，如果你是...</h3>
+                <ul class="audience-list">
+                  {data.targetAudience.map((item: string) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {hasNotFor && (
+              <div class="audience-card audience-no">
+                <h3 class="audience-label">可能不適合，如果你...</h3>
+                <ul class="audience-list">
+                  {data.notFor.map((item: string) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      <!-- 5. Markdown Content -->
       <div class="course-content reveal">
         <Content />
       </div>
 
-      <!-- CTA -->
-      {entry.data.status === 'active' && (
-        <div class="course-cta reveal">
-          <a href="#contact" class="btn btn-primary btn-large">
-            立即報名 →
+      <!-- 6. Testimonials（學員見證）-->
+      {hasTestimonials && (
+        <section class="course-section reveal">
+          <h2 class="section-heading">學員怎麼說</h2>
+          <div class="testimonials-grid">
+            {data.testimonials.map((t: { name: string; role: string; quote: string }) => (
+              <blockquote class="testimonial-card">
+                <p class="testimonial-quote">&ldquo;{t.quote}&rdquo;</p>
+                <footer class="testimonial-author">
+                  <span class="testimonial-name">{t.name}</span>
+                  <span class="testimonial-role">{t.role}</span>
+                </footer>
+              </blockquote>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- 7. FAQ -->
+      {hasFaq && (
+        <section class="course-section reveal">
+          <h2 class="section-heading">常見問題</h2>
+          <div class="faq-list">
+            {data.faq.map((item: { question: string; answer: string }) => (
+              <details class="faq-item">
+                <summary class="faq-question">{item.question}</summary>
+                <p class="faq-answer">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- 8. 底部 CTA -->
+      {showCta && (
+        <div class="course-cta course-cta-bottom reveal">
+          <p class="cta-closing">準備好了嗎？</p>
+          <a
+            href={ctaHref}
+            class="btn btn-primary btn-large"
+            {...(ctaIsExternal ? { target: '_blank', rel: 'noopener' } : {})}
+          >
+            {ctaText} &rarr;
           </a>
         </div>
       )}
+
     </div>
   </article>
 </BaseLayout>
 
 <style>
+  /* ═══════════════════════════════════════════════════════════
+     LAYOUT
+     ═══════════════════════════════════════════════════════════ */
+
   .course-container {
     padding: 2rem 0 4rem;
     color: var(--text-primary);
   }
 
+  /* ═══════════════════════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════════════════════ */
+
   .course-header {
     max-width: 800px;
-    margin: 0 auto 3rem;
+    margin: 0 auto 2rem;
     text-align: center;
   }
 
@@ -152,6 +296,9 @@ const statusMap = {
     color: var(--text-secondary);
     line-height: 1.7;
     margin-bottom: 2rem;
+    max-width: 65ch;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .course-meta {
@@ -188,20 +335,167 @@ const statusMap = {
     font-size: 1.5rem;
   }
 
-  .meta-item.tags {
-    flex-direction: row;
+  /* ═══════════════════════════════════════════════════════════
+     CTA
+     ═══════════════════════════════════════════════════════════ */
+
+  .course-cta {
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .course-cta-bottom {
+    margin-top: 2rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .cta-hint {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .cta-closing {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+  }
+
+  .btn-large {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     SECTIONS（共用）
+     ═══════════════════════════════════════════════════════════ */
+
+  .course-section {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+  }
+
+  .section-heading {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FEATURES
+     ═══════════════════════════════════════════════════════════ */
+
+  .feature-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .feature-check {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
     align-items: center;
+    justify-content: center;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 50%;
+    font-size: 0.65rem;
+    color: #16a34a;
+    font-weight: 700;
+    margin-top: 0.1rem;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     AUDIENCE
+     ═══════════════════════════════════════════════════════════ */
+
+  .audience-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .audience-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .audience-yes {
+    background: #fafff9;
+    border-color: #d1e7dd;
+  }
+
+  .audience-no {
+    background: #fffbfa;
+    border-color: #f5c6cb;
+  }
+
+  .audience-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .audience-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
   }
 
-  .tag {
-    padding: 0.25rem 0.75rem;
-    background: var(--accent-subtle);
-    border: 1px solid var(--accent-border);
-    border-radius: 20px;
-    font-size: 0.8rem;
-    color: var(--accent);
+  .audience-list li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding-left: 1.25rem;
+    position: relative;
   }
+
+  .audience-yes .audience-list li::before {
+    content: '\2713';
+    position: absolute;
+    left: 0;
+    color: #16a34a;
+    font-weight: 700;
+  }
+
+  .audience-no .audience-list li::before {
+    content: '\2717';
+    position: absolute;
+    left: 0;
+    color: #dc2626;
+    font-weight: 700;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     MARKDOWN CONTENT
+     ═══════════════════════════════════════════════════════════ */
 
   .course-content {
     max-width: 720px;
@@ -217,7 +511,6 @@ const statusMap = {
     color: var(--text-secondary);
   }
 
-  /* 連續段落增加額外間距 */
   .course-content :global(p + p) {
     margin-top: 1.5rem;
   }
@@ -281,15 +574,111 @@ const statusMap = {
     color: var(--accent-light);
   }
 
-  .course-cta {
-    text-align: center;
-    padding: 2rem 0;
+  /* ═══════════════════════════════════════════════════════════
+     TESTIMONIALS
+     ═══════════════════════════════════════════════════════════ */
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
   }
 
-  .btn-large {
-    padding: 1rem 2.5rem;
-    font-size: 1.1rem;
+  .testimonial-card {
+    padding: 1.5rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 0;
   }
+
+  .testimonial-quote {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .testimonial-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .testimonial-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .testimonial-role {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     FAQ
+     ═══════════════════════════════════════════════════════════ */
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .faq-item {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+
+  .faq-item[open] {
+    border-color: var(--accent-border);
+  }
+
+  .faq-question {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    user-select: none;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question::after {
+    content: '+';
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .faq-item[open] .faq-question::after {
+    transform: rotate(45deg);
+  }
+
+  .faq-answer {
+    padding: 0 1.5rem 1.25rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     MOBILE
+     ═════��═════════════════════════════════════════════════════ */
 
   @media (max-width: 768px) {
     .course-container {
@@ -297,7 +686,8 @@ const statusMap = {
     }
 
     .course-header,
-    .course-content {
+    .course-content,
+    .course-section {
       padding: 0 1rem;
     }
 
@@ -306,9 +696,16 @@ const statusMap = {
       gap: 1rem;
     }
 
-    .meta-item.tags {
-      flex-direction: row;
-      flex-wrap: wrap;
+    .audience-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .feature-list {
+      grid-template-columns: 1fr;
+    }
+
+    .testimonials-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
