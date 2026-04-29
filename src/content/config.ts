@@ -72,6 +72,29 @@ const courses = defineCollection({
 
     // 課程狀態
     status: z.enum(['draft', 'pre-sale', 'active', 'archived']).default('draft'),
+
+    // 銷售頁：結帳連結（指向 shop.cablate.com）
+    checkoutUrl: z.string().url().optional(),
+
+    // 銷售頁：課程包含什麼（3-6 點）
+    features: z.array(z.string()).default([]),
+
+    // 銷售頁：適合誰 / 不適合誰
+    targetAudience: z.array(z.string()).default([]),
+    notFor: z.array(z.string()).default([]),
+
+    // 銷售頁：FAQ 結構化資料
+    faq: z.array(z.object({
+      question: z.string(),
+      answer: z.string(),
+    })).optional(),
+
+    // 銷售頁：學員見證
+    testimonials: z.array(z.object({
+      name: z.string(),
+      role: z.string(),
+      quote: z.string(),
+    })).optional(),
   }),
 });
 
