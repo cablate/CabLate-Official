@@ -12,8 +12,8 @@ export const siteConfig = {
   /** 課程 */
   vibeCodingStudents: '',      // 待填
   paymentCourseStudents: '',   // 待填
-  vibeCodingUrl: '/courses/',
-  paymentCourseUrl: '/courses/',
+  vibeCodingUrl: '/courses/vibe-coding/',
+  paymentCourseUrl: '/courses/payment-integration/',
 
   /** 講座 */
   lectureFeedbackScore: '4.59',
