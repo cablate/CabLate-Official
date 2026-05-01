@@ -1,43 +1,49 @@
-# Astro Starter Kit: Minimal
+# CabLate Website
+
+CabLate.com Astro static site for public writing, SEO, course landing pages,
+and product-facing content.
+
+## Status
+
+Active. Astro + Cloudflare Pages site. The current repo has content validation,
+centralized course display rules, stronger course schema, and Astro checks.
+
+Current operational handoff lives in the ClaudeCab workspace project card:
+
+`F:/_Program/OwnProject/ClaudeCab/agents/coder/projects/cablate-website/README.md`
+
+## Common Commands
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev
+npm run build
+npm run check
+npm run validate:content
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Project Structure
 
-## 🚀 Project Structure
+| Path | Purpose |
+|------|---------|
+| `src/pages/` | Astro routes |
+| `src/content/` | Markdown/content collections |
+| `src/components/` | Reusable Astro components |
+| `src/layouts/` | Page layouts |
+| `src/styles/` | Global CSS and design rules |
+| `scripts/` | Build and content validation helpers |
+| `public/` | Static public assets |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Working Rules
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+- Run `git status --short` before edits.
+- Do not edit generated/runtime folders: `node_modules/`, `dist/`, `.astro/`,
+  `.serena/`, `Python/`, `.playwright-mcp/`.
+- Do not commit throwaway QA screenshots from the repo root unless they are
+  intentionally promoted into documentation or evidence.
+- Use the ClaudeCab project card for current next step and cross-repo context.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Current Next Step
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Replace the two `[TEST DATA]` course markdown files with real sales copy, then
+remove `draft: true` when they are ready to publish.
