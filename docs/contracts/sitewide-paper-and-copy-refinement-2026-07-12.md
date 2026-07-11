@@ -51,6 +51,10 @@ change_context:
 - 不宣稱電子報固定更新，也不把尚未開放內容寫成已可取得。
 - 所有標題使用自然中文斷句；不靠任意 `<br>` 補救桌機與手機排版。
 - `.paper-card` 負責表面，內容內距由 `.paper-card__inner` 或等價的頁面安全容器負責。
+- `.paper-page` 只負責頁面寬度、垂直留白與紙張之間的間距。
+- `.page-paper` 是跨 Astro scoped CSS 邊界的容器契約，負責外框尺寸、紙張背景與安全內距；頁面局部 CSS 不得重新定義這些屬性。
+- 頁面局部 CSS 只負責該頁特有的內容 grid、清單、時間軸與文字層級。
+- 迴紋針依紙張數量與敘事用途交錯使用，優先固定歷程、方法、證據、作品或學習路徑；左右位置交替，也不統一貼在每頁首屏。
 
 ## Acceptance Examples
 
@@ -95,7 +99,16 @@ test_mapping:
 
 - 首頁以外的主要入口頁由各自獨立的平面樣式，統一成同一紙質視覺語言。
 - 文案從「完整列出我有什麼」改為「先回答訪客此刻想判斷什麼」。
+- 刪除舊的內頁白框全域選擇器與各頁重複容器 override，改由 `.paper-page > .page-paper` 提供單一樣式來源。
+- 第二輪依 `docs/content/site-purpose-page-role-and-cta-master-plan-2026-07-12.md` 切開跨頁責任：首頁負責辨識與分流，Expertise 負責可操作診斷，Work 負責案例判斷，Courses 負責學習選擇，Services 負責適配，Articles 負責閱讀尋路。
+- 同一內容不再同時以問題路徑、推薦卡與一般列表重複曝光；一頁只保留一個 Primary CTA 意圖。
 
 ## Open Questions
 
 - Starter Pack 與文章／課程內頁是否在下一輪改為同一內容模板，待主要入口頁驗證後決定。
+
+## Deferred Visual Language Pass
+
+- 目前先完成 About、Expertise、Work、Courses、Services、Articles 的第一版文案與閱讀任務。
+- 本輪只維持共用紙張材質、安全內距、紫色識別與響應式可讀性，不在逐頁改文案時同步發明新版型。
+- 六頁文案完成後，再一次比較全站，分別建立人物歷程、問題診斷、案例檔案、學習地圖、合作簡報與閱讀目錄的專屬視覺語法。

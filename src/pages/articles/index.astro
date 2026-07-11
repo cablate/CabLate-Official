@@ -6,7 +6,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatDate } from '../../utils/format';
-import { expertiseAreas } from '../../config/authority';
 
 // 取得所有已發布文章
 const allArticles = await getCollection('articles');
@@ -14,11 +13,18 @@ const publishedArticles = allArticles
   .filter(entry => !entry.data.draft)
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
-const recommendedArticle = publishedArticles.find(entry => entry.data.featured) ?? publishedArticles[0];
-const restArticles = publishedArticles.filter(entry => entry.slug !== recommendedArticle?.slug);
-
 // 取得所有分類（依名稱排序）
 const categories = [...new Set(publishedArticles.map(entry => entry.data.category))].sort();
+
+const readingRoutes = [
+  { problem: '想把 AI 寫程式從嘗試變成完整流程', title: '先看一個網站怎麼從零做到上線', description: '從規劃、實作到 SEO 與改版，先看一次真實工作如何推進，也看哪些地方最容易重做。', slug: 'claude-code-workflow' },
+  { problem: '不知道該用自動化，還是需要 Agent', title: '先分清楚問題，再決定工具', description: '排程、固定規則與需要自主判斷的任務並不相同。先釐清差別，通常能少繞一大圈。', slug: 'blog-writing-openclaw' },
+  { problem: 'Claude Code 的 token 突然消耗異常', title: '從表面症狀一路找到注入機制', description: '這篇記錄實際逆向、定位根因與評估緩解方式的過程，適合正在處理相同版本問題的人。', slug: 'claude-code-token-drain-system-reminder' },
+  { problem: 'Agent SDK 每次呼叫都付出不合理成本', title: '檢查 Session 與 Prompt Cache 是否真的被沿用', description: '用實測與逆向結果說明隱藏成本從哪裡來，以及不同 Session 寫法會造成什麼差異。', slug: 'reverse-engineer-claude-agent-sdk-hidden-token-cost' },
+].filter(route => publishedArticles.some(article => article.slug === route.slug));
+
+const routedSlugs = new Set(readingRoutes.map(route => route.slug));
+const otherArticles = publishedArticles.filter(entry => !routedSlugs.has(entry.slug));
 
 // 結構化資料
 const breadcrumbJsonLd = {
@@ -54,26 +60,25 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(collectionJsonLd)} />
 
   <div class="articles-page paper-page">
-  <nav class="breadcrumb page-paper paper-card" aria-label="麵包屑導覽">
-    <ol>
-      <li><a href="/">首頁</a></li>
-      <li aria-current="page">文章</li>
-    </ol>
-  </nav>
-
-  <section class="articles-section page-paper paper-card">
+  <section class="articles-section page-paper paper-card paper-card--clip">
     <div class="container">
+      <nav class="breadcrumb" aria-label="麵包屑導覽">
+        <ol>
+          <li><a href="/">首頁</a></li>
+          <li aria-current="page">文章</li>
+        </ol>
+      </nav>
       <div class="articles-header">
         <p class="articles-eyebrow section-label">研究與實作筆記</p>
         <h1 class="articles-title">遇到問題時，先找到一個能用的起點。</h1>
         <p class="articles-subtitle">這裡留下 AI 協作、Agent 問題排查與產品實作中的判斷過程。你不必從最新一篇開始，可以先選現在遇到的問題，再往相關主題繼續讀。</p>
       </div>
 
-      <section class="topic-map" aria-labelledby="topic-title">
-        <h2 id="topic-title">我持續研究與實作的六個主題</h2>
+      <section class="reading-routes" aria-labelledby="routes-title">
+        <header><p class="section-label">依問題開始</p><h2 id="routes-title">不用照發布順序讀，先選最像你現在情況的一題。</h2></header>
         <div>
-          {expertiseAreas.map((area, index) => (
-            <a href={`/expertise/#${area.id}`}><span>0{index + 1}</span><h3>{area.title}</h3><p>{area.summary}</p><small>{area.proof}</small></a>
+          {readingRoutes.map((route, index) => (
+            <a href={`/articles/${route.slug}/`}><span>0{index + 1}</span><small>{route.problem}</small><h3>{route.title}</h3><p>{route.description}</p><strong>閱讀這篇文章 →</strong></a>
           ))}
         </div>
       </section>
@@ -91,25 +96,11 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
         </nav>
       )}
 
-      {recommendedArticle && (
-        <article class="latest-article">
-          <a href={`/articles/${recommendedArticle.slug}/`} class="latest-card">
-            <span class="latest-label">推薦起點</span>
-            <span class="article-category">{recommendedArticle.data.category}</span>
-            <h2 class="latest-title">{recommendedArticle.data.title}</h2>
-            {recommendedArticle.data.description && (
-              <p class="latest-desc">{recommendedArticle.data.description}</p>
-            )}
-            <time class="article-date" datetime={recommendedArticle.data.publishDate.toISOString()}>
-              {formatDate(recommendedArticle.data.publishDate)}
-            </time>
-          </a>
-        </article>
-      )}
-
-      {restArticles.length > 0 && (
-        <div class="articles-grid">
-          {restArticles.map((entry) => (
+      {otherArticles.length > 0 && (
+        <section class="other-articles" aria-labelledby="other-articles-title">
+          <header><p class="section-label">其他實作筆記</p><h2 id="other-articles-title">如果上面的問題都不完全相同，再從這裡找。</h2></header>
+          <div class="articles-grid">
+          {otherArticles.map((entry) => (
             <article class="article-card-wrapper">
               <a href={`/articles/${entry.slug}/`} class="article-card">
                 <span class="article-category">{entry.data.category}</span>
@@ -123,7 +114,8 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
               </a>
             </article>
           ))}
-        </div>
+          </div>
+        </section>
       )}
 
       {publishedArticles.length === 0 && (
@@ -138,15 +130,12 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
 
 <style>
   .breadcrumb {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1rem 1rem 0;
+    margin: 0 0 clamp(4rem, 8vw, 7rem);
   }
 
   @media (max-width: 768px) {
     .breadcrumb {
-      padding-left: 1.25rem;
-      padding-right: 1.25rem;
+      margin-bottom: 3.5rem;
     }
   }
 
@@ -209,15 +198,16 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
     line-height: 1.8;
   }
 
-  .topic-map { margin-bottom: 4rem; padding-block: 3rem; border-block: 1px solid var(--border); }
-  .topic-map > h2 { margin: 0 0 2rem; font-size: 1.5rem; }
-  .topic-map > div { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
-  .topic-map a { min-height: 14rem; padding: 1.4rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .topic-map a:hover { background: var(--bg-soft); }
-  .topic-map a > span { color: var(--accent); font-family: var(--font-mono); font-size: .7rem; }
-  .topic-map h3 { margin: 1.8rem 0 .6rem; font-size: 1.2rem; }
-  .topic-map p { margin: 0 0 1rem; color: var(--text-secondary); font-size: .84rem; line-height: 1.7; }
-  .topic-map small { color: var(--text-muted); line-height: 1.55; }
+  .reading-routes { margin-bottom: 4rem; padding-block: 3rem; border-block: 1px solid var(--border); }
+  .reading-routes > header { max-width: 48rem; margin-bottom: 2rem; }.reading-routes > header h2 { max-width: 19ch; margin: 0; font-size: clamp(1.9rem, 3.5vw, 3.2rem); letter-spacing: -.045em; line-height: 1.1; }
+  .reading-routes > div { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+  .reading-routes a { display: flex; min-height: 16rem; flex-direction: column; padding: 1.4rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .reading-routes a:hover { background: var(--bg-soft); }
+  .reading-routes a > span { color: var(--accent); font-family: var(--font-mono); font-size: .7rem; }
+  .reading-routes small { margin-top: 1.5rem; color: var(--text-muted); line-height: 1.55; }
+  .reading-routes h3 { margin: .55rem 0 .6rem; font-size: 1.2rem; }
+  .reading-routes p { margin: 0 0 1rem; color: var(--text-secondary); font-size: .84rem; line-height: 1.7; }
+  .reading-routes strong { margin-top: auto; color: var(--accent); font-size: .76rem; }
 
   .filter-nav {
     margin-bottom: 2rem;
@@ -272,53 +262,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
     background: var(--accent-border);
   }
 
-  .latest-article {
-    margin-bottom: 2rem;
-  }
-
-  .latest-card {
-    display: block;
-    padding: 2.5rem;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  .latest-card:hover {
-    border-color: var(--text-muted);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-  }
-
-  .latest-label {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--accent, #6d28d9);
-    background: var(--accent-subtle, #f5f3ff);
-    border: 1px solid var(--accent-border, #e9e5f5);
-    padding: 0.2rem 0.6rem;
-    border-radius: var(--radius-sm);
-    margin-bottom: 0.75rem;
-  }
-
-  .latest-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.4;
-    margin-bottom: 0.75rem;
-  }
-
-  .latest-desc {
-    font-size: 1rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 1.25rem;
-  }
+  .other-articles > header { max-width: 44rem; margin-bottom: 1.5rem; }.other-articles > header h2 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.4rem); line-height: 1.2; }
 
   .articles-grid {
     display: grid;
@@ -400,7 +344,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
       gap: 1rem;
     }
 
-    .topic-map > div { grid-template-columns: 1fr; }
+    .reading-routes > div { grid-template-columns: 1fr; }
 
     .articles-title {
       font-size: 2rem;
@@ -410,17 +354,8 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
       padding: 1.25rem;
     }
 
-    .latest-card {
-      padding: 1.25rem;
-    }
-
-    .latest-title {
-      font-size: 1.4rem;
-    }
   }
-  .articles-page { padding-top: 1rem; }
-  .articles-page > .page-paper { width: 100%; max-width: none; margin: 0; border: 0; }
-  .articles-page .breadcrumb { padding: 1rem 1.5rem; }
+  .articles-page > .page-paper { max-width: none; }
   .articles-page .articles-section { padding: clamp(2.25rem, 5vw, 4rem); }
   .articles-eyebrow { text-transform: none; }
   @media (max-width: 768px) { .articles-page .articles-section { padding: 1.75rem 1.25rem; } }

@@ -1,78 +1,57 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowRight } from '@lucide/astro';
-import { learningPath } from '../../config/authority';
-import { type CourseStatus, type CourseLevel, getStatusLabel, getStatusBadgeClass, getLevelBadgeClass, formatPrice } from '../../config/courseDisplay';
 
-const allCourses = await getCollection('courses');
-const publishedCourses = allCourses
-  .filter(entry => !entry.data.draft && entry.data.status !== 'archived')
-  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+const currentPaths = [
+  { stage: '剛開始使用', title: '先建立安全、看得懂的起點', outcome: '了解成本、Context、權限與基本工作方式，再完成第一個能自己檢查的流程。', fit: '適合已經裝好工具，卻不知道第一步該做什麼的人。', href: '/starter-pack/', cta: '從 Starter Pack 開始' },
+  { stage: '已經在使用', title: '把反覆出錯的流程做穩', outcome: '從常見失效原因往回檢查 Skill、Memory、Context 與工作環境，不再只靠增加規則碰運氣。', fit: '適合已經使用 AI 程式工具，希望能排錯、維護與交接的人。', href: 'https://cabai.cablate.com', cta: '查看深度工程手冊' },
+  { stage: '有明確情境', title: '針對作品或團隊問題推進', outcome: '如果通用內容無法回答你的限制，就帶著現況、資料與預期成果，判斷需要課程、診斷或合作。', fit: '適合已有產品、流程或團隊題目，需要個別判斷的人。', href: '/services/', cta: '查看合作方式' },
+];
 ---
 
-<BaseLayout title="學習路線 | CabLate" description="先看自己離想要的成果還差哪一步，再選擇免費資源、講座、系統課程或 Claude Code 深度工程手冊。">
+<BaseLayout title="學習路線 | CabLate" description="先看自己目前卡在哪一步，再選擇 Starter Pack、深度工程手冊或個別合作。尚未開放的課程不會先列成商品。">
   <article class="learn-page paper-page">
     <header class="learn-hero page-paper paper-card">
       <p class="eyebrow section-label">學習路徑</p>
-      <h1>別急著找最完整的課。<br />先看你離想要的成果還差哪一步。</h1>
-      <p>工具會更新，但解決問題的能力可以累積。這裡不會把所有內容排成商品牆，而是幫你分辨：目前需要免費起點、一次主題學習、一套系統課程，還是一份能長期查閱的工程手冊。</p>
+      <h1>不用先找最完整的課，先跨過現在最卡的那一步。</h1>
+      <p>你可能只需要一份入門指南，也可能已經走到排錯、交付或團隊導入。這裡只列現在能採取的下一步，不用為尚未遇到的問題一次買齊所有內容。</p>
       <a href="#learning-path">依成果選擇下一步 <ArrowRight size={18} aria-hidden="true" /></a>
     </header>
 
-    <section class="learn-path page-paper paper-card" id="learning-path" aria-labelledby="path-title">
-      <header><p class="section-label">依成果選擇</p><h2 id="path-title">從找到起點，到能獨立完成工作。</h2></header>
+    <section class="learn-path page-paper paper-card paper-card--clip paper-card--clip-left" id="learning-path" aria-labelledby="path-title">
+      <header><p class="section-label">依現在的狀態選擇</p><h2 id="path-title">你不需要從第一階開始，只要找到最接近現在的情況。</h2></header>
       <ol>
-        {learningPath.map((item, index) => (
+        {currentPaths.map((item, index) => (
           <li>
             <span>0{index + 1}</span>
-            <div><small>{item.stage}</small><h3>{item.title}</h3><p>{item.outcome}</p><em>{item.fit}</em>{item.href ? <a href={item.href}>{item.cta} <ArrowRight size={15} aria-hidden="true" /></a> : <span class="learn-path__status">{item.cta}</span>}</div>
+            <div><small>{item.stage}</small><h3>{item.title}</h3><p>{item.outcome}</p><em>{item.fit}</em><a href={item.href}>{item.cta} <ArrowRight size={15} aria-hidden="true" /></a></div>
           </li>
         ))}
       </ol>
     </section>
 
-    <section class="available page-paper paper-card" id="available" aria-labelledby="available-title">
-      <header><p class="section-label">目前可用</p><h2 id="available-title">現在可以直接查看或取得的內容。</h2><p>這裡只列出確實可用的內容。尚未開放的項目，不會先做成看似能購買的銷售頁。</p></header>
-      {publishedCourses.length > 0 ? (
-        <div class="courses-grid">
-          {publishedCourses.map((entry) => (
-            <a href={`/courses/${entry.slug}`} class="course-card">
-              <div class="course-card__meta"><span class={getLevelBadgeClass(entry.data.level as CourseLevel)}>{entry.data.level}</span>{entry.data.status !== 'draft' && <span class={getStatusBadgeClass(entry.data.status as CourseStatus)}>{getStatusLabel(entry.data.status as CourseStatus)}</span>}</div>
-              <h3>{entry.data.title}</h3>
-              <p>{entry.data.excerpt || entry.data.description}</p>
-              <div class="course-card__footer"><span>{entry.data.duration}</span><strong>{formatPrice(entry.data.price)}</strong><em>查看適合對象、內容與限制 <ArrowRight size={15} aria-hidden="true" /></em></div>
-            </a>
-          ))}
-        </div>
-      ) : (
-        <div class="empty-state"><h3>目前沒有開放報名的系統課程</h3><p>你可以先從 Starter Pack 或 Claude Code 深度工程手冊開始。</p><div class="empty-state__links"><a href="/starter-pack/">查看 Starter Pack</a><a href="https://cabai.cablate.com">查看深度工程手冊</a></div></div>
-      )}
-    </section>
+    <aside class="course-status page-paper paper-card" aria-labelledby="course-status-title">
+      <p class="section-label">公開課程狀態</p>
+      <div><h2 id="course-status-title">目前沒有開放報名的系統課程。</h2><p>有明確主題與日期後，才會公布適合對象、成果與限制；現在不用比較尚未開放的選項。</p></div>
+    </aside>
 
     <section class="learning-boundary page-paper paper-card" aria-labelledby="boundary-title">
-      <div><h2 id="boundary-title">免費內容幫你找到方向，付費內容陪你完成一段明確的進展。</h2></div>
-      <div><p>免費內容會分享趨勢觀察、常見錯誤、入門路線、公開問答與部分示範，適合用來理解問題並確認自己的起點。</p><p>完整操作流程、可反覆查閱的資料、個別情境診斷、作品檢查與進度推進，則會放在課程、手冊或合作服務中。</p></div>
+      <div><h2 id="boundary-title">先用免費內容確認方向，再為真正需要的進展付費。</h2></div>
+      <div><p>免費內容適合幫你理解問題、避開常見錯誤，也確認自己是否真的需要更完整的資源。</p><p>當你需要可反覆查閱的系統資料、作品檢查、個別情境診斷或有人陪你推進，才需要考慮手冊、課程或合作服務。</p></div>
     </section>
   </article>
 </BaseLayout>
 
 <style>
   .learn-page { padding-top: 0; }
-  .learn-hero, .learn-path, .available, .learning-boundary { width: min(100% - 3rem, 82rem); margin-inline: auto; }
+  .learn-hero, .learn-path, .course-status, .learning-boundary { width: min(100% - 3rem, 82rem); margin-inline: auto; }
   .learn-hero { padding-block: clamp(5rem, 9vw, 8rem); }.eyebrow { margin: 0 0 1rem; color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
   .learn-hero h1 { max-width: 17ch; margin: 0; font-size: clamp(3rem, 6vw, 6rem); letter-spacing: -.065em; line-height: 1.02; }.learn-hero > p:not(.eyebrow) { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }.learn-hero > a { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }.learn-hero > a:hover { background: var(--accent); }
-  .learn-path, .available, .learning-boundary { padding-block: clamp(5rem, 8vw, 8rem); border-top: 1px solid var(--border); }.learn-path header, .available > header { max-width: 52rem; margin-bottom: 3.5rem; }.learn-path h2, .available h2, .learning-boundary h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }.available > header > p:last-child { color: var(--text-secondary); line-height: 1.8; }
+  .learn-path, .learning-boundary { padding-block: clamp(5rem, 8vw, 8rem); border-top: 1px solid var(--border); }.learn-path header { max-width: 52rem; margin-bottom: 3.5rem; }.learn-path h2, .learning-boundary h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
   .learn-path ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }.learn-path li { display: grid; grid-template-columns: 5rem 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--border); }.learn-path li > span { color: var(--accent); font-family: var(--font-mono); font-size: .75rem; }.learn-path small { color: var(--text-muted); }.learn-path h3 { margin: .3rem 0 .6rem; font-size: 1.6rem; }.learn-path p { max-width: 50rem; margin: 0; color: var(--text-secondary); line-height: 1.7; }.learn-path em { display: block; margin-top: .7rem; color: var(--text-muted); font-size: .8rem; font-style: normal; }.learn-path a { display: inline-flex; align-items: center; gap: .45rem; margin-top: 1rem; color: var(--accent); font-size: .8rem; font-weight: 700; }
-  .courses-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }.course-card { display: flex; min-height: 22rem; flex-direction: column; padding: 1.8rem; border: 1px solid var(--border); }.course-card:hover { border-color: var(--accent); }.course-card__meta { display: flex; gap: .5rem; }.course-card__meta span { padding: .25rem .5rem; border: 1px solid var(--border); color: var(--text-muted); font-size: .68rem; }.course-card h3 { margin: 3.5rem 0 .8rem; font-size: 1.6rem; }.course-card > p { color: var(--text-secondary); line-height: 1.7; }.course-card__footer { display: grid; grid-template-columns: 1fr auto; gap: .3rem 1rem; align-items: end; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }.course-card__footer > span { color: var(--text-muted); font-size: .75rem; }.course-card__footer strong { grid-row: span 2; font-size: 1.3rem; }.course-card__footer em { display: inline-flex; align-items: center; gap: .4rem; color: var(--accent); font-size: .75rem; font-style: normal; }.empty-state { max-width: 40rem; padding: 2rem; border: 1px solid var(--border); }.empty-state p { color: var(--text-secondary); }
+  .course-status { display: grid; grid-template-columns: .45fr 1.55fr; gap: clamp(1.5rem, 5vw, 4rem); padding-block: clamp(2rem, 4vw, 3rem); }.course-status > p { margin: .25rem 0 0; }.course-status h2 { margin: 0; font-size: clamp(1.35rem, 2.5vw, 2rem); line-height: 1.25; }.course-status > div > p { max-width: 44rem; margin-bottom: 0; color: var(--text-secondary); line-height: 1.75; }
   .learning-boundary { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 8vw, 8rem); }.learning-boundary > div:last-child { padding-top: 2.5rem; border-top: 1px solid var(--border-strong); }.learning-boundary > div:last-child p { color: var(--text-secondary); line-height: 1.85; }
-  @media (max-width: 760px) { .courses-grid, .learning-boundary { grid-template-columns: 1fr; }.learn-path li { grid-template-columns: 3rem 1fr; } }
-  @media (max-width: 520px) { .learn-hero, .learn-path, .available, .learning-boundary { width: min(100% - 2rem, 82rem); }.learn-hero h1 { font-size: 2.75rem; }.learn-path li { grid-template-columns: 1fr; gap: .5rem; }.course-card { min-height: 19rem; } }
-  .learn-path__status { display: inline-flex; margin-top: 1rem; padding: .35rem .55rem; border: 1px solid var(--border); color: var(--text-muted); font-size: .76rem; }
-  .empty-state__links { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
-  .empty-state__links a { color: var(--accent); font-weight: 700; }
-  .learn-page { padding-top: 1rem; }
-  .learn-page > .page-paper { width: 100%; margin: 0; padding: clamp(2.25rem, 5vw, 4rem); border: 0; }
+  @media (max-width: 760px) { .course-status, .learning-boundary { grid-template-columns: 1fr; }.learn-path li { grid-template-columns: 3rem 1fr; } }
+  @media (max-width: 520px) { .learn-hero, .learn-path, .course-status, .learning-boundary { width: min(100% - 2rem, 82rem); }.learn-hero h1 { font-size: 2.75rem; }.learn-path li { grid-template-columns: 1fr; gap: .5rem; } }
   .learn-page .eyebrow { text-transform: none; }
-  @media(max-width:760px){.learn-page > .page-paper{padding:1.75rem 1.25rem}}
 </style>

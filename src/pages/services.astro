@@ -3,42 +3,58 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowRight, Check, X } from '@lucide/astro';
 import { serviceTracks } from '../config/authority';
 import { siteConfig } from '../config/siteConfig';
+
+const serviceAudience: Record<string, { audience: string; next: string }> = {
+  'workflow-diagnosis': { audience: '個人、創作者或小團隊', next: '適合先釐清問題；診斷後若需要，可再進入內訓或導入。' },
+  training: { audience: '需要建立共同語言的團隊', next: '適合能力建置；若已有明確流程與資料，可另評估導入。' },
+  'agent-adoption': { audience: '已有使用者、資料與內部負責人的團隊', next: '適合從原型走向可維護系統，不以課程取代必要的專案投入。' },
+};
 ---
 
 <BaseLayout title="AI 工作流程、企業內訓與 Agent 導入合作" description="先釐清問題、現有條件與預期成果，再決定適合診斷、教學、實作或導入。了解 CabLate 的合作方式、交付內容與限制。">
   <article class="services-page paper-page">
     <header class="services-hero page-paper paper-card">
       <p class="eyebrow section-label">合作方式</p>
-      <h1>先把問題說清楚，<br />再決定該教、該做，還是該自動化。</h1>
-      <p>合作的第一步不是挑選方案，而是先確認你想完成的成果、目前有哪些條件，以及哪些風險不能接受。問題說得愈清楚，後面的投入才愈有價值。</p>
-      <a href="#service-options">比較合作方式 <ArrowRight size={18} aria-hidden="true" /></a>
+      <h1>把最常重做的工作，整理成一條真的能用的 AI 流程。</h1>
+      <p>如果團隊已經試過不少工具，工作卻仍然反覆重來、結果難以檢查，問題通常不只是「還不夠會下 Prompt」。我會先和你找出卡點，再判斷需要調整流程、建立能力，還是實作系統。</p>
+      <a href="#service-outcomes">先看合作後會改變什麼 <ArrowRight size={18} aria-hidden="true" /></a>
     </header>
 
-    <section class="service-proof page-paper paper-card" aria-label="合作經驗">
-      <p>合作經驗</p>
-      <strong>已協助企業團隊完成 AI 導入與內訓流程（2026-04-23 完成交付）</strong>
-      <span>企業名稱、Logo、照片與人數未授權前保持匿名。</span>
+    <section class="service-outcomes page-paper paper-card paper-card--clip paper-card--clip-left" id="service-outcomes" aria-labelledby="outcomes-title">
+      <header><p class="section-label">合作的目標</p><h2 id="outcomes-title">不是多用一個工具，而是少一點猜測與重做。</h2></header>
+      <ul>
+        <li><span>01</span><h3>知道問題卡在哪</h3><p>把任務、資料、使用者與限制攤開來看，分清楚是流程不清楚、資訊不足，還是工具選錯。</p></li>
+        <li><span>02</span><h3>知道結果怎麼算完成</h3><p>在實作前定義可檢查的案例與責任邊界，讓團隊不用每次都靠感覺判斷 AI 做得好不好。</p></li>
+        <li><span>03</span><h3>留下能繼續使用的方法</h3><p>不只交付一次性的展示，也把關鍵決策、操作方式與下一步留下來，讓成果能被接手。</p></li>
+      </ul>
     </section>
 
     <section class="service-options page-paper paper-card" id="service-options" aria-labelledby="options-title">
       <header>
-        <h2 id="options-title">依照你要完成的結果，選擇合作方式。</h2>
-        <p>三種合作都會先確認現況、目標與驗收方式。差別在於你需要的是一次外部診斷、團隊能力建置，還是一套能持續運作的系統。</p>
+        <p class="section-label">三種合作深度</p>
+        <h2 id="options-title">先判斷你需要外部視角、團隊練習，還是實際導入。</h2>
+        <p>不需要先替自己選方案。你只要帶著現在的情況來，我們會依問題範圍與希望留下的成果，判斷做到哪一層才合理。</p>
       </header>
 
       <div class="service-list">
         {serviceTracks.map((service, index) => (
           <article id={service.id}>
             <div class="service-title"><span>0{index + 1}</span><h3>{service.title}</h3><p>{service.outcome}</p></div>
-            <div class="service-fit"><h4>適合這些情境</h4><ul>{service.fit.map((item) => <li><Check size={16} aria-hidden="true" />{item}</li>)}</ul></div>
+            <div class="service-fit"><h4>{serviceAudience[service.id].audience}</h4><ul>{service.fit.map((item) => <li><Check size={16} aria-hidden="true" />{item}</li>)}</ul></div>
             <div class="service-deliverables"><h4>依情境確認的交付內容</h4><ul>{service.deliverables.map((item) => <li>{item}</li>)}</ul></div>
+            <p class="service-next">{serviceAudience[service.id].next}</p>
             <div class="service-not-fit"><X size={17} aria-hidden="true" /><p><strong>不適合：</strong>{service.notFit}</p></div>
           </article>
         ))}
       </div>
     </section>
 
-    <section class="process page-paper paper-card" aria-labelledby="process-title">
+    <aside class="service-proof page-paper paper-card" aria-label="合作經驗與揭露說明">
+      <p class="section-label">實際合作經驗</p>
+      <div><strong>企業 AI 導入與內訓流程已於 2026-04-23 完成交付。</strong><p>可公開範圍包含需求盤點、內容與實作設計、執行及交付；企業名稱、Logo、照片、參與人數與內部成果未取得授權，因此不作公開成效宣稱。</p></div>
+    </aside>
+
+    <section class="process page-paper paper-card paper-card--clip" aria-labelledby="process-title">
       <header><h2 id="process-title">合作不是把問題丟給 AI，再等答案出現。</h2></header>
       <ol>
         <li><span>01</span><h3>診斷</h3><p>確認目標、現況、資料、使用者、限制，以及失敗會帶來什麼代價。</p></li>
@@ -58,42 +74,39 @@ import { siteConfig } from '../config/siteConfig';
       </ul>
     </section>
 
-    <section class="service-cta page-paper paper-card" aria-labelledby="cta-title">
-      <div><h2 id="cta-title">告訴我你想完成什麼，以及目前卡在哪裡。</h2><p>私訊時請附上目標、使用者、現有流程、已嘗試的方法、期限與預期成果。資訊愈具體，我就愈能準確判斷是否適合合作。</p></div>
-      <a href={siteConfig.threadsUrl} target="_blank" rel="noopener">到 Threads 私訊合作情境 <ArrowRight size={18} aria-hidden="true" /></a>
+    <section class="service-cta page-paper paper-card paper-card--clip" aria-labelledby="cta-title">
+      <div><h2 id="cta-title">不用先寫完整需求書，先把真實情況帶來。</h2><p>私訊時請告訴我：想完成什麼、誰會使用、現在怎麼做、最常在哪裡卡住，以及希望何時看到結果。我會先判斷是否適合合作；若不需要做到系統導入，也會直接說明。</p></div>
+      <a href={siteConfig.threadsUrl} target="_blank" rel="noopener">到 Threads 說明你的情況 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
   </article>
 </BaseLayout>
 
 <style>
   .services-page { padding-top: 0; }
-  .services-hero, .service-options, .process, .service-boundaries, .service-cta { width: min(100% - 3rem, 82rem); margin-inline: auto; }
+  .services-hero, .service-outcomes, .service-options, .service-proof, .process, .service-boundaries, .service-cta { width: min(100% - 3rem, 82rem); margin-inline: auto; }
   .services-hero { padding-block: clamp(5rem, 9vw, 8rem); }
   .eyebrow { margin: 0 0 1rem; color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
   .services-hero h1 { max-width: 17ch; margin: 0; font-size: clamp(3rem, 6vw, 6rem); letter-spacing: -.065em; line-height: 1.02; }
   .services-hero > p:not(.eyebrow) { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.1rem; line-height: 1.85; }
   .services-hero > a, .service-cta > a { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.25rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
   .services-hero > a:hover, .service-cta > a:hover { background: var(--accent); }
-  .service-proof { display: grid; grid-template-columns: .5fr 1.5fr 1fr; gap: 2rem; align-items: center; padding: 1.7rem max(1.5rem, calc((100vw - 82rem) / 2)); border-block: 1px solid var(--border); background: var(--bg-soft); }
-  .service-proof p, .service-proof span { margin: 0; color: var(--text-muted); font-size: .76rem; }.service-proof strong { font-size: 1.05rem; }
-  .service-options, .process, .service-boundaries, .service-cta { padding-block: clamp(5rem, 8vw, 8rem); }
+  .service-outcomes, .service-options, .service-proof, .process, .service-boundaries, .service-cta { padding-block: clamp(5rem, 8vw, 8rem); }
+  .service-outcomes > header { max-width: 52rem; margin-bottom: 3.5rem; }.service-outcomes h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.3rem); letter-spacing: -.05em; line-height: 1.05; }.service-outcomes ul { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }.service-outcomes li { padding: 1.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }.service-outcomes li:first-child { border-left: 1px solid var(--border); }.service-outcomes li span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }.service-outcomes li h3 { margin: 3.5rem 0 .7rem; }.service-outcomes li p { color: var(--text-secondary); font-size: .84rem; line-height: 1.7; }
   .service-options > header, .process > header { max-width: 50rem; margin-bottom: 4rem; }.service-options h2, .process h2, .service-boundaries h2, .service-cta h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.3rem); letter-spacing: -.05em; line-height: 1.05; }.service-options > header > p:last-child { color: var(--text-secondary); line-height: 1.8; }
   .service-list { border-top: 1px solid var(--border-strong); }
   .service-list > article { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 2rem; padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
   .service-title > span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }.service-title h3 { margin: 1.5rem 0 .8rem; font-size: 1.8rem; }.service-title p { color: var(--text-secondary); line-height: 1.75; }
   .service-list h4 { margin: 0 0 1rem; font-size: .8rem; }.service-list ul { margin: 0; padding: 0; list-style: none; }.service-fit li { display: flex; gap: .55rem; margin-bottom: .75rem; color: var(--text-secondary); font-size: .82rem; line-height: 1.55; }.service-fit li :global(svg) { flex: 0 0 auto; color: var(--accent); }.service-deliverables li { padding: .6rem 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); font-size: .82rem; }
   .service-not-fit { grid-column: 2 / -1; display: flex; gap: .7rem; padding: 1rem; background: var(--bg-soft); }.service-not-fit :global(svg) { flex: 0 0 auto; color: var(--accent); }.service-not-fit p { margin: 0; color: var(--text-secondary); font-size: .8rem; line-height: 1.6; }
+  .service-next { grid-column: 2 / -1; margin: 0; color: var(--accent); font-size: .8rem; font-weight: 700; line-height: 1.6; }
+  .service-proof { display: grid; grid-template-columns: .45fr 1.55fr; gap: clamp(2rem, 6vw, 6rem); }.service-proof > p { margin: .35rem 0 0; }.service-proof strong { font-size: 1.25rem; line-height: 1.5; }.service-proof div p { max-width: 50rem; color: var(--text-secondary); line-height: 1.8; }
   .process { border-top: 1px solid var(--border); }.process ol { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }.process li { min-height: 15rem; padding: 1.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }.process li:first-child { border-left: 1px solid var(--border); }.process li span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }.process li h3 { margin: 4rem 0 .7rem; }.process li p { color: var(--text-secondary); font-size: .84rem; line-height: 1.65; }
   .service-boundaries { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); border-top: 1px solid var(--border); }.service-boundaries ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }.service-boundaries li { padding: 1.2rem 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); line-height: 1.7; }
   .service-cta { display: grid; grid-template-columns: 1.3fr .7fr; gap: 4rem; align-items: end; border-top: 1px solid var(--border); }.service-cta p:last-child { max-width: 42rem; color: var(--text-secondary); line-height: 1.8; }.service-cta > a { justify-self: end; }
   @media (max-width: 800px) {
-    .service-proof, .service-list > article, .service-boundaries, .service-cta { grid-template-columns: 1fr; }
-    .service-proof { padding-inline: 1.5rem; }.service-not-fit { grid-column: 1; }.process ol { grid-template-columns: 1fr 1fr; }.service-cta > a { justify-self: start; }
+    .service-outcomes ul, .service-proof, .service-list > article, .service-boundaries, .service-cta { grid-template-columns: 1fr; }
+    .service-outcomes li { border-left: 1px solid var(--border); }.service-next, .service-not-fit { grid-column: 1; }.process ol { grid-template-columns: 1fr 1fr; }.service-cta > a { justify-self: start; }
   }
-  @media (max-width: 520px) { .services-hero, .service-options, .process, .service-boundaries, .service-cta { width: min(100% - 2rem, 82rem); }.services-hero h1 { font-size: 2.75rem; }.process ol { grid-template-columns: 1fr; } }
-  .services-page { padding-top: 1rem; }
-  .services-page > .page-paper { width: 100%; margin: 0; padding: clamp(2.25rem, 5vw, 4rem); border: 0; }
-  .services-page .service-proof { background-color: transparent; background-image: var(--paper-white-image); background-repeat: no-repeat; background-position: center; background-size: 115.2% 115.2%; }
+  @media (max-width: 520px) { .services-hero, .service-outcomes, .service-options, .service-proof, .process, .service-boundaries, .service-cta { width: min(100% - 2rem, 82rem); }.services-hero h1 { font-size: 2.75rem; }.process ol { grid-template-columns: 1fr; } }
   .services-page .eyebrow { text-transform: none; }
-  @media (max-width: 760px) { .services-page > .page-paper { padding: 1.75rem 1.25rem; } }
 </style>

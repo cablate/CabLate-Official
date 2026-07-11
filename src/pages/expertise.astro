@@ -1,27 +1,98 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowRight } from '@lucide/astro';
-import { expertiseAreas, signatureMethods } from '../config/authority';
+const diagnosticScenarios = [
+  {
+    symptom: '它常忘記前文，或讀到不該使用的舊資料。',
+    question: '先檢查 AI 在這個時間點，究竟能看見哪些資訊。',
+    method: 'Context Engineering',
+    check: '列出這次任務實際讀到的檔案、對話與資料版本，再和你以為它知道的內容逐項比對。',
+    mistake: '把更多資料一次塞進 Context，卻沒有確認版本、優先順序與使用時機。',
+    href: '/articles/claude-code-token-drain-system-reminder/',
+  },
+  {
+    symptom: '它做了很多事，結果卻不能直接使用。',
+    question: '再檢查任務、工具、權限、錯誤處理與完成標準有沒有接起來。',
+    method: 'Harness Engineering',
+    check: '挑一個真實案例，寫下輸入、允許使用的工具、完成條件，以及失敗後應停在哪裡。',
+    mistake: '看到模型單次成功，就直接把它當成可重複運作的流程。',
+    href: '/articles/claude-code-workflow/',
+  },
+  {
+    symptom: '同一件事每次都要重教，品質還是忽好忽壞。',
+    question: '最後看做對一次的方法，有沒有被整理成可重複執行的流程。',
+    method: 'Skill 設計',
+    check: '回看上次做對時真正影響結果的判斷、順序與限制，確認它們是否已被明確留下。',
+    mistake: '只保存最後的 Prompt，沒有保存啟動條件、例外處理與驗收方式。',
+    href: '/articles/agent-sdk-system-reminder-diff-fix/',
+  },
+];
 ---
 
-<BaseLayout title="專業領域與方法 | CabLate" description="認識 CabLate 長期研究與實作的六個主題，以及 Harness Engineering、Context Engineering 與 Skill 設計三套核心方法。">
+<BaseLayout title="AI 工作流程與失效診斷｜CabLate" description="從 AI 忘記前文、成果不能用，到每次都要重新教，辨認問題出在 Context、工作環境，還是經驗沒有被留下來。">
   <article class="expertise-page paper-page">
-    <header class="expertise-hero page-paper paper-card"><p class="eyebrow section-label">專業方法</p><h1>工具名稱會變，解決問題的基本功不會。</h1><p>當 AI 的成果不穩，我不會先加更多規則，而是檢查資料、工具、流程與驗收怎麼接在一起。以下是我長期研究，也持續拿來解決真實問題的方法。</p><a class="text-link" href="#signature-methods">先看三個核心方法 <ArrowRight size={18} aria-hidden="true" /></a></header>
+    <header class="expertise-hero page-paper paper-card">
+      <p class="eyebrow section-label">專業方法</p>
+      <h1>AI 一直鬼打牆<br class="expertise-mobile-break" />時，問題通常<br class="expertise-mobile-break" />不只在 Prompt。</h1>
+      <p>多加幾條規則，有時只會讓指令更長。真正要先看的是：AI 拿到什麼資料、能使用哪些工具、做到哪裡算完成，以及做對一次的方法有沒有留下來。</p>
+      <a class="text-link" href="#diagnosis">先從你看到的問題開始 <ArrowRight size={18} aria-hidden="true" /></a>
+    </header>
 
-    <section class="areas page-paper paper-card" aria-labelledby="areas-title"><header><p class="section-label">研究範圍</p><h2 id="areas-title">六個持續研究，也持續實作的主題。</h2></header><div>{expertiseAreas.map((area,index)=><article id={area.id}><span>0{index+1}</span><h3>{area.title}</h3><p>{area.summary}</p><small>{area.proof}</small></article>)}</div></section>
+    <section class="diagnosis page-paper paper-card paper-card--clip paper-card--clip-left" id="diagnosis" aria-labelledby="diagnosis-title">
+      <header>
+        <p class="section-label">先辨認現象</p>
+        <h2 id="diagnosis-title">先找到最像的現象，再做一個能排除原因的檢查。</h2>
+      </header>
+      <div class="diagnosis-list">
+        {diagnosticScenarios.map((scenario, index) => (
+          <article>
+            <span>0{index + 1}</span>
+            <div class="diagnosis-guide">
+              <small>{scenario.method}</small>
+              <h3>{scenario.symptom}</h3>
+              <p>{scenario.question}</p>
+              <dl>
+                <div><dt>先檢查</dt><dd>{scenario.check}</dd></div>
+                <div><dt>常見誤判</dt><dd>{scenario.mistake}</dd></div>
+              </dl>
+              <a class="text-link" href={scenario.href}>看一個實際排查過程 <ArrowRight size={15} aria-hidden="true" /></a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
 
-    <section class="methods page-paper paper-card" id="signature-methods" aria-labelledby="methods-title"><header><p class="section-label">核心方法</p><h2 id="methods-title">三個角度，分別處理 AI 最常失效的地方。</h2></header><div>{signatureMethods.map((method,index)=><article><span>0{index+1}</span><h3>{method.title}</h3><p>{method.definition}</p><small>{method.problem}</small></article>)}</div></section>
-
-    <section class="method-boundary page-paper paper-card"><div><h2>不是每個問題都需要 Agent。</h2></div><div><p>如果表單、試算表或一般自動化就能穩定完成工作，我不會為了追逐熱門名詞，硬把 Agent 加進流程。</p><p>方法的價值是降低錯誤、重複工作與交接成本，不是增加架構。當解法比問題本身還複雜，就該回到更簡單的做法。</p><a class="text-link" href="/services/">帶著實際情境查看合作方式 <ArrowRight size={16} aria-hidden="true" /></a></div></section>
+    <section class="method-boundary page-paper paper-card" aria-labelledby="boundary-title">
+      <div><p class="section-label">判斷邊界</p><h2 id="boundary-title">不是每個問題都需要 Agent。</h2></div>
+      <div>
+        <p>如果表單、試算表或一般自動化就能穩定完成工作，我不會為了追逐熱門名詞，硬把 Agent 加進流程。</p>
+        <p>方法的價值是降低錯誤、重複工作與交接成本，不是增加架構。當解法比問題本身還複雜，就該回到更簡單的做法。</p>
+        <a class="text-link" href="/articles/">從實際問題與排查文章開始 <ArrowRight size={16} aria-hidden="true" /></a>
+      </div>
+    </section>
   </article>
 </BaseLayout>
 
 <style>
-  .expertise-page{padding-top:5.25rem}.expertise-hero,.areas,.methods,.method-boundary{width:min(100% - 3rem,82rem);margin-inline:auto;padding-block:clamp(5rem,8vw,8rem)}.eyebrow{margin:0 0 1rem;color:var(--accent);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.expertise-hero h1{max-width:16ch;margin:0;font-size:clamp(3rem,6vw,6rem);letter-spacing:-.065em;line-height:1.02}.expertise-hero>p:not(.eyebrow){max-width:49rem;margin:2rem 0;color:var(--text-secondary);font-size:1.08rem;line-height:1.85}.expertise-hero>a,.method-boundary a{display:inline-flex;align-items:center;gap:.6rem;color:var(--accent);font-weight:700}.areas,.methods,.method-boundary{border-top:1px solid var(--border)}.areas header,.methods header{max-width:52rem;margin-bottom:3.5rem}.areas h2,.methods h2,.method-boundary h2{max-width:17ch;margin:0;font-size:clamp(2.3rem,4.5vw,4.2rem);letter-spacing:-.05em;line-height:1.06}.areas>div{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--border);border-left:1px solid var(--border)}.areas article{min-height:16rem;padding:1.6rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}.areas article>span,.methods article>span{color:var(--accent);font-family:var(--font-mono);font-size:.72rem}.areas h3{margin:2.5rem 0 .7rem;font-size:1.4rem}.areas p,.methods p{color:var(--text-secondary);line-height:1.75}.areas small,.methods small{color:var(--text-muted);line-height:1.55}.methods>div{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border-strong)}.methods article{min-height:24rem;padding:1.8rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}.methods article:first-child{border-left:1px solid var(--border)}.methods h3{margin:7rem 0 1rem;font-size:1.6rem}.method-boundary{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(3rem,8vw,8rem)}.method-boundary>div:last-child{padding-top:1rem;border-top:1px solid var(--border-strong)}.method-boundary p{color:var(--text-secondary);line-height:1.85}@media(max-width:760px){.areas>div,.methods>div,.method-boundary{grid-template-columns:1fr}.methods article{min-height:auto}.methods h3{margin-top:3rem}}@media(max-width:520px){.expertise-hero,.areas,.methods,.method-boundary{width:min(100% - 2rem,82rem)}.expertise-hero h1{font-size:2.75rem}}
-  .expertise-page { padding-top: 0; }
-  .areas article { scroll-margin-top: 6rem; }
-  .expertise-page { padding-top: 1rem; }
-  .expertise-page > .page-paper { width: 100%; margin: 0; padding: clamp(2.25rem, 5vw, 4rem); border: 0; }
+  .expertise-hero > p:not(.eyebrow) { max-width: 49rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
+  .expertise-hero > a, .method-boundary a { display: inline-flex; align-items: center; gap: .6rem; color: var(--accent); font-weight: 700; }
   .expertise-page .eyebrow { text-transform: none; }
-  @media(max-width:760px){.expertise-page > .page-paper{padding:1.75rem 1.25rem}}
+  .expertise-mobile-break { display: none; }
+  .diagnosis > header { max-width: 52rem; margin-bottom: 3rem; }
+  .diagnosis h2, .method-boundary h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
+  .diagnosis-list { border-top: 1px solid var(--border-strong); }
+  .diagnosis-list article { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 1.5rem; align-items: start; padding: 2rem 0; border-bottom: 1px solid var(--border); }
+  .diagnosis-list article > span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
+  .diagnosis-guide > small { color: var(--accent); font-weight: 700; }
+  .diagnosis-list h3 { margin: 0; font-size: 1.35rem; line-height: 1.5; }
+  .diagnosis-list p { margin: .55rem 0 0; color: var(--text-secondary); line-height: 1.7; }
+  .diagnosis-guide dl { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }.diagnosis-guide dl div { padding-top: .8rem; border-top: 1px solid var(--border); }.diagnosis-guide dt { color: var(--text-muted); font-size: .72rem; font-weight: 700; }.diagnosis-guide dd { margin: .45rem 0 0; color: var(--text-secondary); line-height: 1.7; }.diagnosis-guide .text-link { font-size: .8rem; }
+  .method-boundary { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); }
+  .method-boundary > div:last-child { padding-top: 1rem; border-top: 1px solid var(--border-strong); }
+  .method-boundary p { color: var(--text-secondary); line-height: 1.85; }
+  @media (max-width: 760px) {
+    .diagnosis-list article, .method-boundary, .diagnosis-guide dl { grid-template-columns: 1fr; }
+    .diagnosis-list article { gap: .55rem; }
+  }
+  @media (max-width: 520px) { .expertise-page > .expertise-hero h1 { font-size: 2.2rem !important; }.expertise-mobile-break { display: initial; } }
 </style>
