@@ -31,7 +31,7 @@ const timeline = [
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
 
   <article class="about-page paper-page">
-    <header class="about-hero page-paper paper-card">
+    <header class="about-hero page-paper paper-card about-stage" data-stage="起點">
       <div class="about-hero__label section-label">關於 CabLate</div>
       <div class="about-hero__grid">
         <h1>做過夠多次，才知道哪裡最容易出錯。</h1>
@@ -42,7 +42,7 @@ const timeline = [
       </div>
     </header>
 
-    <section class="about-story section-shell page-paper paper-card" aria-labelledby="story-title">
+    <section class="about-story section-shell page-paper paper-card about-stage" data-stage="問題意識" aria-labelledby="story-title">
       <div class="section-heading">
         <p class="section-label">專業歷程</p>
         <h2 id="story-title">我在意交付，因為做出來不等於能使用。</h2>
@@ -54,7 +54,7 @@ const timeline = [
       </div>
     </section>
 
-    <section class="timeline section-shell page-paper paper-card paper-card--clip" aria-labelledby="timeline-title">
+    <section class="timeline section-shell page-paper paper-card paper-card--clip about-stage" data-stage="方法建構" aria-labelledby="timeline-title">
       <div class="section-heading">
         <p class="section-label">關鍵轉折</p>
         <h2 id="timeline-title">三個轉折，慢慢形成現在這套工作方式。</h2>
@@ -69,7 +69,7 @@ const timeline = [
       </ol>
     </section>
 
-    <section class="open-source section-shell page-paper paper-card" aria-labelledby="opensource-title">
+    <section class="open-source section-shell page-paper paper-card about-stage" data-stage="代表作品" aria-labelledby="opensource-title">
       <div class="section-heading">
         <p class="section-label">公開作品</p>
         <h2 id="opensource-title">不只說我做過，也留下你能自己檢查的東西。</h2>
@@ -84,7 +84,7 @@ const timeline = [
       </div>
     </section>
 
-    <section class="principles page-paper paper-card paper-card--clip paper-card--clip-left" aria-labelledby="principles-title">
+    <section class="principles page-paper paper-card paper-card--clip paper-card--clip-left about-stage" data-stage="工作原則" aria-labelledby="principles-title">
       <div class="section-shell principles__grid">
         <div class="section-heading section-heading--light">
           <p class="section-label">工作原則</p>
@@ -99,7 +99,7 @@ const timeline = [
       </div>
     </section>
 
-    <section class="about-next section-shell page-paper paper-card paper-card--clip" aria-labelledby="next-title">
+    <section class="about-next section-shell page-paper paper-card paper-card--clip about-stage" data-stage="下一步" aria-labelledby="next-title">
       <div>
         <p class="about-next__label section-label">下一步</p>
         <h2 id="next-title">如果你想知道這些原則實際怎麼落地，可以先看代表作品。</h2>
@@ -113,7 +113,11 @@ const timeline = [
 </BaseLayout>
 
 <style>
-  .about-page { padding-top: 0; }
+  .about-page { position: relative; padding-top: 0; --about-rail-x: max(2rem, calc((100% - 82rem) / 2 + 1rem)); }
+  .about-page::before { content: ''; position: absolute; z-index: 2; top: 3.5rem; bottom: 4rem; left: var(--about-rail-x); width: 2px; background: color-mix(in srgb, var(--accent) 72%, transparent); pointer-events: none; }
+  .about-stage { position: relative; padding-left: clamp(5.5rem, 9vw, 8.5rem) !important; }
+  .about-stage::before { content: ''; position: absolute; z-index: 3; top: clamp(3.25rem, 6vw, 5.75rem); left: calc(var(--about-rail-x) - .48rem); width: .82rem; aspect-ratio: 1; border: .2rem solid var(--accent); border-radius: 50%; background: #fffdf8; box-shadow: 0 0 0 .3rem rgb(255 253 248 / .88); }
+  .about-stage::after { content: attr(data-stage); position: absolute; top: clamp(3.1rem, 6vw, 5.6rem); left: calc(var(--about-rail-x) + 1.15rem); z-index: 3; max-width: 5.2rem; color: var(--accent); font-family: var(--font-mono); font-size: .7rem; font-weight: 700; letter-spacing: .08em; line-height: 1.45; }
   .about-hero { width: min(100% - 3rem, 82rem); margin: 0 auto; padding: clamp(5rem, 9vw, 8rem) 0 5rem; }
   .about-hero__label, .section-heading > p, .about-next__label { margin: 0 0 1.25rem; color: var(--accent); font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
   .about-hero__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(20rem, .95fr); gap: clamp(2.5rem, 5vw, 5rem); align-items: end; }
@@ -168,9 +172,18 @@ const timeline = [
     .open-source__list a > div:last-child { justify-items: start; }
   }
   @media (max-width: 560px) {
-    .about-hero { width: min(100% - 2rem, 82rem); }
+    .about-page { --about-rail-x: 1.45rem; }
+    .about-page::before { top: 2rem; bottom: 2.5rem; }
+    .about-stage { width: 100%; padding-left: 4.75rem !important; padding-right: 1.15rem !important; }
+    .about-stage::before { top: 2.65rem; left: calc(var(--about-rail-x) - .43rem); width: .72rem; }
+    .about-stage::after { top: 2.45rem; left: calc(var(--about-rail-x) + .8rem); max-width: 2.55rem; font-size: .61rem; letter-spacing: .04em; }
+    .about-hero { width: 100%; }
     .about-hero h1 { font-size: clamp(2.65rem, 11.8vw, 3.45rem); line-height: 1.08; }
     .timeline li { grid-template-columns: 1fr; gap: .7rem; }
+    .about-story, .timeline, .open-source, .about-next { padding-block: 4rem; }
+    .principles { padding-block: 4rem; }
+    .principles article { min-height: auto; }
+    .principles article h3 { margin-top: 1.8rem; }
   }
   .about-page .about-hero__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); }
   .about-page .section-heading > p { text-transform: none; }
