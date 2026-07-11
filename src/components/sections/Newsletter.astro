@@ -1,202 +1,90 @@
 ---
-/**
- * Newsletter Section - 電子報訂閱區塊（簡化版）
- */
-
 import KitForm from '../common/KitForm.astro';
-import { publicProofs } from '../../config/authority';
-
-const newsletterProof = publicProofs.find((proof) => proof.label === '電子報訂閱');
 ---
 
-<section class="newsletter-section" id="newsletter">
-    <div class="newsletter-inner">
-        <div class="newsletter-text">
-            <span class="newsletter-label">Newsletter</span>
-            <h2 class="newsletter-title">把值得留下的 AI 觀察，整理成一封信。</h2>
-            <p class="newsletter-hook">
-                每封信只談一個值得留下的主題：實際做過的 AI 工作流程、架構取捨、踩坑紀錄，或一款新工具是否值得投入。
-            </p>
-            <p class="newsletter-desc">
-                適合想把 AI 用進日常工作，又不想每天追工具消息的人。送出後請到信箱確認訂閱；你可以隨時退訂，詳見<a href="/privacy/">隱私權政策</a>。
-            </p>
-            {newsletterProof && <p class="newsletter-proof">{newsletterProof.value} 位訂閱者（截至 {newsletterProof.asOf}）</p>}
-        </div>
-        <div class="newsletter-form">
-            <KitForm />
-        </div>
-    </div>
+<section class="newsletter-section" id="newsletter" aria-labelledby="newsletter-title">
+  <div class="newsletter-text">
+    <p class="newsletter-label">更新通知</p>
+    <h2 id="newsletter-title">有重要更新時，<br />再寄信告訴你。</h2>
+    <p class="newsletter-copy">新課程、手冊更新或公開活動上線時，我會寄一封通知。沒有固定週期，也不會為了維持更新頻率寄信。</p>
+  </div>
+
+  <div class="newsletter-form">
+    <KitForm submitLabel="加入通知名單" successMessage="已加入通知名單，請到信箱點擊確認連結。" />
+    <p class="newsletter-note">加入後請到信箱完成確認。你可以隨時退出，資料使用方式請見<a href="/privacy/">隱私權政策</a>。</p>
+  </div>
 </section>
 
 <style>
+  .newsletter-section {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    align-items: center;
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+
+  .newsletter-label {
+    margin: 0 0 .7rem;
+    color: var(--accent, #8064ea);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+  }
+
+  .newsletter-text h2 {
+    margin: 0;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--text-primary, #253047);
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    line-height: 1.35;
+    letter-spacing: -.03em;
+    text-wrap: balance;
+  }
+
+  .newsletter-copy {
+    margin: 1rem 0 0;
+    color: var(--text-secondary, #697184);
+    font-size: .92rem;
+    line-height: 1.75;
+    text-wrap: pretty;
+  }
+
+  .newsletter-form {
+    margin-top: 0;
+  }
+
+  .newsletter-form :global(.kit-form-wrapper .formkit-fields) {
+    max-width: none;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .newsletter-form :global(.kit-form-wrapper .formkit-submit) {
+    width: 100%;
+    min-height: 3.15rem;
+  }
+
+  .newsletter-note {
+    margin: .85rem 0 0;
+    color: var(--text-muted, #7c8494);
+    font-size: .72rem;
+    line-height: 1.6;
+  }
+
+  .newsletter-note a {
+    color: var(--accent, #8064ea);
+    text-underline-offset: .2em;
+  }
+
+  @media (max-width: 800px) {
     .newsletter-section {
-        padding: 4rem 2rem;
-        background: var(--bg-soft);
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.75rem;
     }
 
-    .newsletter-inner {
-        max-width: 1100px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        gap: clamp(3rem, 8vw, 7rem);
+    .newsletter-text h2 {
+      font-size: clamp(1.9rem, 9vw, 2.65rem);
     }
-
-    .newsletter-text {
-        flex: 1;
-    }
-
-    .newsletter-label {
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: var(--accent);
-        letter-spacing: 0.15em;
-        display: block;
-        margin-bottom: 0.25rem;
-    }
-
-    .newsletter-title {
-        font-size: clamp(2rem, 4vw, 3.7rem);
-        font-weight: 800;
-        letter-spacing: -.05em;
-        line-height: 1.08;
-        color: var(--text-primary);
-        margin-bottom: 0.5rem;
-    }
-
-    .newsletter-hook {
-        font-size: 1.05rem;
-        color: var(--text-primary);
-        font-weight: 600;
-        line-height: 1.65;
-        margin-bottom: 0.5rem;
-    }
-
-    .newsletter-desc {
-        font-size: 0.9rem;
-        color: var(--text-secondary);
-        line-height: 1.65;
-        margin-bottom: 0.25rem;
-    }
-
-    .newsletter-desc a {
-        color: var(--accent);
-        text-decoration: underline;
-        text-underline-offset: .2em;
-    }
-
-    .newsletter-proof {
-        font-size: 0.8rem;
-        color: var(--accent);
-        font-weight: 500;
-    }
-
-    .newsletter-form {
-        flex: 1;
-    }
-
-    /* Kit Form Override Styles */
-    .kit-form-wrapper {
-        margin-top: 0;
-    }
-
-    .kit-form-wrapper .formkit-form {
-        background: transparent !important;
-        padding: 0 !important;
-    }
-
-    .kit-form-wrapper .formkit-fields {
-        display: flex !important;
-        flex-direction: column;
-        gap: 0.75rem;
-        margin: 0 !important;
-    }
-
-    .kit-form-wrapper .formkit-field {
-        flex: 1;
-        margin: 0 !important;
-    }
-
-    .kit-form-wrapper .formkit-input {
-        width: 100% !important;
-        min-height: 3.25rem !important;
-        padding: 0.85rem 1rem !important;
-        background: var(--bg) !important;
-        border: 1px solid var(--border) !important;
-        border-radius: var(--radius-sm) !important;
-        color: var(--text-primary) !important;
-        font-size: 0.9rem !important;
-        font-family: inherit !important;
-        font-weight: 400 !important;
-    }
-
-    .kit-form-wrapper .formkit-input:focus {
-        outline: none !important;
-        border-color: var(--accent) !important;
-        box-shadow: var(--shadow-sm) !important;
-    }
-
-    .kit-form-wrapper .formkit-input::placeholder {
-        color: var(--text-muted) !important;
-        opacity: 1 !important;
-    }
-
-    .kit-form-wrapper .formkit-submit {
-        min-height: 3.25rem !important;
-        background: var(--text-primary) !important;
-        border: none !important;
-        border-radius: var(--radius-sm) !important;
-        color: var(--bg) !important;
-        font-size: 0.9rem !important;
-        font-weight: 500 !important;
-        padding: 0.85rem 2rem !important;
-        cursor: pointer !important;
-        transition: all 0.2s ease !important;
-        margin: 0 !important;
-    }
-
-    .kit-form-wrapper .formkit-submit:hover {
-        background: var(--accent) !important;
-        opacity: 1 !important;
-    }
-
-    .kit-form-wrapper .formkit-submit span {
-        padding: 0 !important;
-    }
-
-    .kit-form-wrapper .formkit-alert-success {
-        background: rgba(16, 191, 122, 0.1) !important;
-        border-color: #10bf7a !important;
-        color: #10bf7a !important;
-        border-radius: 8px !important;
-        margin-top: 0.75rem !important;
-    }
-
-    .kit-form-wrapper .formkit-alert-error {
-        background: rgba(242, 100, 59, 0.1) !important;
-        border-color: #f2643b !important;
-        color: #f2643b !important;
-        border-radius: 8px !important;
-        margin-top: 0.75rem !important;
-    }
-
-    .kit-form-wrapper .formkit-powered-by-convertkit-container {
-        display: none !important;
-    }
-
-    @media (max-width: 600px) {
-        .newsletter-section {
-            padding: 3rem 1.5rem;
-        }
-
-        .newsletter-inner {
-            flex-direction: column;
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .newsletter-form {
-            width: 100%;
-        }
-    }
+  }
 </style>

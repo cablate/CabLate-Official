@@ -9,12 +9,14 @@ interface Props {
   formId?: string;
   uid?: string;
   successMessage?: string;
+  submitLabel?: string;
 }
 
 const {
   formId = siteConfig.convertKit.formId,
   uid = siteConfig.convertKit.uid,
-  successMessage = "資料已送出，請到信箱點擊確認連結，完成訂閱。"
+  successMessage = "資料已送出，請到信箱點擊確認連結，完成訂閱。",
+  submitLabel = "免費訂閱",
 } = Astro.props;
 ---
 
@@ -46,7 +48,7 @@ const {
         >
       </div>
       <button data-element="submit" class="formkit-submit" type="submit">
-        <span>免費訂閱</span>
+        <span>{submitLabel}</span>
       </button>
     </div>
     <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert" aria-live="polite" aria-atomic="true"></ul>
