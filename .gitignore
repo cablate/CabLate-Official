@@ -32,10 +32,12 @@ SEO-METADATA-STANDARD.md
 
 # internal tools & docs
 tools/
-docs/
+# Website contracts, content maps, approved visual references, and generated design proposals are durable project assets.
+!docs/**/*.png
 madebypan-analysis/
 
 # misc
+.codex-dev*.log
 .playwright-mcp/
 Python/
 *.jpg

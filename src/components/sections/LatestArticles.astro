@@ -27,7 +27,7 @@ const featuredSlugs = new Set(featured.map(a => a.slug));
   <section class="latest-articles">
     <div class="latest-articles-inner">
       <div class="latest-articles-header">
-        <h2 class="latest-articles-title">最新文章</h2>
+        <h2 class="latest-articles-title">推薦閱讀</h2>
         <a href="/articles/" class="latest-articles-more">查看全部 →</a>
       </div>
       <div class="latest-articles-grid">
@@ -96,19 +96,24 @@ const featuredSlugs = new Set(featured.map(a => a.slug));
   .la-card {
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--border, #e2e8f0);
-    background: var(--bg, #ffffff);
+    padding: 1.75rem 1.65rem;
+    border: 0;
+    border-radius: .2rem;
+    background-color: transparent;
+    background-image: var(--paper-reading-card-image);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 123% 172.5%;
     text-decoration: none;
-    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    transition: filter 0.2s, transform 0.2s;
     height: 100%;
   }
 
-  .la-card:hover {
-    border-color: var(--accent, #8b5cf6);
-    box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
-    transform: translateY(-2px);
+  @media (hover: hover) {
+    .la-card:hover {
+      filter: drop-shadow(0 .35rem .45rem rgb(69 58 43 / .11));
+      transform: translateY(-2px);
+    }
   }
 
   .la-card-top {

@@ -4,11 +4,12 @@ interface Props {
   description?: string;
   noSEO?: boolean;
   noindex?: boolean;
+  shell?: 'desk' | 'bare';
 }
 
 import { ViewTransitions } from 'astro:transitions';
-import { Compass } from '@lucide/astro';
 import SEO from '../components/SEO.astro';
+import ArchiveNavigation from '../components/ArchiveNavigation.astro';
 import { siteConfig } from '../config/siteConfig';
 import '@fontsource/noto-sans-tc/400.css';
 import '@fontsource/noto-sans-tc/500.css';
@@ -16,10 +17,9 @@ import '@fontsource/noto-sans-tc/700.css';
 import '@fontsource/noto-serif-tc/400.css';
 import '@fontsource/noto-serif-tc/700.css';
 
-const { title, description = 'AI 時代的軟體開發洞察 - 判斷力才是你的護城河', noSEO = false, noindex = false } = Astro.props;
+const { title, description = 'AI 時代的軟體開發洞察 - 判斷力才是你的護城河', noSEO = false, noindex = false, shell = 'desk' } = Astro.props;
+const seoTitle = title === 'CabLate' || title.endsWith('| CabLate') ? title : `${title} | CabLate`;
 const currentYear = new Date().getFullYear();
-const siteUrl = import.meta.env.SITE || 'https://cablate.com';
-const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 ---
 
 <!DOCTYPE html>
@@ -28,7 +28,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {!noSEO && (
-      <SEO title={title === 'CabLate' ? title : `${title} | CabLate`} description={description} noindex={noindex} />
+      <SEO title={seoTitle} description={description} noindex={noindex} />
     )}
     {/* noSEO 模式：title 由子 layout 透過 slot="head" 的 SEO 元件提供 */}
     <slot name="head" />
@@ -110,52 +110,35 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     </script>
 
 </head>
-<body>
+<body class:list={[`site-shell-${shell}`]}>
     <a href="#main-content" class="skip-link">跳到主要內容</a>
 
-    <!-- Navigation -->
-    <nav class="nav" aria-label="主導覽列">
-        <div class="nav-inner">
-            <a href="/" class="logo" aria-label="CabLate 首頁">
-                <span class="logo-icon" aria-hidden="true">
-                    <Compass size={22} stroke-width={2} />
-                </span>
-                <span class="logo-text">CabLate</span>
-            </a>
-            <ul class="nav-links" role="list">
-                <li><a href="/articles/">文章</a></li>
-                <li><a href="/courses/">課程</a></li>
-                <li><a href="/services/">服務</a></li>
-                <li><a href="/about/">關於我</a></li>
-                <li><a href="/search/">搜尋</a></li>
-            </ul>
-        </div>
-    </nav>
+    {shell === 'desk' && <ArchiveNavigation />}
 
     <!-- Main Content -->
-    <main id="main-content">
+    <main id="main-content" tabindex="-1">
         <slot />
     </main>
 
-    <!-- Footer -->
-    <footer class="footer" role="contentinfo">
+    {shell === 'desk' && <footer class="footer" role="contentinfo">
         <div class="footer-inner">
-            <div class="footer-brand">CabLate</div>
-            <nav class="footer-nav" aria-label="網站連結">
-                <a href="/articles/" class="footer-nav-link">文章</a>
-                <a href="/courses/" class="footer-nav-link">課程</a>
-                <a href="/services/" class="footer-nav-link">服務</a>
-                <a href="/about/" class="footer-nav-link">關於我</a>
-                <a href="/search/" class="footer-nav-link">搜尋</a>
-                <a href="/rss.xml" class="footer-nav-link">RSS</a>
+          <div class="footer-statement">
+            <a href="/" class="footer-brand">CabLate</a>
+            <p>把 AI 從聊天工具，變成能用、能驗收的工作流。</p>
+          </div>
+          <div class="footer-links">
+            <nav aria-label="內容與服務">
+              <strong>探索</strong>
+              <a href="/articles/">方法與文章</a><a href="/expertise/">專業方法</a><a href="/work/">作品</a><a href="/courses/">學習</a><a href="/services/">合作</a><a href="/about/">關於</a>
             </nav>
-            <nav class="footer-social" aria-label="社群連結">
-                <a href="https://threads.net/@cab_late" class="footer-social-link" target="_blank" rel="noopener">Threads</a>
-                <a href="https://github.com/cablate" class="footer-social-link" target="_blank" rel="noopener">GitHub</a>
+            <nav aria-label="外部連結">
+              <strong>連結</strong>
+              <a href="https://www.threads.net/@cab_late" target="_blank" rel="noopener">Threads</a><a href="https://github.com/cablate" target="_blank" rel="noopener">GitHub</a><a href="/rss.xml">RSS</a><a href="/search/">搜尋</a>
             </nav>
-            <p class="footer-copy">&copy; {currentYear} CabLate · <a href="/privacy/" class="footer-link">隱私權政策</a></p>
+          </div>
+          <div class="footer-meta"><p>&copy; {currentYear} CabLate</p><a href="/privacy/">隱私權政策</a></div>
         </div>
-    </footer>
+    </footer>}
 
     <!-- Scroll Reveal Observer -->
     <script is:inline>
@@ -209,11 +192,11 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
       left: 0;
       z-index: 9999;
       padding: 0.75rem 1.5rem;
-      background: var(--accent, #6d28d9);
+      background: var(--accent);
       color: #fff;
       font-size: 0.9rem;
       text-decoration: none;
-      border-radius: 0 0 8px 0;
+      border-radius: 0 0 var(--radius-sm) 0;
     }
     .skip-link:focus {
       top: 0;

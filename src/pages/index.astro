@@ -1,117 +1,73 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { ChevronUp } from '@lucide/astro';
-
-// Section Components
-import Hero from '../components/sections/Hero.astro';
-import RoleSelector from '../components/sections/RoleSelector.astro';
-import Portfolio from '../components/sections/Portfolio.astro';
 import Newsletter from '../components/sections/Newsletter.astro';
 import LatestArticles from '../components/sections/LatestArticles.astro';
+import { ArrowRight, BookOpen, FolderOpen, Handshake } from '@lucide/astro';
+import { authorityProfile, publicProofs, representativeWork, signatureMethods } from '../config/authority';
 
-// 首頁 FAQ 結構化資料
-const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-        {
-            '@type': 'Question',
-            name: 'CabLate 是誰？',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'CabLate（Cab）是全端工程師與技術顧問，專注 AI 協作、軟體架構與自動化整合。在 Threads 上擁有 5K+ 追蹤者，分享 AI 工具實戰與技術觀點。',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'CabLate 提供什麼服務？',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: '提供 AI 導入諮詢、自動化整合開發、企業內訓、以及 Claude Code 等 AI 工具的線上課程與教學資源。',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: '如何開始學習 AI 協作開發？',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: '可以從 CabLate 的入門懶人包（Starter Pack）開始，裡面包含 Claude Code 新手起步所需的設定指南與實戰範例。也可以閱讀文章專區的 AI 工具實戰系列。',
-            },
-        },
-    ],
-};
-
-// 首頁 WebSite 結構化資料
-const websiteJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'CabLate',
-    url: 'https://cablate.com',
-    description: 'AI 時代的軟體開發洞察 — 判斷力才是你的護城河',
-    inLanguage: 'zh-TW',
-    publisher: {
-        '@type': 'Person',
-        name: 'CabLate',
-        url: 'https://cablate.com',
-    },
-};
-
-// 首頁 Person 結構化資料
-const personJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'CabLate',
-    url: 'https://cablate.com',
-    jobTitle: '全端工程師 / 技術顧問',
-    description: '工程師出身，靠架構思維跟 AI 協作，把技術翻譯成人話。',
-    knowsAbout: ['軟體架構', 'AI 協作', '全端開發', '技術顧問', '開源貢獻'],
-    sameAs: [
-        'https://threads.net/@cab_late',
-        'https://github.com/cablate'
-    ]
-};
-
+const routeCards = [
+  { title: '想學習', description: '先看自己卡在哪一步，再從免費資源、工程手冊或目前開放的學習內容開始。', href: '/courses/', label: '查看學習路徑', icon: BookOpen },
+  { title: '想合作', description: '帶著真實問題與現有流程來談，再一起判斷適合培訓、實作，還是導入自動化。', href: '/services/', label: '查看合作方式', icon: Handshake },
+  { title: '想看作品', description: '從代表作品與公開程式碼，了解我處理過哪些問題，以及成果如何被檢查。', href: '/work/', label: '瀏覽作品與證據', icon: FolderOpen },
+];
 ---
 
-<BaseLayout title="CabLate — AI 協作・技術觀點・開發實戰" description="CabLate — 全端工程師、技術顧問與社群創作者。分享 AI 協作、軟體架構、開發實戰與職涯觀點，用架構思維把技術翻譯成人話。">
-    <script slot="head" type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
-    <script slot="head" type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
-    <script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+<BaseLayout title="CabLate — AI 協作・技術觀點・開發實戰" description={authorityProfile.shortBio}>
+  <div class="desk-page">
+    <div class="desk-content">
+      <section class="hero-grid" aria-labelledby="home-title">
+        <div class="identity-card paper-card">
+          <p class="note-title">工程與協作 · AI 應用與系統設計</p>
+          <h1 id="home-title">嗨，我是<span class="mobile-break"><br /></span> CabLate</h1>
+          <p>{authorityProfile.humanBio}</p>
+          <div class="identity-points"><span>任務拆解</span><span>Context 設計</span><span>驗收與交接</span></div>
+          <a class="primary-action" href="#paths">從你的問題選入口 <ArrowRight size={17} /></a>
+        </div>
 
-    <!-- HERO -->
-    <Hero />
+        <figure class="hero-frame paper-card paper-card--clip">
+          <img src="/images/concept/hero-organic-concept.webp" alt="紫色與金色交織的有機網路，象徵技術、內容與判斷互相連結" width="1024" height="1024" fetchpriority="high" />
+          <figcaption><span>Field Notes Studio</span><span>001</span></figcaption>
+        </figure>
+      </section>
 
-    <!-- ROLE SELECTOR -->
-    <RoleSelector />
+      <section class="route-row" id="paths" aria-label="選擇你的路徑">
+        {routeCards.map(({ title, description, href, label, icon: Icon }) => <article class="route-card paper-card"><Icon size={25} aria-hidden="true" /><div><h2>{title}</h2><p>{description}</p><a href={href}>{label} <ArrowRight size={15} /></a></div></article>)}
+      </section>
 
-    <!-- PORTFOLIO -->
-    <Portfolio />
+      <section class="evidence-card paper-card paper-card--clip" aria-labelledby="evidence-title">
+        <div><p class="note-title">核心主張 · Point of view</p><h2 id="evidence-title">判斷力比執行力值錢。</h2><p class="evidence-copy">AI 讓執行變快，也會讓錯的方向更快產生代價。比起追著新工具跑，我更在意任務怎麼拆、資料怎麼給、成果怎麼檢查，以及出錯後怎麼處理。</p><div class="role-tags"><span>全端工程師出身</span><span>AI 應用創作者</span><span>講師</span><span>顧問</span></div></div>
+        <ul><li>5 年以上軟體開發經驗（截至 2026-07）</li><li>持續投入 AI 顧問、教學與產品實作</li><li>將研究、課程與作品整理成可查核的公開內容</li><li>專注設計穩定、可維護的 AI 工作流程</li></ul>
+      </section>
 
-    <!-- LATEST ARTICLES -->
-    <LatestArticles />
+      <section class="project-card paper-card paper-card--clip" id="work" aria-labelledby="work-title">
+        <div class="project-copy"><p class="note-title">精選專案 · Featured Project</p><h2 id="work-title">{representativeWork[0].title}</h2><p>{representativeWork[0].description}</p><ul><li>把分散的實作經驗整理成可查閱的工程手冊</li><li>涵蓋 Skill、Memory、Hook、Context 與常見失效原因</li><li>{representativeWork[0].proof}</li></ul><a href={representativeWork[0].href}>查看 Claude Code 深度工程手冊 <ArrowRight size={16} /></a></div>
+      </section>
 
-    <!-- NEWSLETTER -->
-    <Newsletter />
+      <section class="methods-card paper-card" aria-labelledby="methods-title"><span class="paper-label" aria-hidden="true">METHOD</span><p class="note-title">方法筆記 · My Approach</p><h2 id="methods-title">三個核心方法，處理 AI 工作流程最常出問題的地方</h2><div class="method-grid">{signatureMethods.map((method, index) => <article><span class="method-no">0{index + 1}</span><h3>{method.title}</h3><p>{method.definition}</p><div class={`method-mark method-mark-${index + 1}`} aria-hidden="true"><i></i><i></i><i></i></div></article>)}</div><blockquote>沒有放諸四海皆準的方法，只有更適合當下問題與團隊的選擇。</blockquote></section>
 
-    <!-- 回到頂部按鈕 -->
-    <button class="back-to-top" id="backToTop" aria-label="回到頂部">
-        <ChevronUp size={24} />
-    </button>
+      <section class="writing-card paper-card"><span class="paper-label paper-label--reading" aria-hidden="true">READ NEXT</span><LatestArticles /></section>
+      <section class="newsletter-card paper-card paper-card--clip paper-card--clip-left"><Newsletter /></section>
+
+      <section class="proof-card paper-card" aria-label="公開成果">{publicProofs.map((proof) => <div><strong>{proof.value}</strong><span>{proof.label} · {proof.detail}</span><small>截至 {proof.asOf}</small></div>)}</section>
+    </div>
+  </div>
 </BaseLayout>
 
-<script>
-    // 回到頂部按鈕
-    const backToTopBtn = document.getElementById('backToTop');
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 400) {
-            backToTopBtn?.classList.add('visible');
-        } else {
-            backToTopBtn?.classList.remove('visible');
-        }
-    });
-
-    backToTopBtn?.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-</script>
+<style>
+  :global(body) { background: #eeeae2; color: #253047; }
+  .desk-page { --ink:#253047; --muted:#697184; --purple:#8064ea; --purple-soft:#f1edff; --paper:#fffdf8; --line:#d7d1c6; min-height:100dvh; background-color:#eeeae2; background-image:radial-gradient(rgb(60 50 40 / .045) .7px,transparent .7px); background-size:.42rem .42rem; }
+  .mobile-break { display:none; }.desk-content { width:min(100%,86rem); display:flex; flex-direction:column; margin-inline:auto; }.hero-grid { order:1; }.evidence-card { order:2; }.route-row { order:3; }.project-card { order:4; }.methods-card { order:5; }.writing-card { order:6; }.newsletter-card { order:7; }.proof-card { order:8; }
+  .hero-grid { display:grid; grid-template-columns:minmax(22rem,.82fr) minmax(30rem,1.18fr); gap:1.5rem; align-items:center; min-height:38rem; }.identity-card { position:relative; z-index:2; margin-right:-2.5rem; padding:2.6rem 2.3rem; }.note-title { margin:0 0 1rem; color:var(--purple); font-size:.68rem; font-weight:700; letter-spacing:.06em; }.identity-card h1 { margin:0; font-family:'Noto Serif TC',serif; font-size:clamp(2.6rem,4.4vw,4.65rem); line-height:1.18; letter-spacing:-.045em; }.identity-card > p:not(.note-title) { max-width:31rem; margin:1.25rem 0 1.4rem; color:var(--muted); font-size:1rem; line-height:1.85; }.identity-points { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1.5rem; }.identity-points span,.role-tags span { padding:.35rem .6rem; border:1px solid #d8d2e9; background:var(--purple-soft); color:#5f5494; font-size:.66rem; }.primary-action { display:inline-flex; align-items:center; gap:.6rem; min-height:3rem; padding:.75rem 1.15rem; background:var(--ink); color:#fff; font-weight:700; }.primary-action:hover { background:var(--purple); }
+  .hero-frame { position:relative; margin:0; padding:2.2rem 2rem 1.45rem; transform:rotate(.35deg); }.hero-frame img { width:100%; height:29.8rem; object-fit:cover; border:1px solid #d0c9dc; }.hero-frame figcaption { display:flex; justify-content:space-between; margin-top:.45rem; color:#746e82; font-family:serif; font-size:.69rem; font-style:italic; }
+  .route-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:.25rem 0 1rem; }.route-card { display:flex; gap:1rem; min-height:11rem; padding:1.4rem; }.route-card > svg { flex:0 0 auto; color:var(--purple); }.route-card h2 { margin:0; font-family:'Noto Serif TC',serif; font-size:1.3rem; }.route-card p { margin:.5rem 0 .9rem; color:var(--muted); font-size:.78rem; line-height:1.65; }.route-card a,.project-card a { display:inline-flex; align-items:center; gap:.4rem; color:var(--purple); font-size:.74rem; font-weight:700; }
+  .evidence-card { display:grid; grid-template-columns:1.3fr .7fr; gap:2.5rem; padding:1.8rem 2rem; }.evidence-card h2 { margin:0; font-family:'Noto Serif TC',serif; font-size:clamp(1.7rem,2.8vw,2.5rem); line-height:1.35; }.evidence-copy { max-width:43rem; margin:.8rem 0 0; color:var(--muted); line-height:1.75; }.role-tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:1.3rem; }.evidence-card ul { margin:0; padding:1rem 1rem 1rem 2.1rem; border:1px solid #ded8e8; background:#faf8ff; color:var(--muted); font-size:.8rem; line-height:1.95; }
+  .project-card { display:grid; grid-template-columns:.88fr 1.12fr; gap:2rem; margin-top:1rem; padding:1.8rem 2rem; }.project-copy h2,.methods-card h2 { margin:0; font-family:'Noto Serif TC',serif; font-size:clamp(1.6rem,3vw,2.45rem); line-height:1.35; }.project-copy > p:not(.note-title) { color:var(--muted); line-height:1.8; }.project-copy ul { padding-left:1.2rem; color:var(--muted); font-size:.85rem; line-height:1.9; }.project-window { align-self:center; border:1px solid #cfc9d9; background:#faf9fc; box-shadow:0 .45rem 1rem rgb(65 55 85 / .08); }.window-bar { height:2.5rem; display:flex; align-items:center; gap:.35rem; padding:0 .75rem; border-bottom:1px solid #ddd8e5; background:#f3f0f8; }.window-bar > span { width:.48rem; aspect-ratio:1; border-radius:50%; background:#a99bdc; }.window-bar small { margin-left:auto; color:var(--muted); }.window-body { min-height:21rem; display:grid; place-content:center; justify-items:center; padding:2rem; color:#8a8493; }.window-body p { font-size:.75rem; }.window-files { display:flex; gap:.4rem; margin-top:1rem; }.window-files span { padding:.3rem .5rem; border:1px solid #d8d2e2; font-size:.62rem; }
+  .methods-card { margin-top:1rem; padding:1.8rem 2rem; }.method-grid { display:grid; grid-template-columns:repeat(3,1fr); margin-top:1.7rem; }.method-grid article { padding:0 1.4rem; border-left:1px solid var(--line); }.method-grid article:first-child { padding-left:0; border-left:0; }.method-no { display:grid; width:2rem; aspect-ratio:1; place-items:center; border:1px solid var(--purple); border-radius:50%; color:var(--purple); font-size:.68rem; }.method-grid h3 { margin:.75rem 0 .5rem; font-family:'Noto Serif TC',serif; font-size:1rem; }.method-grid p { color:var(--muted); font-size:.77rem; line-height:1.65; }.method-mark { min-height:6.5rem; display:flex; justify-content:center; align-items:center; gap:.25rem; margin-top:1rem; border:1px dashed #d6d0df; }.method-mark i { display:block; width:2.7rem; aspect-ratio:1; border:1px solid #8f84b7; border-radius:50%; }.method-mark-1 i+ i { margin-left:-1rem; }.method-mark-2 { align-items:flex-start; padding-top:1.2rem; }.method-mark-2 i { border-radius:.2rem; }.method-mark-2 i:nth-child(2) { margin-top:1.4rem; }.method-mark-3 i { width:1.1rem; border-color:var(--purple); }.methods-card blockquote { width:fit-content; margin:1.5rem auto 0; padding:.6rem 2rem; background:var(--purple-soft); color:#655d7e; font-family:'Noto Serif TC',serif; font-size:.8rem; }
+  .writing-card,.newsletter-card,.proof-card { margin-top:1rem; }.writing-card :global(.latest-articles) { max-width:none; padding:2.35rem 2rem 2rem; }.newsletter-card :global(.newsletter-section) { margin:0; background:transparent; }.proof-card { display:grid; grid-template-columns:repeat(3,1fr); padding:1.8rem 2rem; }.proof-card div { display:grid; justify-items:center; padding:.5rem 1rem; border-left:1px solid var(--line); }.proof-card div:first-child { border-left:0; }.proof-card strong { color:var(--purple); font-family:'Noto Serif TC',serif; font-size:1.8rem; }.proof-card span,.proof-card small { color:var(--muted); font-size:.7rem; }
+  @media (max-width:900px) {
+    .desk-content { width:100%; max-width:100vw; display:flex; flex-direction:column; margin:0; }.desk-content * { min-width:0; }
+    :global(html), :global(body), .desk-page { max-width:100%; overflow-x:clip; }.hero-grid { display:contents; }.identity-card { order:1; margin:0; padding:2rem 1.25rem; overflow:hidden; }.mobile-break { display:none; }.identity-card h1 { max-width:100%; font-size:clamp(1.85rem,8.5vw,2.1rem); line-height:1.25; white-space:nowrap; }.identity-card > p:not(.note-title) { font-size:.96rem; overflow-wrap:anywhere; }.identity-points { display:grid; grid-template-columns:1fr; }.identity-points span { min-height:2.2rem; display:flex; align-items:center; }.hero-frame { order:3; width:100%; margin-bottom:.75rem; padding:1.35rem 1.2rem .9rem; transform:none; }.hero-frame img { height:auto; aspect-ratio:4/3; }
+    .route-row { order:2; grid-template-columns:1fr; gap:.45rem; margin-top:.75rem; }.route-card { min-height:0; align-items:center; padding:1.25rem 1.35rem; }.route-card p { margin:.3rem 0 .6rem; }.evidence-card { order:4; }.project-card { order:5; }.methods-card { order:6; }.writing-card { order:7; }.newsletter-card { order:8; }.proof-card { order:9; }.evidence-card,.project-card { grid-template-columns:1fr; gap:1.2rem; padding:1.65rem 1.45rem; }.evidence-card h2 { font-size:1.35rem; }.project-window .window-body { min-height:14rem; }.methods-card { padding:1.65rem 1.45rem; }.method-grid { grid-template-columns:1fr; }.method-grid article,.method-grid article:first-child { padding:1.2rem 0; border:0; border-top:1px solid var(--line); }.methods-card blockquote { margin-inline:0; padding-inline:1rem; }.writing-card :global(.latest-articles) { padding:1.75rem 1.25rem 1.25rem; }.proof-card { grid-template-columns:1fr; padding:1.5rem 1.25rem; }.proof-card div,.proof-card div:first-child { border:0; border-top:1px solid var(--line); }.proof-card div:first-child { border-top:0; }
+  }
+  .project-card { grid-template-columns: 1fr; }
+</style>

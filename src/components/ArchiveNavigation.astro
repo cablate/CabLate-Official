@@ -1,0 +1,60 @@
+---
+import { primaryNavigation } from '../config/authority';
+import { Menu, X } from '@lucide/astro';
+
+const currentPath = Astro.url.pathname;
+const isCurrent = (href: string) => href === '/'
+  ? currentPath === '/'
+  : currentPath === href || currentPath.startsWith(href);
+---
+
+<header class="site-header">
+  <aside class="site-rail" aria-label="網站導覽">
+    <a class="site-rail__brand" href="/" aria-label="CabLate 首頁">
+      <img src="/images/cablate-author-avatar.webp" alt="" width="256" height="256" aria-hidden="true" />
+      <span>
+        <strong>CabLate</strong>
+        <small>Open Desk Archive</small>
+      </span>
+    </a>
+    <nav class="site-rail__nav" aria-label="主要導覽">
+      {primaryNavigation.map((item) => (
+        <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+          <span>{item.label}</span>
+          <small>{item.railLabel}</small>
+        </a>
+      ))}
+      <a href="/search/" aria-current={isCurrent('/search/') ? 'page' : undefined}>
+        <span>搜尋</span>
+        <small>Search</small>
+      </a>
+    </nav>
+    <nav class="site-rail__social" aria-label="外部連結">
+      <a href="https://www.threads.net/@cab_late" target="_blank" rel="noopener">Threads</a>
+      <a href="https://github.com/cablate" target="_blank" rel="noopener">GitHub</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+  </aside>
+
+  <div class="site-mobile-header">
+    <a class="site-mobile-brand" href="/">
+      <img src="/images/cablate-author-avatar.webp" alt="" width="256" height="256" aria-hidden="true" />
+      <span><strong>CabLate</strong><small>Open Desk Archive</small></span>
+    </a>
+    <details class="site-mobile-menu">
+      <summary aria-label="開啟網站選單">
+        <Menu class="site-mobile-menu__open" size={22} aria-hidden="true" />
+        <X class="site-mobile-menu__close" size={22} aria-hidden="true" />
+        <span>選單</span>
+      </summary>
+      <nav aria-label="手機主要導覽">
+        {primaryNavigation.map((item) => (
+          <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+            <span>{item.label}</span><small>{item.railLabel}</small>
+          </a>
+        ))}
+        <a href="/search/" aria-current={isCurrent('/search/') ? 'page' : undefined}><span>搜尋</span><small>Search</small></a>
+      </nav>
+    </details>
+  </div>
+</header>

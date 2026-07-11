@@ -7,19 +7,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <script slot="head" src="/pagefind/pagefind-ui.js" is:inline></script>
   <div class="search-container section section-light">
     <div class="container">
-      <h1 class="search-title">搜尋文章</h1>
+      <p class="search-label">搜尋全站內容</p>
+      <h1 class="search-title">找文章、方法與學習內容</h1>
+      <p class="search-intro">輸入你正在處理的問題、工具名稱或主題。如果還不確定該搜什麼，也可以先從文章主題或專業方法開始。</p>
       <div id="search"></div>
     </div>
   </div>
 </BaseLayout>
 
 <script is:inline>
-  window.addEventListener('DOMContentLoaded', () => {
+  function initSearch() {
+    const target = document.querySelector('#search');
+    if (!target || target.dataset.ready === 'true' || typeof PagefindUI === 'undefined') return;
+    target.dataset.ready = 'true';
     new PagefindUI({
       element: '#search',
       showSubResults: true,
       translations: {
-        placeholder: '搜尋文章...',
+        placeholder: '輸入問題、工具或主題...',
         zero_results: '找不到「[SEARCH_TERM]」的相關結果',
         many_results: '找到 [COUNT] 筆結果',
         one_result: '找到 1 筆結果',
@@ -43,27 +48,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         }, 1000); // Debounce 1 second
       });
     }
-  });
+  }
+
+  document.addEventListener('astro:page-load', initSearch);
+  initSearch();
 </script>
 
 <style>
   .search-container {
-    padding: 6rem 0 4rem;
+    padding: 1rem 0;
     min-height: 60vh;
   }
   .search-title {
     font-family: 'Noto Serif TC', serif;
     font-size: 2rem;
     margin-bottom: 2rem;
-    text-align: center;
+    text-align: left;
     color: var(--text-primary, #1a1a2e);
   }
+  .search-label { margin: 0 0 .5rem; color: var(--accent-text); font-size: .72rem; font-weight: 700; letter-spacing: .08em; }
+  .search-intro { max-width: 44rem; margin: -1rem 0 2rem; color: var(--text-secondary); }
+  .search-container > .container { width: min(100%, 82rem); margin-inline: auto; padding: clamp(1.5rem, 4vw, 3rem); border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-soft); box-shadow: var(--shadow-sm); }
   :global(.pagefind-ui) {
     max-width: 700px;
     margin: 0 auto;
   }
   :global(.pagefind-ui__search-input) {
-    border-radius: 8px !important;
+    border-radius: var(--radius-sm) !important;
     border: 1px solid var(--border, #e2e8f0) !important;
     padding: 0.75rem 1rem !important;
     font-size: 1rem !important;

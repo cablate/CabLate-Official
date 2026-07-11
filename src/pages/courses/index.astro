@@ -1,275 +1,74 @@
 ---
-/**
- * Courses Index Page - 課程列表
- */
-
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SectionTitle from '../../components/common/SectionTitle.astro';
-import KitForm from '../../components/common/KitForm.astro';
-import {
-  type CourseStatus,
-  type CourseLevel,
-  getStatusLabel,
-  getStatusBadgeClass,
-  getLevelBadgeClass,
-  formatPrice,
-} from '../../config/courseDisplay';
+import { ArrowRight } from '@lucide/astro';
+import { learningPath } from '../../config/authority';
+import { type CourseStatus, type CourseLevel, getStatusLabel, getStatusBadgeClass, getLevelBadgeClass, formatPrice } from '../../config/courseDisplay';
 
-// 取得所有已發布課程
 const allCourses = await getCollection('courses');
 const publishedCourses = allCourses
   .filter(entry => !entry.data.draft && entry.data.status !== 'archived')
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 ---
 
-<BaseLayout title="課程 | CabLate">
-  <section class="section section-light">
-    <div class="container">
-      <SectionTitle
-        title="課程"
-        subtitle="Courses"
-      />
+<BaseLayout title="學習路線 | CabLate" description="先看自己離想要的成果還差哪一步，再選擇免費資源、講座、系統課程或 Claude Code 深度工程手冊。">
+  <article class="learn-page">
+    <header class="learn-hero">
+      <p class="eyebrow">學習路徑</p>
+      <h1>別急著找最完整的課。<br />先看你離想要的成果還差哪一步。</h1>
+      <p>工具會更新，但解決問題的能力可以累積。這裡不會把所有內容排成商品牆，而是幫你分辨：目前需要免費起點、一次主題學習、一套系統課程，還是一份能長期查閱的工程手冊。</p>
+      <a href="#learning-path">依成果選擇下一步 <ArrowRight size={18} aria-hidden="true" /></a>
+    </header>
 
-      <div class="courses-grid">
-        {publishedCourses.map((entry, index) => (
-          <a href={`/courses/${entry.slug}`} class={`course-card reveal`} style={`animation-delay: ${index * 0.1}s`}>
-            <div class="course-card-header">
-              <span class={`badge badge-sm ${getLevelBadgeClass(entry.data.level as CourseLevel)}`}>
-                {entry.data.level}
-              </span>
-              {entry.data.status !== 'draft' && (
-                <span class={`badge badge-sm ${getStatusBadgeClass(entry.data.status as CourseStatus)}`}>
-                  {getStatusLabel(entry.data.status as CourseStatus)}
-                </span>
-              )}
-            </div>
-
-            <h2 class="course-card-title">{entry.data.title}</h2>
-
-            <p class="course-card-description">
-              {entry.data.excerpt || entry.data.description}
-            </p>
-
-            <div class="course-card-footer">
-              <div class="course-info">
-                <span class="duration">{entry.data.duration}</span>
-                <span class="price">{formatPrice(entry.data.price)}</span>
-              </div>
-              <span class="view-details">查看詳情 →</span>
-            </div>
-          </a>
+    <section class="learn-path" id="learning-path" aria-labelledby="path-title">
+      <header><h2 id="path-title">從找到起點，到能獨立完成工作。</h2></header>
+      <ol>
+        {learningPath.map((item, index) => (
+          <li>
+            <span>0{index + 1}</span>
+            <div><small>{item.stage}</small><h3>{item.title}</h3><p>{item.outcome}</p><em>{item.fit}</em>{item.href ? <a href={item.href}>{item.cta} <ArrowRight size={15} aria-hidden="true" /></a> : <span class="learn-path__status">{item.cta}</span>}</div>
+          </li>
         ))}
-      </div>
+      </ol>
+    </section>
 
-      {publishedCourses.length === 0 && (
-        <div class="empty-state">
-          <div class="empty-content">
-            <div class="empty-icon">
-              <div class="pulse-ring"></div>
-              <div class="pulse-ring pulse-ring-delay"></div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-
-            <h2 class="empty-title">課程籌備中</h2>
-
-            <p class="empty-note">訂閱電子報，開課時會專屬通知</p>
-
-            <KitForm />
-          </div>
+    <section class="available" id="available" aria-labelledby="available-title">
+      <header><h2 id="available-title">目前可以直接查看或取得的內容。</h2><p>這裡只列出現在確實可用的內容；尚未開放的項目不會先做成銷售頁。</p></header>
+      {publishedCourses.length > 0 ? (
+        <div class="courses-grid">
+          {publishedCourses.map((entry) => (
+            <a href={`/courses/${entry.slug}`} class="course-card">
+              <div class="course-card__meta"><span class={getLevelBadgeClass(entry.data.level as CourseLevel)}>{entry.data.level}</span>{entry.data.status !== 'draft' && <span class={getStatusBadgeClass(entry.data.status as CourseStatus)}>{getStatusLabel(entry.data.status as CourseStatus)}</span>}</div>
+              <h3>{entry.data.title}</h3>
+              <p>{entry.data.excerpt || entry.data.description}</p>
+              <div class="course-card__footer"><span>{entry.data.duration}</span><strong>{formatPrice(entry.data.price)}</strong><em>查看適合對象、內容與限制 <ArrowRight size={15} aria-hidden="true" /></em></div>
+            </a>
+          ))}
         </div>
+      ) : (
+        <div class="empty-state"><h3>目前沒有開放報名的系統課程</h3><p>你可以先從 Starter Pack 或 Claude Code 深度工程手冊開始。</p><div class="empty-state__links"><a href="/starter-pack/">查看 Starter Pack</a><a href="https://cabai.cablate.com">查看深度工程手冊</a></div></div>
       )}
-    </div>
-  </section>
+    </section>
+
+    <section class="learning-boundary" aria-labelledby="boundary-title">
+      <div><h2 id="boundary-title">免費內容幫你找到方向，付費內容陪你完成一段明確的進展。</h2></div>
+      <div><p>免費內容會分享趨勢觀察、常見錯誤、入門路線、公開問答與部分示範，適合用來理解問題並確認自己的起點。</p><p>完整操作流程、可反覆查閱的資料、個別情境診斷、作品檢查與進度推進，則會放在課程、手冊或合作服務中。</p></div>
+    </section>
+  </article>
 </BaseLayout>
 
 <style>
-  .courses-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-  }
-
-  .course-card {
-    display: flex;
-    flex-direction: column;
-    padding: 1.75rem;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  .course-card:hover {
-    border-color: var(--text-muted);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-  }
-
-  .course-card-header {
-    display: flex;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .course-card-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.4;
-    margin-bottom: 0.5rem;
-  }
-
-  .course-card-description {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
-    flex-grow: 1;
-  }
-
-  .course-card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-light);
-  }
-
-  .course-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .duration {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
-
-  .price {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-
-  .view-details {
-    color: var(--accent);
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-
-  .empty-state {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5rem 2rem;
-    min-height: 50vh;
-  }
-
-  .empty-content {
-    text-align: center;
-    max-width: 600px;
-  }
-
-  .empty-icon {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent);
-  }
-
-  .empty-icon svg {
-    width: 56px;
-    height: 56px;
-    position: relative;
-    z-index: 2;
-    filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.3));
-  }
-
-  .pulse-ring {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 2px solid var(--accent-border);
-    animation: pulse-scale 2s ease-out infinite;
-  }
-
-  .pulse-ring-delay {
-    animation-delay: 1s;
-  }
-
-  @keyframes pulse-scale {
-    0% {
-      transform: scale(0.8);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(1.5);
-      opacity: 0;
-    }
-  }
-
-  .empty-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.75rem;
-  }
-
-  .empty-note {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-  }
-
-  .empty-content :global(.kit-form-wrapper) {
-    margin: 0;
-  }
-
-  @media (max-width: 768px) {
-    .courses-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .course-card {
-      padding: 1.5rem;
-    }
-
-    .course-card-title {
-      font-size: 1.3rem;
-    }
-
-    .empty-state {
-      padding: 4rem 1.5rem;
-      min-height: 40vh;
-    }
-
-    .empty-icon {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 1.25rem;
-    }
-
-    .empty-icon svg {
-      width: 44px;
-      height: 44px;
-    }
-
-    .empty-title {
-      font-size: 1.5rem;
-    }
-  }
+  .learn-page { padding-top: 0; }
+  .learn-hero, .learn-path, .available, .learning-boundary { width: min(100% - 3rem, 82rem); margin-inline: auto; }
+  .learn-hero { padding-block: clamp(5rem, 9vw, 8rem); }.eyebrow { margin: 0 0 1rem; color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .learn-hero h1 { max-width: 17ch; margin: 0; font-size: clamp(3rem, 6vw, 6rem); letter-spacing: -.065em; line-height: 1.02; }.learn-hero > p:not(.eyebrow) { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }.learn-hero > a { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }.learn-hero > a:hover { background: var(--accent); }
+  .learn-path, .available, .learning-boundary { padding-block: clamp(5rem, 8vw, 8rem); border-top: 1px solid var(--border); }.learn-path header, .available > header { max-width: 52rem; margin-bottom: 3.5rem; }.learn-path h2, .available h2, .learning-boundary h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }.available > header > p:last-child { color: var(--text-secondary); line-height: 1.8; }
+  .learn-path ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }.learn-path li { display: grid; grid-template-columns: 5rem 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--border); }.learn-path li > span { color: var(--accent); font-family: var(--font-mono); font-size: .75rem; }.learn-path small { color: var(--text-muted); }.learn-path h3 { margin: .3rem 0 .6rem; font-size: 1.6rem; }.learn-path p { max-width: 50rem; margin: 0; color: var(--text-secondary); line-height: 1.7; }.learn-path em { display: block; margin-top: .7rem; color: var(--text-muted); font-size: .8rem; font-style: normal; }.learn-path a { display: inline-flex; align-items: center; gap: .45rem; margin-top: 1rem; color: var(--accent); font-size: .8rem; font-weight: 700; }
+  .courses-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }.course-card { display: flex; min-height: 22rem; flex-direction: column; padding: 1.8rem; border: 1px solid var(--border); }.course-card:hover { border-color: var(--accent); }.course-card__meta { display: flex; gap: .5rem; }.course-card__meta span { padding: .25rem .5rem; border: 1px solid var(--border); color: var(--text-muted); font-size: .68rem; }.course-card h3 { margin: 3.5rem 0 .8rem; font-size: 1.6rem; }.course-card > p { color: var(--text-secondary); line-height: 1.7; }.course-card__footer { display: grid; grid-template-columns: 1fr auto; gap: .3rem 1rem; align-items: end; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }.course-card__footer > span { color: var(--text-muted); font-size: .75rem; }.course-card__footer strong { grid-row: span 2; font-size: 1.3rem; }.course-card__footer em { display: inline-flex; align-items: center; gap: .4rem; color: var(--accent); font-size: .75rem; font-style: normal; }.empty-state { max-width: 40rem; padding: 2rem; border: 1px solid var(--border); }.empty-state p { color: var(--text-secondary); }
+  .learning-boundary { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 8vw, 8rem); }.learning-boundary > div:last-child { padding-top: 2.5rem; border-top: 1px solid var(--border-strong); }.learning-boundary > div:last-child p { color: var(--text-secondary); line-height: 1.85; }
+  @media (max-width: 760px) { .courses-grid, .learning-boundary { grid-template-columns: 1fr; }.learn-path li { grid-template-columns: 3rem 1fr; } }
+  @media (max-width: 520px) { .learn-hero, .learn-path, .available, .learning-boundary { width: min(100% - 2rem, 82rem); }.learn-hero h1 { font-size: 2.75rem; }.learn-path li { grid-template-columns: 1fr; gap: .5rem; }.course-card { min-height: 19rem; } }
+  .learn-path__status { display: inline-flex; margin-top: 1rem; padding: .35rem .55rem; border: 1px solid var(--border); color: var(--text-muted); font-size: .76rem; }
+  .empty-state__links { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+  .empty-state__links a { color: var(--accent); font-weight: 700; }
 </style>

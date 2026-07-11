@@ -11,7 +11,7 @@ interface Props {
 }
 
 const {
-    greeting = '嗨，我是 CabLate',
+    greeting = '判斷力比執行力值錢。',
     subtitle = '工程師出身，靠架構思維跟 AI 協作，把技術翻譯成人話。',
 } = Astro.props;
 ---
@@ -21,9 +21,11 @@ const {
         <h1 class="hero-title">{greeting}</h1>
         <p class="hero-subtitle">{subtitle}</p>
         <div class="hero-buttons">
-            <a href={siteConfig.servicesUrl} class="hero-cta hero-cta-primary">看看我能幫什麼 &rarr;</a>
-            <a href={siteConfig.threadsUrl} class="hero-cta hero-cta-secondary" target="_blank" rel="noopener">來 Threads 聊聊 &rarr;</a>
+            <a href={siteConfig.servicesUrl} class="hero-cta hero-cta-primary">找到你的起點 &rarr;</a>
         </div>
+        <p class="hero-secondary">
+            還不確定？<a href={siteConfig.starterPackUrl}>先領免費實戰上手包</a> 或 <a href={siteConfig.threadsUrl} target="_blank" rel="noopener">來 Threads 逛逛</a>
+        </p>
     </div>
 </section>
 
@@ -64,14 +66,15 @@ const {
         gap: 1rem;
         justify-content: center;
         flex-wrap: wrap;
+        margin-bottom: 1.25rem;
     }
 
     .hero-cta {
         display: inline-block;
-        padding: 0.75rem 2rem;
-        font-size: 0.95rem;
-        font-weight: 500;
-        border-radius: 8px;
+        padding: 0.85rem 2.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 10px;
         text-decoration: none;
         transition: all 0.2s ease;
     }
@@ -89,16 +92,23 @@ const {
         box-shadow: var(--shadow-md);
     }
 
-    .hero-cta-secondary {
-        color: var(--text-primary);
-        background: transparent;
-        border: 1px solid var(--border);
+    .hero-secondary {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin: 0;
     }
 
-    .hero-cta-secondary:hover {
-        border-color: var(--accent);
+    .hero-secondary a {
+        color: var(--text-secondary);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-color: var(--border);
+        transition: color 0.2s ease;
+    }
+
+    .hero-secondary a:hover {
         color: var(--accent);
-        background: var(--accent-subtle);
+        text-decoration-color: var(--accent);
     }
 
     @media (max-width: 768px) {

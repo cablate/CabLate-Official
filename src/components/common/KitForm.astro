@@ -14,7 +14,7 @@ interface Props {
 const {
   formId = siteConfig.convertKit.formId,
   uid = siteConfig.convertKit.uid,
-  successMessage = "訂閱成功！請檢查你的 Email 確認訂閱。"
+  successMessage = "資料已送出，請到信箱點擊確認連結，完成訂閱。"
 } = Astro.props;
 ---
 
@@ -32,20 +32,24 @@ const {
   >
     <div data-element="fields" data-stacked="false" class="formkit-fields">
       <div class="formkit-field">
+        <label class="formkit-label" for={`kit-email-${formId}`}>電子信箱</label>
         <input
+          id={`kit-email-${formId}`}
           class="formkit-input"
           name="email_address"
-          aria-label="輸入你的 Email"
-          placeholder="輸入你的 Email"
+          aria-label="輸入你的電子信箱"
+          placeholder="name@example.com"
           required
           type="email"
+          inputmode="email"
+          autocomplete="email"
         >
       </div>
       <button data-element="submit" class="formkit-submit" type="submit">
-        <span>訂閱</span>
+        <span>免費訂閱</span>
       </button>
     </div>
-    <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul>
+    <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert" aria-live="polite" aria-atomic="true"></ul>
   </form>
 </div>
 
@@ -73,12 +77,21 @@ const {
     margin: 0 !important;
   }
 
+  .kit-form-wrapper .formkit-label {
+    display: block;
+    margin-bottom: .35rem;
+    color: var(--text-secondary);
+    font-size: .78rem;
+    font-weight: 700;
+    text-align: left;
+  }
+
   .kit-form-wrapper .formkit-input {
     width: 100% !important;
     padding: 0.85rem 1.25rem !important;
     background: var(--bg) !important;
     border: 1px solid var(--border) !important;
-    border-radius: 8px !important;
+    border-radius: var(--radius-sm) !important;
     color: var(--text-primary) !important;
     font-size: 0.9rem !important;
     font-family: inherit !important;
@@ -99,7 +112,7 @@ const {
   .kit-form-wrapper .formkit-submit {
     background: var(--text-primary) !important;
     border: none !important;
-    border-radius: 8px !important;
+    border-radius: var(--radius-sm) !important;
     color: var(--bg) !important;
     font-size: 0.9rem !important;
     font-weight: 500 !important;
@@ -122,7 +135,7 @@ const {
     background: rgba(16, 191, 122, 0.2) !important;
     border-color: #10bf7a !important;
     color: #10bf7a !important;
-    border-radius: 8px !important;
+    border-radius: var(--radius-sm) !important;
     margin-top: 1rem !important;
     text-align: center !important;
     max-width: 500px !important;
@@ -134,7 +147,7 @@ const {
     background: rgba(242, 100, 59, 0.2) !important;
     border-color: #f2643b !important;
     color: #f2643b !important;
-    border-radius: 8px !important;
+    border-radius: var(--radius-sm) !important;
     margin-top: 1rem !important;
   }
 

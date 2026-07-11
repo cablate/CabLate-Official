@@ -6,6 +6,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatDate } from '../../utils/format';
+import { expertiseAreas } from '../../config/authority';
 
 // 取得所有已發布文章
 const allArticles = await getCollection('articles');
@@ -13,8 +14,8 @@ const publishedArticles = allArticles
   .filter(entry => !entry.data.draft)
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
-const latestArticle = publishedArticles[0];
-const restArticles = publishedArticles.slice(1);
+const recommendedArticle = publishedArticles.find(entry => entry.data.featured) ?? publishedArticles[0];
+const restArticles = publishedArticles.filter(entry => entry.slug !== recommendedArticle?.slug);
 
 // 取得所有分類（依名稱排序）
 const categories = [...new Set(publishedArticles.map(entry => entry.data.category))].sort();
@@ -33,7 +34,7 @@ const collectionJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   name: '文章 — CabLate',
-  description: 'AI 協作、軟體架構、開發實戰與職涯觀點的深度文章集合。',
+  description: 'CabLate 關於 Harness Engineering、Context Engineering、Skill 設計、Claude Code、Agent 工作流程、Vibe Coding 與 AI 教學設計的研究和實作文章。',
   url: 'https://cablate.com/articles/',
   numberOfItems: publishedArticles.length,
   hasPart: publishedArticles.slice(0, 10).map(entry => ({
@@ -41,11 +42,11 @@ const collectionJsonLd = {
     headline: entry.data.title,
     url: `https://cablate.com/articles/${entry.slug}/`,
     datePublished: entry.data.publishDate.toISOString(),
-    author: { '@type': 'Person', name: 'CabLate' }
+    author: { '@type': 'Person', name: 'CabLate', url: 'https://cablate.com/about/' }
   }))
 };
 
-const pageDescription = `CabLate 的技術文章 — AI 協作、軟體架構、開發實戰紀錄，共 ${publishedArticles.length} 篇深度內容。`;
+const pageDescription = `CabLate 關於 Harness Engineering、Context Engineering、Skill 設計、Claude Code、Agent 工作流程、Vibe Coding 與 AI 教學設計的研究和實作文章，共 ${publishedArticles.length} 篇。`;
 ---
 
 <BaseLayout title="文章" description={pageDescription}>
@@ -62,9 +63,19 @@ const pageDescription = `CabLate 的技術文章 — AI 協作、軟體架構、
   <section class="articles-section">
     <div class="container">
       <div class="articles-header">
-        <h1 class="articles-title">文章</h1>
-        <p class="articles-subtitle">技術觀點、AI 協作心得、開發實戰紀錄</p>
+        <p class="articles-eyebrow">研究與實作筆記</p>
+        <h1 class="articles-title">不只整理工具，<br />也把思考過程留下來。</h1>
+        <p class="articles-subtitle">這裡收錄技術觀點、AI 協作、Agent 問題排查與產品實作紀錄。你可以先從主題開始，也可以依分類或標籤繼續尋找相關內容。</p>
       </div>
+
+      <section class="topic-map" aria-labelledby="topic-title">
+        <h2 id="topic-title">我持續研究與實作的六個主題</h2>
+        <div>
+          {expertiseAreas.map((area, index) => (
+            <a href={`/expertise/#${area.id}`}><span>0{index + 1}</span><h3>{area.title}</h3><p>{area.summary}</p><small>{area.proof}</small></a>
+          ))}
+        </div>
+      </section>
 
       {(categories.length > 0) && (
         <nav class="filter-nav" aria-label="文章分類與標籤">
@@ -79,17 +90,17 @@ const pageDescription = `CabLate 的技術文章 — AI 協作、軟體架構、
         </nav>
       )}
 
-      {latestArticle && (
+      {recommendedArticle && (
         <article class="latest-article">
-          <a href={`/articles/${latestArticle.slug}/`} class="latest-card">
-            <span class="latest-label">最新文章</span>
-            <span class="article-category">{latestArticle.data.category}</span>
-            <h2 class="latest-title">{latestArticle.data.title}</h2>
-            {latestArticle.data.description && (
-              <p class="latest-desc">{latestArticle.data.description}</p>
+          <a href={`/articles/${recommendedArticle.slug}/`} class="latest-card">
+            <span class="latest-label">推薦起點</span>
+            <span class="article-category">{recommendedArticle.data.category}</span>
+            <h2 class="latest-title">{recommendedArticle.data.title}</h2>
+            {recommendedArticle.data.description && (
+              <p class="latest-desc">{recommendedArticle.data.description}</p>
             )}
-            <time class="article-date" datetime={latestArticle.data.publishDate.toISOString()}>
-              {formatDate(latestArticle.data.publishDate)}
+            <time class="article-date" datetime={recommendedArticle.data.publishDate.toISOString()}>
+              {formatDate(recommendedArticle.data.publishDate)}
             </time>
           </a>
         </article>
@@ -116,7 +127,7 @@ const pageDescription = `CabLate 的技術文章 — AI 協作、軟體架構、
 
       {publishedArticles.length === 0 && (
         <div class="empty-state">
-          <p>還沒有發布文章，敬請期待！</p>
+          <p>這個分類目前還沒有文章。你可以先從上方主題或其他分類開始。</p>
         </div>
       )}
     </div>
@@ -127,7 +138,7 @@ const pageDescription = `CabLate 的技術文章 — AI 協作、軟體架構、
   .breadcrumb {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 6rem 2rem 0;
+    padding: 1rem 1rem 0;
   }
 
   @media (max-width: 768px) {
@@ -163,7 +174,7 @@ const pageDescription = `CabLate 的技術文章 — AI 協作、軟體架構、
   }
 
   .articles-section {
-    padding: 2rem 0 4rem;
+    padding: 1rem 0 4rem;
     min-height: 60vh;
   }
 
@@ -173,21 +184,38 @@ const pageDescription = `CabLate 的技術文章 — AI 協作、軟體架構、
   }
 
   .articles-header {
-    margin-bottom: 3rem;
+    max-width: 52rem;
+    margin-bottom: 4rem;
   }
+
+  .articles-eyebrow { margin: 0 0 1rem; color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 
   .articles-title {
     font-family: 'Noto Serif TC', serif;
-    font-size: 2.5rem;
+    font-size: clamp(2.7rem, 5.5vw, 5.3rem);
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -.055em;
+    line-height: 1.05;
   }
 
   .articles-subtitle {
     font-size: 1rem;
-    color: var(--text-muted);
+    max-width: 44rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
   }
+
+  .topic-map { margin-bottom: 4rem; padding-block: 3rem; border-block: 1px solid var(--border); }
+  .topic-map > h2 { margin: 0 0 2rem; font-size: 1.5rem; }
+  .topic-map > div { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+  .topic-map a { min-height: 14rem; padding: 1.4rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .topic-map a:hover { background: var(--bg-soft); }
+  .topic-map a > span { color: var(--accent); font-family: var(--font-mono); font-size: .7rem; }
+  .topic-map h3 { margin: 1.8rem 0 .6rem; font-size: 1.2rem; }
+  .topic-map p { margin: 0 0 1rem; color: var(--text-secondary); font-size: .84rem; line-height: 1.7; }
+  .topic-map small { color: var(--text-muted); line-height: 1.55; }
 
   .filter-nav {
     margin-bottom: 2rem;
@@ -251,7 +279,7 @@ const pageDescription = `CabLate 的技術文章 — AI 協作、軟體架構、
     padding: 2.5rem;
     background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     text-decoration: none;
     transition: all 0.2s ease;
   }
@@ -270,7 +298,7 @@ const pageDescription = `CabLate 的技術文章 — AI 協作、軟體架構、
     background: var(--accent-subtle, #f5f3ff);
     border: 1px solid var(--accent-border, #e9e5f5);
     padding: 0.2rem 0.6rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     margin-bottom: 0.75rem;
   }
 
@@ -307,7 +335,7 @@ const pageDescription = `CabLate 的技術文章 — AI 協作、軟體架構、
     padding: 1.75rem;
     background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     text-decoration: none;
     transition: all 0.2s ease;
   }
@@ -362,13 +390,15 @@ const pageDescription = `CabLate 的技術文章 — AI 協作、軟體架構、
 
   @media (max-width: 768px) {
     .articles-section {
-      padding-top: 6rem;
+      padding-top: 1rem;
     }
 
     .articles-grid {
       grid-template-columns: 1fr;
       gap: 1rem;
     }
+
+    .topic-map > div { grid-template-columns: 1fr; }
 
     .articles-title {
       font-size: 2rem;

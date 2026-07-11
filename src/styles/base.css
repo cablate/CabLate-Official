@@ -1,139 +1,112 @@
-/* ═══════════════════════════════════════════════════════════
-   BREAKPOINTS（約定值，CSS 原生不支援 media query 變數）
-
-   --bp-sm: 600px   — 小螢幕手機
-   --bp-md: 768px   — 平板 / 手機橫向（主要斷點）
-   --bp-lg: 1024px  — 小筆電 / 平板橫向
-
-   使用方式：@media (max-width: 768px) { ... }
-   新增元件時請優先使用這 3 個值，避免發明新的 breakpoint。
-   特殊值：900px（Portfolio carousel）、380px（nav mobile）允許存在但不新增。
-   ═══════════════════════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════════════════════
-   CABLATE BASE STYLES — Clean Minimal Theme
-   ═══════════════════════════════════════════════════════════ */
-
 :root {
-    /* 強調色 — 淡紫，極少使用 */
-    --accent: #8b5cf6;
-    --accent-light: #a78bfa;
-    --accent-subtle: #faf8ff;
-    --accent-border: #ede9fe;
-
-    /* 中性色 — 深藍灰為主調 */
-    --text-primary: #1e293b;
-    --text-secondary: #475569;
-    --text-muted: #94a3b8;
-    --bg: #ffffff;
-    --bg-soft: #fafafa;
-    --bg-muted: #f1f5f9;
-    --border: #e2e8f0;
-    --border-light: #f1f5f9;
-
-    /* 點綴 */
-    --gold: #f59e0b;
-
-    /* 向後相容 */
-    --purple-900: #1e293b;
-    --purple-800: #334155;
-    --purple-700: #475569;
-    --purple-600: #8b5cf6;
-    --purple-500: #a78bfa;
-    --purple-400: #c4b5fd;
-    --purple-300: #ddd6fe;
-    --purple-200: #ede9fe;
-    --purple-100: #f5f3ff;
-    --white: #ffffff;
-    --white-90: rgba(255, 255, 255, 0.9);
-    --white-60: rgba(100, 116, 139, 1);
-    --white-30: rgba(148, 163, 184, 1);
-    --white-10: rgba(226, 232, 240, 1);
-    --dark: #1e293b;
-    --gold-light: #fde68a;
-    --cyan: #06b6d4;
-
-    /* 狀態色 */
-    --status-success: #16a34a;
-    --status-success-bg: #f0fdf4;
-    --status-success-border: #bbf7d0;
-    --status-error: #dc2626;
-    --status-error-bg: #fef2f2;
-    --status-error-border: #fecaca;
-    --status-warning: #d97706;
-    --status-warning-bg: #fffbeb;
-    --status-warning-border: #fde68a;
-
-    /* 間距 */
-    --spacing-xs: 0.25rem;
-    --spacing-sm: 0.5rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 2rem;
-    --spacing-xl: 4rem;
-    --spacing-2xl: 6rem;
-
-    /* 圓角 */
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 16px;
-    --radius-xl: 24px;
-    --radius-full: 9999px;
-
-    /* 陰影 — 柔和 */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
-
-    /* 過渡 */
-    --transition-fast: 0.15s ease;
-    --transition-normal: 0.3s ease;
-    --transition-slow: 0.5s ease;
+  --accent: #8064ea;
+  --accent-text: #6248c8;
+  --accent-hover: #684fc9;
+  --accent-bright: #aa9af6;
+  --text-primary: #253047;
+  --text-secondary: #5f687a;
+  --text-muted: #626b7d;
+  --bg: #eeeae2;
+  --bg-soft: #fffdf8;
+  --bg-muted: #f1edff;
+  --border: #d7d1c6;
+  --border-light: var(--border);
+  --border-strong: #b8afc9;
+  --surface-ink: #253047;
+  --surface-dark: #20221d;
+  --surface-dark-text: #f4f2e9;
+  --surface-dark-muted: #b8b8ae;
+  --surface-dark-border: #3e4039;
+  --font-sans: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Noto Serif TC', 'Noto Sans TC', serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  --radius-sm: .2rem;
+  --radius-md: .6rem;
+  --radius-lg: 1.2rem;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px rgb(23 24 22 / .08);
+  --shadow-md: 0 14px 40px rgb(23 24 22 / .12);
+  --shadow-lg: 0 24px 70px rgb(23 24 22 / .16);
+  --transition-fast: 150ms ease;
+  --transition-normal: 260ms ease;
+  --paper-white-image: url('/images/paper-ui/paper-white-1x.webp');
+  --paper-white-clip-image: url('/images/paper-ui/paper-white-paperclip-1x.webp');
+  --paperclip-silver-image: url('/images/paper-ui/paperclip-silver-1x.webp');
+  --paper-reading-card-image: url('/images/paper-ui/paper-reading-card-1x.webp');
+  color-scheme: light;
+  /* Transitional aliases for routes that have not entered the redesign slice yet. */
+  --accent-light: var(--accent-hover);
+  --accent-subtle: #f1edff;
+  --accent-border: #d8d2e9;
+  --gold: #b86d18;
+  --gold-light: #f1d4aa;
+  --purple-900: var(--text-primary);
+  --purple-800: #30322e;
+  --purple-700: var(--text-secondary);
+  --purple-600: var(--accent);
+  --purple-500: var(--accent-bright);
+  --purple-400: #b9acf5;
+  --purple-300: #cbc2f8;
+  --purple-200: #ddd7fb;
+  --purple-100: #f1edff;
+  --white: #fff;
+  --white-90: rgb(255 255 255 / .9);
+  --white-70: rgb(255 255 255 / .7);
+  --white-60: rgb(255 255 255 / .6);
+  --white-50: rgb(255 255 255 / .5);
+  --white-30: rgb(255 255 255 / .3);
+  --white-10: rgb(255 255 255 / .1);
+  --dark: var(--text-primary);
+  --cyan: #267a75;
+  --status-success: #26734f;
+  --status-success-bg: #eef7f1;
+  --status-success-border: #aed7be;
+  --status-error: #b4352f;
+  --status-error-bg: #fff1ef;
+  --status-error-border: #efb4ae;
+  --status-warning: #9b6017;
+  --status-warning-bg: #fff7e8;
+  --status-warning-border: #e7c58f;
 }
 
-/* Reset */
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+@supports (background-image: image-set(url('/images/paper-ui/paper-white-1x.webp') 1x)) {
+  :root {
+    --paper-white-image: image-set(
+      url('/images/paper-ui/paper-white-1x.webp') type('image/webp') 1x,
+      url('/images/paper-ui/paper-white-2x.webp') type('image/webp') 2x
+    );
+    --paper-white-clip-image: image-set(
+      url('/images/paper-ui/paper-white-paperclip-1x.webp') type('image/webp') 1x,
+      url('/images/paper-ui/paper-white-paperclip-2x.webp') type('image/webp') 2x
+    );
+    --paperclip-silver-image: image-set(
+      url('/images/paper-ui/paperclip-silver-1x.webp') type('image/webp') 1x,
+      url('/images/paper-ui/paperclip-silver-2x.webp') type('image/webp') 2x
+    );
+    --paper-reading-card-image: image-set(
+      url('/images/paper-ui/paper-reading-card-1x.webp') type('image/webp') 1x,
+      url('/images/paper-ui/paper-reading-card-2x.webp') type('image/webp') 2x
+    );
+  }
 }
 
-html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { margin: 0; overflow-x: clip; background-color: var(--bg); background-image: radial-gradient(rgb(60 50 40 / .045) .7px, transparent .7px); background-size: .42rem .42rem; color: var(--text-primary); font-family: var(--font-sans); line-height: 1.7; }
+h1, h2, h3, h4, h5, h6 { color: var(--text-primary); font-family: var(--font-serif); font-weight: 700; line-height: 1.18; text-wrap: balance; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+::selection { background: var(--accent); color: #fff; }
+
+.visually-hidden:where(:not(:focus-within, :active)) { position: absolute !important; clip-path: inset(50%) !important; overflow: hidden !important; width: 1px !important; height: 1px !important; margin: -1px !important; padding: 0 !important; border: 0 !important; white-space: nowrap !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
-body {
-    font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg);
-    color: var(--text-primary);
-    line-height: 1.7;
-    overflow-x: hidden;
+@media (prefers-contrast: more) {
+  :root { --text-secondary: #30322e; --text-muted: #4a4d46; --border: #8b8d84; }
 }
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Noto Serif TC', serif;
-    font-weight: 700;
-    line-height: 1.3;
-    color: var(--text-primary);
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-button {
-    font-family: inherit;
-    cursor: pointer;
-    border: none;
-    background: none;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-

@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ArrowRight } from '@lucide/astro';
+import { expertiseAreas, signatureMethods } from '../config/authority';
+---
+
+<BaseLayout title="專業領域與方法 | CabLate" description="認識 CabLate 長期研究與實作的六個主題，以及 Harness Engineering、Context Engineering 與 Skill 設計三套核心方法。">
+  <article class="expertise-page">
+    <header class="expertise-hero"><p class="eyebrow">專業方法</p><h1>工具名稱會變，<br />解決問題的基本功不會。</h1><p>我長期投入的不是某一款模型或工具，而是 Agent 的工作環境、Context、Skill、AI 產品落地與教學設計。這裡列出的每個領域，都有研究、作品或實際交付經驗支撐。</p><a href="#signature-methods">先看三個核心方法 <ArrowRight size={18} aria-hidden="true" /></a></header>
+
+    <section class="areas" aria-labelledby="areas-title"><header><h2 id="areas-title">六個持續研究，也持續實作的主題。</h2></header><div>{expertiseAreas.map((area,index)=><article id={area.id}><span>0{index+1}</span><h3>{area.title}</h3><p>{area.summary}</p><small>{area.proof}</small></article>)}</div></section>
+
+    <section class="methods" id="signature-methods" aria-labelledby="methods-title"><header><h2 id="methods-title">這些方法不是為了發明新名詞，而是為了解決反覆出現的問題。</h2></header><div>{signatureMethods.map((method,index)=><article><span>0{index+1}</span><h3>{method.title}</h3><p>{method.definition}</p><small>{method.problem}</small></article>)}</div></section>
+
+    <section class="method-boundary"><div><h2>不是每個問題都需要 Agent。</h2></div><div><p>如果表單、試算表或一般自動化就能穩定完成工作，我不會為了追逐熱門名詞，硬把 Agent 加進流程。</p><p>方法是用來降低錯誤、重複工作與交接成本，不是用來增加架構。當解法比問題本身還複雜，就該回到更簡單的做法。</p><a href="/services/">帶著實際情境查看合作方式 <ArrowRight size={16} aria-hidden="true" /></a></div></section>
+  </article>
+</BaseLayout>
+
+<style>
+  .expertise-page{padding-top:5.25rem}.expertise-hero,.areas,.methods,.method-boundary{width:min(100% - 3rem,82rem);margin-inline:auto;padding-block:clamp(5rem,8vw,8rem)}.eyebrow{margin:0 0 1rem;color:var(--accent);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.expertise-hero h1{max-width:16ch;margin:0;font-size:clamp(3rem,6vw,6rem);letter-spacing:-.065em;line-height:1.02}.expertise-hero>p:not(.eyebrow){max-width:49rem;margin:2rem 0;color:var(--text-secondary);font-size:1.08rem;line-height:1.85}.expertise-hero>a,.method-boundary a{display:inline-flex;align-items:center;gap:.6rem;color:var(--accent);font-weight:700}.areas,.methods,.method-boundary{border-top:1px solid var(--border)}.areas header,.methods header{max-width:52rem;margin-bottom:3.5rem}.areas h2,.methods h2,.method-boundary h2{max-width:17ch;margin:0;font-size:clamp(2.3rem,4.5vw,4.2rem);letter-spacing:-.05em;line-height:1.06}.areas>div{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--border);border-left:1px solid var(--border)}.areas article{min-height:16rem;padding:1.6rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}.areas article>span,.methods article>span{color:var(--accent);font-family:var(--font-mono);font-size:.72rem}.areas h3{margin:2.5rem 0 .7rem;font-size:1.4rem}.areas p,.methods p{color:var(--text-secondary);line-height:1.75}.areas small,.methods small{color:var(--text-muted);line-height:1.55}.methods>div{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border-strong)}.methods article{min-height:24rem;padding:1.8rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}.methods article:first-child{border-left:1px solid var(--border)}.methods h3{margin:7rem 0 1rem;font-size:1.6rem}.method-boundary{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(3rem,8vw,8rem)}.method-boundary>div:last-child{padding-top:1rem;border-top:1px solid var(--border-strong)}.method-boundary p{color:var(--text-secondary);line-height:1.85}@media(max-width:760px){.areas>div,.methods>div,.method-boundary{grid-template-columns:1fr}.methods article{min-height:auto}.methods h3{margin-top:3rem}}@media(max-width:520px){.expertise-hero,.areas,.methods,.method-boundary{width:min(100% - 2rem,82rem)}.expertise-hero h1{font-size:2.75rem}}
+  .expertise-page { padding-top: 0; }
+  .areas article { scroll-margin-top: 6rem; }
+</style>

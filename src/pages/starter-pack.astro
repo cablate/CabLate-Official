@@ -2,14 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../config/siteConfig';
 import { CheckCircle } from '@lucide/astro';
+import KitForm from '../components/common/KitForm.astro';
 ---
 
-<BaseLayout title="Claude Code 實戰上手包（免費）" description="一個工程師用了半年的省錢秘訣和避坑指南。核心指南、CLAUDE.md 模板、踩坑卡、安全 Q&A——輸入 Email 免費下載。">
+<BaseLayout title="Claude Code 實戰上手包｜開放通知" description="先了解成本、Context 與權限邊界，再開始第一個 Claude Code 工作流程。留下 Email，完成訂閱確認後接收上手包開放通知。">
 
 <section class="lp-hero">
     <div class="lp-hero-inner">
         <h1 class="lp-title">Claude Code 實戰上手包</h1>
-        <p class="lp-subtitle">一個工程師用了半年的省錢秘訣和避坑指南</p>
+        <p class="lp-subtitle">先了解成本、Context 與權限邊界，再開始第一個 Claude Code 工作流程。</p>
     </div>
 </section>
 
@@ -19,31 +20,42 @@ import { CheckCircle } from '@lucide/astro';
         <div class="lp-pain">
             <h2 class="lp-section-title">裝好 Claude Code，然後呢？</h2>
             <p class="lp-pain-text">
-                大多數人還沒開口，錢就開始燒了——因為跳過了一個 10 分鐘的設定。
+                很多人裝好工具後就急著下指令，卻還沒弄清楚 AI 會讀到哪些資料、成本從哪裡產生，以及哪些操作需要先確認。
             </p>
         </div>
 
         <!-- 內容預覽 -->
         <div class="lp-preview">
-            <h2 class="lp-section-title">你會拿到什麼</h2>
+            <h2 class="lp-section-title">上手包開放後，會先幫你處理四個問題</h2>
             <ul class="lp-checklist">
                 <li>
                     <span class="lp-check"><CheckCircle size={20} /></span>
-                    <span><strong>核心指南</strong>：運作機制 / MCP・Skill・Agent 秒懂 / 錢花在哪裡 / 不知道做什麼照這走</span>
+                    <span><strong>核心指南</strong>：了解基本運作方式、MCP／Skill／Agent 各自負責什麼、成本從哪裡來，以及第一個流程怎麼開始</span>
                 </li>
                 <li>
                     <span class="lp-check"><CheckCircle size={20} /></span>
-                    <span><strong>CLAUDE.md 模板</strong>：複製貼上就能用</span>
+                    <span><strong>CLAUDE.md 起始範例</strong>：提供可依專案調整的骨架，並說明哪些內容不適合直接照抄</span>
                 </li>
                 <li>
                     <span class="lp-check"><CheckCircle size={20} /></span>
-                    <span><strong>踩坑卡 + 省錢 Checklist</strong></span>
+                    <span><strong>常見錯誤與成本檢查表</strong>：開始工作前，先檢查容易忽略的設定與花費</span>
                 </li>
                 <li>
                     <span class="lp-check"><CheckCircle size={20} /></span>
-                    <span><strong>安全 Q&A</strong></span>
+                    <span><strong>安全與權限常見問答</strong>：知道哪些操作可以放心交給 AI，哪些情況應該先停下來確認</span>
                 </li>
             </ul>
+        </div>
+
+        <div class="lp-fit-grid">
+            <section>
+                <h2 class="lp-section-title">適合你，如果你</h2>
+                <ul><li>已經裝好 Claude Code，卻不知道第一個工作流程怎麼開始。</li><li>想先理解 Context、Skill 與成本，而不是背一堆指令。</li><li>需要一份遇到問題時可以回來檢查的入門指南。</li></ul>
+            </section>
+            <section>
+                <h2 class="lp-section-title">不適合你，如果你</h2>
+                <ul><li>期待拿到一包提示詞，就讓 AI 自動完成所有工作。</li><li>目前需要的是進階 Memory、Hooks、多 Agent 或 Harness 設計。</li><li>正在處理企業導入或特定產品問題，更需要個別情境診斷。</li></ul>
+            </section>
         </div>
 
         <!-- 社會證明 -->
@@ -51,29 +63,26 @@ import { CheckCircle } from '@lucide/astro';
             <div class="lp-proof-items">
                 <div class="lp-proof-item">
                     <span class="lp-proof-number">{siteConfig.lectureFeedbackScore}/5</span>
-                    <span class="lp-proof-label">AgentSkill 講座（{siteConfig.lectureFeedbackCount} 筆回饋）</span>
+                    <span class="lp-proof-label">講座回饋（{siteConfig.lectureFeedbackCount} 筆，截至 2026-05）</span>
                 </div>
                 <div class="lp-proof-divider"></div>
                 <div class="lp-proof-item">
-                    <span class="lp-proof-label">VibeCoding 線上課 ｜ 金流課程</span>
+                    <span class="lp-proof-label">VibeCoding 四週課與金流串接實作課皆已完成交付（截至 2026-06）</span>
                 </div>
             </div>
         </div>
 
-        <!-- Kit 表單預留位 -->
+        <!-- 上手包開放通知 -->
         <div class="lp-form-area" id="download">
-            <h2 class="lp-section-title">免費下載</h2>
-            <p class="lp-form-hint">輸入 Email，立即寄送到你的信箱。</p>
-            <div class="lp-form-placeholder">
-                <!-- Kit embed form 預留位 -->
-                <!-- 從 Kit 後台取得嵌入碼後，替換此區塊 -->
-                <p class="lp-form-note">📮 表單載入中⋯⋯（Kit embed 預留位）</p>
-            </div>
+            <h2 class="lp-section-title">上手包開放通知</h2>
+            <p class="lp-form-hint">留下 Email 並完成訂閱確認。上手包開放時，我會寄送通知，也會不定期分享相關入門內容。</p>
+            <KitForm />
+            <p class="lp-form-note">送出後，你會訂閱 CabLate 電子報並收到確認信；可隨時退訂。詳見<a href="/privacy/">隱私權政策</a>。</p>
         </div>
 
         <!-- 收尾 -->
         <div class="lp-closing">
-            <p class="lp-closing-text">你不寫程式也能用。三種人，三條路徑。</p>
+            <p class="lp-closing-text">先用免費內容找到起點；需要完整方法、進階診斷或個別情境協助時，再考慮課程、手冊或合作服務。</p>
         </div>
     </div>
 </section>
@@ -82,9 +91,9 @@ import { CheckCircle } from '@lucide/astro';
 
 <style>
     .lp-hero {
-        padding: 8rem 2rem 3rem;
+        padding: 1rem 0;
         text-align: center;
-        background: var(--bg);
+        background: transparent;
     }
 
     .lp-hero-inner {
@@ -107,8 +116,8 @@ import { CheckCircle } from '@lucide/astro';
     }
 
     .lp-section {
-        padding: 0 2rem 4rem;
-        background: var(--bg);
+        padding: 0 0 1rem;
+        background: transparent;
     }
 
     .lp-inner {
@@ -129,7 +138,7 @@ import { CheckCircle } from '@lucide/astro';
         margin-bottom: 3rem;
         padding: 2rem;
         background: var(--bg-soft);
-        border-radius: 14px;
+        border-radius: var(--radius-md);
         border: 1px solid var(--border);
     }
 
@@ -143,6 +152,10 @@ import { CheckCircle } from '@lucide/astro';
     .lp-preview {
         margin-bottom: 3rem;
     }
+
+    .lp-fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 3rem; }
+    .lp-fit-grid section { padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius-md); }
+    .lp-fit-grid ul { margin: 0; padding-left: 1.15rem; color: var(--text-secondary); font-size: .85rem; line-height: 1.75; }
 
     .lp-checklist {
         list-style: none;
@@ -162,7 +175,7 @@ import { CheckCircle } from '@lucide/astro';
         line-height: 1.6;
         padding: 0.75rem 1rem;
         background: var(--bg-soft);
-        border-radius: 10px;
+        border-radius: var(--radius-sm);
         border: 1px solid var(--border-light);
     }
 
@@ -177,7 +190,7 @@ import { CheckCircle } from '@lucide/astro';
         margin-bottom: 3rem;
         padding: 1.5rem 2rem;
         background: var(--bg-soft);
-        border-radius: 14px;
+        border-radius: var(--radius-md);
         border: 1px solid var(--border);
     }
 
@@ -224,17 +237,13 @@ import { CheckCircle } from '@lucide/astro';
         margin-bottom: 1.5rem;
     }
 
-    .lp-form-placeholder {
-        padding: 2rem;
-        background: var(--bg-soft);
-        border: 2px dashed var(--border);
-        border-radius: 14px;
-    }
-
     .lp-form-note {
+        margin-top: 1rem;
         font-size: 0.9rem;
         color: var(--text-muted);
     }
+
+    .lp-form-note a { color: var(--accent); text-decoration: underline; text-underline-offset: .2em; }
 
     /* 收尾 */
     .lp-closing {
@@ -250,11 +259,11 @@ import { CheckCircle } from '@lucide/astro';
 
     @media (max-width: 600px) {
         .lp-hero {
-            padding: 7rem 1.5rem 2rem;
+            padding: 1rem 0;
         }
 
         .lp-section {
-            padding: 0 1.5rem 3rem;
+            padding: 0 0 1rem;
         }
 
         .lp-pain,
@@ -266,6 +275,7 @@ import { CheckCircle } from '@lucide/astro';
             flex-direction: column;
             gap: 1rem;
         }
+        .lp-fit-grid { grid-template-columns: 1fr; }
 
         .lp-proof-divider {
             width: 2rem;

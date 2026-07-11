@@ -1,0 +1,118 @@
+---
+/**
+ * ProductRecommend - 文章底部產品推薦元件
+ * 根據文章分類/標籤推薦對應的產品或資源。
+ * 只連結到 cablate.com 既有頁面，不涉及外部金流站。
+ */
+
+interface Props {
+    category: string;
+    tags: string[];
+}
+
+const { category, tags } = Astro.props;
+
+// 分類 → 推薦產品對應
+const recommendMap: Record<string, { title: string; url: string; desc: string }[]> = {
+    'AI工具實戰': [
+        { title: '選擇適合你的學習路線', url: '/courses/', desc: '先看自己離想要的成果還差哪一步，再決定要讀免費內容、查工程手冊，或等待合適課程開放。' },
+    ],
+};
+
+// 根據標籤的推薦邏輯
+const tagBased: { match: string[]; rec: { title: string; url: string; desc: string } }[] = [
+    { match: ['金流', 'Payment', 'payment', 'Portaly'], rec: { title: '查看目前可取得的學習內容', url: '/courses/', desc: '只列出現在確實可以查看或取得的內容，不會用尚未開放的項目占位。' } },
+    { match: ['Claude Code', 'claude-code'], rec: { title: 'Claude Code 實戰上手包', url: '/starter-pack/', desc: '了解上手包會處理哪些入門問題，並登記開放通知。' } },
+];
+
+// 決定推薦
+function getRecommendations(): { title: string; url: string; desc: string }[] {
+    // 1. 先檢查分類對應
+    const fromCategory = recommendMap[category];
+    if (fromCategory) return fromCategory;
+
+    // 2. 再檢查標籤對應
+    for (const { match, rec } of tagBased) {
+        if (tags.some(tag => match.includes(tag))) {
+            return [rec];
+        }
+    }
+
+    // 3. 預設推薦：上手包（最低門檻）
+    return [{ title: 'Claude Code 實戰上手包', url: '/starter-pack/', desc: '了解上手包會處理哪些入門問題，並登記開放通知。' }];
+}
+
+const recs = getRecommendations();
+---
+
+{recs.length > 0 && (
+    <aside class="product-recommend">
+        <div class="product-recommend-inner">
+            <h3 class="product-recommend-heading">繼續探索</h3>
+            <div class="product-recommend-list">
+                {recs.map(rec => (
+                    <a href={rec.url} class="product-recommend-card">
+                        <strong class="product-recommend-title">{rec.title}</strong>
+                        <span class="product-recommend-desc">{rec.desc}</span>
+                    </a>
+                ))}
+            </div>
+        </div>
+    </aside>
+)}
+
+<style>
+    .product-recommend {
+        max-width: 820px;
+        margin: 2rem auto;
+        padding: 0;
+    }
+    .product-recommend-inner {
+        padding: 1.5rem 2rem;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+    }
+    .product-recommend-heading {
+        font-family: 'Noto Serif TC', serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0 0 1rem;
+    }
+    .product-recommend-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .product-recommend-card {
+        display: flex;
+        flex-direction: column;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .product-recommend-card:hover {
+        border-color: var(--accent-border);
+        background: var(--accent-subtle);
+    }
+    .product-recommend-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.2rem;
+    }
+    .product-recommend-desc {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+        .product-recommend-inner {
+            padding: 1.25rem 1.5rem;
+        }
+    }
+</style>

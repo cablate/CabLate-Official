@@ -12,6 +12,7 @@ import ArticleNav from '../components/ArticleNav.astro';
 import ShareButtons from '../components/ShareButtons.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import NewsletterCTA from '../components/NewsletterCTA.astro';
+import ProductRecommend from '../components/ProductRecommend.astro';
 import { formatDate } from '../utils/format';
 
 interface Props {
@@ -125,6 +126,9 @@ const faqJsonLd = entry.data.faq?.length ? {
           <!-- 電子報 CTA -->
           <NewsletterCTA />
 
+          <!-- 產品推薦 -->
+          <ProductRecommend category={entry.data.category} tags={entry.data.tags} />
+
           <!-- FAQ 區塊 -->
           {(entry.data.faq?.length ?? 0) > 0 && (
             <div class="article-faq">
@@ -187,15 +191,14 @@ const faqJsonLd = entry.data.faq?.length ? {
 </BaseLayout>
 
 <style>
-  /* 為 fixed navbar 留出空間 */
   :global(html) {
-    scroll-padding-top: 80px;
+    scroll-padding-top: 6rem;
   }
 
   .breadcrumb {
     max-width: 900px;
     margin: 0 auto;
-    padding: 6rem 1rem 0;
+    padding: 1rem 1rem 0;
   }
 
   .breadcrumb ol {
@@ -231,8 +234,18 @@ const faqJsonLd = entry.data.faq?.length ? {
   }
 
   .article-container {
-    padding: 2rem 0 4rem;
+    padding: 1rem 0;
     color: var(--text-primary, #1a1a2e);
+  }
+
+  .article-container > .container {
+    width: min(100%, 82rem);
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: rgb(255 253 248 / .96);
+    box-shadow: var(--shadow-sm);
   }
 
   .article-header {
@@ -302,7 +315,7 @@ const faqJsonLd = entry.data.faq?.length ? {
     padding: 0.25rem 0.75rem;
     background: var(--accent-subtle, #f5f3ff);
     border: 1px solid var(--accent-border, #e9e5f5);
-    border-radius: 20px;
+    border-radius: var(--radius-full);
     font-size: 0.8rem;
     color: var(--accent, #6d28d9);
     text-decoration: none;
@@ -323,7 +336,7 @@ const faqJsonLd = entry.data.faq?.length ? {
   .article-banner img {
     width: 100%;
     height: auto;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     border: 1px solid var(--border, #e2e8f0);
   }
 
@@ -406,7 +419,7 @@ const faqJsonLd = entry.data.faq?.length ? {
   .article-content :global(pre) {
     padding: 1.5rem;
     background: var(--bg-muted, #f1f5f9) !important;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     overflow-x: auto;
     max-width: 100%;
     margin-bottom: 1.5rem;
@@ -482,7 +495,7 @@ const faqJsonLd = entry.data.faq?.length ? {
   .article-content :global(img) {
     max-width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     margin: 2rem auto;
     display: block;
   }
@@ -527,7 +540,7 @@ const faqJsonLd = entry.data.faq?.length ? {
   .faq-item {
     padding: 1.25rem 1.5rem;
     background: var(--bg-muted, #f1f5f9);
-    border-radius: 10px;
+    border-radius: var(--radius-md);
   }
 
   .faq-item dt {
@@ -547,12 +560,14 @@ const faqJsonLd = entry.data.faq?.length ? {
   .article-comments {
     max-width: 820px;
     margin: 0 auto;
-    padding: 2rem 1rem 0;
+    padding: 1rem 0 0;
   }
 
   .comments-container {
-    padding-top: 2rem;
-    border-top: 1px solid var(--border, #e2e8f0);
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--bg-soft);
   }
 
   .comments-container h2 {
@@ -566,7 +581,7 @@ const faqJsonLd = entry.data.faq?.length ? {
   .article-back {
     max-width: 820px;
     margin: 0 auto;
-    padding: 2rem 1rem 4rem;
+    padding: 1.5rem 0 2rem;
   }
 
   .article-back a {
@@ -582,15 +597,15 @@ const faqJsonLd = entry.data.faq?.length ? {
 
   @media (max-width: 768px) {
     .breadcrumb {
-      padding: 4rem 0.75rem 0;
+      padding: .25rem .75rem 0;
     }
 
     .article-container {
-      padding: 1rem 0 2rem;
+      padding: .75rem 0;
     }
 
     .article-container .container {
-      padding: 0 0.75rem;
+      padding: 1.25rem;
     }
 
     .article-header {
@@ -629,7 +644,7 @@ const faqJsonLd = entry.data.faq?.length ? {
     .article-content {
       padding: 0;
       font-size: 1rem;
-      overflow-x: hidden;
+      overflow-x: visible;
     }
 
     .article-content :global(h2) {

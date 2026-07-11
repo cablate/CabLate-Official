@@ -5,7 +5,7 @@
 
 export const siteConfig = {
   /** 社群 & 訂閱 */
-  threadsFollowers: '5K+',
+  threadsFollowers: '5.5K+',
   threadsUrl: 'https://www.threads.net/@cab_late',
   newsletterSubscribers: '500+',
 
