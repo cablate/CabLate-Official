@@ -33,7 +33,7 @@ const breadcrumbJsonLd = {
 const collectionJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  name: '文章 — CabLate',
+  name: '文章｜CabLate',
   description: 'CabLate 關於 Harness Engineering、Context Engineering、Skill 設計、Claude Code、Agent 工作流程、Vibe Coding 與 AI 教學設計的研究和實作文章。',
   url: 'https://cablate.com/articles/',
   numberOfItems: publishedArticles.length,
@@ -53,19 +53,20 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(collectionJsonLd)} />
 
-  <nav class="breadcrumb" aria-label="麵包屑導覽">
+  <div class="articles-page paper-page">
+  <nav class="breadcrumb page-paper paper-card" aria-label="麵包屑導覽">
     <ol>
       <li><a href="/">首頁</a></li>
       <li aria-current="page">文章</li>
     </ol>
   </nav>
 
-  <section class="articles-section">
+  <section class="articles-section page-paper paper-card">
     <div class="container">
       <div class="articles-header">
-        <p class="articles-eyebrow">研究與實作筆記</p>
-        <h1 class="articles-title">不只整理工具，<br />也把思考過程留下來。</h1>
-        <p class="articles-subtitle">這裡收錄技術觀點、AI 協作、Agent 問題排查與產品實作紀錄。你可以先從主題開始，也可以依分類或標籤繼續尋找相關內容。</p>
+        <p class="articles-eyebrow section-label">研究與實作筆記</p>
+        <h1 class="articles-title">遇到問題時，先找到一個能用的起點。</h1>
+        <p class="articles-subtitle">這裡留下 AI 協作、Agent 問題排查與產品實作中的判斷過程。你不必從最新一篇開始，可以先選現在遇到的問題，再往相關主題繼續讀。</p>
       </div>
 
       <section class="topic-map" aria-labelledby="topic-title">
@@ -132,6 +133,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
       )}
     </div>
   </section>
+  </div>
 </BaseLayout>
 
 <style>
@@ -416,4 +418,10 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
       font-size: 1.4rem;
     }
   }
+  .articles-page { padding-top: 1rem; }
+  .articles-page > .page-paper { width: 100%; max-width: none; margin: 0; border: 0; }
+  .articles-page .breadcrumb { padding: 1rem 1.5rem; }
+  .articles-page .articles-section { padding: clamp(2.25rem, 5vw, 4rem); }
+  .articles-eyebrow { text-transform: none; }
+  @media (max-width: 768px) { .articles-page .articles-section { padding: 1.75rem 1.25rem; } }
 </style>

@@ -6,21 +6,21 @@ import { siteConfig } from '../config/siteConfig';
 ---
 
 <BaseLayout title="AI 工作流程、企業內訓與 Agent 導入合作" description="先釐清問題、現有條件與預期成果，再決定適合診斷、教學、實作或導入。了解 CabLate 的合作方式、交付內容與限制。">
-  <article class="services-page">
-    <header class="services-hero">
-      <p class="eyebrow">合作方式</p>
+  <article class="services-page paper-page">
+    <header class="services-hero page-paper paper-card">
+      <p class="eyebrow section-label">合作方式</p>
       <h1>先把問題說清楚，<br />再決定該教、該做，還是該自動化。</h1>
       <p>合作的第一步不是挑選方案，而是先確認你想完成的成果、目前有哪些條件，以及哪些風險不能接受。問題說得愈清楚，後面的投入才愈有價值。</p>
       <a href="#service-options">比較合作方式 <ArrowRight size={18} aria-hidden="true" /></a>
     </header>
 
-    <section class="service-proof" aria-label="合作經驗">
+    <section class="service-proof page-paper paper-card" aria-label="合作經驗">
       <p>合作經驗</p>
       <strong>已協助企業團隊完成 AI 導入與內訓流程（2026-04-23 完成交付）</strong>
       <span>企業名稱、Logo、照片與人數未授權前保持匿名。</span>
     </section>
 
-    <section class="service-options" id="service-options" aria-labelledby="options-title">
+    <section class="service-options page-paper paper-card" id="service-options" aria-labelledby="options-title">
       <header>
         <h2 id="options-title">依照你要完成的結果，選擇合作方式。</h2>
         <p>三種合作都會先確認現況、目標與驗收方式。差別在於你需要的是一次外部診斷、團隊能力建置，還是一套能持續運作的系統。</p>
@@ -38,7 +38,7 @@ import { siteConfig } from '../config/siteConfig';
       </div>
     </section>
 
-    <section class="process" aria-labelledby="process-title">
+    <section class="process page-paper paper-card" aria-labelledby="process-title">
       <header><h2 id="process-title">合作不是把問題丟給 AI，再等答案出現。</h2></header>
       <ol>
         <li><span>01</span><h3>診斷</h3><p>確認目標、現況、資料、使用者、限制，以及失敗會帶來什麼代價。</p></li>
@@ -48,7 +48,7 @@ import { siteConfig } from '../config/siteConfig';
       </ol>
     </section>
 
-    <section class="service-boundaries" aria-labelledby="boundaries-title">
+    <section class="service-boundaries page-paper paper-card" aria-labelledby="boundaries-title">
       <div><h2 id="boundaries-title">AI 可以協助工作，但不能取代責任。</h2></div>
       <ul>
         <li>不保證營收、流量或未被定義的商業結果。</li>
@@ -58,7 +58,7 @@ import { siteConfig } from '../config/siteConfig';
       </ul>
     </section>
 
-    <section class="service-cta" aria-labelledby="cta-title">
+    <section class="service-cta page-paper paper-card" aria-labelledby="cta-title">
       <div><h2 id="cta-title">告訴我你想完成什麼，以及目前卡在哪裡。</h2><p>私訊時請附上目標、使用者、現有流程、已嘗試的方法、期限與預期成果。資訊愈具體，我就愈能準確判斷是否適合合作。</p></div>
       <a href={siteConfig.threadsUrl} target="_blank" rel="noopener">到 Threads 私訊合作情境 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
@@ -91,4 +91,9 @@ import { siteConfig } from '../config/siteConfig';
     .service-proof { padding-inline: 1.5rem; }.service-not-fit { grid-column: 1; }.process ol { grid-template-columns: 1fr 1fr; }.service-cta > a { justify-self: start; }
   }
   @media (max-width: 520px) { .services-hero, .service-options, .process, .service-boundaries, .service-cta { width: min(100% - 2rem, 82rem); }.services-hero h1 { font-size: 2.75rem; }.process ol { grid-template-columns: 1fr; } }
+  .services-page { padding-top: 1rem; }
+  .services-page > .page-paper { width: 100%; margin: 0; padding: clamp(2.25rem, 5vw, 4rem); border: 0; }
+  .services-page .service-proof { background-color: transparent; background-image: var(--paper-white-image); background-repeat: no-repeat; background-position: center; background-size: 115.2% 115.2%; }
+  .services-page .eyebrow { text-transform: none; }
+  @media (max-width: 760px) { .services-page > .page-paper { padding: 1.75rem 1.25rem; } }
 </style>

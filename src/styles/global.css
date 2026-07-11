@@ -99,6 +99,60 @@
   transform: translateY(1px);
 }
 
+.paper-page {
+  width: min(100% - 2rem, 86rem);
+  display: grid;
+  gap: 1rem;
+  margin-inline: auto;
+  padding-block: 1rem 1.5rem;
+}
+
+.paper-page > .page-paper {
+  width: 100%;
+  margin: 0;
+  border: 0;
+}
+
+.page-paper {
+  position: relative;
+  min-inline-size: 0;
+}
+
+/* Inner-route sections need enough specificity to survive older page-local background shorthands. */
+.page-paper.paper-card {
+  border: 0;
+  border-radius: .2rem;
+  background-color: transparent;
+  background-image: var(--paper-white-image);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 115.2% 115.2%;
+  box-shadow: none;
+}
+
+.page-paper :where(div, section, article, header, footer, nav, ol, ul) {
+  min-inline-size: 0;
+}
+
+.page-paper h1,
+.page-paper h2,
+.page-paper h3 {
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+.page-paper p,
+.page-paper li {
+  text-wrap: pretty;
+}
+
+@media (forced-colors: active) {
+  .paper-card {
+    border: 1px solid CanvasText;
+    filter: none;
+  }
+}
+
 .site-header {
   position: relative;
   z-index: 1000;
@@ -347,10 +401,15 @@ body.site-shell-desk #main-content:has(> .desk-page) {
 /* All inner routes use the home page's paper surface. Layout can vary inside it. */
 main :is(.about-page, .learn-page, .services-page, .work-page, .expertise-page) > :is(header, section) {
   padding-inline: clamp(1.25rem, 3vw, 2.5rem);
-  border: 1px solid var(--border);
-  border-radius: .35rem;
-  background: rgb(255 253 248 / .96);
-  box-shadow: 0 .45rem 1.2rem rgb(69 58 43 / .09);
+  border: 0;
+  border-radius: .2rem;
+  background-color: transparent;
+  background-image: var(--paper-white-image);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 115.2% 115.2%;
+  box-shadow: none;
+  filter: drop-shadow(0 .55rem .62rem rgb(69 58 43 / .11));
 }
 
 main :is(.about-page, .learn-page, .services-page, .work-page, .expertise-page) > :is(header, section) + :is(header, section) {
@@ -414,6 +473,13 @@ main .articles-section > .container {
   padding: clamp(1.25rem, 4vw, 3rem);
 }
 
+main .articles-page .articles-section > .container {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 main .articles-title,
 main .lp-title {
   font-family: var(--font-serif);
@@ -448,6 +514,13 @@ main .lp-inner {
 
   .section-label {
     margin-bottom: .65rem;
+  }
+
+  .paper-page {
+    width: 100%;
+    gap: .75rem;
+    padding-block: .75rem 1rem;
+    overflow: clip;
   }
 
   .paper-card--clip::after {

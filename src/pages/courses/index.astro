@@ -12,16 +12,16 @@ const publishedCourses = allCourses
 ---
 
 <BaseLayout title="學習路線 | CabLate" description="先看自己離想要的成果還差哪一步，再選擇免費資源、講座、系統課程或 Claude Code 深度工程手冊。">
-  <article class="learn-page">
-    <header class="learn-hero">
-      <p class="eyebrow">學習路徑</p>
+  <article class="learn-page paper-page">
+    <header class="learn-hero page-paper paper-card">
+      <p class="eyebrow section-label">學習路徑</p>
       <h1>別急著找最完整的課。<br />先看你離想要的成果還差哪一步。</h1>
       <p>工具會更新，但解決問題的能力可以累積。這裡不會把所有內容排成商品牆，而是幫你分辨：目前需要免費起點、一次主題學習、一套系統課程，還是一份能長期查閱的工程手冊。</p>
       <a href="#learning-path">依成果選擇下一步 <ArrowRight size={18} aria-hidden="true" /></a>
     </header>
 
-    <section class="learn-path" id="learning-path" aria-labelledby="path-title">
-      <header><h2 id="path-title">從找到起點，到能獨立完成工作。</h2></header>
+    <section class="learn-path page-paper paper-card" id="learning-path" aria-labelledby="path-title">
+      <header><p class="section-label">依成果選擇</p><h2 id="path-title">從找到起點，到能獨立完成工作。</h2></header>
       <ol>
         {learningPath.map((item, index) => (
           <li>
@@ -32,8 +32,8 @@ const publishedCourses = allCourses
       </ol>
     </section>
 
-    <section class="available" id="available" aria-labelledby="available-title">
-      <header><h2 id="available-title">目前可以直接查看或取得的內容。</h2><p>這裡只列出現在確實可用的內容；尚未開放的項目不會先做成銷售頁。</p></header>
+    <section class="available page-paper paper-card" id="available" aria-labelledby="available-title">
+      <header><p class="section-label">目前可用</p><h2 id="available-title">現在可以直接查看或取得的內容。</h2><p>這裡只列出確實可用的內容。尚未開放的項目，不會先做成看似能購買的銷售頁。</p></header>
       {publishedCourses.length > 0 ? (
         <div class="courses-grid">
           {publishedCourses.map((entry) => (
@@ -50,7 +50,7 @@ const publishedCourses = allCourses
       )}
     </section>
 
-    <section class="learning-boundary" aria-labelledby="boundary-title">
+    <section class="learning-boundary page-paper paper-card" aria-labelledby="boundary-title">
       <div><h2 id="boundary-title">免費內容幫你找到方向，付費內容陪你完成一段明確的進展。</h2></div>
       <div><p>免費內容會分享趨勢觀察、常見錯誤、入門路線、公開問答與部分示範，適合用來理解問題並確認自己的起點。</p><p>完整操作流程、可反覆查閱的資料、個別情境診斷、作品檢查與進度推進，則會放在課程、手冊或合作服務中。</p></div>
     </section>
@@ -71,4 +71,8 @@ const publishedCourses = allCourses
   .learn-path__status { display: inline-flex; margin-top: 1rem; padding: .35rem .55rem; border: 1px solid var(--border); color: var(--text-muted); font-size: .76rem; }
   .empty-state__links { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
   .empty-state__links a { color: var(--accent); font-weight: 700; }
+  .learn-page { padding-top: 1rem; }
+  .learn-page > .page-paper { width: 100%; margin: 0; padding: clamp(2.25rem, 5vw, 4rem); border: 0; }
+  .learn-page .eyebrow { text-transform: none; }
+  @media(max-width:760px){.learn-page > .page-paper{padding:1.75rem 1.25rem}}
 </style>

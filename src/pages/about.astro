@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowRight, Github, AtSign } from '@lucide/astro';
-import { authorityProfile, expertiseAreas, openSourceProofs, publicProofs } from '../config/authority';
+import { authorityProfile, expertiseAreas, openSourceProofs } from '../config/authority';
 
 const personJsonLd = {
   '@context': 'https://schema.org',
@@ -29,14 +29,14 @@ const timeline = [
 ];
 ---
 
-<BaseLayout title="關於 CabLate — 從工程實作到 AI 判斷力" description={authorityProfile.shortBio}>
+<BaseLayout title="關於 CabLate｜從工程實作到 AI 判斷力" description={authorityProfile.shortBio}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
 
-  <article class="about-page">
-    <header class="about-hero">
-      <div class="about-hero__label">About CabLate</div>
+  <article class="about-page paper-page">
+    <header class="about-hero page-paper paper-card">
+      <div class="about-hero__label section-label">關於 CabLate</div>
       <div class="about-hero__grid">
-        <h1>我不想只教你追工具。<br />我更想讓你看懂，<br /><em>為什麼要這樣做。</em></h1>
+        <h1>不只告訴你怎麼做，也把背後的判斷說清楚。</h1>
         <div>
           <p class="about-hero__lead">{authorityProfile.humanBio}</p>
           <p>我是 Cab，對外使用 CabLate 這個名字。我從非本科背景轉職成工程師，一路做到全端開發與系統設計，現在把這些經驗用在 AI 應用、教學與產品實作上。</p>
@@ -44,18 +44,9 @@ const timeline = [
       </div>
     </header>
 
-    <section class="about-proof" aria-labelledby="about-proof-title">
-      <h2 id="about-proof-title" class="visually-hidden">公開成果</h2>
-      <dl>
-        {publicProofs.map((proof) => (
-          <div><dt>{proof.label}</dt><dd>{proof.value}<small>{proof.detail} · 截至 {proof.asOf}</small></dd></div>
-        ))}
-      </dl>
-    </section>
-
-    <section class="about-story section-shell" aria-labelledby="story-title">
+    <section class="about-story section-shell page-paper paper-card" aria-labelledby="story-title">
       <div class="section-heading">
-        <p>專業歷程</p>
+        <p class="section-label">專業歷程</p>
         <h2 id="story-title">這條路不只是從工程師變成講師。</h2>
       </div>
       <div class="about-story__body">
@@ -65,9 +56,9 @@ const timeline = [
       </div>
     </section>
 
-    <section class="timeline section-shell" aria-labelledby="timeline-title">
+    <section class="timeline section-shell page-paper paper-card" aria-labelledby="timeline-title">
       <div class="section-heading">
-        <p>關鍵轉折</p>
+        <p class="section-label">關鍵轉折</p>
         <h2 id="timeline-title">一路把做過的事，整理成別人也能使用的方法。</h2>
       </div>
       <ol>
@@ -80,9 +71,9 @@ const timeline = [
       </ol>
     </section>
 
-    <section class="expertise section-shell" aria-labelledby="expertise-title">
+    <section class="expertise section-shell page-paper paper-card" aria-labelledby="expertise-title">
       <div class="section-heading">
-        <p>長期投入</p>
+        <p class="section-label">長期投入</p>
         <h2 id="expertise-title">不只列工具名稱，而是六個持續研究與實作的主題。</h2>
       </div>
       <div class="expertise__grid">
@@ -96,9 +87,9 @@ const timeline = [
       </div>
     </section>
 
-    <section class="open-source section-shell" aria-labelledby="opensource-title">
+    <section class="open-source section-shell page-paper paper-card" aria-labelledby="opensource-title">
       <div class="section-heading">
-        <p>公開作品</p>
+        <p class="section-label">公開作品</p>
         <h2 id="opensource-title">用公開作品，讓技術能力可以被檢查。</h2>
       </div>
       <div class="open-source__list">
@@ -111,10 +102,10 @@ const timeline = [
       </div>
     </section>
 
-    <section class="principles" aria-labelledby="principles-title">
+    <section class="principles page-paper paper-card" aria-labelledby="principles-title">
       <div class="section-shell principles__grid">
         <div class="section-heading section-heading--light">
-          <p>工作原則</p>
+          <p class="section-label">工作原則</p>
           <h2 id="principles-title">我用哪些原則決定怎麼做。</h2>
         </div>
         <div class="principles__list">
@@ -126,9 +117,9 @@ const timeline = [
       </div>
     </section>
 
-    <section class="about-next section-shell" aria-labelledby="next-title">
+    <section class="about-next section-shell page-paper paper-card" aria-labelledby="next-title">
       <div>
-        <p class="about-next__label">下一步</p>
+        <p class="about-next__label section-label">下一步</p>
         <h2 id="next-title">先看我做過什麼，再判斷這套方法是否適合你。</h2>
       </div>
       <div class="about-next__links">
@@ -216,4 +207,10 @@ const timeline = [
     .about-hero h1 { font-size: clamp(2.65rem, 11.8vw, 3.45rem); line-height: 1.08; }
     .timeline li { grid-template-columns: 1fr; gap: .7rem; }
   }
+  .about-page { padding-top: 1rem; }
+  .about-page > .page-paper { width: 100%; margin: 0; padding: clamp(2.25rem, 5vw, 4rem); border: 0; }
+  .about-page .about-hero__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); }
+  .about-page .principles { background-color: transparent; background-image: var(--paper-white-image); background-repeat: no-repeat; background-position: center; background-size: 115.2% 115.2%; }
+  .about-page .section-heading > p { text-transform: none; }
+  @media (max-width: 800px) { .about-page > .page-paper { padding: 1.75rem 1.25rem; } .about-page .about-hero__grid { grid-template-columns: 1fr; } }
 </style>
