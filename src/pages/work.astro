@@ -43,20 +43,24 @@ const limitedDisclosureWork = [
 <BaseLayout title="代表作品與關鍵判斷｜CabLate" description="從工程手冊、MCP 工具、金流教學到資料產品，了解 CabLate 面對問題與限制時如何做選擇，以及有哪些成果可以公開檢查。">
   <article class="work-page paper-page">
     <header class="work-hero page-paper paper-card">
-      <p class="eyebrow section-label">作品與公開證據</p>
+      <div class="work-hero__topline">
+        <p class="eyebrow section-label">作品與公開證據</p>
+        <span>CASE FILES / 03</span>
+      </div>
       <h1>作品不只看結果，也看限制下怎麼選。</h1>
       <p>作品可以看見結果，真正決定品質的，通常是過程裡那些不明顯的選擇。這裡只留下能說清楚問題、判斷與公開結果的項目。</p>
-      <a href="#selected-work">查看四個代表項目 <ArrowRight size={18} aria-hidden="true" /></a>
+      <a href="#selected-work">查看公開檔案 <ArrowRight size={18} aria-hidden="true" /></a>
     </header>
 
     <section class="selected-work page-paper paper-card paper-card--clip" id="selected-work" aria-labelledby="selected-title">
       <header>
         <p class="section-label">代表項目</p>
-        <h2 id="selected-title">四個問題，四種不同的處理方式。</h2>
+        <h2 id="selected-title">每個檔案，都從一個具體問題開始。</h2>
+        <span class="paper-label" aria-hidden="true">OPEN FILES</span>
       </header>
       <div class="work-list">
         {workStories.map((work, index) => (
-          <a href={work.href} target={work.href.startsWith('http') ? '_blank' : undefined} rel={work.href.startsWith('http') ? 'noopener' : undefined}>
+          <a class:list={['work-file', index === 0 && 'work-file--featured']} href={work.href} target={work.href.startsWith('http') ? '_blank' : undefined} rel={work.href.startsWith('http') ? 'noopener' : undefined}>
             <span>0{index + 1}</span>
             <div class="work-story">
               <small>{work.type}</small>
@@ -65,9 +69,9 @@ const limitedDisclosureWork = [
                 <div><dt>原本的問題</dt><dd>{work.problem}</dd></div>
                 <div><dt>關鍵判斷</dt><dd>{work.decision}</dd></div>
               </dl>
-              <strong>{work.proof}</strong>
+              <div class="work-file__proof"><small>公開證據</small><strong>{work.proof}</strong></div>
             </div>
-            <ArrowUpRight size={22} aria-hidden="true" />
+            <span class="work-file__open">查看檔案 <ArrowUpRight size={18} aria-hidden="true" /></span>
           </a>
         ))}
       </div>
@@ -77,6 +81,7 @@ const limitedDisclosureWork = [
       <div>
         <p class="section-label">有限揭露的合作紀錄</p>
         <h2 id="notes-title">把做過的範圍與不能公開的部分放在一起說清楚。</h2>
+        <span class="project-notes__stamp">PROJECT NOTES</span>
       </div>
       <div>
         {limitedDisclosureWork.map(item => (
@@ -93,29 +98,55 @@ const limitedDisclosureWork = [
 
 <style>
   .work-page .eyebrow { text-transform: none; }
+  .work-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .work-hero__topline .section-label { margin: 0; }
+  .work-hero__topline > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
+  .work-hero h1 { margin-top: clamp(2.5rem, 5vw, 4.5rem) !important; }
   .work-hero > p:not(.eyebrow) { max-width: 50rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
   .work-hero > a { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
+  .work-hero > a:hover { background: var(--accent); }
   .selected-work > header { max-width: 52rem; margin-bottom: 3.5rem; }
+  .selected-work > header { position: relative; }
   .selected-work h2, .project-notes h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
+  .selected-work > header .paper-label { top: -.35rem; right: 1.5rem; left: auto; transform: rotate(2deg); }
   .work-list { border-top: 1px solid var(--border-strong); }
-  .work-list > a { display: grid; grid-template-columns: 4rem 1fr auto; gap: 2rem; align-items: start; padding: 2.2rem 0; border-bottom: 1px solid var(--border); }
+  .work-list > a { display: grid; grid-template-columns: 4rem minmax(0, 1fr) minmax(7rem, auto); gap: 2rem; align-items: start; padding: 2.2rem 0; border-bottom: 1px solid var(--border); }
   .work-list > a > span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
+  .work-file--featured { padding-block: 2.8rem 2.5rem !important; }
   .work-list small { color: var(--accent); }
   .work-list h3 { margin: .4rem 0 1.3rem; font-size: 1.7rem; }
-  .work-list strong { display: block; margin-top: 1.2rem; color: var(--text-muted); font-size: .75rem; }
+  .work-file__proof { display: grid; gap: .35rem; margin-top: 1.25rem; padding-top: .8rem; border-top: 1px solid var(--border); }
+  .work-file__proof small { color: var(--text-muted); font-size: .68rem; }
+  .work-file__proof strong { color: var(--text-muted); font-size: .75rem; font-weight: 700; }
+  .work-file__open { display: inline-flex; align-items: center; justify-content: flex-end; gap: .4rem; color: var(--accent); font-size: .76rem; font-weight: 700; white-space: nowrap; }
   .work-list a:hover h3 { color: var(--accent); }
+  .work-list a:hover .work-file__open { color: var(--accent-hover); }
   .work-story dl { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 0; }
   .work-story dl div { padding-top: .9rem; border-top: 1px solid var(--border); }
   .work-story dt { margin-bottom: .45rem; color: var(--text-muted); font-size: .72rem; font-weight: 700; }
   .work-story dd { margin: 0; color: var(--text-secondary); line-height: 1.75; }
   .project-notes { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); }
+  .project-notes > div:first-child { position: relative; }
+  .project-notes__stamp { display: inline-block; margin-top: 2rem; padding: .35rem .65rem; border: 1px solid var(--border-strong); color: var(--accent); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .08em; transform: rotate(-2deg); }
   .project-notes > div:last-child { border-top: 1px solid var(--border-strong); }
   .project-notes article { padding: 1.3rem 0; border-bottom: 1px solid var(--border); }
   .project-notes h3 { margin: 0 0 1rem; }.project-notes dl { display: grid; gap: .8rem; margin: 0; }.project-notes dt { color: var(--text-muted); font-size: .72rem; font-weight: 700; }.project-notes dd { margin: .3rem 0 0; color: var(--text-secondary); line-height: 1.7; }
   .project-notes .text-link { margin-top: 1.5rem; }
   @media (max-width: 760px) {
+    .work-hero__topline { align-items: flex-start; }
+    .work-hero__topline > span { padding-top: .1rem; font-size: .56rem; }
     .project-notes, .work-story dl { grid-template-columns: 1fr; }
-    .work-list > a { grid-template-columns: 2.5rem 1fr; }
-    .work-list > a > :global(svg) { display: none; }
+    .work-list > a { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; }
+    .work-file__open { grid-column: 2; justify-self: start; justify-content: flex-start; margin-top: .2rem; }
+    .work-file--featured { padding-block: 2rem !important; }
+  }
+  @media (max-width: 520px) {
+    .work-hero__topline { padding-bottom: 1rem; }
+    .work-hero h1 { margin-top: 2.1rem !important; }
+    .selected-work > header { margin-bottom: 2.5rem; }
+    .selected-work > header .paper-label { top: -.55rem; right: .2rem; }
+    .work-list > a { padding-block: 1.6rem; }
+    .work-list h3 { font-size: 1.45rem; }
+    .work-story dd { font-size: .88rem; }
   }
 </style>
