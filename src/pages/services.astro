@@ -106,28 +106,29 @@ const processSteps = [
   .services-page { padding-top: 0; }
   .services-hero, .service-outcomes, .service-options, .service-proof, .process, .service-boundaries, .service-cta { width: min(100% - 3rem, 82rem); margin-inline: auto; }
   .services-hero { padding-block: clamp(3.2rem, 7vw, 6rem); }
-  .services-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .services-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-inline-size: 0; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
   .services-hero__topline .section-label { margin: 0; }
-  .services-hero__topline > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
+  .services-hero__topline > span { min-inline-size: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; text-align: end; text-wrap: pretty; }
   .services-hero h1 { max-width: 17ch; margin: clamp(2.75rem, 5vw, 4.5rem) 0 0; font-size: clamp(3rem, 5.8vw, 5.6rem); }
   .services-hero > p:not(.eyebrow) { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
   .services-hero > a, .service-cta > a { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.25rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
   .services-hero > a:hover, .service-cta > a:hover { background: var(--accent); }
+  .services-hero > a:focus-visible, .service-cta > a:focus-visible, .services-page a:focus-visible { outline: 2px solid var(--accent); outline-offset: .3rem; }
 
   .service-outcomes, .service-options, .service-proof, .process, .service-boundaries, .service-cta { padding-block: clamp(3.5rem, 7vw, 6rem); }
   .service-outcomes > header { max-width: 52rem; margin-bottom: 3.5rem; }
   .service-outcomes h2, .service-options h2, .process h2, .service-boundaries h2, .service-cta h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
-  .service-outcomes ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
-  .service-outcomes li { display: grid; grid-template-rows: auto 1fr; gap: 2.8rem; min-width: 0; padding: 1.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .service-outcomes li:first-child { border-left: 1px solid var(--border); }
+  .service-outcomes ol { display: grid; grid-template-columns: minmax(0, 1fr); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
+  .service-outcomes li { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 1.5rem; min-width: 0; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .service-outcomes li > div { min-width: 0; }
   .service-outcomes li span, .service-title__meta span, .process li > span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
   .service-outcomes li h3 { margin: 0 0 .7rem; font-size: 1.25rem; }
   .service-outcomes li p { margin: 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.7; }
 
-  .service-options__header, .process__header { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: end; margin-bottom: 4rem; }
+  .service-options__header, .process__header { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: end; min-inline-size: 0; margin-bottom: 4rem; }
   .service-options__header > p { max-width: 28rem; margin: 0; color: var(--text-secondary); line-height: 1.8; }
   .service-list { border-top: 1px solid var(--border-strong); }
-  .service-list > article { display: grid; grid-template-columns: minmax(13rem, .8fr) minmax(0, 1.2fr); gap: 2rem 4rem; padding: 2.7rem 0; border-bottom: 1px solid var(--border); }
+  .service-list > article { display: grid; grid-template-columns: minmax(13rem, .8fr) minmax(0, 1.2fr); gap: 2rem 4rem; min-inline-size: 0; padding: 2.7rem 0; border-bottom: 1px solid var(--border); }
   .service-title__meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   .service-title__meta small { color: var(--text-muted); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .08em; }
   .service-title h3 { margin: 1.5rem 0 .8rem; font-size: 1.8rem; }
@@ -150,8 +151,10 @@ const processSteps = [
 
   .process__header { position: relative; }
   .process__header .paper-label { top: -.35rem; right: 1rem; left: auto; transform: rotate(2deg); }
-  .process ol { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
-  .process li { min-height: 15rem; padding: 1.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .process ol { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
+  .process ol::before { position: absolute; top: 2.7rem; right: 8%; left: 8%; height: 1px; content: ''; background: var(--accent); opacity: .45; }
+  .process li { position: relative; min-height: 15rem; padding: 1.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .process li > span { position: relative; z-index: 1; display: grid; place-items: center; width: 2rem; height: 2rem; border: 1px solid var(--accent); border-radius: 50%; background: var(--paper); }
   .process li:first-child { border-left: 1px solid var(--border); }
   .process li h3 { margin: 4rem 0 .7rem; }
   .process li p { margin: 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.65; }
@@ -164,28 +167,31 @@ const processSteps = [
   .service-cta > a { justify-self: end; }
 
   @media (max-width: 800px) {
-    .service-outcomes ol, .service-proof, .service-options__header, .service-list > article, .service-boundaries, .service-cta { grid-template-columns: 1fr; }
-    .service-outcomes li { border-left: 1px solid var(--border); }
+    .service-proof, .service-options__header, .service-list > article, .service-boundaries, .service-cta { grid-template-columns: 1fr; }
     .service-detail { gap: 1.5rem; }
     .service-next, .service-not-fit { grid-column: 1; }
     .process ol { grid-template-columns: 1fr 1fr; }
+    .process ol::before { top: 2.7rem; right: 12%; left: 12%; }
     .service-cta > a { justify-self: start; }
   }
 
   @media (max-width: 520px) {
     .services-hero, .service-outcomes, .service-options, .service-proof, .process, .service-boundaries, .service-cta { width: min(100% - 2rem, 82rem); }
-    .services-hero__topline { align-items: flex-start; }
-    .services-hero__topline > span { padding-top: .1rem; font-size: .56rem; }
+    .services-hero__topline { align-items: flex-start; gap: .75rem; }
+    .services-hero__topline > span { max-inline-size: 12ch; padding-top: .1rem; font-size: .56rem; line-height: 1.45; }
     .services-hero h1 { margin-top: 2.2rem; font-size: 2.75rem; }
-    .service-outcomes li { gap: 1.5rem; }
+    .service-outcomes li { grid-template-columns: 3rem minmax(0, 1fr); gap: 1rem; padding-block: 1.3rem; }
     .service-options__header, .process__header { gap: 1.5rem; margin-bottom: 2.5rem; }
     .process__header .paper-label { top: -.55rem; right: .2rem; }
     .service-list > article { gap: 1.5rem; padding-block: 1.8rem; }
     .service-title h3 { font-size: 1.45rem; }
     .service-detail { grid-template-columns: 1fr; gap: 1.4rem; }
     .process ol { grid-template-columns: 1fr; }
+    .process ol::before { top: 2.7rem; right: auto; bottom: 2.7rem; left: 2.5rem; width: 1px; height: auto; }
     .process li { min-height: auto; }
-    .process li h3 { margin-top: 2rem; }
+    .process li { padding-left: 1.25rem; }
+    .process li h3 { margin: 2rem 0 .7rem 3rem; }
+    .process li p { margin-left: 3rem; }
   }
 
   .services-page .eyebrow { text-transform: none; }
