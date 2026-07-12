@@ -41,3 +41,18 @@ Courses 不做課程商品牆，而是幫訪客回答「我現在該學到哪一
 - 手機改為單欄縱向路線，編號與文字保持清楚的內縮，不能產生水平溢位。
 - 標題使用 `text-wrap: balance`，段落使用 `text-wrap: pretty`，並檢查長標題與外部 CTA 的斷句。
 - 驗證 1440 × 900 與 424 × 900 的截圖、`scrollWidth === clientWidth`、`npm.cmd run check`、`npm.cmd run build`。
+
+## 本輪視覺方向（ImageGen 只作參考）
+
+- 桌機方向圖：`docs/design/generated/courses/courses-desktop-learning-map-direction-v1.png`
+- 手機方向圖：`docs/design/generated/courses/courses-mobile-learning-map-direction-v1.png`
+- 方向圖保留「紙面上的學習路線」概念：一條清楚的縱向軸、節點編號、可開始／未開放狀態，以及紙條與迴紋針作為定位提示。
+- 方向圖中的虛構文字、狀態、圖示與尺寸不直接搬入網站；網站仍以 `learningPath` 的真實資料為唯一內容來源。
+- 程式實作只採用既有紙質背景、紫色識別、共用安全內距與原生 CSS；不新增圖片依賴，也不改變頁面文案任務。
+
+## 實作邊界
+
+- 強化路線節點與狀態的掃讀層級，讓「現在可開始」與「尚未開放」在不閱讀全文時也能分辨。
+- 保留目前的三段閱讀順序：先看地圖、再看可開始入口、最後理解免費／付費分界。
+- 桌機維持寬鬆的編輯文件節奏；手機只縮短間距與節點尺寸，不把四階段改成橫向卡片或水平滑動。
+- 細修只限 Courses 相關頁面、文件與參考圖；Starter Pack 的既有未提交變更不在本輪範圍。

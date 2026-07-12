@@ -29,7 +29,11 @@ const availablePaths = learningPath.filter((item) => item.href);
 
       <ol class="learn-map__list">
         {learningPath.map((item, index) => (
-          <li class:list={['learn-map__step', index === 0 && 'learn-map__step--start']}>
+          <li class:list={[
+            'learn-map__step',
+            index === 0 && 'learn-map__step--start',
+            item.href ? 'learn-map__step--available' : 'learn-map__step--pending',
+          ]}>
             <div class="learn-map__marker" aria-hidden="true">
               <span>0{index + 1}</span>
             </div>
@@ -89,30 +93,34 @@ const availablePaths = learningPath.filter((item) => item.href);
 <style>
   .learn-page { padding-top: 0; }
   .learn-hero, .learn-map, .learning-now, .learning-boundary { width: min(100% - 3rem, 82rem); margin-inline: auto; }
+  #learning-map { scroll-margin-top: 2rem; }
   .learn-hero { padding-block: clamp(3.2rem, 7vw, 6rem); }
-  .learn-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .learn-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-inline-size: 0; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
   .learn-hero__topline .section-label { margin: 0; }
-  .learn-hero__topline > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
+  .learn-hero__topline > span { min-inline-size: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; text-align: end; text-wrap: pretty; }
   .learn-hero h1 { max-width: 17ch; margin: clamp(2.75rem, 5vw, 4.5rem) 0 0; font-size: clamp(3rem, 5.8vw, 5.6rem); }
   .learn-hero__intro { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
   .learn-hero__cta { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
   .learn-hero__cta:hover { background: var(--accent); }
+  .learn-hero__cta:focus-visible, .learn-map a:focus-visible, .learning-now__item:focus-visible { outline: 2px solid var(--accent); outline-offset: .3rem; }
 
   .learn-map { padding-block: clamp(3.5rem, 7vw, 6rem); }
-  .learn-map__header { position: relative; display: flex; justify-content: space-between; gap: 2rem; margin-bottom: 3.5rem; }
+  .learn-map__header { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; margin-bottom: 3.5rem; }
   .learn-map__header h2, .learning-now h2, .learning-boundary h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
   .learn-map__header .paper-label { top: -.35rem; right: 1.5rem; left: auto; transform: rotate(2deg); }
   .learn-map__list { position: relative; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
-  .learn-map__list::before { position: absolute; top: 2.75rem; bottom: 2.75rem; left: 2rem; width: 1px; content: ''; background: var(--border-strong); }
+  .learn-map__list::before { position: absolute; top: 2.75rem; bottom: 2.75rem; left: 2rem; width: 1px; content: ''; background: linear-gradient(to bottom, var(--accent), var(--border-strong) 28%, var(--border-strong) 72%, var(--accent)); opacity: .55; }
   .learn-map__step { position: relative; display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 2rem; padding: 2.2rem 0; border-bottom: 1px solid var(--border); }
-  .learn-map__marker { position: relative; z-index: 1; display: grid; place-items: center; width: 4rem; height: 4rem; border: 1px solid var(--border-strong); border-radius: 50%; background: var(--paper); color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
-  .learn-map__step--start .learn-map__marker { border-color: var(--accent); background: #f1ecff; }
+  .learn-map__marker { position: relative; z-index: 1; display: grid; place-items: center; width: 4rem; height: 4rem; border: 1px solid var(--border-strong); border-radius: 50%; background: var(--paper); color: var(--text-primary); font-family: var(--font-mono); font-size: .72rem; }
+  .learn-map__step--available .learn-map__marker { border-color: color-mix(in oklab, var(--accent) 62%, var(--border-strong)); color: var(--accent); }
+  .learn-map__step--pending .learn-map__marker { border-style: dashed; color: var(--text-muted); }
+  .learn-map__step--start .learn-map__marker { border-color: var(--accent); background: #f1ecff; color: var(--accent); }
   .learn-map__content { min-width: 0; }
   .learn-map__meta { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; }
   .learn-map__meta small { color: var(--text-muted); }
-  .learn-map__available, .learn-map__pending { display: inline-flex; align-items: center; gap: .25rem; font-size: .68rem; font-weight: 700; }
-  .learn-map__available { color: var(--accent); }
-  .learn-map__pending { color: var(--text-muted); }
+  .learn-map__available, .learn-map__pending { display: inline-flex; align-items: center; gap: .25rem; min-block-size: 1.55rem; padding: .22rem .55rem; border: 1px solid transparent; border-radius: .15rem; font-size: .68rem; font-weight: 700; line-height: 1.25; }
+  .learn-map__available { border-color: rgb(112 91 177 / .22); background: rgb(112 91 177 / .09); color: var(--accent); }
+  .learn-map__pending { border-color: var(--border); background: rgb(69 58 43 / .035); color: var(--text-muted); }
   .learn-map h3 { margin: .45rem 0 .7rem; font-size: 1.7rem; }
   .learn-map p { max-width: 50rem; margin: 0; color: var(--text-secondary); line-height: 1.75; }
   .learn-map em { display: block; max-width: 50rem; margin-top: .7rem; color: var(--text-muted); font-size: .8rem; font-style: normal; }
@@ -136,6 +144,7 @@ const availablePaths = learningPath.filter((item) => item.href);
 
   @media (max-width: 760px) {
     .learning-now, .learning-boundary { grid-template-columns: 1fr; }
+    .learn-map__header { gap: 1.25rem; }
     .learn-map__step { grid-template-columns: 3.5rem minmax(0, 1fr); gap: 1.25rem; }
     .learn-map__marker { width: 3.5rem; height: 3.5rem; }
     .learn-map__list::before { left: 1.75rem; }
@@ -143,8 +152,9 @@ const availablePaths = learningPath.filter((item) => item.href);
 
   @media (max-width: 520px) {
     .learn-hero, .learn-map, .learning-now, .learning-boundary { width: min(100% - 2rem, 82rem); }
-    .learn-hero__topline { align-items: flex-start; }
-    .learn-hero__topline > span { padding-top: .1rem; font-size: .56rem; }
+    #learning-map { scroll-margin-top: 5.5rem; }
+    .learn-hero__topline { align-items: flex-start; gap: .75rem; }
+    .learn-hero__topline > span { max-inline-size: 12ch; padding-top: .1rem; font-size: .56rem; line-height: 1.45; }
     .learn-hero h1 { margin-top: 2.2rem; font-size: 2.75rem; }
     .learn-map__header { margin-bottom: 2.5rem; }
     .learn-map__header .paper-label { top: -.55rem; right: .2rem; }
@@ -152,5 +162,11 @@ const availablePaths = learningPath.filter((item) => item.href);
     .learn-map h3 { font-size: 1.45rem; }
     .learn-map p { font-size: .9rem; }
     .learn-map em { font-size: .76rem; }
+    .learn-map__meta { gap: .5rem; }
+    .learn-map__available, .learn-map__pending { font-size: .62rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .learn-hero__cta, .learn-map a, .learning-now__item { transition: none; }
   }
 </style>
