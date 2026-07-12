@@ -1,57 +1,156 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { ArrowRight } from '@lucide/astro';
+import { ArrowRight, Check } from '@lucide/astro';
+import { learningPath } from '../../config/authority';
 
-const currentPaths = [
-  { stage: '剛開始使用', title: '先建立安全、看得懂的起點', outcome: '了解成本、Context、權限與基本工作方式，再完成第一個能自己檢查的流程。', fit: '適合已經裝好工具，卻不知道第一步該做什麼的人。', href: '/starter-pack/', cta: '從 Starter Pack 開始' },
-  { stage: '已經在使用', title: '把反覆出錯的流程做穩', outcome: '從常見失效原因往回檢查 Skill、Memory、Context 與工作環境，不再只靠增加規則碰運氣。', fit: '適合已經使用 AI 程式工具，希望能排錯、維護與交接的人。', href: 'https://cabai.cablate.com', cta: '查看深度工程手冊' },
-  { stage: '有明確情境', title: '針對作品或團隊問題推進', outcome: '如果通用內容無法回答你的限制，就帶著現況、資料與預期成果，判斷需要課程、診斷或合作。', fit: '適合已有產品、流程或團隊題目，需要個別判斷的人。', href: '/services/', cta: '查看合作方式' },
-];
+const availablePaths = learningPath.filter((item) => item.href);
 ---
 
-<BaseLayout title="學習路線 | CabLate" description="先看自己目前卡在哪一步，再選擇 Starter Pack、深度工程手冊或個別合作。尚未開放的課程不會先列成商品。">
+<BaseLayout title="學習路線｜CabLate" description="先看自己目前卡在哪一步，再選擇目前能開始的免費內容或深度手冊。尚未開放的課程只標示狀態，不先列成商品。">
   <article class="learn-page paper-page">
     <header class="learn-hero page-paper paper-card">
-      <p class="eyebrow section-label">學習路徑</p>
-      <h1>不用先找最完整的課，先跨過現在最卡的那一步。</h1>
-      <p>你可能只需要一份入門指南，也可能已經走到排錯、交付或團隊導入。這裡只列現在能採取的下一步，不用為尚未遇到的問題一次買齊所有內容。</p>
-      <a href="#learning-path">依成果選擇下一步 <ArrowRight size={18} aria-hidden="true" /></a>
+      <div class="learn-hero__topline">
+        <p class="eyebrow section-label">學習路線</p>
+        <span>LEARNING MAP / 04</span>
+      </div>
+      <h1>不必一次學會全部。先找到現在最需要跨過的一步。</h1>
+      <p class="learn-hero__intro">你可能剛開始摸索，也可能已經在用 AI，卻總是在同一個地方重做。這裡不把所有內容排成商品牆，而是先依照你現在的狀態，找到剛好能往前走的入口。</p>
+      <a class="learn-hero__cta" href="#learning-map">查看學習地圖 <ArrowRight size={18} aria-hidden="true" /></a>
     </header>
 
-    <section class="learn-path page-paper paper-card paper-card--clip paper-card--clip-left" id="learning-path" aria-labelledby="path-title">
-      <header><p class="section-label">依現在的狀態選擇</p><h2 id="path-title">你不需要從第一階開始，只要找到最接近現在的情況。</h2></header>
-      <ol>
-        {currentPaths.map((item, index) => (
-          <li>
-            <span>0{index + 1}</span>
-            <div><small>{item.stage}</small><h3>{item.title}</h3><p>{item.outcome}</p><em>{item.fit}</em><a href={item.href}>{item.cta} <ArrowRight size={15} aria-hidden="true" /></a></div>
+    <section class="learn-map page-paper paper-card paper-card--clip paper-card--clip-left" id="learning-map" aria-labelledby="map-title">
+      <header class="learn-map__header">
+        <div>
+          <p class="section-label">先看自己在哪裡</p>
+          <h2 id="map-title">從理解問題，到把能力帶進工作裡。</h2>
+        </div>
+        <span class="paper-label" aria-hidden="true">START HERE</span>
+      </header>
+
+      <ol class="learn-map__list">
+        {learningPath.map((item, index) => (
+          <li class:list={['learn-map__step', index === 0 && 'learn-map__step--start']}>
+            <div class="learn-map__marker" aria-hidden="true">
+              <span>0{index + 1}</span>
+            </div>
+            <div class="learn-map__content">
+              <div class="learn-map__meta">
+                <small>{item.stage}</small>
+                {item.href ? <span class="learn-map__available"><Check size={13} aria-hidden="true" /> 目前可開始</span> : <span class="learn-map__pending">目前未開放公開報名</span>}
+              </div>
+              <h3>{item.title}</h3>
+              <p>{item.outcome}</p>
+              <em>{item.fit}</em>
+              {item.href ? (
+                <a class="text-link" href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener' : undefined}>{item.cta} <ArrowRight size={15} aria-hidden="true" /></a>
+              ) : (
+                <span class="learn-map__status">{item.cta}</span>
+              )}
+            </div>
           </li>
         ))}
       </ol>
     </section>
 
-    <aside class="course-status page-paper paper-card" aria-labelledby="course-status-title">
-      <p class="section-label">公開課程狀態</p>
-      <div><h2 id="course-status-title">目前沒有開放報名的系統課程。</h2><p>有明確主題與日期後，才會公布適合對象、成果與限制；現在不用比較尚未開放的選項。</p></div>
-    </aside>
+    <section class="learning-now page-paper paper-card" aria-labelledby="now-title">
+      <header>
+        <p class="section-label">現在可以開始</p>
+        <h2 id="now-title">先選一個能帶你往前的入口。</h2>
+        <p>如果你還在確認方向，從免費內容開始；如果你已經在處理反覆失效的流程，直接進入可反覆查閱的深度手冊。</p>
+      </header>
+      <div class="learning-now__list">
+        {availablePaths.map((item, index) => (
+          <a class="learning-now__item" href={item.href!} target={item.href!.startsWith('http') ? '_blank' : undefined} rel={item.href!.startsWith('http') ? 'noopener' : undefined}>
+            <span class="learning-now__index">0{index + 1}</span>
+            <div>
+              <small>{item.stage}</small>
+              <h3>{item.title}</h3>
+              <span class="learning-now__cta">{item.cta} <ArrowRight size={15} aria-hidden="true" /></span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
 
-    <section class="learning-boundary page-paper paper-card" aria-labelledby="boundary-title">
-      <div><h2 id="boundary-title">先用免費內容確認方向，再為真正需要的進展付費。</h2></div>
-      <div><p>免費內容適合幫你理解問題、避開常見錯誤，也確認自己是否真的需要更完整的資源。</p><p>當你需要可反覆查閱的系統資料、作品檢查、個別情境診斷或有人陪你推進，才需要考慮手冊、課程或合作服務。</p></div>
+    <section class="learning-boundary page-paper paper-card paper-card--clip" aria-labelledby="boundary-title">
+      <div>
+        <p class="section-label">選擇原則</p>
+        <h2 id="boundary-title">先確認需要的深度，再決定要不要付費。</h2>
+      </div>
+      <div class="learning-boundary__note">
+        <p>免費內容適合幫你理解問題、避開常見錯誤，也確認自己是否真的需要更完整的資源。</p>
+        <p>當你需要可反覆查閱的系統資料、作品檢查、個別情境診斷或有人陪你推進，才需要考慮手冊、課程或合作服務。</p>
+        <a class="text-link" href="/expertise/">還不確定自己卡在哪一層？先做問題診斷 <ArrowRight size={15} aria-hidden="true" /></a>
+      </div>
     </section>
   </article>
 </BaseLayout>
 
 <style>
   .learn-page { padding-top: 0; }
-  .learn-hero, .learn-path, .course-status, .learning-boundary { width: min(100% - 3rem, 82rem); margin-inline: auto; }
-  .learn-hero { padding-block: clamp(5rem, 9vw, 8rem); }.eyebrow { margin: 0 0 1rem; color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-  .learn-hero h1 { max-width: 17ch; margin: 0; font-size: clamp(3rem, 6vw, 6rem); letter-spacing: -.065em; line-height: 1.02; }.learn-hero > p:not(.eyebrow) { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }.learn-hero > a { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }.learn-hero > a:hover { background: var(--accent); }
-  .learn-path, .learning-boundary { padding-block: clamp(5rem, 8vw, 8rem); border-top: 1px solid var(--border); }.learn-path header { max-width: 52rem; margin-bottom: 3.5rem; }.learn-path h2, .learning-boundary h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
-  .learn-path ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }.learn-path li { display: grid; grid-template-columns: 5rem 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--border); }.learn-path li > span { color: var(--accent); font-family: var(--font-mono); font-size: .75rem; }.learn-path small { color: var(--text-muted); }.learn-path h3 { margin: .3rem 0 .6rem; font-size: 1.6rem; }.learn-path p { max-width: 50rem; margin: 0; color: var(--text-secondary); line-height: 1.7; }.learn-path em { display: block; margin-top: .7rem; color: var(--text-muted); font-size: .8rem; font-style: normal; }.learn-path a { display: inline-flex; align-items: center; gap: .45rem; margin-top: 1rem; color: var(--accent); font-size: .8rem; font-weight: 700; }
-  .course-status { display: grid; grid-template-columns: .45fr 1.55fr; gap: clamp(1.5rem, 5vw, 4rem); padding-block: clamp(2rem, 4vw, 3rem); }.course-status > p { margin: .25rem 0 0; }.course-status h2 { margin: 0; font-size: clamp(1.35rem, 2.5vw, 2rem); line-height: 1.25; }.course-status > div > p { max-width: 44rem; margin-bottom: 0; color: var(--text-secondary); line-height: 1.75; }
-  .learning-boundary { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 8vw, 8rem); }.learning-boundary > div:last-child { padding-top: 2.5rem; border-top: 1px solid var(--border-strong); }.learning-boundary > div:last-child p { color: var(--text-secondary); line-height: 1.85; }
-  @media (max-width: 760px) { .course-status, .learning-boundary { grid-template-columns: 1fr; }.learn-path li { grid-template-columns: 3rem 1fr; } }
-  @media (max-width: 520px) { .learn-hero, .learn-path, .course-status, .learning-boundary { width: min(100% - 2rem, 82rem); }.learn-hero h1 { font-size: 2.75rem; }.learn-path li { grid-template-columns: 1fr; gap: .5rem; } }
-  .learn-page .eyebrow { text-transform: none; }
+  .learn-hero, .learn-map, .learning-now, .learning-boundary { width: min(100% - 3rem, 82rem); margin-inline: auto; }
+  .learn-hero { padding-block: clamp(3.2rem, 7vw, 6rem); }
+  .learn-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .learn-hero__topline .section-label { margin: 0; }
+  .learn-hero__topline > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
+  .learn-hero h1 { max-width: 17ch; margin: clamp(2.75rem, 5vw, 4.5rem) 0 0; font-size: clamp(3rem, 5.8vw, 5.6rem); }
+  .learn-hero__intro { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
+  .learn-hero__cta { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
+  .learn-hero__cta:hover { background: var(--accent); }
+
+  .learn-map { padding-block: clamp(3.5rem, 7vw, 6rem); }
+  .learn-map__header { position: relative; display: flex; justify-content: space-between; gap: 2rem; margin-bottom: 3.5rem; }
+  .learn-map__header h2, .learning-now h2, .learning-boundary h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
+  .learn-map__header .paper-label { top: -.35rem; right: 1.5rem; left: auto; transform: rotate(2deg); }
+  .learn-map__list { position: relative; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
+  .learn-map__list::before { position: absolute; top: 2.75rem; bottom: 2.75rem; left: 2rem; width: 1px; content: ''; background: var(--border-strong); }
+  .learn-map__step { position: relative; display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 2rem; padding: 2.2rem 0; border-bottom: 1px solid var(--border); }
+  .learn-map__marker { position: relative; z-index: 1; display: grid; place-items: center; width: 4rem; height: 4rem; border: 1px solid var(--border-strong); border-radius: 50%; background: var(--paper); color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
+  .learn-map__step--start .learn-map__marker { border-color: var(--accent); background: #f1ecff; }
+  .learn-map__content { min-width: 0; }
+  .learn-map__meta { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; }
+  .learn-map__meta small { color: var(--text-muted); }
+  .learn-map__available, .learn-map__pending { display: inline-flex; align-items: center; gap: .25rem; font-size: .68rem; font-weight: 700; }
+  .learn-map__available { color: var(--accent); }
+  .learn-map__pending { color: var(--text-muted); }
+  .learn-map h3 { margin: .45rem 0 .7rem; font-size: 1.7rem; }
+  .learn-map p { max-width: 50rem; margin: 0; color: var(--text-secondary); line-height: 1.75; }
+  .learn-map em { display: block; max-width: 50rem; margin-top: .7rem; color: var(--text-muted); font-size: .8rem; font-style: normal; }
+  .learn-map .text-link { margin-top: 1rem; }
+  .learn-map__status { display: inline-block; margin-top: 1rem; color: var(--text-muted); font-size: .8rem; }
+
+  .learning-now { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(2.5rem, 7vw, 7rem); padding-block: clamp(3rem, 6vw, 5rem); }
+  .learning-now > header > p:last-child { max-width: 30rem; margin: 1.5rem 0 0; color: var(--text-secondary); line-height: 1.8; }
+  .learning-now__list { border-top: 1px solid var(--border-strong); }
+  .learning-now__item { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 1.25rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .learning-now__index { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
+  .learning-now__item small { color: var(--text-muted); }
+  .learning-now__item h3 { margin: .35rem 0 .7rem; font-size: 1.35rem; }
+  .learning-now__cta { display: inline-flex; align-items: center; gap: .45rem; color: var(--accent); font-size: .8rem; font-weight: 700; }
+  .learning-now__item:hover h3 { color: var(--accent); }
+
+  .learning-boundary { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 8vw, 8rem); padding-block: clamp(3.5rem, 7vw, 6rem); }
+  .learning-boundary__note { padding-top: 2.5rem; border-top: 1px solid var(--border-strong); }
+  .learning-boundary__note p { color: var(--text-secondary); line-height: 1.85; }
+  .learning-boundary__note .text-link { margin-top: 1rem; }
+
+  @media (max-width: 760px) {
+    .learning-now, .learning-boundary { grid-template-columns: 1fr; }
+    .learn-map__step { grid-template-columns: 3.5rem minmax(0, 1fr); gap: 1.25rem; }
+    .learn-map__marker { width: 3.5rem; height: 3.5rem; }
+    .learn-map__list::before { left: 1.75rem; }
+  }
+
+  @media (max-width: 520px) {
+    .learn-hero, .learn-map, .learning-now, .learning-boundary { width: min(100% - 2rem, 82rem); }
+    .learn-hero__topline { align-items: flex-start; }
+    .learn-hero__topline > span { padding-top: .1rem; font-size: .56rem; }
+    .learn-hero h1 { margin-top: 2.2rem; font-size: 2.75rem; }
+    .learn-map__header { margin-bottom: 2.5rem; }
+    .learn-map__header .paper-label { top: -.55rem; right: .2rem; }
+    .learn-map__step { padding-block: 1.6rem; }
+    .learn-map h3 { font-size: 1.45rem; }
+    .learn-map p { font-size: .9rem; }
+    .learn-map em { font-size: .76rem; }
+  }
 </style>
