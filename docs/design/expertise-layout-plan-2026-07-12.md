@@ -61,3 +61,20 @@ Primary CTA：閱讀對應問題文章。
 - 方法對照不會重複診斷表全文，也不把 Agent 包裝成預設答案。
 - 無水平溢位，紙張內容不超出安全內距。
 - `npm.cmd run check`、`npm.cmd run build` 通過，並完成桌機／手機實際畫面核對。
+
+## 2026-07-12 視覺提案轉譯
+
+選用參考：
+
+- `docs/design/generated/expertise/expertise-desktop-diagnostic-document-v1.png`
+- `docs/design/generated/expertise/expertise-mobile-diagnostic-document-v2-selected.png`
+
+保留的結構不是圖片像素，而是三個可用的閱讀機制：
+
+1. 診斷區使用固定欄位，讓 Desktop 能橫向比較「現象／最小檢查／常見誤判／文章」。
+2. 方法區和診斷區使用不同語法：方法區負責比較適用情境、邊界與閱讀入口，並補上一條 Context → Harness → Skill 的建議路徑。
+3. 「不是每個問題都需要 Agent」獨立成邊界備註，不再埋在頁尾小字。
+
+Mobile 第一版提案 `expertise-mobile-diagnostic-document-v1-rejected-squeezed-table.png` 因把 Desktop 表格壓縮進窄畫面而否決。實作採第二版原則：每筆診斷依「層級 → 現象 → 最小檢查 → 常見誤判 → 文章」垂直展開，保留正常字級與至少 44px 的文章入口。
+
+ImageGen 中的圖示、章戳與細節不逐像素照抄；production 只使用 HTML、CSS、既有紙張材質、細線、編號與少量 pseudo-element 裝飾完成。
