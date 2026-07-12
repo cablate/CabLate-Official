@@ -47,33 +47,87 @@ const limitedDisclosureWork = [
         <p class="eyebrow section-label">作品與公開證據</p>
         <span>CASE FILES / 03</span>
       </div>
-      <h1>作品不只看結果，也看限制下怎麼選。</h1>
-      <p>作品可以看見結果，真正決定品質的，通常是過程裡那些不明顯的選擇。這裡只留下能說清楚問題、判斷與公開結果的項目。</p>
-      <a href="#selected-work">查看公開檔案 <ArrowRight size={18} aria-hidden="true" /></a>
+      <div class="work-hero__grid">
+        <aside class="work-hero__index" aria-label="案例檔案索引">
+          <p class="work-hero__index-kicker">INDEX / EVIDENCE</p>
+          <ol>
+            <li>問題定義</li>
+            <li>限制條件</li>
+            <li>判斷與取捨</li>
+            <li>公開結果</li>
+          </ol>
+          <span class="work-hero__index-note">PUBLIC RECORD</span>
+        </aside>
+        <div class="work-hero__main">
+          <h1><span>作品不只看結果，</span><span>也看限制下怎麼選。</span></h1>
+          <p>作品可以看見結果，真正決定品質的，通常是過程裡那些不明顯的選擇。這裡只留下能說清楚問題、判斷與公開結果的項目。</p>
+          <div class="work-hero__actions">
+            <a class="work-hero__primary" href="/services/">查看合作方式 <ArrowRight size={18} aria-hidden="true" /></a>
+            <a class="work-hero__secondary" href="#selected-work">先看公開檔案</a>
+          </div>
+        </div>
+        <aside class="work-hero__record" aria-label="檔案備註">
+          <p class="work-hero__record-kicker">RECORD NOTE</p>
+          <p>不是把做過的事全部列出，而是留下能讓人回頭檢查的判斷。</p>
+          <dl>
+            <div><dt>先看</dt><dd>限制如何影響選擇</dd></div>
+            <div><dt>再看</dt><dd>結果是否能被查證</dd></div>
+          </dl>
+        </aside>
+      </div>
     </header>
 
     <section class="selected-work page-paper paper-card paper-card--clip" id="selected-work" aria-labelledby="selected-title">
-      <header>
+      <header class="selected-work__header">
         <p class="section-label">代表項目</p>
         <h2 id="selected-title">每個檔案，都從一個具體問題開始。</h2>
         <span class="paper-label" aria-hidden="true">OPEN FILES</span>
       </header>
-      <div class="work-list">
-        {workStories.map((work, index) => (
-          <a class:list={['work-file', index === 0 && 'work-file--featured']} href={work.href} target={work.href.startsWith('http') ? '_blank' : undefined} rel={work.href.startsWith('http') ? 'noopener' : undefined}>
-            <span>0{index + 1}</span>
-            <div class="work-story">
-              <small>{work.type}</small>
-              <h3>{work.title}</h3>
-              <dl>
-                <div><dt>原本的問題</dt><dd>{work.problem}</dd></div>
-                <div><dt>關鍵判斷</dt><dd>{work.decision}</dd></div>
-              </dl>
-              <div class="work-file__proof"><small>公開證據</small><strong>{work.proof}</strong></div>
-            </div>
-            <span class="work-file__open">查看檔案 <ArrowUpRight size={18} aria-hidden="true" /></span>
-          </a>
-        ))}
+      <div class="work-featured">
+        {(() => {
+          const work = workStories[0];
+          return (
+            <>
+              <div class="work-featured__rail">
+                <span class="work-featured__number">01</span>
+                <small>{work.type}</small>
+                <span class="work-featured__tag">FEATURED DOSSIER</span>
+              </div>
+              <div class="work-featured__body">
+                <div class="work-file__meta"><span>工程手冊</span><span>公開摘要</span></div>
+                <h3>{work.title}</h3>
+                <p class="work-file__summary">{work.description}</p>
+                <dl class="work-story__facts">
+                  <div><dt>原本的問題</dt><dd>{work.problem}</dd></div>
+                  <div><dt>關鍵判斷</dt><dd>{work.decision}</dd></div>
+                </dl>
+              </div>
+              <aside class="work-featured__evidence">
+                <p>PUBLIC EVIDENCE</p>
+                <strong>{work.proof}</strong>
+                <a class="work-file__open" href={work.href} target={work.href.startsWith('http') ? '_blank' : undefined} rel={work.href.startsWith('http') ? 'noopener' : undefined}>查看檔案 <ArrowUpRight size={18} aria-hidden="true" /></a>
+              </aside>
+            </>
+          );
+        })()}
+      </div>
+      <div class="work-list" aria-label="其他公開案例">
+        {workStories.slice(1).map((work, index) => {
+          const number = index + 2;
+          return (
+            <a class="work-index__item" href={work.href} target={work.href.startsWith('http') ? '_blank' : undefined} rel={work.href.startsWith('http') ? 'noopener' : undefined}>
+              <span class="work-index__number">0{number}</span>
+              <div class="work-index__body">
+                <div class="work-file__meta"><small>{work.type}</small><span>PUBLIC RECORD</span></div>
+                <h3>{work.title}</h3>
+                <p>{work.problem}</p>
+              </div>
+              <div class="work-index__decision"><small>關鍵判斷</small><p>{work.decision}</p></div>
+              <div class="work-index__proof"><small>公開證據</small><strong>{work.proof}</strong></div>
+              <span class="work-file__open">查看檔案 <ArrowUpRight size={18} aria-hidden="true" /></span>
+            </a>
+          );
+        })}
       </div>
     </section>
 
@@ -101,52 +155,118 @@ const limitedDisclosureWork = [
   .work-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
   .work-hero__topline .section-label { margin: 0; }
   .work-hero__topline > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
-  .work-hero h1 { margin-top: clamp(2.5rem, 5vw, 4.5rem) !important; }
-  .work-hero > p:not(.eyebrow) { max-width: 50rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
-  .work-hero > a { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
-  .work-hero > a:hover { background: var(--accent); }
-  .selected-work > header { max-width: 52rem; margin-bottom: 3.5rem; }
-  .selected-work > header { position: relative; }
+  .work-hero__grid { display: grid; grid-template-columns: minmax(7rem, .2fr) minmax(0, 1fr) minmax(11rem, .28fr); gap: clamp(1.5rem, 4vw, 3.5rem); margin-top: clamp(2.5rem, 5vw, 4.5rem); }
+  .work-hero__index { display: flex; flex-direction: column; min-inline-size: 0; padding-right: 1.25rem; border-right: 1px solid var(--border); }
+  .work-hero__index-kicker, .work-hero__record-kicker { margin: 0 0 1rem; color: var(--accent); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
+  .work-hero__index ol { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; color: var(--text-secondary); font-family: var(--font-mono); font-size: .7rem; line-height: 1.45; }
+  .work-hero__index li { display: flex; gap: .6rem; }
+  .work-hero__index li::before { color: var(--accent); content: '·'; }
+  .work-hero__index-note { margin-top: auto; padding-top: 2.5rem; color: var(--text-muted); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .08em; }
+  .work-hero__main { min-inline-size: 0; }
+  .work-hero h1 { max-width: none !important; margin: 0 !important; }
+  .work-hero h1 span { display: block; }
+  .work-hero__main > p { max-width: 48rem; margin: 2rem 0 0; color: var(--text-secondary); font-size: 1.06rem; line-height: 1.85; }
+  .work-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.2rem; margin-top: 2rem; }
+  .work-hero__primary { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
+  .work-hero__primary:hover { background: var(--accent); }
+  .work-hero__secondary { color: var(--accent); font-size: .8rem; font-weight: 700; }
+  .work-hero__secondary:hover { color: var(--accent-hover); }
+  .work-hero__record { align-self: stretch; min-inline-size: 0; padding-left: 1.25rem; border-left: 1px solid var(--border); }
+  .work-hero__record > p:not(.work-hero__record-kicker) { margin: 0; color: var(--text-secondary); font-size: .83rem; line-height: 1.8; }
+  .work-hero__record dl { display: grid; gap: .9rem; margin: 2rem 0 0; }
+  .work-hero__record dl div { padding-top: .75rem; border-top: 1px solid var(--border); }
+  .work-hero__record dt { color: var(--accent); font-size: .68rem; font-weight: 700; }
+  .work-hero__record dd { margin: .3rem 0 0; color: var(--text-secondary); font-size: .78rem; line-height: 1.6; }
+  .selected-work__header { position: relative; max-width: 52rem; margin-bottom: 3.25rem; }
   .selected-work h2, .project-notes h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
-  .selected-work > header .paper-label { top: -.35rem; right: 1.5rem; left: auto; transform: rotate(2deg); }
-  .work-list { border-top: 1px solid var(--border-strong); }
-  .work-list > a { display: grid; grid-template-columns: 4rem minmax(0, 1fr) minmax(7rem, auto); gap: 2rem; align-items: start; padding: 2.2rem 0; border-bottom: 1px solid var(--border); }
-  .work-list > a > span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
-  .work-file--featured { padding-block: 2.8rem 2.5rem !important; }
-  .work-list small { color: var(--accent); }
-  .work-list h3 { margin: .4rem 0 1.3rem; font-size: 1.7rem; }
-  .work-file__proof { display: grid; gap: .35rem; margin-top: 1.25rem; padding-top: .8rem; border-top: 1px solid var(--border); }
-  .work-file__proof small { color: var(--text-muted); font-size: .68rem; }
-  .work-file__proof strong { color: var(--text-muted); font-size: .75rem; font-weight: 700; }
+  .selected-work__header .paper-label { top: -.35rem; right: 1.5rem; left: auto; transform: rotate(2deg); }
+  .work-featured { display: grid; grid-template-columns: minmax(8rem, .24fr) minmax(0, 1fr) minmax(10rem, .3fr); gap: 0; border: 1px solid var(--border-strong); }
+  .work-featured__rail { display: flex; flex-direction: column; min-inline-size: 0; padding: 1.35rem 1rem; border-right: 1px solid var(--border); }
+  .work-featured__number { color: var(--accent); font-family: var(--font-serif); font-size: 1.8rem; line-height: 1; }
+  .work-featured__rail small { margin-top: .7rem; color: var(--accent); font-size: .66rem; line-height: 1.45; }
+  .work-featured__tag { margin-top: auto; padding-top: 2rem; color: var(--text-muted); font-family: var(--font-mono); font-size: .56rem; letter-spacing: .08em; }
+  .work-featured__body { min-inline-size: 0; padding: 1.35rem 1.5rem 1.6rem; }
+  .work-file__meta { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem 1rem; color: var(--accent); font-family: var(--font-mono); font-size: .6rem; letter-spacing: .06em; }
+  .work-file__meta span + span { color: var(--text-muted); }
+  .work-featured h3 { margin: .75rem 0 .85rem; font-size: clamp(1.55rem, 2.6vw, 2.2rem); }
+  .work-file__summary { margin: 0; color: var(--text-secondary); font-size: .88rem; line-height: 1.75; }
+  .work-story__facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 1.35rem 0 0; }
+  .work-story__facts div { min-inline-size: 0; padding-top: .85rem; border-top: 1px solid var(--border); }
+  .work-story__facts dt, .work-index__decision small, .work-index__proof small { margin-bottom: .4rem; color: var(--text-muted); font-size: .68rem; font-weight: 700; }
+  .work-story__facts dd { margin: 0; color: var(--text-secondary); line-height: 1.7; }
+  .work-featured__evidence { display: flex; flex-direction: column; min-inline-size: 0; padding: 1.35rem 1.25rem; border-left: 1px solid var(--border); background: rgb(246 242 232 / .35); }
+  .work-featured__evidence p { margin: 0 0 1rem; color: var(--accent); font-family: var(--font-mono); font-size: .6rem; letter-spacing: .08em; }
+  .work-featured__evidence strong { color: var(--text-secondary); font-size: .78rem; line-height: 1.65; }
+  .work-featured__evidence .work-file__open { margin-top: auto; padding-top: 2rem; justify-content: flex-start; }
+  .work-list { margin-top: 1.5rem; border-top: 1px solid var(--border-strong); }
+  .work-index__item { display: grid; grid-template-columns: 3rem minmax(0, 1.05fr) minmax(14rem, .95fr) minmax(8rem, .5fr) auto; gap: 1.25rem; align-items: start; min-inline-size: 0; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .work-index__number { color: var(--accent); font-family: var(--font-mono); font-size: .7rem; }
+  .work-index__body, .work-index__decision, .work-index__proof { min-inline-size: 0; }
+  .work-index__body .work-file__meta { justify-content: space-between; gap: .5rem; }
+  .work-index__body .work-file__meta span { color: var(--text-muted); font-size: .56rem; }
+  .work-index__item h3 { margin: .45rem 0 .55rem; font-size: 1.25rem; }
+  .work-index__item p { margin: 0; color: var(--text-secondary); font-size: .8rem; line-height: 1.7; }
+  .work-index__decision, .work-index__proof { padding-left: 1rem; border-left: 1px solid var(--border); }
+  .work-index__decision p { font-size: .76rem; }
+  .work-index__proof { display: grid; gap: .35rem; }
+  .work-index__proof strong { color: var(--text-muted); font-size: .7rem; line-height: 1.55; }
   .work-file__open { display: inline-flex; align-items: center; justify-content: flex-end; gap: .4rem; color: var(--accent); font-size: .76rem; font-weight: 700; white-space: nowrap; }
-  .work-list a:hover h3 { color: var(--accent); }
-  .work-list a:hover .work-file__open { color: var(--accent-hover); }
-  .work-story dl { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 0; }
-  .work-story dl div { padding-top: .9rem; border-top: 1px solid var(--border); }
-  .work-story dt { margin-bottom: .45rem; color: var(--text-muted); font-size: .72rem; font-weight: 700; }
-  .work-story dd { margin: 0; color: var(--text-secondary); line-height: 1.75; }
+  .work-index__item:hover h3, .work-index__item:hover .work-file__open, .work-featured__evidence .work-file__open:hover { color: var(--accent-hover); }
   .project-notes { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); }
   .project-notes > div:first-child { position: relative; }
   .project-notes__stamp { display: inline-block; margin-top: 2rem; padding: .35rem .65rem; border: 1px solid var(--border-strong); color: var(--accent); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .08em; transform: rotate(-2deg); }
   .project-notes > div:last-child { border-top: 1px solid var(--border-strong); }
   .project-notes article { padding: 1.3rem 0; border-bottom: 1px solid var(--border); }
-  .project-notes h3 { margin: 0 0 1rem; }.project-notes dl { display: grid; gap: .8rem; margin: 0; }.project-notes dt { color: var(--text-muted); font-size: .72rem; font-weight: 700; }.project-notes dd { margin: .3rem 0 0; color: var(--text-secondary); line-height: 1.7; }
+  .project-notes h3 { margin: 0 0 1rem; }
+  .project-notes dl { display: grid; gap: .8rem; margin: 0; }
+  .project-notes dt { color: var(--text-muted); font-size: .72rem; font-weight: 700; }
+  .project-notes dd { margin: .3rem 0 0; color: var(--text-secondary); line-height: 1.7; }
   .project-notes .text-link { margin-top: 1.5rem; }
+  @media (max-width: 980px) {
+    .work-hero__grid { grid-template-columns: minmax(7rem, .24fr) minmax(0, 1fr); }
+    .work-hero__record { grid-column: 2; padding-top: 1.25rem; padding-left: 0; border-top: 1px solid var(--border); border-left: 0; }
+    .work-hero__record dl { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .work-featured { grid-template-columns: 5.75rem minmax(0, 1fr); }
+    .work-featured__evidence { grid-column: 2; flex-direction: row; align-items: center; gap: 1rem; padding: 1rem 1.5rem; border-top: 1px solid var(--border); border-left: 0; }
+    .work-featured__evidence p { margin: 0; }
+    .work-featured__evidence .work-file__open { margin-left: auto; padding-top: 0; }
+    .work-index__item { grid-template-columns: 3rem minmax(0, 1fr) minmax(9rem, .7fr) auto; }
+    .work-index__proof { grid-column: 2 / 4; padding-left: 0; padding-top: .8rem; border-top: 1px solid var(--border); border-left: 0; }
+  }
   @media (max-width: 760px) {
     .work-hero__topline { align-items: flex-start; }
     .work-hero__topline > span { padding-top: .1rem; font-size: .56rem; }
-    .project-notes, .work-story dl { grid-template-columns: 1fr; }
-    .work-list > a { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; }
-    .work-file__open { grid-column: 2; justify-self: start; justify-content: flex-start; margin-top: .2rem; }
-    .work-file--featured { padding-block: 2rem !important; }
+    .work-hero__grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .work-hero__index { padding-right: 0; padding-bottom: 1rem; border-right: 0; border-bottom: 1px solid var(--border); }
+    .work-hero__index ol { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem .9rem; }
+    .work-hero__index-note { margin-top: 1.25rem; padding-top: 0; }
+    .work-hero__record { grid-column: auto; }
+    .work-featured { grid-template-columns: 1fr; }
+    .work-featured__rail { flex-direction: row; align-items: center; gap: .75rem; padding: 1rem 1.25rem; border-right: 0; border-bottom: 1px solid var(--border); }
+    .work-featured__number { font-size: 1.5rem; }
+    .work-featured__rail small { margin-top: 0; }
+    .work-featured__tag { margin: 0 0 0 auto; padding: 0; }
+    .work-featured__body { padding: 1.25rem; }
+    .work-story__facts { grid-template-columns: 1fr; gap: 1rem; }
+    .work-featured__evidence { grid-column: auto; flex-wrap: wrap; padding: 1rem 1.25rem; }
+    .work-featured__evidence strong { flex: 1 1 12rem; }
+    .work-index__item { grid-template-columns: 2.5rem minmax(0, 1fr); gap: .7rem 1rem; padding: 1.35rem 0; }
+    .work-index__body .work-file__meta { justify-content: flex-start; }
+    .work-index__decision { grid-column: 2; padding: .8rem 0 0; border-top: 1px solid var(--border); border-left: 0; }
+    .work-index__proof { grid-column: 2; padding: .8rem 0 0; border-top: 1px solid var(--border); }
+    .work-index__item .work-file__open { grid-column: 2; justify-content: flex-start; min-height: 2.75rem; margin-top: .15rem; }
+    .project-notes { grid-template-columns: 1fr; }
   }
   @media (max-width: 520px) {
     .work-hero__topline { padding-bottom: 1rem; }
-    .work-hero h1 { margin-top: 2.1rem !important; }
-    .selected-work > header { margin-bottom: 2.5rem; }
-    .selected-work > header .paper-label { top: -.55rem; right: .2rem; }
-    .work-list > a { padding-block: 1.6rem; }
-    .work-list h3 { font-size: 1.45rem; }
-    .work-story dd { font-size: .88rem; }
+    .work-hero h1 { font-size: clamp(2.55rem, 11vw, 3.45rem) !important; line-height: 1.08 !important; }
+    .work-hero__main > p { margin-top: 1.5rem; font-size: .92rem; }
+    .work-hero__record dl { grid-template-columns: 1fr; }
+    .selected-work__header { margin-bottom: 2.5rem; }
+    .selected-work__header .paper-label { top: -.55rem; right: .2rem; }
+    .work-featured__tag { font-size: .5rem; }
+    .work-featured h3 { font-size: 1.45rem; }
+    .work-index__item h3 { font-size: 1.15rem; }
+    .work-index__item p, .work-index__decision p { font-size: .84rem; }
   }
 </style>
