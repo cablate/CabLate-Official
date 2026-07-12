@@ -9,63 +9,84 @@ const serviceAudience: Record<string, { audience: string; next: string }> = {
   training: { audience: '需要建立共同語言的團隊', next: '適合能力建置；若已有明確流程與資料，可另評估導入。' },
   'agent-adoption': { audience: '已有使用者、資料與內部負責人的團隊', next: '適合從原型走向可維護系統，不以課程取代必要的專案投入。' },
 };
+
+const processSteps = [
+  { title: '診斷', body: '確認目標、現況、資料、使用者、限制，以及失敗會帶來什麼代價。' },
+  { title: '設計', body: '判斷哪些問題需要教學、實作、調整流程或導入自動化。' },
+  { title: '推進', body: '完成工作坊、原型、工作流程或導入路線圖，並留下重要決策與原因。' },
+  { title: '驗收', body: '依照一開始定義的案例檢查成果與限制，確認如何交接，以及下一步要做什麼。' },
+];
 ---
 
 <BaseLayout title="AI 工作流程、企業內訓與 Agent 導入合作" description="先釐清問題、現有條件與預期成果，再決定適合診斷、教學、實作或導入。了解 CabLate 的合作方式、交付內容與限制。">
   <article class="services-page paper-page">
     <header class="services-hero page-paper paper-card">
-      <p class="eyebrow section-label">合作方式</p>
-      <h1>把最常重做的工作，整理成一條真的能用的 AI 流程。</h1>
+      <div class="services-hero__topline">
+        <p class="eyebrow section-label">合作方式</p>
+        <span>SERVICE BRIEF / 05</span>
+      </div>
+      <h1>把反覆重做的工作，整理成能檢查、也能交接的流程。</h1>
       <p>如果團隊已經試過不少工具，工作卻仍然反覆重來、結果難以檢查，問題通常不只是「還不夠會下 Prompt」。我會先和你找出卡點，再判斷需要調整流程、建立能力，還是實作系統。</p>
-      <a href="#service-outcomes">先看合作後會改變什麼 <ArrowRight size={18} aria-hidden="true" /></a>
+      <a href="#service-outcomes">先看合作後會留下什麼 <ArrowRight size={18} aria-hidden="true" /></a>
     </header>
 
     <section class="service-outcomes page-paper paper-card paper-card--clip paper-card--clip-left" id="service-outcomes" aria-labelledby="outcomes-title">
-      <header><p class="section-label">合作的目標</p><h2 id="outcomes-title">不是多用一個工具，而是少一點猜測與重做。</h2></header>
-      <ul>
-        <li><span>01</span><h3>知道問題卡在哪</h3><p>把任務、資料、使用者與限制攤開來看，分清楚是流程不清楚、資訊不足，還是工具選錯。</p></li>
-        <li><span>02</span><h3>知道結果怎麼算完成</h3><p>在實作前定義可檢查的案例與責任邊界，讓團隊不用每次都靠感覺判斷 AI 做得好不好。</p></li>
-        <li><span>03</span><h3>留下能繼續使用的方法</h3><p>不只交付一次性的展示，也把關鍵決策、操作方式與下一步留下來，讓成果能被接手。</p></li>
-      </ul>
+      <header>
+        <p class="section-label">合作的目標</p>
+        <h2 id="outcomes-title">不是多用一個工具，而是少一點猜測與重做。</h2>
+      </header>
+      <ol>
+        <li><span>01</span><div><h3>知道問題卡在哪</h3><p>把任務、資料、使用者與限制攤開來看，分清楚是流程不清楚、資訊不足，還是工具選錯。</p></div></li>
+        <li><span>02</span><div><h3>知道結果怎麼算完成</h3><p>在實作前定義可檢查的案例與責任邊界，讓團隊不用每次都靠感覺判斷 AI 做得好不好。</p></div></li>
+        <li><span>03</span><div><h3>留下能繼續使用的方法</h3><p>不只交付一次性的展示，也把關鍵決策、操作方式與下一步留下來，讓成果能被接手。</p></div></li>
+      </ol>
     </section>
 
     <section class="service-options page-paper paper-card" id="service-options" aria-labelledby="options-title">
-      <header>
-        <p class="section-label">三種合作深度</p>
-        <h2 id="options-title">先判斷你需要外部視角、團隊練習，還是實際導入。</h2>
+      <header class="service-options__header">
+        <div>
+          <p class="section-label">三種合作深度</p>
+          <h2 id="options-title">先判斷你需要外部視角、團隊練習，還是實際導入。</h2>
+        </div>
         <p>不需要先替自己選方案。你只要帶著現在的情況來，我們會依問題範圍與希望留下的成果，判斷做到哪一層才合理。</p>
       </header>
 
       <div class="service-list">
         {serviceTracks.map((service, index) => (
           <article id={service.id}>
-            <div class="service-title"><span>0{index + 1}</span><h3>{service.title}</h3><p>{service.outcome}</p></div>
-            <div class="service-fit"><h4>{serviceAudience[service.id].audience}</h4><ul>{service.fit.map((item) => <li><Check size={16} aria-hidden="true" />{item}</li>)}</ul></div>
-            <div class="service-deliverables"><h4>依情境確認的交付內容</h4><ul>{service.deliverables.map((item) => <li>{item}</li>)}</ul></div>
-            <p class="service-next">{serviceAudience[service.id].next}</p>
-            <div class="service-not-fit"><X size={17} aria-hidden="true" /><p><strong>不適合：</strong>{service.notFit}</p></div>
+            <div class="service-title">
+              <div class="service-title__meta"><span>0{index + 1}</span><small>{service.id.replaceAll('-', ' ').toUpperCase()}</small></div>
+              <h3>{service.title}</h3>
+              <p>{service.outcome}</p>
+            </div>
+            <div class="service-detail">
+              <div class="service-fit"><h4>適合這個情況</h4><ul>{service.fit.map((item) => <li><Check size={16} aria-hidden="true" />{item}</li>)}</ul></div>
+              <div class="service-deliverables"><h4>會留下什麼</h4><ul>{service.deliverables.map((item) => <li>{item}</li>)}</ul></div>
+            </div>
+            <aside class="service-not-fit"><X size={17} aria-hidden="true" /><p><strong>暫時不適合：</strong>{service.notFit}</p></aside>
+            <p class="service-next">{serviceAudience[service.id].audience}。{serviceAudience[service.id].next}</p>
           </article>
         ))}
       </div>
     </section>
 
-    <aside class="service-proof page-paper paper-card" aria-label="合作經驗與揭露說明">
+    <aside class="service-proof page-paper paper-card paper-card--clip-left" aria-label="合作經驗與揭露說明">
       <p class="section-label">實際合作經驗</p>
       <div><strong>企業 AI 導入與內訓流程已於 2026-04-23 完成交付。</strong><p>可公開範圍包含需求盤點、內容與實作設計、執行及交付；企業名稱、Logo、照片、參與人數與內部成果未取得授權，因此不作公開成效宣稱。</p></div>
     </aside>
 
     <section class="process page-paper paper-card paper-card--clip" aria-labelledby="process-title">
-      <header><h2 id="process-title">合作不是把問題丟給 AI，再等答案出現。</h2></header>
+      <header class="process__header">
+        <div><p class="section-label">合作流程</p><h2 id="process-title">合作不是把問題丟給 AI，再等答案出現。</h2></div>
+        <span class="paper-label" aria-hidden="true">FROM BRIEF TO HANDOFF</span>
+      </header>
       <ol>
-        <li><span>01</span><h3>診斷</h3><p>確認目標、現況、資料、使用者、限制，以及失敗會帶來什麼代價。</p></li>
-        <li><span>02</span><h3>設計</h3><p>判斷哪些問題需要教學、實作、調整流程或導入自動化。</p></li>
-        <li><span>03</span><h3>推進</h3><p>完成工作坊、原型、工作流程或導入路線圖，並留下重要決策與原因。</p></li>
-        <li><span>04</span><h3>驗收</h3><p>依照一開始定義的案例檢查成果與限制，確認如何交接，以及下一步要做什麼。</p></li>
+        {processSteps.map((step, index) => <li><span>0{index + 1}</span><h3>{step.title}</h3><p>{step.body}</p></li>)}
       </ol>
     </section>
 
     <section class="service-boundaries page-paper paper-card" aria-labelledby="boundaries-title">
-      <div><h2 id="boundaries-title">AI 可以協助工作，但不能取代責任。</h2></div>
+      <div><p class="section-label">合作邊界</p><h2 id="boundaries-title">AI 可以協助工作，但不能取代責任。</h2></div>
       <ul>
         <li>不保證營收、流量或未被定義的商業結果。</li>
         <li>缺少必要資料、驗收條件與內部負責人時，不承諾全面導入。</li>
@@ -75,7 +96,7 @@ const serviceAudience: Record<string, { audience: string; next: string }> = {
     </section>
 
     <section class="service-cta page-paper paper-card paper-card--clip" aria-labelledby="cta-title">
-      <div><h2 id="cta-title">不用先寫完整需求書，先把真實情況帶來。</h2><p>私訊時請告訴我：想完成什麼、誰會使用、現在怎麼做、最常在哪裡卡住，以及希望何時看到結果。我會先判斷是否適合合作；若不需要做到系統導入，也會直接說明。</p></div>
+      <div><p class="section-label">下一步</p><h2 id="cta-title">不用先寫完整需求書，先把真實情況帶來。</h2><p>私訊時請告訴我：想完成什麼、誰會使用、現在怎麼做、最常在哪裡卡住，以及希望何時看到結果。我會先判斷是否適合合作；若不需要做到系統導入，也會直接說明。</p></div>
       <a href={siteConfig.threadsUrl} target="_blank" rel="noopener">到 Threads 說明你的情況 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
   </article>
@@ -84,29 +105,88 @@ const serviceAudience: Record<string, { audience: string; next: string }> = {
 <style>
   .services-page { padding-top: 0; }
   .services-hero, .service-outcomes, .service-options, .service-proof, .process, .service-boundaries, .service-cta { width: min(100% - 3rem, 82rem); margin-inline: auto; }
-  .services-hero { padding-block: clamp(5rem, 9vw, 8rem); }
-  .eyebrow { margin: 0 0 1rem; color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-  .services-hero h1 { max-width: 17ch; margin: 0; font-size: clamp(3rem, 6vw, 6rem); letter-spacing: -.065em; line-height: 1.02; }
-  .services-hero > p:not(.eyebrow) { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.1rem; line-height: 1.85; }
+  .services-hero { padding-block: clamp(3.2rem, 7vw, 6rem); }
+  .services-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .services-hero__topline .section-label { margin: 0; }
+  .services-hero__topline > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
+  .services-hero h1 { max-width: 17ch; margin: clamp(2.75rem, 5vw, 4.5rem) 0 0; font-size: clamp(3rem, 5.8vw, 5.6rem); }
+  .services-hero > p:not(.eyebrow) { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
   .services-hero > a, .service-cta > a { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.25rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
   .services-hero > a:hover, .service-cta > a:hover { background: var(--accent); }
-  .service-outcomes, .service-options, .service-proof, .process, .service-boundaries, .service-cta { padding-block: clamp(5rem, 8vw, 8rem); }
-  .service-outcomes > header { max-width: 52rem; margin-bottom: 3.5rem; }.service-outcomes h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.3rem); letter-spacing: -.05em; line-height: 1.05; }.service-outcomes ul { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }.service-outcomes li { padding: 1.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }.service-outcomes li:first-child { border-left: 1px solid var(--border); }.service-outcomes li span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }.service-outcomes li h3 { margin: 3.5rem 0 .7rem; }.service-outcomes li p { color: var(--text-secondary); font-size: .84rem; line-height: 1.7; }
-  .service-options > header, .process > header { max-width: 50rem; margin-bottom: 4rem; }.service-options h2, .process h2, .service-boundaries h2, .service-cta h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.3rem); letter-spacing: -.05em; line-height: 1.05; }.service-options > header > p:last-child { color: var(--text-secondary); line-height: 1.8; }
+
+  .service-outcomes, .service-options, .service-proof, .process, .service-boundaries, .service-cta { padding-block: clamp(3.5rem, 7vw, 6rem); }
+  .service-outcomes > header { max-width: 52rem; margin-bottom: 3.5rem; }
+  .service-outcomes h2, .service-options h2, .process h2, .service-boundaries h2, .service-cta h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
+  .service-outcomes ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
+  .service-outcomes li { display: grid; grid-template-rows: auto 1fr; gap: 2.8rem; min-width: 0; padding: 1.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .service-outcomes li:first-child { border-left: 1px solid var(--border); }
+  .service-outcomes li span, .service-title__meta span, .process li > span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
+  .service-outcomes li h3 { margin: 0 0 .7rem; font-size: 1.25rem; }
+  .service-outcomes li p { margin: 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.7; }
+
+  .service-options__header, .process__header { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: end; margin-bottom: 4rem; }
+  .service-options__header > p { max-width: 28rem; margin: 0; color: var(--text-secondary); line-height: 1.8; }
   .service-list { border-top: 1px solid var(--border-strong); }
-  .service-list > article { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 2rem; padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
-  .service-title > span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }.service-title h3 { margin: 1.5rem 0 .8rem; font-size: 1.8rem; }.service-title p { color: var(--text-secondary); line-height: 1.75; }
-  .service-list h4 { margin: 0 0 1rem; font-size: .8rem; }.service-list ul { margin: 0; padding: 0; list-style: none; }.service-fit li { display: flex; gap: .55rem; margin-bottom: .75rem; color: var(--text-secondary); font-size: .82rem; line-height: 1.55; }.service-fit li :global(svg) { flex: 0 0 auto; color: var(--accent); }.service-deliverables li { padding: .6rem 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); font-size: .82rem; }
-  .service-not-fit { grid-column: 2 / -1; display: flex; gap: .7rem; padding: 1rem; background: var(--bg-soft); }.service-not-fit :global(svg) { flex: 0 0 auto; color: var(--accent); }.service-not-fit p { margin: 0; color: var(--text-secondary); font-size: .8rem; line-height: 1.6; }
-  .service-next { grid-column: 2 / -1; margin: 0; color: var(--accent); font-size: .8rem; font-weight: 700; line-height: 1.6; }
-  .service-proof { display: grid; grid-template-columns: .45fr 1.55fr; gap: clamp(2rem, 6vw, 6rem); }.service-proof > p { margin: .35rem 0 0; }.service-proof strong { font-size: 1.25rem; line-height: 1.5; }.service-proof div p { max-width: 50rem; color: var(--text-secondary); line-height: 1.8; }
-  .process { border-top: 1px solid var(--border); }.process ol { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }.process li { min-height: 15rem; padding: 1.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }.process li:first-child { border-left: 1px solid var(--border); }.process li span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }.process li h3 { margin: 4rem 0 .7rem; }.process li p { color: var(--text-secondary); font-size: .84rem; line-height: 1.65; }
-  .service-boundaries { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); border-top: 1px solid var(--border); }.service-boundaries ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }.service-boundaries li { padding: 1.2rem 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); line-height: 1.7; }
-  .service-cta { display: grid; grid-template-columns: 1.3fr .7fr; gap: 4rem; align-items: end; border-top: 1px solid var(--border); }.service-cta p:last-child { max-width: 42rem; color: var(--text-secondary); line-height: 1.8; }.service-cta > a { justify-self: end; }
+  .service-list > article { display: grid; grid-template-columns: minmax(13rem, .8fr) minmax(0, 1.2fr); gap: 2rem 4rem; padding: 2.7rem 0; border-bottom: 1px solid var(--border); }
+  .service-title__meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .service-title__meta small { color: var(--text-muted); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .08em; }
+  .service-title h3 { margin: 1.5rem 0 .8rem; font-size: 1.8rem; }
+  .service-title p { margin: 0; color: var(--text-secondary); line-height: 1.75; }
+  .service-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; min-width: 0; }
+  .service-list h4 { margin: 0 0 1rem; font-size: .8rem; }
+  .service-list ul { margin: 0; padding: 0; list-style: none; }
+  .service-fit li { display: flex; gap: .55rem; margin-bottom: .75rem; color: var(--text-secondary); font-size: .82rem; line-height: 1.55; }
+  .service-fit li :global(svg) { flex: 0 0 auto; color: var(--accent); }
+  .service-deliverables li { padding: .6rem 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); font-size: .82rem; }
+  .service-not-fit { grid-column: 2; display: flex; gap: .7rem; margin: 0; padding: 1rem; background: var(--bg-soft); }
+  .service-not-fit :global(svg) { flex: 0 0 auto; color: var(--accent); }
+  .service-not-fit p { margin: 0; color: var(--text-secondary); font-size: .8rem; line-height: 1.6; }
+  .service-next { grid-column: 2; margin: 0; color: var(--accent); font-size: .8rem; font-weight: 700; line-height: 1.6; }
+
+  .service-proof { display: grid; grid-template-columns: .45fr 1.55fr; gap: clamp(2rem, 6vw, 6rem); }
+  .service-proof > p { margin: .35rem 0 0; }
+  .service-proof strong { font-size: 1.25rem; line-height: 1.5; }
+  .service-proof div p { max-width: 50rem; margin-bottom: 0; color: var(--text-secondary); line-height: 1.8; }
+
+  .process__header { position: relative; }
+  .process__header .paper-label { top: -.35rem; right: 1rem; left: auto; transform: rotate(2deg); }
+  .process ol { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
+  .process li { min-height: 15rem; padding: 1.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .process li:first-child { border-left: 1px solid var(--border); }
+  .process li h3 { margin: 4rem 0 .7rem; }
+  .process li p { margin: 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.65; }
+
+  .service-boundaries { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); }
+  .service-boundaries ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
+  .service-boundaries li { padding: 1.2rem 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); line-height: 1.7; }
+  .service-cta { display: grid; grid-template-columns: 1.3fr .7fr; gap: 4rem; align-items: end; }
+  .service-cta p:last-child { max-width: 42rem; color: var(--text-secondary); line-height: 1.8; }
+  .service-cta > a { justify-self: end; }
+
   @media (max-width: 800px) {
-    .service-outcomes ul, .service-proof, .service-list > article, .service-boundaries, .service-cta { grid-template-columns: 1fr; }
-    .service-outcomes li { border-left: 1px solid var(--border); }.service-next, .service-not-fit { grid-column: 1; }.process ol { grid-template-columns: 1fr 1fr; }.service-cta > a { justify-self: start; }
+    .service-outcomes ol, .service-proof, .service-options__header, .service-list > article, .service-boundaries, .service-cta { grid-template-columns: 1fr; }
+    .service-outcomes li { border-left: 1px solid var(--border); }
+    .service-detail { gap: 1.5rem; }
+    .service-next, .service-not-fit { grid-column: 1; }
+    .process ol { grid-template-columns: 1fr 1fr; }
+    .service-cta > a { justify-self: start; }
   }
-  @media (max-width: 520px) { .services-hero, .service-outcomes, .service-options, .service-proof, .process, .service-boundaries, .service-cta { width: min(100% - 2rem, 82rem); }.services-hero h1 { font-size: 2.75rem; }.process ol { grid-template-columns: 1fr; } }
+
+  @media (max-width: 520px) {
+    .services-hero, .service-outcomes, .service-options, .service-proof, .process, .service-boundaries, .service-cta { width: min(100% - 2rem, 82rem); }
+    .services-hero__topline { align-items: flex-start; }
+    .services-hero__topline > span { padding-top: .1rem; font-size: .56rem; }
+    .services-hero h1 { margin-top: 2.2rem; font-size: 2.75rem; }
+    .service-outcomes li { gap: 1.5rem; }
+    .service-options__header, .process__header { gap: 1.5rem; margin-bottom: 2.5rem; }
+    .process__header .paper-label { top: -.55rem; right: .2rem; }
+    .service-list > article { gap: 1.5rem; padding-block: 1.8rem; }
+    .service-title h3 { font-size: 1.45rem; }
+    .service-detail { grid-template-columns: 1fr; gap: 1.4rem; }
+    .process ol { grid-template-columns: 1fr; }
+    .process li { min-height: auto; }
+    .process li h3 { margin-top: 2rem; }
+  }
+
   .services-page .eyebrow { text-transform: none; }
 </style>
