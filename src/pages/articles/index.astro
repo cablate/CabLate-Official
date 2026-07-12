@@ -133,18 +133,19 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
   .articles-page { padding-top: 0; }
   .articles-section { width: min(100% - 3rem, 86rem); margin-inline: auto; padding-block: clamp(3.2rem, 7vw, 6rem) !important; }
   .articles-container { max-width: 72rem; margin-inline: auto; }
-  .articles-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .articles-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-inline-size: 0; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
   .articles-hero__topline .section-label { margin: 0; }
-  .articles-hero__topline > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
+  .articles-hero__topline > span { min-inline-size: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; text-align: end; text-wrap: pretty; }
   .articles-hero h1 { max-width: 17ch; margin: clamp(2.75rem, 5vw, 4.5rem) 0 0; font-size: clamp(3rem, 5.8vw, 5.6rem); }
   .articles-hero > p { max-width: 48rem; margin: 2rem 0 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
+  .articles-page a:focus-visible { outline: 2px solid var(--accent); outline-offset: .3rem; }
 
   .reading-routes { margin-top: clamp(4rem, 8vw, 7rem); }
   .reading-routes > header, .topic-index > header, .other-articles > header { max-width: 52rem; margin-bottom: 2.5rem; }
   .reading-routes h2, .topic-index h2, .other-articles h2 { max-width: 19ch; margin: 0; font-size: clamp(2rem, 3.8vw, 3.4rem); letter-spacing: -.05em; line-height: 1.06; }
   .reading-routes ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
   .reading-routes li { border-bottom: 1px solid var(--border); }
-  .reading-routes a { display: grid; grid-template-columns: 4rem minmax(0, 1fr) auto; gap: 2rem; align-items: start; padding: 1.8rem 0; }
+  .reading-routes a { display: grid; grid-template-columns: 4rem minmax(0, 1fr) auto; gap: 2rem; align-items: start; min-inline-size: 0; padding: 1.8rem 0; }
   .reading-route__index { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
   .reading-route__body { min-width: 0; }
   .reading-route__body small { color: var(--text-muted); line-height: 1.55; }
@@ -155,7 +156,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
 
   .topic-index { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2.5rem, 8vw, 8rem); margin-top: clamp(4rem, 8vw, 7rem); padding-block: clamp(3rem, 6vw, 5rem); border-block: 1px solid var(--border); }
   .topic-index__list { border-top: 1px solid var(--border-strong); }
-  .topic-index__list a { display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; gap: 1rem; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+  .topic-index__list a { display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; gap: 1rem; align-items: center; min-inline-size: 0; padding: 1rem 0; border-bottom: 1px solid var(--border); }
   .topic-index__list a > span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
   .topic-index__list strong { font-size: .95rem; }
   .topic-index__list svg { color: var(--accent); }
@@ -163,7 +164,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
 
   .other-articles { margin-top: clamp(4rem, 8vw, 7rem); }
   .article-list { border-top: 1px solid var(--border-strong); }
-  .article-list__item { display: grid; grid-template-columns: minmax(15rem, 1.05fr) minmax(0, 1fr) 6.5rem 1rem; gap: 1.5rem; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .article-list__item { display: grid; grid-template-columns: minmax(15rem, 1.05fr) minmax(0, 1fr) 6.5rem 1rem; gap: 1.5rem; align-items: center; min-inline-size: 0; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
   .article-list__item small, .article-list__item time { color: var(--text-muted); font-size: .7rem; }
   .article-list__item h3 { margin: .35rem 0 0; font-size: 1.08rem; }
   .article-list__item p { margin: 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.65; }
@@ -181,15 +182,15 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
 
   @media (max-width: 520px) {
     .articles-section { width: min(100% - 2rem, 86rem); padding-block: 2rem 3.5rem !important; }
-    .articles-hero__topline { align-items: flex-start; }
-    .articles-hero__topline > span { margin-right: 2.5rem; padding-top: .1rem; font-size: .56rem; }
+    .articles-hero__topline { align-items: flex-start; gap: .75rem; }
+    .articles-hero__topline > span { inline-size: 10ch; max-inline-size: 10ch; margin-inline-end: 2.25rem; padding-top: .1rem; font-size: .56rem; line-height: 1.45; }
     .articles-hero h1 { margin-top: 2.2rem; font-size: 2.75rem; }
     .reading-routes { margin-top: 3.5rem; }
     .reading-routes > header, .topic-index > header, .other-articles > header { margin-bottom: 2rem; }
     .reading-routes a { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; padding-block: 1.5rem; }
     .reading-route__body h3 { font-size: 1.3rem; }
     .reading-route__body p { font-size: .82rem; }
-    .reading-route__action { grid-column: 2; justify-self: start; padding-top: 0; }
+    .reading-route__action { grid-column: 2; justify-self: start; max-inline-size: 100%; padding-top: 0; }
     .topic-index { margin-top: 3.5rem; padding-block: 2.75rem; }
     .other-articles { margin-top: 3.5rem; }
     .article-list__item h3 { font-size: 1rem; }

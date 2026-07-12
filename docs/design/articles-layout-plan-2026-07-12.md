@@ -41,3 +41,17 @@ Articles 不只是依日期排列的文章倉庫，而是一份讓訪客在 30 �
 - 手機路徑改為一欄，症狀與標題不互相擠壓；分類列可以換行但不造成水平捲動。
 - 標題使用 `text-wrap: balance`，文章摘要使用 `text-wrap: pretty`，日期和分類固定在可掃讀的位置。
 - 驗證 1440 × 900 與 424 × 900 截圖、`scrollWidth === clientWidth`、`npm.cmd run check`、`npm.cmd run build`。
+
+## 本輪視覺方向（ImageGen 只作參考）
+
+- 桌機方向圖：`docs/design/generated/articles/articles-desktop-editorial-index-direction-v1.png`
+- 手機方向圖：`docs/design/generated/articles/articles-mobile-editorial-index-direction-v1.png`
+- 方向圖把 Articles 視為編輯桌上的 field notes index：先以四條問題入口建立閱讀方向，再以分類數量與其他筆記收束，不以文章數量或更新承諾搶注意力。
+- 紙張紋理、細線、紙標籤與迴紋針只作定位提示；不直接採用方向圖的虛構標題、分類、數字或排版尺寸，真實文章仍來自內容集合。
+
+## 實作邊界
+
+- 保留既有閱讀路徑、主題索引與其他筆記三段順序；只強化每一列的編號、問題、標題、理由與 CTA 層級。
+- 桌機維持單一縱向索引軸；手機讓問題、標題與摘要依序換行，CTA 不被推到紙張外。
+- 不增加電子報、固定更新或「文章總數」主視覺；分類與標籤是延伸入口，不取代問題導向閱讀。
+- 不修改文章 slug、內容集合或 SEO JSON-LD；本輪只限 Articles 頁面樣式、參考圖與規劃文件。
