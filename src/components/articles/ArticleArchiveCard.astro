@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { ArrowRight } from '@lucide/astro';
+import { formatDate } from '../../utils/format';
+
+interface Props {
+  entry: CollectionEntry<'articles'>;
+  index?: number;
+  activeTag?: string;
+}
+
+const { entry, index, activeTag } = Astro.props;
+const summary = entry.data.excerpt || entry.data.description;
+---
+
+<a class="archive-card" href={`/articles/${entry.slug}/`}>
+  <span class="archive-card__index">{index === undefined ? '→' : String(index + 1).padStart(2, '0')}</span>
+  <div class="archive-card__body">
+    <div class="archive-card__meta">
+      <small>{entry.data.category}</small>
+      <time datetime={entry.data.publishDate.toISOString()}>{formatDate(entry.data.publishDate)}</time>
+    </div>
+    <h3>{entry.data.title}</h3>
+    <p>{summary}</p>
+    <div class="archive-card__tags" aria-label="文章標籤">
+      {entry.data.tags.slice(0, 3).map((tag) => (
+        <span class:list={[activeTag === tag && 'is-active']}>#{tag}</span>
+      ))}
+    </div>
+  </div>
+  <span class="archive-card__action">閱讀全文 <ArrowRight size={16} aria-hidden="true" /></span>
+</a>

@@ -5,45 +5,48 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout title="找不到頁面" description="你要找的頁面不存在或已被移除。" noSEO={true}>
     <title slot="head">找不到頁面 | CabLate</title>
     <meta slot="head" name="robots" content="noindex, nofollow" />
-    <section class="not-found">
-        <div class="not-found-container">
+    <div class="not-found paper-page">
+        <section class="not-found-container page-paper paper-card paper-card--clip">
+            <p class="section-label">OPEN DESK / 404</p>
             <h1>404</h1>
             <p class="not-found-message">你要找的頁面不存在，或已經被移除了。</p>
             <div class="not-found-links">
-                <a href="/" class="not-found-btn">回首頁</a>
-                <a href="/articles/" class="not-found-btn secondary">看文章</a>
+                <a href="/" class="not-found-btn">回到首頁</a>
+                <a href="/articles/" class="not-found-btn secondary">從文章開始</a>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 </BaseLayout>
 
 <style>
     .not-found {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 60vh;
-        text-align: center;
-        padding: 2rem;
+        width: min(100% - 2rem, 86rem);
+        margin-inline: auto;
+        padding-block: 1rem 1.5rem;
     }
 
     .not-found-container {
-        max-width: 480px;
+        display: grid;
+        justify-items: center;
+        min-height: min(60vh, 34rem);
+        align-content: center;
+        text-align: center;
     }
 
     .not-found h1 {
         font-family: 'Noto Serif TC', serif;
-        font-size: 6rem;
+        font-size: clamp(4.5rem, 12vw, 8rem);
         font-weight: 700;
-        color: var(--accent, #8b5cf6);
+        color: var(--accent);
         line-height: 1;
-        margin-bottom: 1rem;
+        margin: 0 0 1rem;
     }
 
     .not-found-message {
         font-size: 1.15rem;
-        color: var(--text-secondary, #475569);
-        margin-bottom: 2rem;
+        max-width: 30rem;
+        color: var(--text-secondary);
+        margin: 0 0 2rem;
         line-height: 1.6;
     }
 
@@ -57,12 +60,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .not-found-btn {
         display: inline-block;
         padding: 0.75rem 1.5rem;
-        border-radius: 8px;
+        border-radius: 0;
         font-weight: 500;
         text-decoration: none;
         transition: opacity 0.2s;
-        background: var(--accent, #8b5cf6);
-        color: #ffffff;
+        background: var(--text-primary);
+        color: var(--bg);
     }
 
     .not-found-btn.secondary {
@@ -72,6 +75,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
 
     .not-found-btn:hover {
-        opacity: 0.85;
+        background: var(--accent);
+        opacity: 1;
     }
 </style>
