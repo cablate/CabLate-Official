@@ -85,7 +85,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
       <h1 class="display-heading"><span class="heading-phrase">AI 一直</span><span class="heading-phrase">鬼打牆，</span><span class="heading-phrase">先別只改</span>{' '}<span class="heading-phrase">Prompt。</span></h1>
       <div class="expertise-hero__footer">
         <p>規則愈加愈多，AI 不一定會更穩。先查它當下讀到了什麼、能做什麼，以及你有沒有說清楚怎樣才算完成。</p>
-        <a class="text-link" href="#diagnosis">先從你看到的問題開始 <ArrowRight size={18} aria-hidden="true" /></a>
+        <a class="btn btn-primary expertise-hero__cta" href="#diagnosis">先從你看到的問題開始 <ArrowRight size={17} aria-hidden="true" /></a>
       </div>
     </header>
 
@@ -181,7 +181,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
   .expertise-hero h1 { max-width: none !important; margin: clamp(2.75rem, 6vw, 5.75rem) 0 0; font-family: var(--font-serif); font-size: clamp(3rem, 6.2vw, 6.1rem) !important; letter-spacing: -.075em !important; line-height: 1.02 !important; }
   .expertise-hero__footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; margin-top: 2.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
   .expertise-hero__footer p { max-width: 52rem; margin: 0; color: var(--text-secondary); font-size: 1rem; line-height: 1.85; }
-  .expertise-hero__footer a { min-block-size: 2.75rem; display: inline-flex; align-items: center; gap: .6rem; color: var(--accent-text); font-weight: 700; text-decoration: underline; text-decoration-thickness: .08em; text-underline-offset: .3em; white-space: nowrap; }
+  .expertise-hero__cta { min-inline-size: 14.5rem; white-space: nowrap; }
   .diagnosis { padding-block: clamp(3.5rem, 7vw, 6.5rem) !important; }
   .diagnosis__header, .method-map__header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .62fr); gap: 2rem; align-items: end; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
   .diagnosis__header h2, .method-map__header h2 { max-width: 17ch; margin: 0; font-size: clamp(2.2rem, 4.6vw, 4.2rem); letter-spacing: -.055em; line-height: 1.06; }
@@ -240,7 +240,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
   @media (max-width: 800px) {
     .expertise-hero__footer, .diagnosis__header, .method-map__header, .method-map__boundary, .expertise-next { grid-template-columns: 1fr; }
     .expertise-hero__footer { gap: 1.25rem; }
-    .expertise-hero__footer a, .method-map__boundary a { justify-self: start; }
+    .expertise-hero__cta, .method-map__boundary a { justify-self: start; }
     .diagnosis__header, .method-map__header { gap: 1.25rem; }
     .diagnosis-columns { display: none; }
     .diagnosis-list article { grid-template-columns: 4.5rem minmax(0, 1fr); grid-template-areas: "index symptom" ". checks"; column-gap: 0; padding: 1.25rem 0; }
@@ -264,6 +264,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
     .expertise-hero h1 { margin-top: 2.15rem; font-size: clamp(1.84rem, 9.2vw, 2.55rem) !important; line-height: 1.12 !important; }
     .expertise-hero__footer { margin-top: 2rem; }
     .expertise-hero__footer p { font-size: .9rem; }
+    .expertise-hero__cta { width: 100%; min-inline-size: 0; justify-self: stretch; }
     .diagnosis, .method-map, .expertise-next { padding-block: 2.8rem !important; }
     .diagnosis__header, .method-map__header { padding-bottom: 1.7rem; }
     .diagnosis__header h2, .method-map__header h2, .expertise-next h2 { font-size: clamp(1.65rem, 8vw, 2.8rem); }

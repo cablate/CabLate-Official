@@ -360,7 +360,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 
 ### 6.4 互動與可及性
 
-- Hero 的 `先從你看到的問題開始` 必須有至少 44px 的可點高度。
+- Hero 的 `先從你看到的問題開始` 必須呈現為清楚的 filled primary button，並有至少 44px 的可點高度；不得再退回只有底線的小型文字連結。
 - 小型互動文字使用 `--accent-text` 或其他對比達 4.5:1 的顏色；不能只靠 `--accent` 小字表示可點。
 - 連結需有文字、箭頭或邊界等第二種可點提示，不能只有顏色。
 - `focus-visible` 在紙張紋理上仍要清楚可見。
@@ -476,7 +476,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 
 - 不用降低正文可讀性換取排版。
 - 不用 `overflow: hidden`、負 margin 或 absolute positioning 遮住內容問題。
-- Hero link 與頁尾 CTA 的觸控高度至少 44px。
+- Hero button 與頁尾 CTA 的觸控高度至少 44px。
 - 互動文字使用符合對比要求的顏色。
 - 標題 phrase grouping 需分別為 Desktop 與 Mobile 驗證；不能只相信自動換行。
 - 不新增 GSAP、圖片素材、額外裝飾或套件。
@@ -649,7 +649,8 @@ Expertise 負責診斷，Courses 負責協助訪客選擇學習深度；CabAI �
 - `npm run build`：通過，共 48 pages。
 - `git diff --check`：通過。
 - 320 × 568、360 × 800、390 × 844、1280 × 720、1440 × 900：`scrollWidth === clientWidth`，沒有水平溢位。
-- Hero 與 Route 的互動高度為 44px；Courses 與 Services CTA 高度為 48px。
+- Hero button 高度為 48px；Route 的互動高度為 44px；Courses 與 Services CTA 高度為 48px。
+- 人工複核後，Hero 入口已由只有底線的 `text-link` 改為全站既有 `.btn.btn-primary`；Desktop 為 232 × 48px，390px Mobile 為紙張內滿寬 326 × 48px。
 - `--accent-text` 對白底與紙面近似底色的對比分別約 6.40:1、6.03:1，高於一般文字 4.5:1。
 - 390px Mobile 點擊 Hero 後，固定 Headbar bottom 為 70px，Diagnosis heading top 為 260px，保留 190px 安全距離。
 - Diagnosis 與 Method map 高度比依序為：320px 0.754、360px 0.765、390px 0.765、1280px 0.824、1440px 0.880；方法對照在所有支援尺寸都更短。

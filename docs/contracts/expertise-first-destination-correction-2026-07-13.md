@@ -66,7 +66,7 @@ change_context:
 
 ### First paint and ready
 
-- 靜態頁面沒有 loading、empty 或 error state；首屏直接顯示 Hero 標題、說明與 Diagnosis 入口。
+- 靜態頁面沒有 loading、empty 或 error state；首屏直接顯示 Hero 標題、說明與 filled primary Diagnosis button。
 - 紙張材質、紫色識別、細線、迴紋針與 Boundary note 維持既有視覺語法。
 
 ### Desktop
@@ -86,7 +86,7 @@ change_context:
 
 - Hero link、Route recovery link、Courses CTA、Services CTA 都能以 Tab 聚焦並以 Enter 啟動。
 - `:focus-visible` 在紙張背景上清楚可見。
-- 小型互動文字不能只靠顏色表達可點擊性。
+- Hero Diagnosis 入口必須有清楚的按鈕邊界；其他小型互動文字也不能只靠顏色表達可點擊性。
 
 ### Reduced motion
 
@@ -173,7 +173,8 @@ test_mapping:
 - `npm run build`：通過，共 48 pages。
 - `git diff --check`：通過。
 - 320 × 568、360 × 800、390 × 844、1280 × 720、1440 × 900：`scrollWidth === clientWidth`，沒有水平溢位。
-- 360px Hero 入口高度為 44px；390px Courses 與 Services CTA 高度約 48px。
+- 360px Hero button 高度為 48px；390px Courses 與 Services CTA 高度約 48px。
+- Hero 入口使用全站既有 `.btn.btn-primary`：1440px 為 232 × 48px，390px 為紙張內滿寬 326 × 48px；不再只以底線文字表示可點擊。
 - `--accent-text` 對白底與紙面近似底色的對比分別約 6.40:1、6.03:1。
 - 首頁 `查看診斷方法` → `/expertise/` → Hero `#diagnosis` 已走完；390px Mobile 的 Headbar bottom 為 70px，Diagnosis heading top 為 260px，保留 190px 安全距離。
 - Courses 與 Services CTA 已分別實際前往 `/courses/`、`/services/`；accessible name 與 href 正確。

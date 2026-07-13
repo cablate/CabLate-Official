@@ -1,7 +1,9 @@
 # Expertise First Destination V2 Evidence
 
 日期：2026-07-13  
-驗證版本：`cdee402 fix: enforce symptom-first expertise flow`
+驗證基線：`cdee402 fix: enforce symptom-first expertise flow`
+
+Hero CTA 人工複核修正：`fix: restore expertise hero button`
 
 ## 驗證範圍
 
@@ -28,10 +30,12 @@
 
 ### 局部核對
 
+- `desktop-1440x900-hero-button.png`：Desktop Hero filled primary button 與首屏層級。
 - `desktop-1440x900-diagnosis.png`：完整 Case A 至 D 診斷表。
 - `desktop-1440x900-method-map.png`：Context、Harness、Skill 方法對照與 Boundary note。
 - `desktop-1440x900-page-end.png`：Courses／Services 頁尾行動。
 - `mobile-390x844-diagnosis.png`：Mobile 症狀優先順序與安全內距。
+- `mobile-390x844-hero-button.png`：Mobile Hero 滿寬按鈕與紙張安全內距。
 - `mobile-390x844-method-map.png`：Mobile 方法對照、Route 與 Boundary note。
 - `mobile-390x844-page-end.png`：Mobile 頁尾行動。
 - `mobile-320x568-page-end.png`：最窄尺寸按鈕、Footer 與水平溢位核對。
@@ -48,7 +52,8 @@
 | 1280 × 720 | 1330px | 1096px | 0.824 |
 | 1440 × 900 | 1297px | 1141px | 0.880 |
 
-- Hero 與 Route 的頁內連結高度為 44px。
+- Hero button 高度為 48px；Route 的頁內連結高度為 44px。
+- Desktop Hero button 為 232 × 48px；390px Mobile 為 326 × 48px，左右各保留 32px 安全內距。
 - Courses 與 Services CTA 高度為 48px。
 - 390px Mobile 點擊 Hero 後，固定 Headbar bottom 為 70px，Diagnosis heading top 為 260px，保留 190px 安全距離。
 - 320、360、390、1280、1440 的方法對照都短於 Diagnosis；Mobile 沒有靠縮字或壓縮紙張內距達成。
@@ -77,6 +82,8 @@
 6. 再以 Tab 聚焦 Services CTA，Enter 前往 `/services/`。
 
 所有行動均為原生 `<a href>`，且紙張背景上的 `:focus-visible` 清楚可見。
+
+Hero button 的實測 focus ring 為 2px 實線、2px offset；390px Enter 跳轉後 Headbar bottom 約 70px，Diagnosis heading top 約 260px。
 
 ## 自動檢查
 
