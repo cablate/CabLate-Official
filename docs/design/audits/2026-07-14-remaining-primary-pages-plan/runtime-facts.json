@@ -1,0 +1,984 @@
+[
+  {
+    "page": "about",
+    "viewport": "desktop-1440x900",
+    "file": "01-about-desktop-1440x900-full.png",
+    "title": "關於 CabLate｜從工程實作到 AI 工作流程的判斷 | CabLate",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "contentHeight": 4794,
+    "headings": [
+      {
+        "tag": "H1",
+        "text": "從工程實作走到 AI 應用，我一直在意成果能不能被接手。"
+      },
+      {
+        "tag": "H2",
+        "text": "我在意交付，因為做出來不等於能使用。"
+      },
+      {
+        "tag": "H2",
+        "text": "四個轉折，慢慢形成現在這套工作方式。"
+      },
+      {
+        "tag": "H3",
+        "text": "從前端一路補到系統整合"
+      },
+      {
+        "tag": "H3",
+        "text": "開始把驗收與復原一起算進交付"
+      },
+      {
+        "tag": "H3",
+        "text": "把工程經驗轉向 AI 應用"
+      },
+      {
+        "tag": "H3",
+        "text": "全職投入 CabLate"
+      },
+      {
+        "tag": "H2",
+        "text": "每件作品都附上公開程式碼、使用方式或可查證的數字。"
+      },
+      {
+        "tag": "H3",
+        "text": "mcp-google-map"
+      },
+      {
+        "tag": "H3",
+        "text": "banini-tracker"
+      },
+      {
+        "tag": "H3",
+        "text": "claude-code-research"
+      },
+      {
+        "tag": "H3",
+        "text": "CabAI 是我用來提供試看、販售課程和交付已購內容的平台。"
+      },
+      {
+        "tag": "H2",
+        "text": "遇到不同工具與問題，我仍會守住四件事。"
+      },
+      {
+        "tag": "H3",
+        "text": "沒有做過的，不假裝熟悉"
+      },
+      {
+        "tag": "H3",
+        "text": "先做出能使用的版本"
+      },
+      {
+        "tag": "H3",
+        "text": "先看問題，再選工具"
+      },
+      {
+        "tag": "H3",
+        "text": "做對一次，就把原因留下來"
+      },
+      {
+        "tag": "H2",
+        "text": "想看這些原則怎麼用在實作上，先看代表作品。"
+      }
+    ],
+    "links": [
+      {
+        "text": "先看代表作品",
+        "href": "/work/",
+        "class": "text-link about-hero__action",
+        "width": 105,
+        "height": 23
+      },
+      {
+        "text": "mcp-google-map把 Google Maps 能力包成 Agent 可使用的 MCP 工具。 365 stars／75 forks截至 2026-07-02",
+        "href": "https://github.com/cablate/mcp-google-map",
+        "class": "",
+        "width": 1088,
+        "height": 94
+      },
+      {
+        "text": "banini-tracker把社群貼文、AI 分析、即時推送與股價驗證串成可部署的資料產品。 287 stars／49 forks截至 2026-07-02",
+        "href": "https://github.com/cablate/banini-tracker",
+        "class": "",
+        "width": 1088,
+        "height": 94
+      },
+      {
+        "text": "claude-code-research持續整理 Claude Code 與 Agent 工作流的公開研究。 159 stars／67 forks截至 2026-07-02",
+        "href": "https://github.com/cablate/claude-code-research",
+        "class": "",
+        "width": 1088,
+        "height": 94
+      },
+      {
+        "text": "查看 CabAI 學習平台",
+        "href": "https://cabai.cablate.com/?utm_source=cablate&utm_medium=personal_site&utm_campaign=about_platform",
+        "class": "",
+        "width": 145,
+        "height": 22
+      },
+      {
+        "text": "查看代表作品",
+        "href": "/work/",
+        "class": "about-next__primary",
+        "width": 444,
+        "height": 57
+      },
+      {
+        "text": "專業方法",
+        "href": "/expertise/",
+        "class": "",
+        "width": 50,
+        "height": 32
+      },
+      {
+        "text": "GitHub",
+        "href": "https://github.com/cablate",
+        "class": "",
+        "width": 75,
+        "height": 32
+      },
+      {
+        "text": "Threads",
+        "href": "https://www.threads.net/@cab_late",
+        "class": "",
+        "width": 82,
+        "height": 32
+      },
+      {
+        "text": "Email",
+        "href": "mailto:cablate@cablate.com",
+        "class": "",
+        "width": 35,
+        "height": 32
+      }
+    ],
+    "sections": [
+      {
+        "class": "about-hero page-paper paper-card",
+        "heading": "從工程實作走到 AI 應用，我一直在意成果能不能被接手。"
+      },
+      {
+        "class": "about-story page-paper paper-card",
+        "heading": "我在意交付，因為做出來不等於能使用。"
+      },
+      {
+        "class": "turning-points page-paper paper-card paper-card--clip",
+        "heading": "四個轉折，慢慢形成現在這套工作方式。"
+      },
+      {
+        "class": "open-source page-paper paper-card",
+        "heading": "每件作品都附上公開程式碼、使用方式或可查證的數字。"
+      },
+      {
+        "class": "principles page-paper paper-card paper-card--clip paper-card--clip-left",
+        "heading": "遇到不同工具與問題，我仍會守住四件事。"
+      },
+      {
+        "class": "about-next page-paper paper-card paper-card--clip",
+        "heading": "想看這些原則怎麼用在實作上，先看代表作品。"
+      }
+    ]
+  },
+  {
+    "page": "about",
+    "viewport": "mobile-390x844",
+    "file": "02-about-mobile-390x844-full.png",
+    "title": "關於 CabLate｜從工程實作到 AI 工作流程的判斷 | CabLate",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "contentHeight": 5501,
+    "headings": [
+      {
+        "tag": "H1",
+        "text": "從工程實作走到 AI 應用，我一直在意成果能不能被接手。"
+      },
+      {
+        "tag": "H2",
+        "text": "我在意交付，因為做出來不等於能使用。"
+      },
+      {
+        "tag": "H2",
+        "text": "四個轉折，慢慢形成現在這套工作方式。"
+      },
+      {
+        "tag": "H3",
+        "text": "從前端一路補到系統整合"
+      },
+      {
+        "tag": "H3",
+        "text": "開始把驗收與復原一起算進交付"
+      },
+      {
+        "tag": "H3",
+        "text": "把工程經驗轉向 AI 應用"
+      },
+      {
+        "tag": "H3",
+        "text": "全職投入 CabLate"
+      },
+      {
+        "tag": "H2",
+        "text": "每件作品都附上公開程式碼、使用方式或可查證的數字。"
+      },
+      {
+        "tag": "H3",
+        "text": "mcp-google-map"
+      },
+      {
+        "tag": "H3",
+        "text": "banini-tracker"
+      },
+      {
+        "tag": "H3",
+        "text": "claude-code-research"
+      },
+      {
+        "tag": "H3",
+        "text": "CabAI 是我用來提供試看、販售課程和交付已購內容的平台。"
+      },
+      {
+        "tag": "H2",
+        "text": "遇到不同工具與問題，我仍會守住四件事。"
+      },
+      {
+        "tag": "H3",
+        "text": "沒有做過的，不假裝熟悉"
+      },
+      {
+        "tag": "H3",
+        "text": "先做出能使用的版本"
+      },
+      {
+        "tag": "H3",
+        "text": "先看問題，再選工具"
+      },
+      {
+        "tag": "H3",
+        "text": "做對一次，就把原因留下來"
+      },
+      {
+        "tag": "H2",
+        "text": "想看這些原則怎麼用在實作上，先看代表作品。"
+      }
+    ],
+    "links": [
+      {
+        "text": "先看代表作品",
+        "href": "/work/",
+        "class": "text-link about-hero__action",
+        "width": 105,
+        "height": 23
+      },
+      {
+        "text": "mcp-google-map把 Google Maps 能力包成 Agent 可使用的 MCP 工具。 365 stars／75 forks截至 2026-07-02",
+        "href": "https://github.com/cablate/mcp-google-map",
+        "class": "",
+        "width": 326,
+        "height": 139
+      },
+      {
+        "text": "banini-tracker把社群貼文、AI 分析、即時推送與股價驗證串成可部署的資料產品。 287 stars／49 forks截至 2026-07-02",
+        "href": "https://github.com/cablate/banini-tracker",
+        "class": "",
+        "width": 326,
+        "height": 161
+      },
+      {
+        "text": "claude-code-research持續整理 Claude Code 與 Agent 工作流的公開研究。 159 stars／67 forks截至 2026-07-02",
+        "href": "https://github.com/cablate/claude-code-research",
+        "class": "",
+        "width": 326,
+        "height": 139
+      },
+      {
+        "text": "查看 CabAI 學習平台",
+        "href": "https://cabai.cablate.com/?utm_source=cablate&utm_medium=personal_site&utm_campaign=about_platform",
+        "class": "",
+        "width": 145,
+        "height": 22
+      },
+      {
+        "text": "查看代表作品",
+        "href": "/work/",
+        "class": "about-next__primary",
+        "width": 326,
+        "height": 57
+      },
+      {
+        "text": "專業方法",
+        "href": "/expertise/",
+        "class": "",
+        "width": 50,
+        "height": 32
+      },
+      {
+        "text": "GitHub",
+        "href": "https://github.com/cablate",
+        "class": "",
+        "width": 75,
+        "height": 32
+      },
+      {
+        "text": "Threads",
+        "href": "https://www.threads.net/@cab_late",
+        "class": "",
+        "width": 82,
+        "height": 32
+      },
+      {
+        "text": "Email",
+        "href": "mailto:cablate@cablate.com",
+        "class": "",
+        "width": 35,
+        "height": 32
+      }
+    ],
+    "sections": [
+      {
+        "class": "about-hero page-paper paper-card",
+        "heading": "從工程實作走到 AI 應用，我一直在意成果能不能被接手。"
+      },
+      {
+        "class": "about-story page-paper paper-card",
+        "heading": "我在意交付，因為做出來不等於能使用。"
+      },
+      {
+        "class": "turning-points page-paper paper-card paper-card--clip",
+        "heading": "四個轉折，慢慢形成現在這套工作方式。"
+      },
+      {
+        "class": "open-source page-paper paper-card",
+        "heading": "每件作品都附上公開程式碼、使用方式或可查證的數字。"
+      },
+      {
+        "class": "principles page-paper paper-card paper-card--clip paper-card--clip-left",
+        "heading": "遇到不同工具與問題，我仍會守住四件事。"
+      },
+      {
+        "class": "about-next page-paper paper-card paper-card--clip",
+        "heading": "想看這些原則怎麼用在實作上，先看代表作品。"
+      }
+    ]
+  },
+  {
+    "page": "work",
+    "viewport": "desktop-1440x900",
+    "file": "03-work-desktop-1440x900-full.png",
+    "title": "代表作品與關鍵判斷｜CabLate | CabLate",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "contentHeight": 2901,
+    "headings": [
+      {
+        "tag": "H1",
+        "text": "作品先看結果，也要看限制下做了哪些選擇。"
+      },
+      {
+        "tag": "H2",
+        "text": "每個檔案，都從一個具體問題開始。"
+      },
+      {
+        "tag": "H3",
+        "text": "Agent 深度工程手冊"
+      },
+      {
+        "tag": "H3",
+        "text": "mcp-google-map"
+      },
+      {
+        "tag": "H3",
+        "text": "金流串接與產品交付教學"
+      },
+      {
+        "tag": "H3",
+        "text": "banini-tracker"
+      },
+      {
+        "tag": "H2",
+        "text": "把做過的範圍與不能公開的部分放在一起說清楚。"
+      },
+      {
+        "tag": "H3",
+        "text": "企業 AI 導入與內訓"
+      },
+      {
+        "tag": "H3",
+        "text": "電商平台 MCP 合作測試"
+      }
+    ],
+    "links": [
+      {
+        "text": "先看公開檔案",
+        "href": "#selected-work",
+        "class": "work-hero__primary",
+        "width": 162,
+        "height": 53
+      },
+      {
+        "text": "查看合作方式",
+        "href": "/services/",
+        "class": "work-hero__secondary",
+        "width": 77,
+        "height": 22
+      },
+      {
+        "text": "查看試看與完整章節",
+        "href": "https://cabai.cablate.com/products/cc-deep-engineering?utm_source=cablate&utm_medium=personal_site&utm_campaign=work_handbook",
+        "class": "work-file__open",
+        "width": 171,
+        "height": 53
+      },
+      {
+        "text": "02 開源工具PUBLIC RECORD mcp-google-map Agent 能回答地點問題，卻缺少一套可安裝、可重複呼叫，也方便其他開發者延伸的 Google Maps 工具。 關鍵判斷把地圖能力包成標準 MCP 工具，補齊安裝方式、工具介面與公開程式碼，再發布到 GitHub 與 npm。 公開證據365 stars／75 forks，截至 2026-07-02 查看檔案",
+        "href": "https://github.com/cablate/mcp-google-map",
+        "class": "work-index__item",
+        "width": 1088,
+        "height": 147
+      },
+      {
+        "text": "03 實作型教學PUBLIC RECORD 金流串接與產品交付教學 許多 AI 寫程式示範停在畫面能動，真的接上金流後，訂單狀態、Webhook、簽章與錯誤處理才開始出現。 關鍵判斷學員會實際接上 API、建立訂單狀態、驗證 Webhook 與簽章，也處理付款失敗時該怎麼辦。 公開證據40+ 位學員，截至 2026-06 查看檔案",
+        "href": "/courses/",
+        "class": "work-index__item",
+        "width": 1088,
+        "height": 147
+      },
+      {
+        "text": "04 資料型產品PUBLIC RECORD banini-tracker 社群上的投資訊號很多，但貼文、AI 判讀、即時通知與後續股價驗證彼此分散，無法形成可追蹤的紀錄。 關鍵判斷系統會收集貼文、交給 AI 判讀、發出通知，再用後續股價檢查判斷是否正確；程式碼公開在 GitHub。 公開證據287 stars／49 forks，截至 2026-07-02 查看檔案",
+        "href": "https://github.com/cablate/banini-tracker",
+        "class": "work-index__item",
+        "width": 1088,
+        "height": 147
+      },
+      {
+        "text": "如果你有相似情境，查看合作方式",
+        "href": "/services/",
+        "class": "text-link",
+        "width": 226,
+        "height": 23
+      }
+    ],
+    "sections": [
+      {
+        "class": "work-hero page-paper paper-card",
+        "heading": "作品先看結果，也要看限制下做了哪些選擇。"
+      },
+      {
+        "class": "selected-work page-paper paper-card paper-card--clip",
+        "heading": "每個檔案，都從一個具體問題開始。"
+      },
+      {
+        "class": "project-notes page-paper paper-card paper-card--clip paper-card--clip-left",
+        "heading": "把做過的範圍與不能公開的部分放在一起說清楚。"
+      }
+    ]
+  },
+  {
+    "page": "work",
+    "viewport": "mobile-390x844",
+    "file": "04-work-mobile-390x844-full.png",
+    "title": "代表作品與關鍵判斷｜CabLate | CabLate",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "contentHeight": 4587,
+    "headings": [
+      {
+        "tag": "H1",
+        "text": "作品先看結果，也要看限制下做了哪些選擇。"
+      },
+      {
+        "tag": "H2",
+        "text": "每個檔案，都從一個具體問題開始。"
+      },
+      {
+        "tag": "H3",
+        "text": "Agent 深度工程手冊"
+      },
+      {
+        "tag": "H3",
+        "text": "mcp-google-map"
+      },
+      {
+        "tag": "H3",
+        "text": "金流串接與產品交付教學"
+      },
+      {
+        "tag": "H3",
+        "text": "banini-tracker"
+      },
+      {
+        "tag": "H2",
+        "text": "把做過的範圍與不能公開的部分放在一起說清楚。"
+      },
+      {
+        "tag": "H3",
+        "text": "企業 AI 導入與內訓"
+      },
+      {
+        "tag": "H3",
+        "text": "電商平台 MCP 合作測試"
+      }
+    ],
+    "links": [
+      {
+        "text": "先看公開檔案",
+        "href": "#selected-work",
+        "class": "work-hero__primary",
+        "width": 162,
+        "height": 53
+      },
+      {
+        "text": "查看合作方式",
+        "href": "/services/",
+        "class": "work-hero__secondary",
+        "width": 77,
+        "height": 22
+      },
+      {
+        "text": "查看試看與完整章節",
+        "href": "https://cabai.cablate.com/products/cc-deep-engineering?utm_source=cablate&utm_medium=personal_site&utm_campaign=work_handbook",
+        "class": "work-file__open",
+        "width": 134,
+        "height": 21
+      },
+      {
+        "text": "02 開源工具PUBLIC RECORD mcp-google-map Agent 能回答地點問題，卻缺少一套可安裝、可重複呼叫，也方便其他開發者延伸的 Google Maps 工具。 關鍵判斷把地圖能力包成標準 MCP 工具，補齊安裝方式、工具介面與公開程式碼，再發布到 GitHub 與 npm。 公開證據365 stars／75 forks，截至 2026-07-02 查看檔案",
+        "href": "https://github.com/cablate/mcp-google-map",
+        "class": "work-index__item",
+        "width": 326,
+        "height": 417
+      },
+      {
+        "text": "03 實作型教學PUBLIC RECORD 金流串接與產品交付教學 許多 AI 寫程式示範停在畫面能動，真的接上金流後，訂單狀態、Webhook、簽章與錯誤處理才開始出現。 關鍵判斷學員會實際接上 API、建立訂單狀態、驗證 Webhook 與簽章，也處理付款失敗時該怎麼辦。 公開證據40+ 位學員，截至 2026-06 查看檔案",
+        "href": "/courses/",
+        "class": "work-index__item",
+        "width": 326,
+        "height": 417
+      },
+      {
+        "text": "04 資料型產品PUBLIC RECORD banini-tracker 社群上的投資訊號很多，但貼文、AI 判讀、即時通知與後續股價驗證彼此分散，無法形成可追蹤的紀錄。 關鍵判斷系統會收集貼文、交給 AI 判讀、發出通知，再用後續股價檢查判斷是否正確；程式碼公開在 GitHub。 公開證據287 stars／49 forks，截至 2026-07-02 查看檔案",
+        "href": "https://github.com/cablate/banini-tracker",
+        "class": "work-index__item",
+        "width": 326,
+        "height": 417
+      },
+      {
+        "text": "如果你有相似情境，查看合作方式",
+        "href": "/services/",
+        "class": "text-link",
+        "width": 226,
+        "height": 23
+      }
+    ],
+    "sections": [
+      {
+        "class": "work-hero page-paper paper-card",
+        "heading": "作品先看結果，也要看限制下做了哪些選擇。"
+      },
+      {
+        "class": "selected-work page-paper paper-card paper-card--clip",
+        "heading": "每個檔案，都從一個具體問題開始。"
+      },
+      {
+        "class": "project-notes page-paper paper-card paper-card--clip paper-card--clip-left",
+        "heading": "把做過的範圍與不能公開的部分放在一起說清楚。"
+      }
+    ]
+  },
+  {
+    "page": "courses",
+    "viewport": "desktop-1440x900",
+    "file": "05-courses-desktop-1440x900-full.png",
+    "title": "學習路線｜CabLate | CabLate",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "contentHeight": 3148,
+    "headings": [
+      {
+        "tag": "H1",
+        "text": "不用一次學完全部，先跨過你現在最卡的那一步。"
+      },
+      {
+        "tag": "H2",
+        "text": "你現在卡在哪一層？"
+      },
+      {
+        "tag": "H3",
+        "text": "還不確定問題在哪，也不想先買錯內容"
+      },
+      {
+        "tag": "H3",
+        "text": "想在短時間內建立共同語言、釐清方向"
+      },
+      {
+        "tag": "H3",
+        "text": "AI 每次都要重新交代，成果仍然反覆重做"
+      },
+      {
+        "tag": "H3",
+        "text": "已經在用 Claude Code，但工作流程還不夠穩定"
+      },
+      {
+        "tag": "H2",
+        "text": "試看與購買內容，都留在 CabAI 帳號裡。"
+      }
+    ],
+    "links": [
+      {
+        "text": "看看我該從哪裡開始",
+        "href": "#learning-map",
+        "class": "learn-hero__cta",
+        "width": 210,
+        "height": 53
+      },
+      {
+        "text": "先做問題診斷",
+        "href": "/expertise/",
+        "class": "text-link",
+        "width": 104,
+        "height": 23
+      },
+      {
+        "text": "查看課程與免費試看",
+        "href": "https://cabai.cablate.com/products/agentskill-course?utm_source=cablate&utm_medium=personal_site&utm_campaign=courses_agentskill",
+        "class": "text-link",
+        "width": 144,
+        "height": 23
+      },
+      {
+        "text": "查看手冊與免費試看",
+        "href": "https://cabai.cablate.com/products/cc-deep-engineering?utm_source=cablate&utm_medium=personal_site&utm_campaign=courses_handbook",
+        "class": "text-link",
+        "width": 144,
+        "height": 23
+      },
+      {
+        "text": "建立 CabAI 免費帳號",
+        "href": "https://cabai.cablate.com/login?callbackUrl=%2Fdashboard&utm_source=cablate&utm_medium=personal_site&utm_campaign=courses_account",
+        "class": "learn-hero__cta",
+        "width": 214,
+        "height": 53
+      }
+    ],
+    "sections": [
+      {
+        "class": "learn-hero page-paper paper-card",
+        "heading": "不用一次學完全部，先跨過你現在最卡的那一步。"
+      },
+      {
+        "class": "learn-map page-paper paper-card paper-card--clip paper-card--clip-left",
+        "heading": "你現在卡在哪一層？"
+      },
+      {
+        "class": "cabai-onboarding page-paper paper-card paper-card--clip-left",
+        "heading": "試看與購買內容，都留在 CabAI 帳號裡。"
+      }
+    ]
+  },
+  {
+    "page": "courses",
+    "viewport": "mobile-390x844",
+    "file": "06-courses-mobile-390x844-full.png",
+    "title": "學習路線｜CabLate | CabLate",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "contentHeight": 3344,
+    "headings": [
+      {
+        "tag": "H1",
+        "text": "不用一次學完全部，先跨過你現在最卡的那一步。"
+      },
+      {
+        "tag": "H2",
+        "text": "你現在卡在哪一層？"
+      },
+      {
+        "tag": "H3",
+        "text": "還不確定問題在哪，也不想先買錯內容"
+      },
+      {
+        "tag": "H3",
+        "text": "想在短時間內建立共同語言、釐清方向"
+      },
+      {
+        "tag": "H3",
+        "text": "AI 每次都要重新交代，成果仍然反覆重做"
+      },
+      {
+        "tag": "H3",
+        "text": "已經在用 Claude Code，但工作流程還不夠穩定"
+      },
+      {
+        "tag": "H2",
+        "text": "試看與購買內容，都留在 CabAI 帳號裡。"
+      }
+    ],
+    "links": [
+      {
+        "text": "看看我該從哪裡開始",
+        "href": "#learning-map",
+        "class": "learn-hero__cta",
+        "width": 210,
+        "height": 53
+      },
+      {
+        "text": "先做問題診斷",
+        "href": "/expertise/",
+        "class": "text-link",
+        "width": 104,
+        "height": 23
+      },
+      {
+        "text": "查看課程與免費試看",
+        "href": "https://cabai.cablate.com/products/agentskill-course?utm_source=cablate&utm_medium=personal_site&utm_campaign=courses_agentskill",
+        "class": "text-link",
+        "width": 144,
+        "height": 23
+      },
+      {
+        "text": "查看手冊與免費試看",
+        "href": "https://cabai.cablate.com/products/cc-deep-engineering?utm_source=cablate&utm_medium=personal_site&utm_campaign=courses_handbook",
+        "class": "text-link",
+        "width": 144,
+        "height": 23
+      },
+      {
+        "text": "建立 CabAI 免費帳號",
+        "href": "https://cabai.cablate.com/login?callbackUrl=%2Fdashboard&utm_source=cablate&utm_medium=personal_site&utm_campaign=courses_account",
+        "class": "learn-hero__cta",
+        "width": 326,
+        "height": 53
+      }
+    ],
+    "sections": [
+      {
+        "class": "learn-hero page-paper paper-card",
+        "heading": "不用一次學完全部，先跨過你現在最卡的那一步。"
+      },
+      {
+        "class": "learn-map page-paper paper-card paper-card--clip paper-card--clip-left",
+        "heading": "你現在卡在哪一層？"
+      },
+      {
+        "class": "cabai-onboarding page-paper paper-card paper-card--clip-left",
+        "heading": "試看與購買內容，都留在 CabAI 帳號裡。"
+      }
+    ]
+  },
+  {
+    "page": "services",
+    "viewport": "desktop-1440x900",
+    "file": "07-services-desktop-1440x900-full.png",
+    "title": "AI 工作流程、企業內訓與 Agent 導入合作 | CabLate",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "contentHeight": 4202,
+    "headings": [
+      {
+        "tag": "H1",
+        "text": "把反覆重做的工作，整理成能檢查、也能交接的流程。"
+      },
+      {
+        "tag": "H2",
+        "text": "先找出最接近的狀況，再看適合哪種合作。"
+      },
+      {
+        "tag": "H3",
+        "text": "AI 工作流診斷"
+      },
+      {
+        "tag": "H3",
+        "text": "企業內訓與工作坊"
+      },
+      {
+        "tag": "H3",
+        "text": "AI 產品與 Agent 導入"
+      },
+      {
+        "tag": "H2",
+        "text": "先把問題釐清，再決定怎麼做。"
+      },
+      {
+        "tag": "H3",
+        "text": "診斷"
+      },
+      {
+        "tag": "H3",
+        "text": "設計"
+      },
+      {
+        "tag": "H3",
+        "text": "推進"
+      },
+      {
+        "tag": "H3",
+        "text": "驗收"
+      },
+      {
+        "tag": "H2",
+        "text": "合作前，先把責任與限制說清楚。"
+      },
+      {
+        "tag": "H2",
+        "text": "不用先寫需求書，把目前怎麼做、卡在哪裡告訴我就好。"
+      }
+    ],
+    "links": [
+      {
+        "text": "先判斷是否適合",
+        "href": "#service-options",
+        "class": "",
+        "width": 178,
+        "height": 53
+      },
+      {
+        "text": "寄信提交工作情境",
+        "href": "mailto:cablate@cablate.com?subject=%E5%90%88%E4%BD%9C%E6%83%85%E5%A2%83%EF%BC%9A",
+        "class": "",
+        "width": 194,
+        "height": 53
+      },
+      {
+        "text": "也可以透過 Threads 聯絡",
+        "href": "https://www.threads.net/@cab_late",
+        "class": "text-link",
+        "width": 177,
+        "height": 23
+      }
+    ],
+    "sections": [
+      {
+        "class": "services-hero page-paper paper-card",
+        "heading": "把反覆重做的工作，整理成能檢查、也能交接的流程。"
+      },
+      {
+        "class": "service-options page-paper paper-card",
+        "heading": "先找出最接近的狀況，再看適合哪種合作。"
+      },
+      {
+        "class": "service-proof page-paper paper-card paper-card--clip-left",
+        "heading": null
+      },
+      {
+        "class": "process page-paper paper-card paper-card--clip",
+        "heading": "先把問題釐清，再決定怎麼做。"
+      },
+      {
+        "class": "service-boundaries page-paper paper-card",
+        "heading": "合作前，先把責任與限制說清楚。"
+      },
+      {
+        "class": "service-cta page-paper paper-card paper-card--clip",
+        "heading": "不用先寫需求書，把目前怎麼做、卡在哪裡告訴我就好。"
+      }
+    ]
+  },
+  {
+    "page": "services",
+    "viewport": "mobile-390x844",
+    "file": "08-services-mobile-390x844-full.png",
+    "title": "AI 工作流程、企業內訓與 Agent 導入合作 | CabLate",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "contentHeight": 5713,
+    "headings": [
+      {
+        "tag": "H1",
+        "text": "把反覆重做的工作，整理成能檢查、也能交接的流程。"
+      },
+      {
+        "tag": "H2",
+        "text": "先找出最接近的狀況，再看適合哪種合作。"
+      },
+      {
+        "tag": "H3",
+        "text": "AI 工作流診斷"
+      },
+      {
+        "tag": "H3",
+        "text": "企業內訓與工作坊"
+      },
+      {
+        "tag": "H3",
+        "text": "AI 產品與 Agent 導入"
+      },
+      {
+        "tag": "H2",
+        "text": "先把問題釐清，再決定怎麼做。"
+      },
+      {
+        "tag": "H3",
+        "text": "診斷"
+      },
+      {
+        "tag": "H3",
+        "text": "設計"
+      },
+      {
+        "tag": "H3",
+        "text": "推進"
+      },
+      {
+        "tag": "H3",
+        "text": "驗收"
+      },
+      {
+        "tag": "H2",
+        "text": "合作前，先把責任與限制說清楚。"
+      },
+      {
+        "tag": "H2",
+        "text": "不用先寫需求書，把目前怎麼做、卡在哪裡告訴我就好。"
+      }
+    ],
+    "links": [
+      {
+        "text": "先判斷是否適合",
+        "href": "#service-options",
+        "class": "",
+        "width": 178,
+        "height": 53
+      },
+      {
+        "text": "寄信提交工作情境",
+        "href": "mailto:cablate@cablate.com?subject=%E5%90%88%E4%BD%9C%E6%83%85%E5%A2%83%EF%BC%9A",
+        "class": "",
+        "width": 194,
+        "height": 53
+      },
+      {
+        "text": "也可以透過 Threads 聯絡",
+        "href": "https://www.threads.net/@cab_late",
+        "class": "text-link",
+        "width": 177,
+        "height": 23
+      }
+    ],
+    "sections": [
+      {
+        "class": "services-hero page-paper paper-card",
+        "heading": "把反覆重做的工作，整理成能檢查、也能交接的流程。"
+      },
+      {
+        "class": "service-options page-paper paper-card",
+        "heading": "先找出最接近的狀況，再看適合哪種合作。"
+      },
+      {
+        "class": "service-proof page-paper paper-card paper-card--clip-left",
+        "heading": null
+      },
+      {
+        "class": "process page-paper paper-card paper-card--clip",
+        "heading": "先把問題釐清，再決定怎麼做。"
+      },
+      {
+        "class": "service-boundaries page-paper paper-card",
+        "heading": "合作前，先把責任與限制說清楚。"
+      },
+      {
+        "class": "service-cta page-paper paper-card paper-card--clip",
+        "heading": "不用先寫需求書，把目前怎麼做、卡在哪裡告訴我就好。"
+      }
+    ]
+  }
+]
