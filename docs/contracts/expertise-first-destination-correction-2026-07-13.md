@@ -2,7 +2,7 @@
 schema_version: behavior-contract/v1
 id: site.expertise-first-destination-correction
 title: Expertise 第一站修正
-status: active
+status: verified
 owner_surface: shared
 change_context:
   type: feature
@@ -156,9 +156,27 @@ test_mapping:
 
 ## Evidence
 
-- Baseline and intended copy: `docs/content/expertise-first-destination-correction-master-plan-2026-07-13.md`。
-- Browser screenshots: `docs/design/audits/2026-07-13-expertise-first-destination/`（完成實作後補齊）。
-- Command results and final geometry assertions will be recorded after verification.
+### Before
+
+- Baseline checkpoint：`f3317f2 chore: checkpoint before expertise correction`。
+- 核准文案與目標：`docs/content/expertise-first-destination-correction-master-plan-2026-07-13.md`。
+
+### After
+
+- 內容與旅程實作：`300f909 feat: complete expertise diagnosis journey`。
+- 響應式與視覺證據：`612c60a fix: refine expertise responsive experience`。
+- Screenshot evidence：`docs/design/audits/2026-07-13-expertise-first-destination/`，包含 1280／1440 desktop 與 320／360／390 mobile 的 Hero、Diagnosis、Method map 與 page end。
+- `npm run check`：通過，0 errors、0 warnings、17 個既有 hints。
+- `npm run validate:content`：通過。
+- `npm run build`：通過，共 48 pages。
+- `git diff --check`：通過。
+- 320 × 568、360 × 800、390 × 844、1280 × 720、1440 × 900：`scrollWidth === clientWidth`，沒有水平溢位。
+- 360px Hero 入口高度為 44px；390px Courses 與 Services CTA 高度約 48px。
+- `--accent-text` 對白底與紙面近似底色的對比分別約 6.40:1、6.03:1。
+- 首頁 `查看診斷方法` → `/expertise/` → Hero `#diagnosis` 已走完；Diagnosis 與固定 Headbar 間保留約 109px。Route 的 `回到診斷表` 亦產生相同安全間距。
+- Courses 與 Services CTA 已分別實際前往 `/courses/`、`/services/`；accessible name 與 href 正確。
+- Hero、Route、Courses、Services 均為原生 `<a href>`，可聚焦且 `:focus-visible` outline 清楚。CUA 自動化層無法派送 Enter 的原生預設動作，故不加入 JavaScript workaround；href、焦點與 click navigation 已分別驗證。
+- Expertise 可執行的 Article CTA 為 0；頁面沒有 CabAI、Discord、Email 或商品直連。
 
 ## Intentional Changes
 

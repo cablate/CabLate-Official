@@ -1,9 +1,9 @@
 ---
-status: approved
+status: completed
 created: 2026-07-13
-implementation_status: in_progress
+implementation_status: completed
 copy_status: approved
-verdict: executing
+verdict: verified
 scope:
   - align the homepage diagnosis promise with the Expertise page
   - complete the Expertise reader journey after diagnosis
@@ -621,17 +621,36 @@ Expertise 負責診斷，Courses 負責協助訪客選擇學習深度；CabAI �
 9. `npm run check`、`npm run validate:content`、`npm run build` 與 `git diff --check` 全部通過。
 10. 人工從首頁依序走完 Expertise，能回答：「我的問題可能在哪一層、現在先檢查什麼、接著去哪裡。」
 
-## 14. 執行就緒判定
+## 14. 執行與驗證結果
 
-**Verdict: Ready after approval**
+**Verdict: Verified**
 
-Repo reality、頁面入口、現有資料結構、方法順序、Articles 暫停狀態、Desktop／Mobile 渲染與驗證指令都已確認。實作前只剩一個 gate：使用者核准第 5 節的新增 Harness 症狀、Method map 完成訊號與頁尾文案。
+第 5 節文案已於 2026-07-13 獲核准並完成實作。Expertise 現在以 A 至 D 呈現四個症狀，Context、Harness、Skill 在 Diagnosis、Method map 與 Route 維持同一順序；Method map 改為完成訊號與往下一層條件，Boundary note 後也補上 Courses 與 Services 兩種下一步。
 
-下一個 session 開始實作前，必須先回答：
+### 14.1 Git checkpoints
 
-1. 這個 slice 改善哪個 Goal ID？
-2. 它保留哪一項 Domain invariant？
-3. 訪客能觀察到什麼不同？
-4. 哪些相鄰頁面與功能明確不在範圍內？
+- `f3317f2 chore: checkpoint before expertise correction`：本輪修改前基線。
+- `300f909 feat: complete expertise diagnosis journey`：四個症狀、方法順序、頁尾 CTA 與行為契約。
+- `612c60a fix: refine expertise responsive experience`：320 至 1440px 排版、錨點、標題斷句與視覺證據。
 
-答不出來時，先回到本文件，不得自行增加功能或改變頁面目的。
+### 14.2 Production evidence
+
+- `npm run check`：通過，0 errors、0 warnings、17 個既有 hints。
+- `npm run validate:content`：通過。
+- `npm run build`：通過，共 48 pages。
+- `git diff --check`：通過。
+- 320 × 568、360 × 800、390 × 844、1280 × 720、1440 × 900：`scrollWidth === clientWidth`，沒有水平溢位。
+- 360px Hero 入口的 CSS 高度為 44px；390px 頁尾兩個 CTA 高度約 48px。
+- `--accent-text` 對白底與紙面近似底色的對比分別約 6.40:1、6.03:1，高於一般文字 4.5:1。
+- 首頁 `查看診斷方法` 已實際前往 `/expertise/`；Hero 與 Route 的 `#diagnosis` 點擊後，Diagnosis 和固定 Headbar 間仍保留約 109px。
+- `/courses/` 與 `/services/` 兩個 CTA 都已完成 production 導覽測試，accessible name 與 destination 正確。
+- Hero、Route、Courses、Services 均使用原生 `<a href>`，可聚焦且紙張上有清楚的 `:focus-visible` outline。瀏覽器自動化層的 CUA Enter 不會派送原生 anchor 的預設行為，因此未用多餘 JavaScript 修補；實際 href、焦點狀態與 click navigation 已分別驗證。
+- Expertise 可執行的 Article CTA 為 0；既有 Article URL 只留在註解中，未恢復導流。
+
+### 14.3 Visual evidence
+
+完整 Desktop 與 Mobile 截圖位於：
+
+- `docs/design/audits/2026-07-13-expertise-first-destination/`
+
+涵蓋 Hero、Diagnosis、Method map 與 page end；錯誤的重複 full-page stitching 與舊快取截圖已移除。
