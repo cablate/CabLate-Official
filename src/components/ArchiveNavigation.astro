@@ -24,10 +24,6 @@ const isCurrent = (href: string) => href === '/'
           <small>{item.railLabel}</small>
         </a>
       ))}
-      <a href="/search/" aria-current={isCurrent('/search/') ? 'page' : undefined}>
-        <span>搜尋</span>
-        <small>搜尋</small>
-      </a>
     </nav>
     <nav class="site-rail__social" aria-label="外部連結">
       <a href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'site_navigation')} target="_blank" rel="noopener">CabAI 學習平台</a>
@@ -55,7 +51,6 @@ const isCurrent = (href: string) => href === '/'
             <span>{item.label}</span><small>{item.railLabel}</small>
           </a>
         ))}
-        <a href="/search/" aria-current={isCurrent('/search/') ? 'page' : undefined}><span>搜尋</span><small>搜尋</small></a>
       </nav>
     </details>
   </div>
