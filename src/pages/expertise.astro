@@ -7,7 +7,7 @@ const diagnosticScenarios = [
     caseId: 'A',
     symptom: '它常忘記前文，或讀到不該使用的舊資料。',
     question: '先檢查 AI 在這個時間點，究竟能看見哪些資訊。',
-    method: 'Context Engineering',
+    method: 'Context',
     methodLabel: '資訊脈絡',
     check: '列出這次任務實際讀到的檔案、對話與資料版本，再和你以為它知道的內容逐項比對。',
     mistake: '把更多資料一次塞進 Context，卻沒有確認版本、優先順序與使用時機。',
@@ -18,7 +18,7 @@ const diagnosticScenarios = [
     caseId: 'B',
     symptom: '它做了很多事，結果卻不能直接使用。',
     question: '再檢查任務、工具、權限、錯誤處理與完成標準有沒有接起來。',
-    method: 'Harness Engineering',
+    method: 'Harness',
     methodLabel: '執行環境',
     check: '挑一個真實案例，寫下輸入、允許使用的工具、完成條件，以及失敗後應停在哪裡。',
     mistake: '看到模型單次成功，就直接把它當成可重複運作的流程。',
@@ -29,7 +29,7 @@ const diagnosticScenarios = [
     caseId: 'C',
     symptom: '一出錯就找不到問題發生在哪裡，只能從頭再來。',
     question: '檢查流程有沒有留下每一步的輸入、輸出與失敗狀態，能不能從出錯的位置繼續。',
-    method: 'Harness Engineering',
+    method: 'Harness',
     methodLabel: '執行環境',
     check: '挑一次真實失敗，標出最後一個正確結果、第一個錯誤訊號，以及重新執行時能從哪一步開始。',
     mistake: '只增加重試次數，卻沒有留下錯誤位置、部分成果與復原條件。',
@@ -38,7 +38,7 @@ const diagnosticScenarios = [
     caseId: 'D',
     symptom: '同一件事每次都要重教，品質還是忽好忽壞。',
     question: '最後看做對一次的方法，有沒有被整理成可重複執行的流程。',
-    method: 'Skill 設計',
+    method: 'Skill',
     methodLabel: '可重複方法',
     check: '回看上次做對時真正影響結果的判斷、順序與限制，確認它們是否已被明確留下。',
     mistake: '只保存最後的 Prompt，沒有保存啟動條件、例外處理與驗收方式。',
@@ -54,8 +54,8 @@ const diagnosticScenarios = [
 // ];
 
 const methodDisplayNames = {
-  'Context Engineering': { label: '資訊脈絡', term: 'Context Engineering' },
-  'Harness Engineering': { label: '執行環境', term: 'Harness Engineering' },
+  'Context Engineering': { label: '資訊脈絡', term: 'Context' },
+  'Harness Engineering': { label: '執行環境', term: 'Harness' },
   'Skill 路線設計': { label: '可重複方法', term: 'Skill' },
 } as const;
 
@@ -75,7 +75,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
 };
 ---
 
-<BaseLayout title="AI 工作流程與失效診斷｜CabLate" description="從 AI 忘記前文、成果不能用，到每次都要重新教，辨認問題出在 Context、工作環境，還是經驗沒有被留下來。">
+<BaseLayout title="AI 工作流程與失效診斷｜CabLate" description="從 AI 忘記前文、成果不能用，到每次都要重新教，先辨認問題出在 Context、Harness，還是做法沒有整理成 Skill。">
   <article class="expertise-page paper-page">
     <header class="expertise-hero page-paper paper-card">
       <div class="expertise-hero__topline">
@@ -99,15 +99,16 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
       </header>
       <div class="diagnosis-list">
         <div class="diagnosis-columns" aria-hidden="true">
-          <span>層級</span><span>你遇到的現象</span><span>最小下一步檢查</span><span>常見誤判</span>
+          <span>案例</span><span>你遇到的現象</span><span>最小下一步檢查</span><span>常見誤判</span>
         </div>
         {diagnosticScenarios.map((scenario) => (
           <article>
-            <div class="diagnosis-index"><span>{scenario.caseId}</span><small>{scenario.methodLabel} · {scenario.method}</small></div>
+            <div class="diagnosis-index"><span>{scenario.caseId}</span><small>CASE</small></div>
             <div class="diagnosis-symptom">
               <small>你遇到的現象</small>
               <h3>{scenario.symptom}</h3>
               <p>{scenario.question}</p>
+              <p class="diagnosis-method"><span>可能卡在：</span><strong>{scenario.methodLabel}</strong><small>／{scenario.method}</small></p>
             </div>
             <dl class="diagnosis-checks">
               <div><dt>最小下一步檢查</dt><dd>{scenario.check}</dd></div>
@@ -122,16 +123,16 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
     <section class="method-map page-paper paper-card" id="method-map" aria-labelledby="method-map-title">
       <header class="method-map__header">
         <div>
-          <p class="expertise-kicker">方法對照</p>
-          <h2 id="method-map-title" class="display-heading"><span class="heading-phrase">先知道要檢查哪一層，</span><span class="heading-phrase">再決定用什麼方法。</span></h2>
+          <p class="expertise-kicker">確認改善</p>
+          <h2 id="method-map-title" class="display-heading"><span class="heading-phrase">知道問題卡在哪一層，</span><span class="heading-phrase">接著看什麼變化</span><span class="heading-phrase">代表真的有改善。</span></h2>
         </div>
-        <p>下面三種方法各自檢查不同的地方。找到最像的問題後，再用你的實際工作確認一次。</p>
+        <p>每一層只回答兩件事：修好後會出現什麼，以及什麼時候該往下一層查。</p>
       </header>
       <div class="method-map__table">
         {signatureMethods.map((method, index) => (
           <article>
             <span class="method-map__index">0{index + 1}</span>
-            <div class="method-map__definition"><h3><span>{methodDisplayNames[method.title].label}</span><small>{methodDisplayNames[method.title].term}</small></h3><p>{method.definition}</p></div>
+            <div class="method-map__identity"><h3><span>{methodDisplayNames[method.title].term}</span><small>{methodDisplayNames[method.title].label}</small></h3></div>
             <dl class="method-map__guidance">
               <div><dt>修好後會看見什麼</dt><dd>{methodGuidance[method.title].repaired}</dd></div>
               <div><dt>什麼時候往下一層查</dt><dd>{methodGuidance[method.title].next}</dd></div>
@@ -141,8 +142,9 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
         ))}
       </div>
       <div class="method-route" aria-label="建議檢查順序">
-        <strong>路徑建議</strong>
-        <ol><li>先檢查資訊 <small>Context</small></li><li>再檢查執行 <small>Harness</small></li><li>最後留下方法 <small>Skill</small></li><li><span>仍不確定？</span><a class="method-route__return" href="#diagnosis">回到診斷表</a></li></ol>
+        <strong>建議順序</strong>
+        <ol><li>Context</li><li>Harness</li><li>Skill</li></ol>
+        <a class="method-route__return" href="#diagnosis">仍不確定？回到診斷表</a>
       </div>
       <aside class="method-map__boundary" aria-labelledby="boundary-title">
         <div class="boundary-stamp" aria-hidden="true">BOUNDARY<br />NOTE</div>
@@ -186,40 +188,42 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
   .diagnosis__header h2 span, .method-map__header h2 span { display: block; }
   .diagnosis__header > p, .method-map__header > p { max-width: 23rem; margin: 0; color: var(--text-secondary); font-size: .86rem; line-height: 1.8; }
   .diagnosis-list { border: 1px solid var(--border-strong); }
-  .diagnosis-columns { display: grid; grid-template-columns: 7rem minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, .95fr); border-bottom: 1px solid var(--border-strong); }
+  .diagnosis-columns { display: grid; grid-template-columns: 5.5rem minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, .95fr); border-bottom: 1px solid var(--border-strong); }
   .diagnosis-columns span { padding: .75rem .8rem; color: var(--accent); font-size: .67rem; font-weight: 700; }
   .diagnosis-columns span + span { border-left: 1px solid var(--border); }
-  .diagnosis-list article { display: grid; grid-template-columns: 7rem minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, .95fr); grid-template-areas: "index symptom checks checks"; gap: 0; padding: 0; border-bottom: 1px solid var(--border-strong); }
+  .diagnosis-list article { display: grid; grid-template-columns: 5.5rem minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, .95fr); grid-template-areas: "index symptom checks checks"; gap: 0; padding: 0; border-bottom: 1px solid var(--border-strong); }
   .diagnosis-list article:last-child { border-bottom: 0; padding-bottom: .35rem; }
-  .diagnosis-index { grid-area: index; display: grid; align-content: start; gap: .45rem; padding: 1.35rem .8rem; }
+  .diagnosis-index { grid-area: index; display: grid; align-content: start; justify-items: start; gap: .25rem; padding: 1.35rem .8rem; }
   .diagnosis-index span { color: var(--accent); font-family: var(--font-serif); font-size: 1.55rem; }
-  .diagnosis-index small { color: var(--accent); font-size: .66rem; line-height: 1.45; }
+  .diagnosis-index small { color: var(--text-muted); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .08em; line-height: 1.4; }
   .diagnosis-symptom { grid-area: symptom; min-width: 0; padding: 1.35rem 1rem; border-left: 1px solid var(--border); }
   .diagnosis-symptom > small { display: none; color: var(--accent); font-size: .68rem; font-weight: 700; }
   .diagnosis-symptom h3 { margin: 0; font-size: 1.05rem; letter-spacing: -.02em; line-height: 1.5; }
   .diagnosis-symptom p { margin: .55rem 0 0; color: var(--text-secondary); line-height: 1.75; }
+  .diagnosis-symptom .diagnosis-method { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .45rem; margin-top: .85rem; padding-top: .65rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: .68rem; line-height: 1.5; }
+  .diagnosis-method strong { color: var(--accent-text); }
+  .diagnosis-method small { font-family: var(--font-mono); font-size: .62rem; letter-spacing: .02em; }
   .diagnosis-checks { grid-area: checks; display: grid; grid-template-columns: 1fr 1fr; margin: 0; }
   .diagnosis-checks div { padding: 1.35rem 1rem; border-left: 1px solid var(--border); }
   .diagnosis-checks dt { color: var(--accent); font-size: .68rem; font-weight: 700; }
   .diagnosis-checks dd { margin: .4rem 0 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.7; }
   .method-map { padding-block: clamp(3.5rem, 7vw, 6.5rem) !important; }
   .method-map__table { border-top: 1px solid var(--border-strong); }
-  .method-map__table article { display: grid; grid-template-columns: 3rem minmax(13rem, .8fr) minmax(0, 1.35fr); gap: 1.5rem; align-items: start; padding: 1.45rem 0; border-bottom: 1px solid var(--border); }
+  .method-map__table article { display: grid; grid-template-columns: 3rem minmax(8rem, .52fr) minmax(0, 1.48fr); gap: 1.25rem; align-items: start; padding: 1.35rem 0; border-bottom: 1px solid var(--border); }
   .method-map__index { color: var(--accent); font-family: var(--font-mono); font-size: .7rem; }
-  .method-map__definition h3 { margin: 0; font-size: 1.2rem; }
-  .method-map__definition h3 small { display: block; margin-top: .25rem; color: var(--text-muted); font-family: var(--font-sans); font-size: .68rem; font-weight: 600; letter-spacing: .02em; }
-  .method-map__definition p, .method-map__guidance dd { margin: .4rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
-  .method-map__guidance { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 0; padding-left: 1rem; border-left: 1px solid var(--border); }
+  .method-map__identity h3 { margin: 0; font-size: 1.2rem; }
+  .method-map__identity h3 small { display: block; margin-top: .25rem; color: var(--text-muted); font-family: var(--font-sans); font-size: .68rem; font-weight: 600; letter-spacing: .02em; }
+  .method-map__guidance dd { margin: .4rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
+  .method-map__guidance { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 0; padding-left: 1rem; border-left: 1px solid var(--border); }
   .method-map__guidance div { min-inline-size: 0; }
   .method-map__guidance dt { color: var(--accent-text); font-size: .68rem; font-weight: 700; }
   .method-map__guidance dd { margin-inline: 0; }
-  .method-route { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; align-items: center; padding: 1.3rem 0; border-bottom: 1px solid var(--border-strong); }
+  .method-route { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.5rem; padding: 1.15rem 0; border-bottom: 1px solid var(--border-strong); }
   .method-route strong { font-size: .8rem; }
-  .method-route ol { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; padding: 0; list-style: none; }
-  .method-route li { position: relative; padding-right: 1.5rem; font-size: .78rem; font-weight: 700; }
-  .method-route li:not(:last-child)::after { position: absolute; right: .45rem; content: '→'; color: var(--accent); }
-  .method-route small { display: block; margin-top: .25rem; color: var(--text-muted); font-weight: 400; }
-  .method-route__return { min-block-size: 2.75rem; display: inline-flex; align-items: center; color: var(--accent-text); font-weight: 700; text-decoration: underline; text-underline-offset: .25em; }
+  .method-route ol { display: flex; align-items: center; gap: 1.75rem; margin: 0; padding: 0; list-style: none; }
+  .method-route li { position: relative; color: var(--text-secondary); font-family: var(--font-mono); font-size: .72rem; font-weight: 700; }
+  .method-route li:not(:last-child)::after { position: absolute; left: calc(100% + .6rem); content: '→'; color: var(--accent); }
+  .method-route__return { min-block-size: 2.75rem; display: inline-flex; align-items: center; margin-inline-start: auto; color: var(--accent-text); font-size: .78rem; font-weight: 700; text-decoration: underline; text-underline-offset: .25em; }
   .method-map__boundary { display: grid; grid-template-columns: 8rem minmax(0, 1fr) minmax(16rem, .7fr); gap: 2rem; align-items: center; margin-top: 2.5rem; padding: 2rem; border: 1px solid var(--border-strong); }
   .boundary-stamp { display: grid; place-items: center; width: 6.5rem; aspect-ratio: 1; border: 2px double var(--accent); border-radius: 50%; color: var(--accent); font-family: var(--font-mono); font-size: .68rem; line-height: 1.5; text-align: center; transform: rotate(-7deg); }
   .method-map__boundary h3 { margin: 0; font-size: 1.45rem; }
@@ -245,12 +249,11 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
     .diagnosis-symptom > small { display: block; margin-bottom: .35rem; }
     .diagnosis-checks { grid-template-columns: 1fr 1fr; gap: 1rem; }
     .diagnosis-checks div { padding: 1rem; border-left: 1px solid var(--border); }
-    .method-map__table article { grid-template-columns: 3rem minmax(0, 1fr); grid-template-areas: "index definition" ". guidance"; gap: .75rem 1rem; }
+    .method-map__table article { grid-template-columns: 3rem minmax(0, 1fr); grid-template-areas: "index identity" ". guidance"; gap: .75rem 1rem; }
     .method-map__index { grid-area: index; }
-    .method-map__definition { grid-area: definition; }
+    .method-map__identity { grid-area: identity; }
     .method-map__guidance { grid-area: guidance; padding: .75rem 0 0; border-top: 1px solid var(--border); border-left: 0; }
-    .method-route { grid-template-columns: 1fr; }
-    .method-route ol { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .method-route__return { margin-inline-start: 0; }
     .method-map__boundary { gap: 1.25rem; }
   }
   @media (max-width: 560px) {
@@ -271,9 +274,8 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
     .diagnosis-symptom p, .diagnosis-checks dd { font-size: .84rem; }
     .method-map__table article { padding: 1.25rem 0; }
     .method-map__guidance { grid-template-columns: 1fr; gap: 1rem; }
-    .method-route ol { grid-template-columns: 1fr; }
-    .method-route li { padding: 0 0 1.5rem 1rem; border-left: 1px solid var(--accent); }
-    .method-route li:not(:last-child)::after { right: auto; bottom: .25rem; left: .7rem; content: '↓'; }
+    .method-route { align-items: flex-start; }
+    .method-route__return { width: 100%; }
     .method-map__boundary { padding: 1.4rem; }
     .boundary-stamp { width: 5.5rem; }
     .expertise-next__actions { display: grid; }
@@ -296,8 +298,8 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
     .diagnosis-checks div { padding-inline: .75rem; border-left: 0; }
     .method-map__table article {
       grid-template-columns: minmax(0, 1fr);
-      grid-template-areas: "index" "definition" "guidance";
+      grid-template-areas: "index" "identity" "guidance";
     }
-    .method-map__definition, .method-map__guidance { padding-inline: .25rem; }
+    .method-map__identity, .method-map__guidance { padding-inline: .25rem; }
   }
 </style>
