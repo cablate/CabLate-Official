@@ -1,9 +1,9 @@
 ---
-status: proposed
+status: active
 created: 2026-07-13
-implementation_status: not_started
-copy_status: awaiting_user_confirmation
-verdict: needs_revision
+implementation_status: in_progress
+copy_status: approved
+verdict: ready
 scope:
   - remove the public search feature
   - correct homepage narrative, trust hierarchy and contextual CTA roles
@@ -680,6 +680,6 @@ About 只補信任，不承擔最終轉換。用 prominent text link，而不是
 
 ## 15. Execution readiness verdict
 
-**Verdict: Needs Revision**
+**Verdict: Ready**
 
-Repo reality、技術範圍、phase、驗證與回退邊界已具備執行條件。唯一 blocker 是第 7 節的 12 項可見文案尚未獲使用者確認。文案確認後，本計畫可升為 `Ready`，再開始建立 change contract 與修改實作。
+Repo reality、技術範圍、phase、驗證與回退邊界已具備執行條件。第 7 節的 12 項可見文案已於 2026-07-13 獲使用者確認，可依本計畫建立 change contract 並修改實作。
