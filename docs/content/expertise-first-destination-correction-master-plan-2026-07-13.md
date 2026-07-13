@@ -1,9 +1,9 @@
 ---
-status: completed
+status: in_progress
 created: 2026-07-13
-implementation_status: completed
+implementation_status: correction_in_progress
 copy_status: approved
-verdict: verified
+verdict: needs_revision
 scope:
   - align the homepage diagnosis promise with the Expertise page
   - complete the Expertise reader journey after diagnosis
@@ -623,9 +623,17 @@ Expertise 負責診斷，Courses 負責協助訪客選擇學習深度；CabAI �
 
 ## 14. 執行與驗證結果
 
-**Verdict: Verified**
+**Verdict: Needs Revision**
 
-第 5 節文案已於 2026-07-13 獲核准並完成實作。Expertise 現在以 A 至 D 呈現四個症狀，Context、Harness、Skill 在 Diagnosis、Method map 與 Route 維持同一順序；Method map 改為完成訊號與往下一層條件，Boundary note 後也補上 Courses 與 Services 兩種下一步。
+第 5 節文案已於 2026-07-13 獲核准，A 至 D 四個症狀、Context → Harness → Skill 順序、Boundary note，以及 Courses／Services 兩種下一步均已實作。不過 2026-07-13 重新對照第 3、4、6、10 與 13 節後，確認目前版本尚未真正通過完成定義：
+
+1. Diagnosis 的 Case 欄在症狀前顯示「資訊脈絡 · Context Engineering」等方法名稱，違反 `ESG-1` 與行為契約的症狀優先順序。
+2. Method map 同時顯示方法定義、完成訊號與下一層條件，仍重複 Diagnosis 已建立的概念，Mobile 篇幅沒有被有效縮短。
+3. 公開名稱混用「Skill 設計」「Skill 路線設計」與「Skill」，不符合 `EG-2` 的一致識別。
+4. 既有 visual evidence 缺少首頁入口，且標為 Diagnosis 的 Desktop 截圖沒有拍到完整診斷表。
+5. Enter／Shift+Tab 尚未取得真實鍵盤操作證據，因此不得以 href、focus 與 click 測試替代並宣稱完整通過。
+
+修正期間保留既有 checkpoints 作為可回退基線；只有症狀優先、Method map 去重、命名一致與 v2 runtime evidence 全部成立後，才能重新判定為 `Verified`。
 
 ### 14.1 Git checkpoints
 
@@ -633,7 +641,7 @@ Expertise 負責診斷，Courses 負責協助訪客選擇學習深度；CabAI �
 - `300f909 feat: complete expertise diagnosis journey`：四個症狀、方法順序、頁尾 CTA 與行為契約。
 - `612c60a fix: refine expertise responsive experience`：320 至 1440px 排版、錨點、標題斷句與視覺證據。
 
-### 14.2 Production evidence
+### 14.2 既有 Production evidence（待 v2 取代）
 
 - `npm run check`：通過，0 errors、0 warnings、17 個既有 hints。
 - `npm run validate:content`：通過。
@@ -644,13 +652,13 @@ Expertise 負責診斷，Courses 負責協助訪客選擇學習深度；CabAI �
 - `--accent-text` 對白底與紙面近似底色的對比分別約 6.40:1、6.03:1，高於一般文字 4.5:1。
 - 首頁 `查看診斷方法` 已實際前往 `/expertise/`；Hero 與 Route 的 `#diagnosis` 點擊後，Diagnosis 和固定 Headbar 間仍保留約 109px。
 - `/courses/` 與 `/services/` 兩個 CTA 都已完成 production 導覽測試，accessible name 與 destination 正確。
-- Hero、Route、Courses、Services 均使用原生 `<a href>`，可聚焦且紙張上有清楚的 `:focus-visible` outline。瀏覽器自動化層的 CUA Enter 不會派送原生 anchor 的預設行為，因此未用多餘 JavaScript 修補；實際 href、焦點狀態與 click navigation 已分別驗證。
+- Hero、Route、Courses、Services 均使用原生 `<a href>`，可聚焦且紙張上有清楚的 `:focus-visible` outline。實際 href、焦點狀態與 click navigation 已分別驗證；Enter 與 Shift+Tab 仍列為待驗證，不以其他操作證據替代。
 - Expertise 可執行的 Article CTA 為 0；既有 Article URL 只留在註解中，未恢復導流。
 
-### 14.3 Visual evidence
+### 14.3 既有 Visual evidence（僅作基線）
 
 完整 Desktop 與 Mobile 截圖位於：
 
 - `docs/design/audits/2026-07-13-expertise-first-destination/`
 
-涵蓋 Hero、Diagnosis、Method map 與 page end；錯誤的重複 full-page stitching 與舊快取截圖已移除。
+既有資料涵蓋 Hero、部分 Diagnosis、Method map 與 page end，但不構成本輪修正後的完整證據。v2 必須另存首頁入口、完整 Desktop Diagnosis，以及 320／360／390／1280／1440 的對應畫面與量測結果。

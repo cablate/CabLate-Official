@@ -2,7 +2,7 @@
 schema_version: behavior-contract/v1
 id: site.expertise-first-destination-correction
 title: Expertise 第一站修正
-status: verified
+status: active
 owner_surface: shared
 change_context:
   type: feature
@@ -163,9 +163,9 @@ test_mapping:
 
 ### After
 
-- 內容與旅程實作：`300f909 feat: complete expertise diagnosis journey`。
-- 響應式與視覺證據：`612c60a fix: refine expertise responsive experience`。
-- Screenshot evidence：`docs/design/audits/2026-07-13-expertise-first-destination/`，包含 1280／1440 desktop 與 320／360／390 mobile 的 Hero、Diagnosis、Method map 與 page end。
+- 內容與旅程第一版：`300f909 feat: complete expertise diagnosis journey`。
+- 響應式與視覺證據第一版：`612c60a fix: refine expertise responsive experience`。
+- 第一版 Screenshot evidence：`docs/design/audits/2026-07-13-expertise-first-destination/`；重新稽核後只作基線，不再作為 Verified 證據。
 - `npm run check`：通過，0 errors、0 warnings、17 個既有 hints。
 - `npm run validate:content`：通過。
 - `npm run build`：通過，共 48 pages。
@@ -175,8 +175,16 @@ test_mapping:
 - `--accent-text` 對白底與紙面近似底色的對比分別約 6.40:1、6.03:1。
 - 首頁 `查看診斷方法` → `/expertise/` → Hero `#diagnosis` 已走完；Diagnosis 與固定 Headbar 間保留約 109px。Route 的 `回到診斷表` 亦產生相同安全間距。
 - Courses 與 Services CTA 已分別實際前往 `/courses/`、`/services/`；accessible name 與 href 正確。
-- Hero、Route、Courses、Services 均為原生 `<a href>`，可聚焦且 `:focus-visible` outline 清楚。CUA 自動化層無法派送 Enter 的原生預設動作，故不加入 JavaScript workaround；href、焦點與 click navigation 已分別驗證。
+- Hero、Route、Courses、Services 均為原生 `<a href>`，可聚焦且 `:focus-visible` outline 清楚；href、焦點與 click navigation 已分別驗證。Enter 與 Shift+Tab 尚缺真實鍵盤證據，完成前維持 pending。
 - Expertise 可執行的 Article CTA 為 0；頁面沒有 CabAI、Discord、Email 或商品直連。
+
+### Correction evidence pending
+
+- Diagnosis 必須先呈現 Case A 至 D 與症狀，方法名稱只能在症狀之後作為弱化分類。
+- Method map 必須移除重複定義，並在 390px viewport 明顯短於 Diagnosis。
+- 公開方法名稱統一為 Context、Harness、Skill；中文僅作輔助說明。
+- 必須補齊 homepage entry、完整 Desktop Diagnosis、Desktop Method map／page end，以及 320／360／390／1280／1440 的 v2 evidence。
+- Enter／Shift+Tab 若仍無法由驗證工具真實派送，必須維持 pending，不得再次標記完整鍵盤驗證通過。
 
 ## Intentional Changes
 
@@ -189,4 +197,4 @@ test_mapping:
 
 ## Open Questions
 
-- 無。使用者已於 2026-07-13 核准 Master Plan 並要求開始執行。
+- Enter／Shift+Tab 的真實鍵盤操作證據仍待完成；若工具層無法派送，需在最終判定中明確保留限制。
