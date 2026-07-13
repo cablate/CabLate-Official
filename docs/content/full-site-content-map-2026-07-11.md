@@ -42,7 +42,7 @@ CabLate.com 是公開權威中樞，不是把所有資料公開的知識庫。�
 
 代表作品索引。只選能證明不同能力的 6–8 件，不列完整 repo 清單。
 
-- 知識產品：Claude Code 深度工程手冊。
+- 知識產品：Agent 深度工程手冊。
 - 課程系統：VibeCoding 四週課／Claude 工作坊。
 - 教學平台：Interactive Engine。
 - 產品系統：cabai（公開抽象版）。
@@ -99,7 +99,7 @@ CabLate.com 是公開權威中樞，不是把所有資料公開的知識庫。�
 
 ### Learn／Courses
 
-公開產品依序：免費文章與問題診斷、短講／工作坊、金流課、VibeCoding、Claude Code 深度工程手冊。會員與高階陪跑仍屬 B，狀態未確認前只在策略層存在。
+公開產品依序：免費文章與問題診斷、短講／工作坊、金流課、VibeCoding、Agent 深度工程手冊。會員與高階陪跑仍屬 B，狀態未確認前只在策略層存在。
 
 ### Services
 

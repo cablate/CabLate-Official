@@ -34,7 +34,7 @@ export const signatureMethods = [
 export const representativeWork = [
   {
     type: '工程手冊',
-    title: 'Claude Code 深度工程手冊',
+    title: 'Agent 深度工程手冊',
     description: '把半年以上的 Claude Code 實作經驗，整理成可查閱、可排錯、方便交接的工程手冊；其中包含 Skill、Memory、Hook、Context 與 Harness 的實際用法。',
     proof: '45 課已發布，截至 2026-06-24',
     href: withCabAiAttribution(siteConfig.cabAi.handbookUrl, 'work_handbook'),
@@ -117,7 +117,7 @@ export const learningPath = [
   {
     stage: '反覆查閱與診斷',
     situation: '已經在用 Claude Code，但工作流程還不夠穩定',
-    title: 'Claude Code 深度工程手冊',
+    title: 'Agent 深度工程手冊',
     outcome: '理解 Agent 系統如何設計、常在哪裡失效，以及該怎麼維護與交接。',
     price: 'NT$5,999，一次付費',
     href: withCabAiAttribution(siteConfig.cabAi.handbookUrl, 'courses_handbook'),

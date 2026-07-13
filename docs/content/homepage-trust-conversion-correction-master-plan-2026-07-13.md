@@ -278,13 +278,14 @@ H2 已經是很好的進階使用者痛點。`一次真實的追查` 只是在�
 
 #### 解法
 
-- 把 section label 改成能辨識成熟度的語句，例如「已經做過不少嘗試」。
+- 把 section label 改成直接說明內容角色的「工程手冊案例」，避免讓訪客猜這一區究竟是文章、經驗談或商品。
 - 保留 H2 與問題、發現、處理三段結構。
-- 保留「整理自半年以上的實作與排錯經驗。」這項事實，不改成更誇張的數字或成果。
-- 把證據移到 H2 後、案例步驟前，或與 CTA 同一個清楚的 proof block：
+- 保留「半年多反覆實作與排錯」這項事實，不改成更誇張的數字或成果。
+- 在 H2 後、案例步驟前直接建立 `Agent 深度工程手冊` product block：
   - 字級至少 `1rem`。
   - 使用正常 ink 或深紫色，不用低對比 muted 灰。
-  - 可用左側紫色細線、紙標籤或較高字重建立證據層級。
+  - 用左側紫色細線、淡紫底與 H3 明確顯示手冊名稱。
+  - 正文交代半年多反覆遇到的問題、排查順序與修正方法，不能只留一句來源附註。
 - 手冊 CTA 保留一個，仍直達既有商品頁。
 
 #### 預期情緒
@@ -320,11 +321,11 @@ H2 已經是很好的進階使用者痛點。`一次真實的追查` 只是在�
 | 區塊 | CTA role | Destination | 建議視覺權重 | 理由 |
 | --- | --- | --- | --- | --- |
 | Hero | Primary route starter | `#diagnosis` | Filled primary | 進入首頁主要敘事 |
-| Diagnosis | Contextual primary | `/expertise/` | Filled or strong solid | 延續「我想找原因」 |
-| Diagnosis | Contextual secondary | `/services/` | Outline or prominent text | 服務已有明確影響與合作意圖的人 |
-| Core proposition | Trust CTA | `/about/` | Prominent purple text with arrow | 補強身份，不搶頁級主決策 |
-| Routes | Page primary intent | `/expertise/`、`/courses/`、`/services/` | 三個同系 text links | 讓不同成熟度自己選路 |
-| Case | Evidence CTA | CabAI handbook product URL | Prominent text or compact button | 延伸當下案例，不回平台首頁 |
+| Diagnosis | Contextual primary | `/expertise/` | Filled button，讀完三個情境後出現 | 延續「我想找原因」 |
+| Diagnosis | Contextual secondary | `/services/` | 同尺寸 bordered paper button | 服務已有明確影響與合作意圖的人 |
+| Core proposition | Trust CTA | `/about/` | Bordered paper button with arrow | 補強身份，不搶頁級主決策 |
+| Routes | Page primary intent | `/expertise/`、`/courses/`、`/services/` | 三個同系 bordered paper buttons | 讓不同成熟度自己選路 |
+| Case | Evidence CTA | CabAI handbook product URL | Compact filled button | 延伸當下案例，不回平台首頁 |
 | CabAI | Low-pressure platform CTA | CabAI products URL | One primary button | 說明後才離站看內容 |
 | Newsletter | Optional return path | Existing form | Existing form CTA | 暫時不行動者的低壓力入口 |
 
@@ -352,7 +353,7 @@ H2 已經是很好的進階使用者痛點。`一次真實的追查` 只是在�
 - **觸發位置**：Diagnosis 結論後，目前沒有 CTA
 - **原句**：無
 - **為什麼要改**：訪客剛完成問題辨識，動機最強，卻沒有合理的診斷或合作入口。
-- **建議怎麼改**：Primary `看問題可能卡在哪一層`；Secondary `看看是否適合合作`
+- **最終修正**：三個情境完整讀完後，才顯示 Primary `查看診斷方法` 與 Secondary `討論合作`。前者不再重複 Hero 的「找出問題卡在哪一層」，後者也不再使用繞口的「看看是否適合合作」。
 
 ### 3. Core proposition section label
 
@@ -387,14 +388,14 @@ H2 已經是很好的進階使用者痛點。`一次真實的追查` 只是在�
 - **觸發位置**：Case，現行「一次真實的追查」
 - **原句**：`一次真實的追查`
 - **為什麼要改**：它描述文章形式，沒有讓做過很多嘗試的訪客認出這一區是寫給自己。
-- **建議怎麼改**：`已經做過不少嘗試`
+- **最終修正**：`工程手冊案例`
 
 ### 8. Case proof
 
 - **觸發位置**：Case CTA 後方的小字
 - **原句**：`整理自半年以上的實作與排錯經驗。`
-- **為什麼要改**：文字本身不需改；問題是位置、字級與顏色讓強證據看起來像附註。
-- **建議怎麼改**：保留原句，移到標題附近並提升為正常正文或 proof callout。
+- **為什麼要改**：原句不只位置太弱，也沒有清楚說明「整理成了什麼」；訪客看見痛點，卻不知道真正要被介紹的是一本工程手冊。
+- **最終修正**：在 H2 後直接顯示 `Agent 深度工程手冊`，並用正常正文說明半年多反覆遇到的問題、排查順序與修正方法。
 
 ### 9. CabAI section label
 
@@ -437,10 +438,10 @@ H2 已經是很好的進階使用者痛點。`一次真實的追查` 只是在�
 
 ### 8.2 Desktop
 
-- Diagnosis CTA 放在左側 intro 欄位，與 conclusion 保持清楚間距；不可跨入右側三列情境。
+- Diagnosis CTA 放在左右兩欄與三個情境全部結束之後，形成同一張紙的完整 action row；訪客不會在情境尚未讀完時被提前帶走。
 - Diagnosis 的 secondary CTA 不與 primary 做成兩個相同深色按鈕。
-- About CTA 要和身份段落形成一個完整 action row，不縮成段落尾巴。
-- Routes 三個 action 的文字基線與箭頭位置一致，連結不可因欄寬窄而斷行。
+- About CTA 要和身份段落形成一個完整 action row，使用有邊框與淡紫底的 paper button，不縮成段落尾巴。
+- Routes 三個 action 使用同系 paper button，文字基線與箭頭位置一致，連結不可因欄寬窄而斷行。
 - Case proof 必須在第一次看到標題與案例步驟時同時可見，不放回 CTA 之後的角落。
 - CabAI 卡的視覺重量低於 Case，不新增大型圖片或第二個 CTA。
 
@@ -545,7 +546,7 @@ H2 已經是很好的進階使用者痛點。`一次真實的追查` 只是在�
 
 #### Implementation constraints
 
-- 沿用現有 `.btn`、`.text-link`、`.paper-card` 與 `.paper-card__inner`。
+- 沿用現有 `.btn`、`.paper-card` 與 `.paper-card__inner`，用首頁 scoped `.btn-paper` modifier 補足邊框、底色、陰影與 hover 位移。
 - 新增 modifier class 時只描述角色，例如 `home-context-actions`、`text-link--prominent`、`case-proof--featured`。
 - 不用 `!important` 解決新的層級問題。
 - 不新增 absolute decoration、外光暈、漸層 CTA 或第二套 radius 規則。
@@ -647,7 +648,7 @@ H2 已經是很好的進階使用者痛點。`一次真實的追查` 只是在�
 
 ### 12.2 About CTA 變顯眼，會不會搶走 Routes
 
-About 只補信任，不承擔最終轉換。用 prominent text link，而不是大型 primary button，可以提高可見性又維持層級。
+About 只補信任，不承擔最終轉換。使用 bordered paper button，而不是深色 primary button，可以明確表示可點，同時維持低於主要轉換的層級。
 
 ### 12.3 CabAI 還要不要留在首頁
 
@@ -684,7 +685,12 @@ About 只補信任，不承擔最終轉換。用 prominent text link，而不是
 
 第 7 節的 12 項可見文案已於 2026-07-13 獲使用者確認並完成實作。Search 已從 UI、route、build 與 dependency 移除；首頁在五個指定 viewport 完成 DOM geometry、可見層級、safe padding、hash offset 與 focus-visible 驗證；production build 完成 48 pages。
 
+同日人工複核後再完成一輪修正：Diagnosis 的雙 CTA 移到三個情境之後，文案改為 `查看診斷方法`／`討論合作`；About 與 Routes 不再只是紫色小字加箭頭，而是有邊框、淡紫底與 hover 回饋的 paper button；Case 改用 `工程手冊案例`，並把 `Agent 深度工程手冊` 與半年多實作、排錯、整理的關係直接放在標題下方。
+
+最終人工審查確認公開名稱使用 `Agent 深度工程手冊`。這是顯示名稱的統一，不改商品 URL、CabAI attribution 或文章推薦的主題匹配條件。
+
 完整驗證結果與逐項證據記錄於：
 
 - `docs/contracts/homepage-trust-conversion-correction-2026-07-13.md`
 - `docs/design/audits/2026-07-13-homepage-trust-conversion/`
+- `docs/design/audits/2026-07-13-homepage-trust-conversion-v2/`

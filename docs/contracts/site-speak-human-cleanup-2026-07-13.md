@@ -49,7 +49,7 @@ change_context:
 ## Invariants
 
 - 「判斷力比執行力值錢。」保持原文。
-- CabLate、CabAI、AgentSkill、Claude Code 深度工程手冊與其他專名不改名。
+- CabLate、CabAI、AgentSkill、Agent 深度工程手冊與其他專名不改名。
 - NT$1,500、NT$5,999、45 課、40+ 位學員、stars／forks 與截至日期不漂移。
 - 未授權案例說明、合作邊界、隱私與退出通知的意思不變。
 - CTA URL 與每頁 Primary CTA 任務不變。

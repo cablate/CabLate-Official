@@ -51,7 +51,7 @@ excluded_this_round:
 
 以下內容在清洗過程中逐字保護：
 
-- 品牌與產品名：CabLate、CabAI、AgentSkill、Claude Code 深度工程手冊、mcp-google-map、banini-tracker。
+- 品牌與產品名：CabLate、CabAI、AgentSkill、Agent 深度工程手冊、mcp-google-map、banini-tracker。
 - 方法與技術名詞：Harness Engineering、Context Engineering、Skill、Agent、MCP、Memory、Hook、Prompt、Webhook。
 - 價格與數字：NT$1,500、NT$5,999、45 課、40+ 位學員、GitHub stars／forks 與所有截至日期。
 - CTA URL、UTM、Email、Threads、GitHub 與 CabAI 商品頁連結。

@@ -64,12 +64,12 @@ change_context:
 
 ## Outputs And Side Effects
 
-- Diagnosis 在結論後輸出兩個語意正確的原生連結：
-  - `看問題可能卡在哪一層` -> `/expertise/`，contextual primary。
-  - `看看是否適合合作` -> `/services/`，contextual secondary。
-- Core proposition 輸出 `認識我的經歷與判斷方式` -> `/about/`，prominent trust link。
-- Routes 保留 `/expertise/`、`/courses/`、`/services/` 三個 destination 與既有順序。
-- Case 保留手冊商品 URL 與 `整理自半年以上的實作與排錯經驗。`，只調整 proof 的位置與權重。
+- Diagnosis 先完整輸出三個問題情境，再在同一張紙的底部輸出兩個語意正確的原生連結：
+  - `查看診斷方法` -> `/expertise/`，contextual primary。
+  - `討論合作` -> `/services/`，contextual secondary。
+- Core proposition 輸出 `認識我的經歷與判斷方式` -> `/about/`，有邊框、底色與箭頭回饋的 trust action。
+- Routes 保留 `/expertise/`、`/courses/`、`/services/` 三個 destination 與既有順序，三個入口使用同系 paper button，不再只靠紫色文字表示可點。
+- Case 保留手冊商品 URL；H2 下方直接顯示 `Agent 深度工程手冊`，並用正文說清楚半年多的問題追查、排查順序與修正方法。
 - CabAI 只輸出一個外部 products CTA：`查看免費試看與學習內容`。
 - `/search/` source route 被刪除，production output 不再包含有效 Search 頁面。
 - Pagefind index 不再產生，build output 不再出現 Pagefind skipped、built 或 failed 訊息。
@@ -134,9 +134,9 @@ change_context:
 ```gherkin
 Scenario: a visitor who recognizes the diagnosis can act immediately
   Given the homepage is ready
-  When the visitor reads the Diagnosis conclusion
-  Then the next focusable link is "看問題可能卡在哪一層" pointing to /expertise/
-  And a lower-weight link "看看是否適合合作" points to /services/
+  When the visitor has read all three Diagnosis situations
+  Then the next focusable link is "查看診斷方法" pointing to /expertise/
+  And an equally sized lower-weight button "討論合作" points to /services/
 
 Scenario: the core proposition introduces the person behind it
   Given the visitor reaches the proposition section
@@ -152,8 +152,9 @@ Scenario: route choice is framed as problem solving
 
 Scenario: experience proof is part of the case claim
   Given the Case heading is visible
-  Then "整理自半年以上的實作與排錯經驗。" is visible before the case steps
-  And it is rendered at normal reading size rather than caption size
+  Then "Agent 深度工程手冊" is visible immediately below the heading
+  And the accompanying normal-size copy explains that the handbook comes from more than half a year of repeated implementation and debugging
+  And the primary action reads "查看工程手冊"
 
 Scenario: CabAI has one clear role and one exit
   Given the visitor reaches the CabAI section
@@ -208,7 +209,10 @@ manual_browser:
 
 - Search removal checkpoint：`00e9432 refactor: remove site search and pagefind`。
 - 首頁實作：`src/pages/index.astro` 已套用 12 項核准文案與 scoped responsive styles，沒有修改 Hero、carousel、照片、紙張材質、section order 或其他頁面。
+- 人工複核修正：Diagnosis 的雙 CTA 已移到三個情境之後並改成 `查看診斷方法`／`討論合作`；About 與 Routes 入口已改成可辨識的 paper button；Case 已把手冊名稱與半年多經驗直接放進主要閱讀層級。
+- 最終命名確認：站內公開名稱統一為 `Agent 深度工程手冊`；既有商品 URL、CabAI attribution 與針對 Claude Code／Agent 內容的推薦條件維持不變。
 - Screenshot evidence：`docs/design/audits/2026-07-13-homepage-trust-conversion/`，包含 1280／1440 desktop 與 320／390 mobile 的 top、Diagnosis、Routes、Case、CabAI 畫面；360px 另以 DOM geometry 完成壓力測試。
+- 人工複核後的 v2 evidence：`docs/design/audits/2026-07-13-homepage-trust-conversion-v2/`，包含 desktop Diagnosis、desktop handbook、mobile Diagnosis actions 與 mobile handbook；用來確認 CTA 順序、按鈕辨識度、手冊名稱與 safe padding。
 - `npm run check`：通過，0 errors、0 warnings、17 個既有 hints。
 - `npm run build`：通過，共 48 pages；build output 沒有 Pagefind 步驟，`dist/search` 不存在。
 - `git diff --check`：通過。
@@ -225,7 +229,9 @@ manual_browser:
 - Remove `/search/` as a valid content route; the URL now resolves to the existing 404 experience.
 - Remove Pagefind build logic and direct dependency.
 - Add two contextual Diagnosis actions with unequal visual weight.
-- Promote the About link and Case proof without changing their destinations or factual claims.
+- Place both Diagnosis actions after all three situations and use concise, non-duplicated labels.
+- Promote the About and Routes links into bordered paper buttons without changing their destinations.
+- Promote the handbook's product identity and evidence without changing its destination or factual claim.
 - Reframe Routes and CabAI with the 12 user-approved copy changes.
 
 Any visible, behavioral or routing difference not listed above is a regression.
