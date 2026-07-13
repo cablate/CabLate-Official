@@ -1,6 +1,6 @@
 ---
 title: "AI 取代工作？從 Anthropic 雷達圖看理論與現實的落差"
-description: "Anthropic 雷達圖讓很多人焦慮 AI 會取代工作，但理論覆蓋率跟實際取代是兩件事。藍色畫得再大，沒人把它變成紅色，它就只是一張圖。"
+description: "Anthropic 雷達圖談的是 LLM 理論上能做多少任務，不是實際有多少工作已被採用。藍色再大，沒有流程、信任與責任配合，仍然只是一張圖。"
 publishDate: 2026-03-09T10:00:00+08:00
 updatedDate: 2026-04-04
 category: "技術觀點"

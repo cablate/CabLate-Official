@@ -1,7 +1,7 @@
 # 首頁改版 Session Reflection：供其他頁面直接套用
 
 日期：2026-07-12  
-適用範圍：About、Expertise、Work、Articles、Courses、Services、Starter Pack 與後續首頁微調。
+適用範圍：About、Expertise、Work、Articles、Courses、Services 與後續首頁微調；Starter Pack 已退役。
 
 ## 這輪最後成立的方向
 

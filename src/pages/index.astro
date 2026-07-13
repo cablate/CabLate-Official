@@ -3,9 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Newsletter from '../components/sections/Newsletter.astro';
 import HeroCarousel from '../components/sections/HeroCarousel.astro';
 import { ArrowRight } from '@lucide/astro';
-import { authorityProfile, representativeWork } from '../config/authority';
-
-const handbook = representativeWork[0];
+import { authorityProfile } from '../config/authority';
+import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 
 const heroSlides = [
   {
@@ -25,15 +24,24 @@ const heroSlides = [
 const diagnosticRows = [
   {
     titleLines: ['每次換個任務，都得重新交代背景。'],
-    explanation: 'AI 沒有拿到能延續的正確脈絡。',
+    explanation: 'AI 每次拿到的背景不完整，前一次的判斷接不起來。',
+    // Articles inbound links paused.
+    // href: '/articles/claude-code-token-drain-system-reminder/',
+    // label: '看資訊脈絡怎麼失效',
   },
   {
     titleLines: ['AI 做了很多，最後還是不敢直接用。'],
     explanation: '完成標準與驗收方式沒有先說清楚。',
+    // Articles inbound links paused.
+    // href: '/articles/claude-code-workflow/',
+    // label: '看怎麼建立完成標準',
   },
   {
     titleLines: ['一出錯就找不到原因，', '只能從頭再來。'],
-    explanation: '流程沒有留下檢查點與復原方式。',
+    explanation: '流程沒有留下可檢查的節點，也沒有出錯後的復原方式。',
+    // Articles inbound links paused.
+    // href: '/articles/agent-sdk-system-reminder-diff-fix/',
+    // label: '看怎麼留下檢查順序',
   },
 ];
 
@@ -41,8 +49,8 @@ const visitorRoutes = [
   {
     title: '我想先把 AI 用得更穩',
     description: '已經開始使用 AI，但常遇到忘記前文、產出不穩，或不知道應該從哪裡修正。',
-    href: '/articles/',
-    label: '從問題指南開始',
+    href: '/expertise/',
+    label: '先做問題診斷',
   },
   {
     title: '我想把一個想法完整做出來',
@@ -62,14 +70,14 @@ const visitorRoutes = [
 
 <BaseLayout title="CabLate — AI 協作・技術觀點・開發實戰" description={authorityProfile.shortBio}>
   <div class="desk-page">
-    <main class="desk-content">
+    <div class="desk-content">
       <section class="hero-grid" aria-labelledby="home-title">
         <div class="identity-card paper-card">
           <div class="paper-card__inner">
             <p class="section-label">AI 協作・工作流程設計</p>
-            <h1 id="home-title">讓 AI 做完，也讓成果真的能用。</h1>
-            <p class="hero-copy">如果你已經在用 AI，卻還是經常重做、走偏，或不敢直接採用成果，問題通常不只在 Prompt。任務怎麼拆、資料怎麼給、工具怎麼接、做到哪裡算完成，才是成果能不能穩定的關鍵。</p>
-            <a class="btn btn-primary home-hero-action" href="#diagnosis">先看看問題卡在哪 <ArrowRight size={17} aria-hidden="true" /></a>
+            <h1 class="display-heading" id="home-title"><span class="heading-phrase">讓 AI 把工作</span><span class="heading-phrase">做完，</span><span class="heading-phrase">成果也能</span><span class="heading-phrase">放心交付。</span></h1>
+            <p class="hero-copy">你已經在用 AI，卻還是常常重做、卡住，或不敢直接交付。模型和 Prompt 可能沒有問題。只要任務、資料、工具或完成標準少了一塊，AI 一樣會走偏。</p>
+            <a class="btn btn-primary home-hero-action" href="#diagnosis">找出問題卡在哪一層 <ArrowRight size={17} aria-hidden="true" /></a>
           </div>
         </div>
 
@@ -81,18 +89,15 @@ const visitorRoutes = [
           <div class="diagnosis-intro">
             <p class="section-label">先看清楚問題</p>
             <h2 id="diagnosis-title">AI 偶爾做得到，不代表你已經有一套可靠流程。</h2>
-            <p>真正需要的，不是每次得到一個漂亮答案，而是換任務、換工具或換人後，成果仍能被重現、檢查和修正。</p>
-            <p class="diagnosis-conclusion">好消息是，這些問題都能拆開檢查。你不必一次換掉整套工具，只要先找出最容易失效的那一層。</p>
+            <p>可靠流程要能在換任務、工具或交接對象後，仍讓成果被重現、檢查與修正。</p>
+            <p class="diagnosis-conclusion">這三種失效都可以逐層檢查。先找出最容易出錯的一層，不用先換掉整套工具。</p>
           </div>
           <div class="home-list diagnostic-list">
             {diagnosticRows.map((row) => (
               <article>
-                <h3>
-                  {row.titleLines.map((line, index) => (
-                    <>{index > 0 && <br class="mobile-heading-break" />}{line}</>
-                  ))}
-                </h3>
+                <h3>{row.titleLines.map((line, index) => <>{index > 0 && <br class="mobile-heading-break" />}{line}</>)}</h3>
                 <p>{row.explanation}</p>
+                {/* Articles inbound links paused: 保留診斷內容，不主動導向文章。 */}
               </article>
             ))}
           </div>
@@ -103,12 +108,12 @@ const visitorRoutes = [
         <div class="paper-card__inner home-split thesis-layout">
           <div>
             <p class="section-label">我的核心主張</p>
-            <h2 id="thesis-title">判斷力比<br />執行力值錢。</h2>
+            <h2 id="thesis-title"><span class="thesis-heading-line">判斷力比</span><span class="thesis-heading-line">執行力值錢。</span></h2>
           </div>
           <div class="thesis-copy">
-            <p class="identity-lead">我是 CabLate，一位從全端工程走進 AI 工作流程設計的實作者。</p>
-            <p>我關心的不是 AI 能不能生成，而是成果能不能被採用、驗收與重現。遇到問題時，我會先看系統怎麼失效，再判斷該補資料、工具、流程，還是完成標準。</p>
-            <a class="text-link" href="/about/">了解這套判斷從哪裡來 <ArrowRight size={16} aria-hidden="true" /></a>
+            <p class="identity-lead">我是 CabLate，從全端工程走進 AI 工作流程設計，現在把這些經驗整理成能用的方法。</p>
+            <p>我先確認成果能不能直接使用，再找出系統在哪裡失效。問題可能少了資料、工具，也可能是一開始就沒說清楚怎樣才算完成。</p>
+            <a class="text-link" href="/about/">看這套方法怎麼形成 <ArrowRight size={16} aria-hidden="true" /></a>
           </div>
         </div>
       </section>
@@ -137,21 +142,34 @@ const visitorRoutes = [
         <div class="paper-card__inner home-split">
           <div class="case-story">
             <p class="section-label">一次真實的追查</p>
-            <h2 id="case-title">規則愈加愈多，<br class="mobile-heading-break" />為什麼<br class="case-title-desktop-break" /> AI 還是會<br class="mobile-heading-break" />忘記、重做？</h2>
+            <h2 id="case-title"><span>規則愈加愈多，</span><span>為什麼 AI 還是會</span><span>忘記、重做？</span></h2>
             <div class="case-step">
               <strong>問題</strong>
             <p>為了讓 AI 記得更多背景，我不斷增加規則與設定，成果卻沒有因此變穩。</p>
             </div>
             <div class="case-step">
               <strong>發現</strong>
-              <p>追查後才發現，真正缺少的不是更多規則，而是它當下能讀到的資料、可以使用的工具，以及驗收與復原方式沒有接起來。</p>
+              <p>追查後才發現，規則已經夠多了。AI 當下讀不到需要的資料，也不知道能用哪些工具；出錯後更沒有一套檢查和復原方式。</p>
             </div>
             <div class="case-step">
               <strong>處理</strong>
-              <p>我把這半年多反覆遇到的問題，連同 Skill、Memory、Context 等做法，整理成一份能查原因、能修正，也方便交接的工程手冊。</p>
+              <p>我把半年多反覆遇到的問題與排查方式，整理成工程手冊；裡面也說明 Skill、Memory、Context 分別在什麼時候派上用場，方便查原因、修正與交接。</p>
             </div>
-            <a class="text-link" href={handbook.href}>看手冊怎麼拆這些問題 <ArrowRight size={16} aria-hidden="true" /></a>
+            <a class="text-link" href={withCabAiAttribution(siteConfig.cabAi.handbookUrl, 'home_case_handbook')}>看手冊怎麼拆這些問題 <ArrowRight size={16} aria-hidden="true" /></a>
             <p class="case-proof">整理自半年以上的實作與排錯經驗。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="cabai-card paper-card" id="cabai" aria-labelledby="cabai-title">
+        <div class="paper-card__inner home-split cabai-layout">
+          <div>
+            <p class="section-label">接著自己動手做</p>
+            <h2 id="cabai-title">想把這些方法真正帶進工作？</h2>
+          </div>
+          <div class="cabai-copy">
+            <p>CabAI 裡有免費試看、系統課程、工程手冊和已購內容。先看目前開放的內容，需要更完整的資料時再付費。</p>
+            <a class="btn btn-primary cabai-primary" href={withCabAiAttribution(siteConfig.cabAi.productsUrl, 'home_learning')} target="_blank" rel="noopener">看目前可以開始的內容 <ArrowRight size={17} aria-hidden="true" /></a>
           </div>
         </div>
       </section>
@@ -159,7 +177,7 @@ const visitorRoutes = [
       <section class="paper-card" aria-label="更新通知">
         <div class="paper-card__inner"><Newsletter /></div>
       </section>
-    </main>
+    </div>
   </div>
 </BaseLayout>
 
@@ -215,7 +233,7 @@ const visitorRoutes = [
 
   .hero-grid {
     display: grid;
-    grid-template-columns: minmax(22rem, .82fr) minmax(30rem, 1.18fr);
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
     align-items: center;
     gap: 1.5rem;
   }
@@ -260,7 +278,7 @@ const visitorRoutes = [
   }
 
   .diagnosis-layout {
-    grid-template-columns: minmax(18rem, .78fr) minmax(28rem, 1.22fr);
+    grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
     gap: clamp(2rem, 5vw, 4rem);
   }
 
@@ -317,8 +335,12 @@ const visitorRoutes = [
     line-height: 1.7;
   }
 
+  .diagnosis-action {
+    margin-top: .65rem;
+  }
+
   .thesis-layout {
-    grid-template-columns: minmax(18rem, .82fr) minmax(28rem, 1.18fr);
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
     gap: clamp(2rem, 6vw, 5rem);
   }
 
@@ -386,6 +408,11 @@ const visitorRoutes = [
     line-height: 1.35;
   }
 
+  .thesis-card h2 .thesis-heading-line,
+  .case-story h2 span {
+    display: block;
+  }
+
   .mobile-heading-break {
     display: none;
   }
@@ -418,9 +445,34 @@ const visitorRoutes = [
     font-size: .78rem;
   }
 
+  .cabai-layout {
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+
+  .cabai-card h2 {
+    max-width: 12em;
+    margin: 0;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--ink);
+    font-size: clamp(1.9rem, 3.4vw, 3.1rem);
+    line-height: 1.3;
+  }
+
+  .cabai-copy > p {
+    max-width: 38rem;
+    margin: 0 0 1.3rem;
+    color: var(--muted);
+    line-height: 1.85;
+  }
+
+  .cabai-primary {
+    border-radius: 0;
+  }
+
   @media (max-width: 1100px) {
     .hero-grid {
-      grid-template-columns: minmax(20rem, .9fr) minmax(25rem, 1.1fr);
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
     }
 
     .identity-card {
@@ -442,12 +494,13 @@ const visitorRoutes = [
       width: 100%;
       max-width: 100%;
       padding-block: .75rem 1rem;
-      overflow: clip;
+      overflow: visible;
     }
 
     .hero-grid,
     .diagnosis-layout,
-    .thesis-layout {
+    .thesis-layout,
+    .cabai-layout {
       grid-template-columns: minmax(0, 1fr);
     }
 
@@ -469,7 +522,8 @@ const visitorRoutes = [
     }
 
     .diagnosis-layout,
-    .thesis-layout {
+    .thesis-layout,
+    .cabai-layout {
       gap: 1.75rem;
     }
 
@@ -509,6 +563,11 @@ const visitorRoutes = [
       justify-content: center;
     }
 
+    .cabai-primary {
+      width: 100%;
+      justify-content: center;
+    }
+
     .diagnosis-intro h2,
     .section-header h2 {
       font-size: 1.65rem;
@@ -516,10 +575,6 @@ const visitorRoutes = [
 
     .case-story h2 {
       font-size: 1.75rem;
-    }
-
-    .case-title-desktop-break {
-      display: none;
     }
 
     .mobile-heading-break {

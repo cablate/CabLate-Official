@@ -56,7 +56,7 @@ Out of scope: checkout, account delivery, course availability decisions, testimo
 - CabLate remains the public brand; `/about/` is the canonical author page.
 - No revenue figures, unapproved customer names, logos, photos, or testimonial quotes.
 - Proof always includes an `asOf` date.
-- Existing article, course, service, search, RSS, privacy, and starter-pack routes remain reachable.
+- Existing article, course, service, search, RSS and privacy routes remain reachable; the retired `/starter-pack/` route is not part of the public site.
 - Core content is readable with JavaScript disabled.
 - One primary CTA intent per major page section.
 

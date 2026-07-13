@@ -14,10 +14,10 @@ const categoryCounts = [...new Set(publishedArticles.map((entry) => entry.data.c
   .map((category) => ({ category, count: publishedArticles.filter((entry) => entry.data.category === category).length }));
 
 const readingRoutes = [
-  { problem: '想把 AI 寫程式從嘗試變成完整流程', title: '先看一個網站怎麼從零做到上線', description: '從規劃、實作到 SEO 與改版，先看一次真實工作如何推進，也看哪些地方最容易重做。', slug: 'claude-code-workflow' },
-  { problem: '不知道該用自動化，還是需要 Agent', title: '先分清楚問題，再決定工具', description: '排程、固定規則與需要自主判斷的任務並不相同。先釐清差別，通常能少繞一大圈。', slug: 'blog-writing-openclaw' },
-  { problem: 'Claude Code 的 token 突然消耗異常', title: '從表面症狀一路找到注入機制', description: '這篇記錄實際逆向、定位根因與評估緩解方式的過程，適合正在處理相同版本問題的人。', slug: 'claude-code-token-drain-system-reminder' },
-  { problem: 'Agent SDK 每次呼叫都付出不合理成本', title: '檢查 Session 與 Prompt Cache 是否真的被沿用', description: '用實測與逆向結果說明隱藏成本從哪裡來，以及不同 Session 寫法會造成什麼差異。', slug: 'reverse-engineer-claude-agent-sdk-hidden-token-cost' },
+  { problem: '想把 AI 寫程式從嘗試變成完整流程', title: '先看一個網站怎麼從零做到上線', description: '這篇攤開一次真實建站流程：怎麼規劃、部署，以及哪些決策最容易造成重做。', slug: 'claude-code-workflow' },
+  { problem: '不知道該用自動化，還是需要 Agent', title: '先分清楚問題，再決定工具', description: '先分清楚排程、固定規則和自主判斷的差別，再看你的問題是否真的需要 Agent。', slug: 'blog-writing-openclaw' },
+  { problem: 'Claude Code 的 token 突然消耗異常', title: '從表面症狀一路找到注入機制', description: '這篇從異常消耗往回追，找出注入機制，也整理目前可以怎麼減少影響。', slug: 'claude-code-token-drain-system-reminder' },
+  { problem: 'Agent SDK 每次呼叫都付出不合理成本', title: '檢查 Session 與 Prompt Cache 是否真的被沿用', description: '這篇比較不同 Session 寫法，找出重複成本從哪裡產生。', slug: 'reverse-engineer-claude-agent-sdk-hidden-token-cost' },
 ].filter((route) => publishedArticles.some((article) => article.slug === route.slug));
 
 const routedSlugs = new Set(readingRoutes.map((route) => route.slug));
@@ -63,14 +63,14 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
             <p class="section-label">研究與實作筆記</p>
             <span>FIELD NOTES / 01</span>
           </div>
-          <h1>遇到問題時，先找到一個能用的起點。</h1>
-          <p>這裡留下 AI 協作、Agent 問題排查與產品實作中的判斷過程。你不必從最新一篇開始，可以先選現在遇到的問題，再往相關主題繼續讀。</p>
+          <h1 class="display-heading"><span class="heading-phrase">先找到</span><span class="heading-phrase">最接近你問題的</span><span class="heading-phrase">那篇文章。</span></h1>
+          <p>文章按問題整理，不按發布順序排列。從你現在遇到的情況開始，再沿著相關主題讀下去。</p>
         </header>
 
         <section class="reading-routes" aria-labelledby="routes-title">
           <header>
             <p class="section-label">依問題開始</p>
-            <h2 id="routes-title">不用照發布順序讀，先選最像你現在情況的一題。</h2>
+            <h2 id="routes-title">選一題開始。</h2>
           </header>
           <ol>
             {readingRoutes.map((route, index) => (
@@ -93,7 +93,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
           <nav class="topic-index" aria-label="文章主題索引">
             <header>
               <p class="section-label">主題索引</p>
-              <h2>想沿著一個主題繼續，再從這裡選。</h2>
+              <h2>想繼續讀同一個主題，就從索引選一條。</h2>
             </header>
             <div class="topic-index__list">
               {categoryCounts.map(({ category, count }) => (
@@ -108,7 +108,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
           <section class="other-articles" aria-labelledby="other-articles-title">
             <header>
               <p class="section-label">其他實作筆記</p>
-              <h2 id="other-articles-title">如果上面的問題都不完全相同，再從這裡找。</h2>
+              <h2 id="other-articles-title">找不到完全相同的問題？從其他實作筆記開始。</h2>
             </header>
             <div class="article-list">
               {otherArticles.map((entry) => (

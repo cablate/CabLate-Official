@@ -1,7 +1,7 @@
 ---
 status: active
 source_snapshot: 2026-07-11
-applies_to: Home, About, Expertise, Work, Articles, Courses, Services, Starter Pack, Search, Newsletter
+applies_to: Home, About, Expertise, Work, Articles, Courses, Services, Search, Newsletter
 ---
 
 # CabLate 網站文案語氣規範
@@ -17,6 +17,10 @@ applies_to: Home, About, Expertise, Work, Articles, Courses, Services, Starter P
 3. 一個句子只承擔一個主要意思；過長時拆成兩句。
 4. 少用「真正、賦能、打造、閉環、全面導入」等抽象或過度承諾的詞。
 5. 公開成果要附日期；未授權案例維持匿名；不承諾營收、流量或工具可以取代人的責任。
+6. 「不是 A，而是 B」「不只 A，也 B」等反轉句，一頁只留真正負責定義或轉折的那一句；不要把它當每區標題模板。
+7. 「入口、情境、交付、驗收」在內部文件可以使用；對一般訪客要優先還原成他正在做的動作，例如「從哪裡開始」「目前遇到的狀況」「買完後在哪裡看」「怎樣算完成」。
+8. 情境、適合對象與成果各自只說一件事；同一資訊不要換一組詞在相鄰欄位再說一次。
+9. 排比只在各項都有真實內容時使用；「能使用、能檢查、能交接」這類品牌語句不能在每頁重複。
 
 ## 品牌核心句
 
@@ -41,5 +45,5 @@ applies_to: Home, About, Expertise, Work, Articles, Courses, Services, Starter P
 - Work：說明做了什麼、如何被檢查，以及哪些細節不能公開。
 - Courses：幫讀者判斷目前需要哪一層學習，不製造焦慮。
 - Services：把適合、不適合、交付內容與責任邊界說清楚。
-- Starter Pack：清楚標示尚未開放，只承諾通知與已列出的入門內容。
-- Newsletter：說清楚會收到什麼，不用「錯過就落後」推動訂閱。
+- 已退役產品：不在公開導覽、推薦元件或 SEO 入口中保留舊承諾。
+- 更新通知：只承諾新課程、手冊更新或公開活動等重要通知，不寫成固定電子報，也不用「錯過就落後」推動加入。

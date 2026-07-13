@@ -2,11 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowRight, Github, AtSign } from '@lucide/astro';
 import { authorityProfile, openSourceProofs } from '../config/authority';
+import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
-  dateModified: '2026-07-11',
+  dateModified: '2026-07-13',
   mainEntity: {
     '@type': 'Person',
     '@id': `${authorityProfile.authorUrl}#person`,
@@ -21,9 +22,10 @@ const personJsonLd = {
 };
 
 const timeline = [
-  { time: '從非本科轉職開始', title: '先學會把不知道的事，真的做出來', text: '我不是沿著科班路線進入工程。從前端開始，在真實專案裡一步步補齊後端、資料、部署與團隊協作，也因此很清楚「聽懂一個名詞」和「能把事情完成」之間有多大差距。' },
-  { time: '進入複雜系統之後', title: '寫出功能，只是交付的開始', text: '參與政府與企業系統、承接系統分析與設計工作後，我開始更在意資料會不會錯、權限是否安全、上線後如何復原，以及團隊要用什麼標準驗收。' },
-  { time: '投入 AI 應用至今', title: '把個人經驗，整理成別人能使用的方法', text: '當 AI 讓執行變快，我把工程現場的拆解、檢查與交接方式帶進教學、手冊、開源工具與顧問工作。目標不是讓人記住更多名詞，而是少走一點重做的路。' },
+  { time: '非本科轉職', title: '從前端一路補到系統整合', text: '我從前端進入工程，在實務專案裡補上後端、部署、系統整合與團隊協作。這段經歷讓我很早就知道，聽懂名詞和把事情完成是兩回事。' },
+  { time: '工程實務期', title: '開始把驗收與復原一起算進交付', text: '進入政府與企業系統後，我開始承接系統分析與設計工作。功能能跑還不夠，資料、權限、驗收、復原與交接都要一起考慮。' },
+  { time: '2024', datetime: '2024', title: '把工程經驗轉向 AI 應用', text: '我開始把工程背景轉向 AI 應用，也協助外部團隊理解 AI 可以怎麼進入實際工作。判斷與交付方法因此不再只留在工程專案裡。' },
+  { time: '2025-06 至今', datetime: '2025-06', title: '全職投入 CabLate', text: '2025 年 6 月離開正職後，我全職投入 CabLate，陸續發展課程、講座、付費手冊、CabAI 平台與顧問服務。每一種形式都在處理同一件事：讓複雜方法能被理解、使用與接手。' },
 ];
 ---
 
@@ -38,15 +40,17 @@ const timeline = [
       </div>
       <div class="about-hero__grid">
         <div class="about-hero__headline">
-          <h1><span>做過夠多次，</span><span>才知道哪裡</span><span>最容易出錯。</span></h1>
+          <h1 class="display-heading"><span class="heading-phrase">從工程實作</span><span class="heading-phrase">走到 AI 應用，</span><span class="heading-phrase">我一直在意成果</span><span class="heading-phrase">能不能被接手。</span></h1>
         </div>
         <div class="about-hero__aside">
-          <p class="about-hero__lead">我是 CabLate，從全端工程與系統設計走進 AI 工作流程的實作者。</p>
-          <p>我關心的不只是工具能做什麼，而是一件事怎麼從模糊的想法，走到能使用、能檢查，也能交給下一個人繼續做。</p>
+          <p class="about-hero__lead">我是 CabLate，做過全端工程與系統設計，現在把這些經驗用在 AI 教學、產品和工作流程上。</p>
+          <p>我在意的是：做出來之後，別人能不能直接用、知道怎麼檢查，出錯時也接得下去。</p>
           <dl class="about-hero__facts">
-            <div><dt>我在處理</dt><dd>任務、Context、工具與驗收</dd></div>
+            <div><dt>我在處理</dt><dd>任務、可用資料、工具與驗收</dd></div>
             <div><dt>我留下</dt><dd>能重複、能交接的工作方法</dd></div>
           </dl>
+          <p class="about-hero__referral">如果你或你的團隊已經在用 AI，工作卻一直重做、難以檢查，也不知道怎麼交給下一個人，我可以一起找出問題在哪裡。</p>
+          <a class="text-link about-hero__action" href="/work/">先看代表作品 <ArrowRight size={16} aria-hidden="true" /></a>
         </div>
       </div>
     </header>
@@ -58,10 +62,10 @@ const timeline = [
         <span class="about-story__mark" aria-hidden="true">↳</span>
       </div>
       <div class="about-story__body">
-        <p class="about-story__opening">早期我以為，把功能寫完就是完成。真正進入複雜系統後才發現，能不能放心使用，是另一回事。</p>
+        <p class="about-story__opening">早期我以為功能寫完就算完成。進入複雜系統後，我開始把資料、權限、驗收與復原一起算進交付。</p>
         <div class="about-story__copy">
           <p>資料可能出錯、權限可能漏掉、需求可能在交接時變形。即使功能可以執行，只要沒有人說得清楚如何驗收、出錯後怎麼復原，它就還不是一個可靠的成果。</p>
-          <p>AI 讓產出變快，也把這些問題一起放大。所以現在不論是教學、產品或合作，我都會先問：任務有沒有拆清楚？AI 拿到什麼資料？結果要怎麼檢查？做對一次的方法能不能留下來？</p>
+          <p>AI 讓產出變快，也讓這些缺口更快暴露。現在不論做教學、產品或合作，我都先問四件事：任務拆清楚了嗎？AI 讀到哪些資料？結果怎麼檢查？做對一次的方法能不能留下來？</p>
         </div>
       </div>
     </section>
@@ -70,15 +74,15 @@ const timeline = [
       <header class="turning-points__header">
         <div class="section-heading">
           <p class="about-kicker">關鍵轉折</p>
-          <h2 id="timeline-title">三個轉折，慢慢形成現在這套工作方式。</h2>
+          <h2 id="timeline-title">四個轉折，慢慢形成現在這套工作方式。</h2>
         </div>
-        <p class="turning-points__note">這不是履歷表，而是我開始在意「怎麼把事情做好」的三個時刻。</p>
+        <p class="turning-points__note">從轉職、工程實務到全職投入 CabLate，這四段經歷改變了我判斷工作是否完成的方式。</p>
       </header>
       <ol class="timeline">
         {timeline.map((item, index) => (
           <li>
             <div class="timeline__rail" aria-hidden="true"><span class="timeline__node">0{index + 1}</span></div>
-            <div class="timeline__meta"><time>{item.time}</time></div>
+            <div class="timeline__meta"><time datetime={item.datetime}>{item.time}</time></div>
             <div class="timeline__content"><h3>{item.title}</h3><p>{item.text}</p></div>
           </li>
         ))}
@@ -89,7 +93,7 @@ const timeline = [
       <header class="open-source__header">
         <div class="section-heading">
           <p class="about-kicker">公開作品</p>
-          <h2 id="opensource-title">不只說我做過，也留下你能自己檢查的東西。</h2>
+          <h2 id="opensource-title">每件作品都附上公開程式碼、使用方式或可查證的數字。</h2>
         </div>
         <p>作品是判斷方式的證據。先看我怎麼拆問題，再決定要不要繼續往下讀。</p>
       </header>
@@ -101,6 +105,14 @@ const timeline = [
           </a>
         ))}
       </div>
+      <div class="platform-proof" id="cabai-platform">
+        <div>
+          <p class="about-kicker">內容交付系統</p>
+          <h3>CabAI 是我用來提供試看、販售課程和交付已購內容的平台。</h3>
+          <p>訪客可以先免費試看，購買後再用同一個帳號讀課程、手冊和後續更新。</p>
+        </div>
+        <a href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'about_platform')} target="_blank" rel="noopener">查看 CabAI 學習平台 <ArrowRight size={16} aria-hidden="true" /></a>
+      </div>
     </section>
 
     <section class="principles page-paper paper-card paper-card--clip paper-card--clip-left" aria-labelledby="principles-title">
@@ -108,7 +120,7 @@ const timeline = [
         <div class="principles__intro section-heading">
           <p class="about-kicker">工作原則</p>
           <h2 id="principles-title">遇到不同工具與問題，我仍會守住四件事。</h2>
-          <p class="principles__note">不是口號，是每次開始前用來校正方向的幾個問題。</p>
+        <p class="principles__note">每次開始前，我都用下面四個問題確認方向。</p>
         </div>
         <div class="principles__list">
           <article><span>01</span><h3>沒有做過的，不假裝熟悉</h3><p>區分實際經驗、研究判斷與仍待驗證的想法，也說清楚方法適用到哪裡。</p></article>
@@ -119,14 +131,14 @@ const timeline = [
       </div>
     </section>
 
-    <section class="about-next page-paper paper-card paper-card--clip" aria-labelledby="next-title">
+    <section class="about-next page-paper paper-card paper-card--clip" id="next" aria-labelledby="next-title">
       <div>
         <p class="about-kicker">下一步</p>
-        <h2 id="next-title">想知道這些原則怎麼落地，可以先看代表作品。</h2>
+        <h2 id="next-title">想看這些原則怎麼用在實作上，先看代表作品。</h2>
       </div>
       <div class="about-next__links">
         <a class="about-next__primary" href="/work/">查看代表作品 <ArrowRight size={18} aria-hidden="true" /></a>
-        <div class="about-next__secondary"><a href="/expertise/">專業方法</a><a href="https://github.com/cablate" target="_blank" rel="noopener"><Github size={16} aria-hidden="true" /> GitHub</a><a href="https://www.threads.net/@cab_late" target="_blank" rel="noopener"><AtSign size={16} aria-hidden="true" /> Threads</a></div>
+        <div class="about-next__secondary"><a href="/expertise/">專業方法</a><a href="https://github.com/cablate" target="_blank" rel="noopener"><Github size={16} aria-hidden="true" /> GitHub</a><a href={siteConfig.threadsUrl} target="_blank" rel="noopener"><AtSign size={16} aria-hidden="true" /> Threads</a><a href={`mailto:${siteConfig.contactEmail}`}>Email</a></div>
       </div>
     </section>
   </article>
@@ -134,7 +146,7 @@ const timeline = [
 
 <style>
   .about-page { padding-top: 0; }
-  .about-page > .page-paper { overflow: clip; }
+  .about-page > .page-paper { overflow: visible; }
   .about-kicker { margin: 0 0 1rem; color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .1em; }
   .about-note { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
   .about-hero { padding-block: clamp(3.25rem, 7vw, 6.5rem) !important; }
@@ -142,7 +154,6 @@ const timeline = [
   .about-hero__topline p { margin: 0; }
   .about-hero__grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(16rem, .92fr); gap: clamp(2.5rem, 7vw, 7rem); align-items: end; padding-top: clamp(2.5rem, 5vw, 4.75rem); }
   .about-hero h1 { max-width: none !important; margin: 0; font-family: var(--font-serif); font-size: clamp(3rem, 5.8vw, 5.75rem) !important; letter-spacing: -.07em !important; line-height: 1.04 !important; }
-  .about-hero h1 span { display: block; }
   .about-hero__aside { max-width: 31rem; padding-bottom: .35rem; }
   .about-hero__aside p { margin: 0; color: var(--text-secondary); line-height: 1.85; }
   .about-hero__aside .about-hero__lead { margin-bottom: 1.2rem; color: var(--text-primary); font-size: 1.1rem; font-weight: 700; line-height: 1.65; }
@@ -150,6 +161,8 @@ const timeline = [
   .about-hero__facts div { display: grid; grid-template-columns: 5rem 1fr; gap: .8rem; }
   .about-hero__facts dt { color: var(--accent); font-size: .68rem; font-weight: 700; }
   .about-hero__facts dd { margin: 0; color: var(--text-secondary); font-size: .82rem; }
+  .about-hero__referral { margin-top: 1.2rem !important; font-size: .82rem; line-height: 1.75 !important; }
+  .about-hero__action { margin-top: 1rem; }
   .about-story { display: grid; grid-template-columns: minmax(12rem, .72fr) minmax(0, 1.28fr); gap: clamp(2.5rem, 8vw, 8rem); padding-block: clamp(3.5rem, 8vw, 7rem) !important; }
   .section-heading h2 { max-width: 16ch; margin: 0; font-size: clamp(2rem, 4vw, 3.55rem); letter-spacing: -.055em; line-height: 1.1; }
   .about-story__intro { position: relative; }
@@ -184,6 +197,11 @@ const timeline = [
   .open-source__proof { display: grid; justify-items: end; gap: .15rem; }
   .open-source__proof strong { color: var(--accent); font-size: .78rem; white-space: nowrap; }
   .open-source__proof small { color: var(--text-muted); font-size: .64rem; white-space: nowrap; }
+  .platform-proof { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-strong); }
+  .platform-proof .about-kicker { margin-bottom: .55rem; }
+  .platform-proof h3 { max-width: 34rem; margin: 0; font-size: clamp(1.35rem, 2.4vw, 1.9rem); line-height: 1.45; }
+  .platform-proof p:last-child { max-width: 42rem; margin: .75rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
+  .platform-proof > a { display: inline-flex; align-items: center; justify-self: start; gap: .45rem; color: var(--accent-text); font-size: .82rem; font-weight: 700; white-space: nowrap; }
   .principles { padding: clamp(3.5rem, 7vw, 6.5rem) !important; }
   .principles__grid { display: grid; grid-template-columns: minmax(12rem, .72fr) minmax(0, 1.28fr); gap: clamp(2.5rem, 7vw, 7rem); }
   .principles__note { max-width: 20rem; margin: 1.5rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.8; }
@@ -201,7 +219,7 @@ const timeline = [
   .about-next__secondary { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; padding-top: .75rem; }
   .about-next__secondary a { display: inline-flex; justify-content: flex-start; min-height: 2rem; padding: .25rem 0; border: 0; color: var(--text-secondary); font-size: .78rem; }
   @media (max-width: 800px) {
-    .about-hero__grid, .about-story, .turning-points__header, .open-source__header, .principles__grid, .about-next { grid-template-columns: 1fr; }
+    .about-hero__grid, .about-story, .turning-points__header, .open-source__header, .platform-proof, .principles__grid, .about-next { grid-template-columns: 1fr; }
     .about-hero__grid { gap: 2.25rem; }
     .about-hero__aside { max-width: 38rem; }
     .about-story__mark { right: 1rem; }

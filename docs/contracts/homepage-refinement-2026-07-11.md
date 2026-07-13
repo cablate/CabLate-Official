@@ -24,7 +24,7 @@ change_context:
 
 - 桌機與手機瀏覽者：`/`
 - 搜尋引擎與分享預覽：首頁 SEO 與 Person／WebSite JSON-LD
-- 既有導覽使用者：文章、課程、服務、關於、搜尋、Starter Pack
+- 既有導覽使用者：文章、課程、服務、關於、搜尋
 
 ## Inputs And State
 

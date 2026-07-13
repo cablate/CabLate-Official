@@ -105,10 +105,14 @@
   gap: 1rem;
   margin-inline: auto;
   padding-block: 1rem 1.5rem !important;
+  min-inline-size: 0;
+  overflow: visible;
 }
 
 .paper-page > .page-paper {
   width: 100% !important;
+  max-inline-size: 100%;
+  min-inline-size: 0;
   margin: 0 !important;
   padding: clamp(2.25rem, 5vw, 4rem) !important;
   border: 0 !important;
@@ -119,11 +123,13 @@
   background-position: center !important;
   background-size: 115.2% 115.2% !important;
   box-shadow: none !important;
+  overflow: visible;
 }
 
 .page-paper {
   position: relative;
   min-inline-size: 0;
+  overflow: visible;
 }
 
 .page-paper :where(div, section, article, header, footer, nav, ol, ul) {
@@ -147,6 +153,21 @@
 .page-paper h3 {
   overflow-wrap: break-word;
   text-wrap: balance;
+}
+
+/* Large editorial headings may only wrap between author-selected phrases.
+   This keeps Chinese titles from breaking at arbitrary characters while still
+   allowing the phrases to reflow between desktop and mobile widths. */
+.display-heading {
+  overflow-wrap: normal !important;
+  text-wrap: balance !important;
+}
+
+.display-heading > .heading-phrase,
+.display-heading .heading-phrase {
+  display: inline-block;
+  max-inline-size: 100%;
+  white-space: nowrap;
 }
 
 .page-paper p,
@@ -250,12 +271,16 @@ body.site-shell-desk #main-content {
   width: calc(100% - 10rem);
   margin-inline-start: 10rem;
   padding: 1rem 1rem 3rem;
+  min-inline-size: 0;
+  max-inline-size: 100%;
 }
 
 body.site-shell-desk #main-content:has(> .desk-page) {
   width: calc(100% - 10rem);
   margin-inline-start: 10rem;
   padding: 1rem 1rem 3rem;
+  min-inline-size: 0;
+  max-inline-size: 100%;
 }
 
 .footer {
@@ -503,7 +528,8 @@ main .lp-inner {
     width: 100%;
     gap: 0.75rem;
     padding-block: 0.75rem 1rem !important;
-    overflow: clip;
+    min-inline-size: 0;
+    overflow: visible;
   }
 
   .paper-page > .page-paper {
@@ -542,6 +568,9 @@ main .lp-inner {
   }
 
   .site-mobile-header {
+    width: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
     min-height: 4.2rem;
     display: flex;
     align-items: center;
@@ -563,6 +592,7 @@ main .lp-inner {
     align-items: center;
     gap: 0.55rem;
     flex: 0 0 auto;
+    min-inline-size: 0;
     font-family: var(--font-serif);
   }
 
@@ -580,10 +610,13 @@ main .lp-inner {
 
   .site-mobile-brand span {
     display: grid;
+    min-inline-size: 0;
   }
 
   .site-mobile-menu {
     position: relative;
+    flex: 0 0 auto;
+    min-inline-size: 0;
   }
 
   .site-mobile-menu summary {
@@ -607,6 +640,7 @@ main .lp-inner {
     font-weight: 700;
     list-style: none;
     cursor: pointer;
+    white-space: nowrap;
   }
 
   .site-mobile-menu summary::-webkit-details-marker {
@@ -627,6 +661,8 @@ main .lp-inner {
     top: calc(100% + 0.65rem);
     right: 0;
     width: min(19rem, calc(100vw - 2rem));
+    max-inline-size: calc(100vw - 2rem);
+    min-inline-size: 0;
     display: grid;
     padding: 0.75rem 0.85rem;
     border: 0;
@@ -666,13 +702,16 @@ main .lp-inner {
     width: 100%;
     margin: 0;
     padding: 0.75rem;
-    overflow: clip;
+    min-inline-size: 0;
+    overflow: visible;
   }
 
   body.site-shell-desk #main-content:has(> .desk-page) {
     width: 100%;
     margin: 0;
     padding: 0.75rem;
+    min-inline-size: 0;
+    overflow: visible;
   }
 
   .footer {

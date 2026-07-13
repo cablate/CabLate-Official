@@ -17,13 +17,13 @@ change_context:
 
 ## Behavior Boundary
 
-- 範圍：首頁、作者頁、文章索引與內頁、課程索引與內頁、服務、Starter Pack、搜尋、Footer 與新增內容路由的公開資訊。
+- 範圍：首頁、作者頁、文章索引與內頁、課程索引與內頁、服務、搜尋、Footer 與新增內容路由的公開資訊；Starter Pack 已退役。
 - 範圍外：付款、登入、課程交付、會員權益、Kit 自動化與第三方 CRM 實作。
 
 ## Consumers And Entrypoints
 
 - 一般訪客、學員、創作者、小團隊、企業決策者、搜尋引擎與 AI 搜尋。
-- 入口：`/`、`/about/`、`/articles/`、`/courses/`、`/services/`、`/starter-pack/`、`/search/`。
+- 入口：`/`、`/about/`、`/articles/`、`/courses/`、`/services/`、`/search/`。
 
 ## Inputs And State
 

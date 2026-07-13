@@ -17,7 +17,7 @@ Date: 2026-07-11
 - Expertise exposes real fragment targets for all six topics.
 - Courses does not render links for unavailable items. Shared `.btn` styles are restored for future published course pages.
 - Services has explicit fit, non-fit, deliverables, process, boundary and Threads inquiry instructions.
-- Starter Pack consistently says opening notification; it does not promise immediate download or delivery.
+- Starter Pack has been retired; no production page or recommendation should link to `/starter-pack/`.
 - Article recommendations only point to public routes. No recommendation points to draft course URLs.
 - Search, privacy, article detail, tag and category routes use the same paper shell.
 
@@ -25,8 +25,8 @@ Date: 2026-07-11
 
 - `npm run validate:content`: passed.
 - `npm run check`: 0 errors; existing non-blocking Astro/TypeScript hints only.
-- `npm run build`: passed; 50 pages generated.
-- 1440 × 900: `/`, `/about/`, `/articles/`, `/courses/`, `/services/`, `/starter-pack/`, `/work/`, `/expertise/`, an article detail, Search, Privacy and Tags all showed the desktop rail and footer with `scrollWidth === clientWidth`.
+- `npm run build`: passed; 49 pages generated after retiring Starter Pack.
+- 1440 × 900: `/`, `/about/`, `/articles/`, `/courses/`, `/services/`, `/work/`, `/expertise/`, an article detail, Search, Privacy and Tags all showed the desktop rail and footer with `scrollWidth === clientWidth`; `/starter-pack/` is intentionally retired.
 - 390 × 844: the same main reading routes had no horizontal overflow; content starts directly below the 70px mobile header.
 - Mobile disclosure menu exposes seven links: Articles, Expertise, Work, Courses, Services, About and Search.
 - Article detail correctly marks Articles as the active parent route.

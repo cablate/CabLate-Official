@@ -93,7 +93,7 @@ test_mapping:
 - 390×844：六頁水平溢出皆為 0；紙張寬約 350.57px，左右各保留約 12px 外部空間，H1 位於紙張內距內。
 - About 桌機首屏修正後，雙欄寬度分別約 445px 與 403px，兩欄 `scrollWidth` 未超出容器。
 - Articles 手機首屏與 Services 手機首屏已以實際瀏覽器截圖檢查；console 無 error 或 warning。
-- `npm run build`：成功產生 50 個頁面。
+- `npm run build`：成功產生 49 個頁面（Starter Pack 已退役）。
 
 ## Intentional Changes
 
@@ -105,7 +105,7 @@ test_mapping:
 
 ## Open Questions
 
-- Starter Pack 與文章／課程內頁是否在下一輪改為同一內容模板，待主要入口頁驗證後決定。
+- Starter Pack 已退役；文章／課程內頁仍另開輪次，不與主要入口共用同一內容模板。
 
 ## Deferred Visual Language Pass
 

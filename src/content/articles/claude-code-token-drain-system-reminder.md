@@ -1,6 +1,6 @@
 ---
 title: "我逆向了 Claude Code v2.1.71，找到 token 消耗暴增的根因"
-description: "Claude Code v2.1.71 的 system-reminder 機制有個嚴重問題：每次對話都在偷偷注入被修改檔案的完整 diff。我逆向了原始碼找到根因，附上 CLI 緩解方法與 Agent SDK 的無解現況。"
+description: "Claude Code v2.1.71 的 system-reminder 會在對話中重複注入修改檔案的 diff。我逆向原始碼找到原因，整理 CLI 的緩解方式，並說明 Agent SDK 目前的限制。"
 publishDate: 2026-03-10T10:00:00+08:00
 updatedDate: 2026-04-04
 category: 技術觀點

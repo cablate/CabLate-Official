@@ -1,6 +1,6 @@
 ---
 title: "你可能不需要龍蝦：自動化跟 Agent 是兩件事"
-description: "很多人把 OpenClaw 當排程工具用，但自動化和 AI Agent 是完全不同的需求。搞清楚差異，CLI 排程工具可能就夠了，不用大費周章架 Agent 框架。"
+description: "把 OpenClaw 當排程工具用之前，先確認任務需不需要 AI 在過程中做判斷；如果只是固定時間跑固定步驟，CLI 加排程就夠了。"
 publishDate: 2026-02-24T10:00:00+08:00
 updatedDate: 2026-04-04
 category: "AI工具實戰"

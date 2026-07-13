@@ -1,5 +1,6 @@
 ---
 import { primaryNavigation } from '../config/authority';
+import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 import { Menu, X } from '@lucide/astro';
 
 const currentPath = Astro.url.pathname;
@@ -25,13 +26,15 @@ const isCurrent = (href: string) => href === '/'
       ))}
       <a href="/search/" aria-current={isCurrent('/search/') ? 'page' : undefined}>
         <span>搜尋</span>
-        <small>Search</small>
+        <small>搜尋</small>
       </a>
     </nav>
     <nav class="site-rail__social" aria-label="外部連結">
-      <a href="https://www.threads.net/@cab_late" target="_blank" rel="noopener">Threads</a>
+      <a href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'site_navigation')} target="_blank" rel="noopener">CabAI 學習平台</a>
+      <a href={`mailto:${siteConfig.contactEmail}`}>Email</a>
+      <a href={siteConfig.threadsUrl} target="_blank" rel="noopener">Threads</a>
       <a href="https://github.com/cablate" target="_blank" rel="noopener">GitHub</a>
-      <a href="/rss.xml">RSS</a>
+      {/* Articles inbound links paused: RSS endpoint 保留，入口暫停。 */}
     </nav>
   </aside>
 
@@ -41,19 +44,46 @@ const isCurrent = (href: string) => href === '/'
       <span><strong>CabLate</strong></span>
     </a>
     <details class="site-mobile-menu">
-      <summary aria-label="開啟網站選單">
+      <summary aria-label="開啟網站選單" aria-controls="mobile-navigation">
         <Menu class="site-mobile-menu__open" size={22} aria-hidden="true" />
         <X class="site-mobile-menu__close" size={22} aria-hidden="true" />
         <span>選單</span>
       </summary>
-      <nav aria-label="手機主要導覽">
+      <nav id="mobile-navigation" aria-label="手機主要導覽">
         {primaryNavigation.map((item) => (
           <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
             <span>{item.label}</span><small>{item.railLabel}</small>
           </a>
         ))}
-        <a href="/search/" aria-current={isCurrent('/search/') ? 'page' : undefined}><span>搜尋</span><small>Search</small></a>
+        <a href="/search/" aria-current={isCurrent('/search/') ? 'page' : undefined}><span>搜尋</span><small>搜尋</small></a>
       </nav>
     </details>
   </div>
 </header>
+
+<script>
+  const initializeMobileMenu = () => {
+    document.querySelectorAll<HTMLElement>('.site-mobile-menu').forEach((menu) => {
+      if (menu.dataset.menuReady === 'true') return;
+
+      const summary = menu.querySelector<HTMLElement>('summary');
+      if (!summary) return;
+
+      const syncLabel = () => {
+        summary.setAttribute('aria-label', menu.hasAttribute('open') ? '關閉網站選單' : '開啟網站選單');
+      };
+
+      menu.dataset.menuReady = 'true';
+      syncLabel();
+      menu.addEventListener('toggle', syncLabel);
+      menu.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape' || !menu.hasAttribute('open')) return;
+        menu.removeAttribute('open');
+        summary.focus();
+      });
+    });
+  };
+
+  initializeMobileMenu();
+  document.addEventListener('astro:page-load', initializeMobileMenu);
+</script>

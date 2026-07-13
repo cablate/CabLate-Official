@@ -2,27 +2,28 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowRight, Check } from '@lucide/astro';
 import { learningPath } from '../../config/authority';
+import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
 
-const availablePaths = learningPath.filter((item) => item.href);
 ---
 
-<BaseLayout title="學習路線｜CabLate" description="先看自己目前卡在哪一步，再選擇目前能開始的免費內容或深度手冊。尚未開放的課程只標示狀態，不先列成商品。">
+<BaseLayout title="學習路線｜CabLate" description="依照目前卡點比較免費診斷、講座與工作坊、AgentSkill 與深度手冊，選擇現在適合開始的下一步。">
   <article class="learn-page paper-page">
     <header class="learn-hero page-paper paper-card">
       <div class="learn-hero__topline">
         <p class="eyebrow section-label">學習路線</p>
         <span>LEARNING MAP / 04</span>
       </div>
-      <h1>不必一次學會全部。先找到現在最需要跨過的一步。</h1>
-      <p class="learn-hero__intro">你可能剛開始摸索，也可能已經在用 AI，卻總是在同一個地方重做。這裡不把所有內容排成商品牆，而是先依照你現在的狀態，找到剛好能往前走的入口。</p>
-      <a class="learn-hero__cta" href="#learning-map">查看學習地圖 <ArrowRight size={18} aria-hidden="true" /></a>
+      <h1 class="display-heading"><span class="heading-phrase">不用一次</span><span class="heading-phrase">學完全部，</span><span class="heading-phrase">先跨過你現在</span><span class="heading-phrase">最卡的那一步。</span></h1>
+      <p class="learn-hero__intro">依照你現在遇到的問題選下一步。還不確定問題在哪，就先做免費診斷。</p>
+      <a class="learn-hero__cta" href="#learning-map">看看我該從哪裡開始 <ArrowRight size={18} aria-hidden="true" /></a>
     </header>
 
     <section class="learn-map page-paper paper-card paper-card--clip paper-card--clip-left" id="learning-map" aria-labelledby="map-title">
       <header class="learn-map__header">
         <div>
-          <p class="section-label">先看自己在哪裡</p>
-          <h2 id="map-title">從理解問題，到把能力帶進工作裡。</h2>
+          <p class="section-label">依狀況選擇</p>
+          <h2 id="map-title">你現在卡在哪一層？</h2>
+          <p class="learn-map__lead">免費內容先幫你看懂問題；需要反覆練習或查閱時，再考慮付費內容。</p>
         </div>
         <span class="paper-label" aria-hidden="true">START HERE</span>
       </header>
@@ -40,51 +41,38 @@ const availablePaths = learningPath.filter((item) => item.href);
             <div class="learn-map__content">
               <div class="learn-map__meta">
                 <small>{item.stage}</small>
-                {item.href ? <span class="learn-map__available"><Check size={13} aria-hidden="true" /> 目前可開始</span> : <span class="learn-map__pending">目前未開放公開報名</span>}
+                {item.href ? <span class="learn-map__available"><Check size={13} aria-hidden="true" /> 目前可開始</span> : <span class="learn-map__pending">尚未開放</span>}
               </div>
-              <h3>{item.title}</h3>
-              <p>{item.outcome}</p>
-              <em>{item.fit}</em>
-              {item.href ? (
-                <a class="text-link" href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener' : undefined}>{item.cta} <ArrowRight size={15} aria-hidden="true" /></a>
-              ) : (
-                <span class="learn-map__status">{item.cta}</span>
-              )}
+              <h3>{item.situation}</h3>
+              <div class="learn-map__solution">
+                <span>建議從這裡開始</span>
+                <h4>{item.title}</h4>
+                <p>{item.outcome}</p>
+                <div class="learn-map__action">
+                  {item.price && <strong>{item.price}</strong>}
+                  {item.href ? (
+                    <a class="text-link" href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener' : undefined}>{item.cta} <ArrowRight size={15} aria-hidden="true" /></a>
+                  ) : (
+                    <span class="learn-map__status">有新場次時會在這裡更新</span>
+                  )}
+                </div>
+              </div>
             </div>
           </li>
         ))}
       </ol>
     </section>
 
-    <section class="learning-now page-paper paper-card" aria-labelledby="now-title">
-      <header>
-        <p class="section-label">現在可以開始</p>
-        <h2 id="now-title">先選一個能帶你往前的入口。</h2>
-        <p>如果你還在確認方向，從免費內容開始；如果你已經在處理反覆失效的流程，直接進入可反覆查閱的深度手冊。</p>
-      </header>
-      <div class="learning-now__list">
-        {availablePaths.map((item, index) => (
-          <a class="learning-now__item" href={item.href!} target={item.href!.startsWith('http') ? '_blank' : undefined} rel={item.href!.startsWith('http') ? 'noopener' : undefined}>
-            <span class="learning-now__index">0{index + 1}</span>
-            <div>
-              <small>{item.stage}</small>
-              <h3>{item.title}</h3>
-              <span class="learning-now__cta">{item.cta} <ArrowRight size={15} aria-hidden="true" /></span>
-            </div>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <section class="learning-boundary page-paper paper-card paper-card--clip" aria-labelledby="boundary-title">
+    <section class="cabai-onboarding page-paper paper-card paper-card--clip-left" id="cabai-platform" aria-labelledby="cabai-onboarding-title">
       <div>
-        <p class="section-label">選擇原則</p>
-        <h2 id="boundary-title">先確認需要的深度，再決定要不要付費。</h2>
+        <p class="section-label">內容如何交付</p>
+        <h2 id="cabai-onboarding-title">試看與購買內容，都留在 CabAI 帳號裡。</h2>
       </div>
-      <div class="learning-boundary__note">
-        <p>免費內容適合幫你理解問題、避開常見錯誤，也確認自己是否真的需要更完整的資源。</p>
-        <p>當你需要可反覆查閱的系統資料、作品檢查、個別情境診斷或有人陪你推進，才需要考慮手冊、課程或合作服務。</p>
-        <a class="text-link" href="/expertise/">還不確定自己卡在哪一層？先做問題診斷 <ArrowRight size={15} aria-hidden="true" /></a>
+      <div class="cabai-onboarding__body">
+        <p>CabAI 使用 Google 帳號登入。登入後可以保留免費試看與已購內容；需要社群權限時，再到個人資料連結 Discord。</p>
+        <div class="cabai-onboarding__actions">
+          <a class="learn-hero__cta" href={withCabAiAttribution(siteConfig.cabAi.accountUrl, 'courses_account')} target="_blank" rel="noopener">建立 CabAI 免費帳號 <ArrowRight size={17} aria-hidden="true" /></a>
+        </div>
       </div>
     </section>
   </article>
@@ -92,7 +80,7 @@ const availablePaths = learningPath.filter((item) => item.href);
 
 <style>
   .learn-page { padding-top: 0; }
-  .learn-hero, .learn-map, .learning-now, .learning-boundary { width: min(100% - 3rem, 82rem); margin-inline: auto; }
+  .learn-hero, .learn-map, .cabai-onboarding { width: min(100% - 3rem, 82rem); margin-inline: auto; }
   #learning-map { scroll-margin-top: 2rem; }
   .learn-hero { padding-block: clamp(3.2rem, 7vw, 6rem); }
   .learn-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-inline-size: 0; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
@@ -102,11 +90,13 @@ const availablePaths = learningPath.filter((item) => item.href);
   .learn-hero__intro { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
   .learn-hero__cta { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
   .learn-hero__cta:hover { background: var(--accent); }
-  .learn-hero__cta:focus-visible, .learn-map a:focus-visible, .learning-now__item:focus-visible { outline: 2px solid var(--accent); outline-offset: .3rem; }
+  .learn-hero__cta:active { transform: translateY(1px); }
+  .learn-hero__cta:focus-visible, .learn-map a:focus-visible { outline: 2px solid var(--accent); outline-offset: .3rem; }
 
   .learn-map { padding-block: clamp(3.5rem, 7vw, 6rem); }
   .learn-map__header { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; margin-bottom: 3.5rem; }
-  .learn-map__header h2, .learning-now h2, .learning-boundary h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
+  .learn-map__header h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
+  .learn-map__lead { max-width: 40rem; margin: 1.25rem 0 0; color: var(--text-secondary); line-height: 1.8; text-wrap: pretty; }
   .learn-map__header .paper-label { top: -.35rem; right: 1.5rem; left: auto; transform: rotate(2deg); }
   .learn-map__list { position: relative; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
   .learn-map__list::before { position: absolute; top: 2.75rem; bottom: 2.75rem; left: 2rem; width: 1px; content: ''; background: linear-gradient(to bottom, var(--accent), var(--border-strong) 28%, var(--border-strong) 72%, var(--accent)); opacity: .55; }
@@ -121,29 +111,25 @@ const availablePaths = learningPath.filter((item) => item.href);
   .learn-map__available, .learn-map__pending { display: inline-flex; align-items: center; gap: .25rem; min-block-size: 1.55rem; padding: .22rem .55rem; border: 1px solid transparent; border-radius: .15rem; font-size: .68rem; font-weight: 700; line-height: 1.25; }
   .learn-map__available { border-color: rgb(112 91 177 / .22); background: rgb(112 91 177 / .09); color: var(--accent); }
   .learn-map__pending { border-color: var(--border); background: rgb(69 58 43 / .035); color: var(--text-muted); }
-  .learn-map h3 { margin: .45rem 0 .7rem; font-size: 1.7rem; }
+  .learn-map h3 { max-width: 30ch; margin: .55rem 0 1.15rem; font-size: clamp(1.55rem, 2.5vw, 2.15rem); line-height: 1.25; text-wrap: balance; }
+  .learn-map h4 { margin: .3rem 0 .65rem; font-size: 1.35rem; line-height: 1.35; text-wrap: balance; }
   .learn-map p { max-width: 50rem; margin: 0; color: var(--text-secondary); line-height: 1.75; }
-  .learn-map em { display: block; max-width: 50rem; margin-top: .7rem; color: var(--text-muted); font-size: .8rem; font-style: normal; }
-  .learn-map .text-link { margin-top: 1rem; }
-  .learn-map__status { display: inline-block; margin-top: 1rem; color: var(--text-muted); font-size: .8rem; }
+  .learn-map__solution { min-width: 0; padding: 1.1rem 1.2rem 1.2rem; border-inline-start: 3px solid rgb(112 91 177 / .28); background: rgb(112 91 177 / .045); }
+  .learn-map__step--pending .learn-map__solution { border-inline-start-style: dashed; border-inline-start-color: var(--border-strong); background: rgb(69 58 43 / .025); }
+  .learn-map__solution > span { color: var(--accent); font-size: .68rem; font-weight: 700; }
+  .learn-map__action { display: flex; align-items: baseline; flex-wrap: wrap; gap: .8rem 1.4rem; margin-top: 1rem; }
+  .learn-map__action strong { color: var(--text-primary); font-size: .78rem; }
+  .learn-map__action .text-link { margin: 0; }
+  .learn-map__status { color: var(--text-muted); font-size: .78rem; }
 
-  .learning-now { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(2.5rem, 7vw, 7rem); padding-block: clamp(3rem, 6vw, 5rem); }
-  .learning-now > header > p:last-child { max-width: 30rem; margin: 1.5rem 0 0; color: var(--text-secondary); line-height: 1.8; }
-  .learning-now__list { border-top: 1px solid var(--border-strong); }
-  .learning-now__item { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 1.25rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
-  .learning-now__index { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
-  .learning-now__item small { color: var(--text-muted); }
-  .learning-now__item h3 { margin: .35rem 0 .7rem; font-size: 1.35rem; }
-  .learning-now__cta { display: inline-flex; align-items: center; gap: .45rem; color: var(--accent); font-size: .8rem; font-weight: 700; }
-  .learning-now__item:hover h3 { color: var(--accent); }
-
-  .learning-boundary { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 8vw, 8rem); padding-block: clamp(3.5rem, 7vw, 6rem); }
-  .learning-boundary__note { padding-top: 2.5rem; border-top: 1px solid var(--border-strong); }
-  .learning-boundary__note p { color: var(--text-secondary); line-height: 1.85; }
-  .learning-boundary__note .text-link { margin-top: 1rem; }
+  .cabai-onboarding { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: clamp(2rem, 6vw, 5rem); padding-block: clamp(2.25rem, 4vw, 3.25rem); }
+  .cabai-onboarding h2 { max-width: 18ch; margin: 0; font-size: clamp(1.75rem, 3vw, 2.7rem); letter-spacing: -.04em; line-height: 1.12; }
+  .cabai-onboarding__body { align-self: end; }
+  .cabai-onboarding__body > p { max-width: 38rem; margin: 0; color: var(--text-secondary); line-height: 1.85; }
+  .cabai-onboarding__actions { display: grid; justify-items: start; gap: .9rem; margin-top: 1.25rem; }
 
   @media (max-width: 760px) {
-    .learning-now, .learning-boundary { grid-template-columns: 1fr; }
+    .cabai-onboarding { grid-template-columns: 1fr; }
     .learn-map__header { gap: 1.25rem; }
     .learn-map__step { grid-template-columns: 3.5rem minmax(0, 1fr); gap: 1.25rem; }
     .learn-map__marker { width: 3.5rem; height: 3.5rem; }
@@ -151,7 +137,7 @@ const availablePaths = learningPath.filter((item) => item.href);
   }
 
   @media (max-width: 520px) {
-    .learn-hero, .learn-map, .learning-now, .learning-boundary { width: min(100% - 2rem, 82rem); }
+    .learn-hero, .learn-map, .cabai-onboarding { width: min(100% - 2rem, 82rem); }
     #learning-map { scroll-margin-top: 5.5rem; }
     .learn-hero__topline { align-items: flex-start; gap: .75rem; }
     .learn-hero__topline > span { max-inline-size: 12ch; padding-top: .1rem; font-size: .56rem; line-height: 1.45; }
@@ -161,12 +147,14 @@ const availablePaths = learningPath.filter((item) => item.href);
     .learn-map__step { padding-block: 1.6rem; }
     .learn-map h3 { font-size: 1.45rem; }
     .learn-map p { font-size: .9rem; }
-    .learn-map em { font-size: .76rem; }
     .learn-map__meta { gap: .5rem; }
     .learn-map__available, .learn-map__pending { font-size: .62rem; }
+    .learn-map__solution { padding: 1rem; }
+    .learn-map__action { display: grid; gap: .7rem; }
+    .cabai-onboarding__actions .learn-hero__cta { width: 100%; justify-content: center; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .learn-hero__cta, .learn-map a, .learning-now__item { transition: none; }
+    .learn-hero__cta, .learn-map a { transition: none; }
   }
 </style>

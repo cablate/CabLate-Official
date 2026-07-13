@@ -7,32 +7,45 @@ const diagnosticScenarios = [
     symptom: '它常忘記前文，或讀到不該使用的舊資料。',
     question: '先檢查 AI 在這個時間點，究竟能看見哪些資訊。',
     method: 'Context Engineering',
+    methodLabel: '資訊脈絡',
     check: '列出這次任務實際讀到的檔案、對話與資料版本，再和你以為它知道的內容逐項比對。',
     mistake: '把更多資料一次塞進 Context，卻沒有確認版本、優先順序與使用時機。',
-    href: '/articles/claude-code-token-drain-system-reminder/',
+    // Articles inbound links paused.
+    // href: '/articles/claude-code-token-drain-system-reminder/',
   },
   {
     symptom: '它做了很多事，結果卻不能直接使用。',
     question: '再檢查任務、工具、權限、錯誤處理與完成標準有沒有接起來。',
     method: 'Harness Engineering',
+    methodLabel: '執行環境',
     check: '挑一個真實案例，寫下輸入、允許使用的工具、完成條件，以及失敗後應停在哪裡。',
     mistake: '看到模型單次成功，就直接把它當成可重複運作的流程。',
-    href: '/articles/claude-code-workflow/',
+    // Articles inbound links paused.
+    // href: '/articles/claude-code-workflow/',
   },
   {
     symptom: '同一件事每次都要重教，品質還是忽好忽壞。',
     question: '最後看做對一次的方法，有沒有被整理成可重複執行的流程。',
     method: 'Skill 設計',
+    methodLabel: '可重複方法',
     check: '回看上次做對時真正影響結果的判斷、順序與限制，確認它們是否已被明確留下。',
     mistake: '只保存最後的 Prompt，沒有保存啟動條件、例外處理與驗收方式。',
-    href: '/articles/agent-sdk-system-reminder-diff-fix/',
+    // Articles inbound links paused.
+    // href: '/articles/agent-sdk-system-reminder-diff-fix/',
   },
 ];
-const methodLinks = [
-  '/articles/claude-code-workflow/',
-  '/articles/claude-code-token-drain-system-reminder/',
-  '/articles/agent-sdk-system-reminder-diff-fix/',
-];
+// Articles inbound links paused.
+// const methodLinks = [
+//   '/articles/claude-code-workflow/',
+//   '/articles/claude-code-token-drain-system-reminder/',
+//   '/articles/agent-sdk-system-reminder-diff-fix/',
+// ];
+
+const methodDisplayNames: Record<string, string> = {
+  'Harness Engineering': '執行環境（Harness Engineering）',
+  'Context Engineering': '資訊脈絡（Context Engineering）',
+  'Skill 路線設計': '可重複方法（Skill）',
+};
 ---
 
 <BaseLayout title="AI 工作流程與失效診斷｜CabLate" description="從 AI 忘記前文、成果不能用，到每次都要重新教，辨認問題出在 Context、工作環境，還是經驗沒有被留下來。">
@@ -42,9 +55,9 @@ const methodLinks = [
         <p class="expertise-kicker">專業方法</p>
         <span>DIAGNOSTIC NOTE · DN-2026-01</span>
       </div>
-      <h1><span>AI 一直鬼打牆時，</span><span>問題通常不只在 Prompt。</span></h1>
+      <h1 class="display-heading"><span class="heading-phrase">AI 一直鬼打牆</span><span class="heading-phrase">時，</span><span class="heading-phrase">先別只改</span>{' '}<span class="heading-phrase">Prompt。</span></h1>
       <div class="expertise-hero__footer">
-        <p>多加幾條規則，有時只會讓指令更長。真正要先看的是：AI 拿到什麼資料、能使用哪些工具、做到哪裡算完成，以及做對一次的方法有沒有留下來。</p>
+        <p>規則愈加愈多，AI 不一定會更穩。先查它當下讀到了什麼、能做什麼，以及你有沒有說清楚怎樣才算完成。</p>
         <a class="text-link" href="#diagnosis">先從你看到的問題開始 <ArrowRight size={18} aria-hidden="true" /></a>
       </div>
     </header>
@@ -55,15 +68,15 @@ const methodLinks = [
           <p class="expertise-kicker">先辨認現象</p>
           <h2 id="diagnosis-title"><span>先找到最像的現象，</span><span>再做一個能排除</span><span>原因的檢查。</span></h2>
         </div>
-        <p>不用先記住方法名稱。從你已經看到的失效現象開始，先找到下一個能驗證的問題。</p>
+        <p>先從你看見的失效現象開始，再找下一個可以驗證的問題；不用先記住方法名稱。</p>
       </header>
       <div class="diagnosis-list">
         <div class="diagnosis-columns" aria-hidden="true">
-          <span>層級</span><span>你遇到的現象</span><span>最小下一步檢查</span><span>常見誤判</span><span>對應文章</span>
+          <span>層級</span><span>你遇到的現象</span><span>最小下一步檢查</span><span>常見誤判</span>
         </div>
         {diagnosticScenarios.map((scenario, index) => (
           <article>
-            <div class="diagnosis-index"><span>0{index + 1}</span><small>{scenario.method}</small></div>
+            <div class="diagnosis-index"><span>0{index + 1}</span><small>{scenario.methodLabel} · {scenario.method}</small></div>
             <div class="diagnosis-symptom">
               <small>你遇到的現象</small>
               <h3>{scenario.symptom}</h3>
@@ -73,7 +86,7 @@ const methodLinks = [
               <div><dt>最小下一步檢查</dt><dd>{scenario.check}</dd></div>
               <div><dt>常見誤判</dt><dd>{scenario.mistake}</dd></div>
             </dl>
-            <a class="text-link diagnosis-link" href={scenario.href}>看對應文章 <ArrowRight size={15} aria-hidden="true" /></a>
+            {/* Articles inbound links paused. */}
           </article>
         ))}
       </div>
@@ -85,15 +98,15 @@ const methodLinks = [
           <p class="expertise-kicker">方法對照</p>
           <h2 id="method-map-title"><span>先知道要檢查哪一層，</span><span>再決定用什麼方法。</span></h2>
         </div>
-        <p>方法不是答案本身，而是幫你把問題縮小、留下檢查順序的工具。</p>
+        <p>下面三種方法各自檢查不同的地方。找到最像的問題後，再用你的實際工作確認一次。</p>
       </header>
       <div class="method-map__table">
         {signatureMethods.map((method, index) => (
           <article>
             <span class="method-map__index">0{index + 1}</span>
-            <div class="method-map__definition"><h3>{method.title}</h3><p>{method.definition}</p></div>
+            <div class="method-map__definition"><h3>{methodDisplayNames[method.title] ?? method.title}</h3><p>{method.definition}</p></div>
             <div class="method-map__fit"><small>適合先看</small><p>{method.problem.replace('適合：', '')}</p></div>
-            <a class="text-link" href={methodLinks[index]}>看方法詳解與例子 <ArrowRight size={15} aria-hidden="true" /></a>
+            {/* Articles inbound links paused. */}
           </article>
         ))}
       </div>
@@ -103,26 +116,22 @@ const methodLinks = [
       </div>
       <aside class="method-map__boundary" aria-labelledby="boundary-title">
         <div class="boundary-stamp" aria-hidden="true">BOUNDARY<br />NOTE</div>
-        <div><p class="expertise-kicker">邊界備註</p><h3 id="boundary-title">不是每個問題都需要 Agent。</h3><p>如果表單、試算表或一般自動化就能穩定完成工作，就先用簡單的方法。複雜度應該用來處理真實限制，而不是證明工具很進階。</p></div>
+        <div><p class="expertise-kicker">邊界備註</p><h3 id="boundary-title">不是每個問題都需要 Agent。</h3><p>表單、試算表或一般自動化能穩定完成，就停在那裡。只有現有做法真的處理不了的限制，才值得增加 Agent。</p></div>
         <ol><li>是不是重複規則明確的工作？</li><li>有沒有固定輸入與可驗收的結果？</li><li>現有方法是否已經穩定解決？</li></ol>
       </aside>
-      <div class="method-map__closing">
-        <p>找到對應層級後，深入閱讀一篇實際排查紀錄，一步一步把問題拆清楚。</p>
-        <a class="text-link" href="/articles/">閱讀對應問題文章 <ArrowRight size={16} aria-hidden="true" /></a>
-      </div>
+      {/* Articles inbound links paused: 文章導流恢復時再放回延伸閱讀。 */}
     </section>
   </article>
 </BaseLayout>
 
 <style>
-  .expertise-page > .page-paper { overflow: clip; }
+  .expertise-page > .page-paper { overflow: visible; }
   .expertise-kicker { margin: 0 0 1rem; color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .1em; }
   .expertise-hero { padding-block: clamp(3.25rem, 7vw, 6.5rem) !important; }
   .expertise-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.35rem; border-bottom: 1px solid var(--border); }
   .expertise-hero__topline p { margin: 0; }
   .expertise-hero__topline > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
   .expertise-hero h1 { max-width: none !important; margin: clamp(2.75rem, 6vw, 5.75rem) 0 0; font-family: var(--font-serif); font-size: clamp(3rem, 6.2vw, 6.1rem) !important; letter-spacing: -.075em !important; line-height: 1.02 !important; }
-  .expertise-hero h1 span { display: block; }
   .expertise-hero__footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; margin-top: 2.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
   .expertise-hero__footer p { max-width: 52rem; margin: 0; color: var(--text-secondary); font-size: 1rem; line-height: 1.85; }
   .expertise-hero__footer a { display: inline-flex; align-items: center; gap: .6rem; color: var(--accent); font-weight: 700; white-space: nowrap; }
@@ -132,10 +141,10 @@ const methodLinks = [
   .diagnosis__header h2 span, .method-map__header h2 span { display: block; }
   .diagnosis__header > p, .method-map__header > p { max-width: 23rem; margin: 0; color: var(--text-secondary); font-size: .86rem; line-height: 1.8; }
   .diagnosis-list { border: 1px solid var(--border-strong); }
-  .diagnosis-columns { display: grid; grid-template-columns: 7rem minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, .95fr) 9rem; border-bottom: 1px solid var(--border-strong); }
+  .diagnosis-columns { display: grid; grid-template-columns: 7rem minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, .95fr); border-bottom: 1px solid var(--border-strong); }
   .diagnosis-columns span { padding: .75rem .8rem; color: var(--accent); font-size: .67rem; font-weight: 700; }
   .diagnosis-columns span + span { border-left: 1px solid var(--border); }
-  .diagnosis-list article { display: grid; grid-template-columns: 7rem minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, .95fr) 9rem; grid-template-areas: "index symptom checks checks link"; gap: 0; padding: 0; border-bottom: 1px solid var(--border-strong); }
+  .diagnosis-list article { display: grid; grid-template-columns: 7rem minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, .95fr); grid-template-areas: "index symptom checks checks"; gap: 0; padding: 0; border-bottom: 1px solid var(--border-strong); }
   .diagnosis-list article:last-child { border-bottom: 0; padding-bottom: .35rem; }
   .diagnosis-index { grid-area: index; display: grid; align-content: start; gap: .45rem; padding: 1.35rem .8rem; }
   .diagnosis-index span { color: var(--accent); font-family: var(--font-serif); font-size: 1.55rem; }
@@ -148,16 +157,14 @@ const methodLinks = [
   .diagnosis-checks div { padding: 1.35rem 1rem; border-left: 1px solid var(--border); }
   .diagnosis-checks dt { color: var(--accent); font-size: .68rem; font-weight: 700; }
   .diagnosis-checks dd { margin: .4rem 0 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.7; }
-  .diagnosis-list article > .text-link { grid-area: link; align-self: stretch; display: flex; align-items: center; justify-content: center; padding: 1rem; border-left: 1px solid var(--border); font-size: .75rem; text-align: center; }
   .method-map { padding-block: clamp(3.5rem, 7vw, 6.5rem) !important; }
   .method-map__table { border-top: 1px solid var(--border-strong); }
-  .method-map__table article { display: grid; grid-template-columns: 3rem minmax(0, 1.15fr) minmax(15rem, .85fr) 10rem; gap: 1.5rem; align-items: start; padding: 1.45rem 0; border-bottom: 1px solid var(--border); }
+  .method-map__table article { display: grid; grid-template-columns: 3rem minmax(0, 1.15fr) minmax(15rem, .85fr); gap: 1.5rem; align-items: start; padding: 1.45rem 0; border-bottom: 1px solid var(--border); }
   .method-map__index { color: var(--accent); font-family: var(--font-mono); font-size: .7rem; }
   .method-map__definition h3 { margin: 0; font-size: 1.2rem; }
   .method-map__definition p, .method-map__fit p { margin: .4rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
   .method-map__fit { padding-left: 1rem; border-left: 1px solid var(--border); }
   .method-map__fit small { color: var(--accent); font-size: .68rem; font-weight: 700; }
-  .method-map__table article > a { align-self: center; font-size: .76rem; }
   .method-route { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; align-items: center; padding: 1.3rem 0; border-bottom: 1px solid var(--border-strong); }
   .method-route strong { font-size: .8rem; }
   .method-route ol { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; padding: 0; list-style: none; }
@@ -169,26 +176,22 @@ const methodLinks = [
   .method-map__boundary h3 { margin: 0; font-size: 1.45rem; }
   .method-map__boundary p { margin: .55rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
   .method-map__boundary ol { margin: 0; padding-left: 1.2rem; color: var(--text-secondary); font-size: .8rem; line-height: 1.8; }
-  .method-map__closing { display: grid; justify-items: center; gap: 1rem; padding-top: 2.5rem; text-align: center; }
-  .method-map__closing p { max-width: 36rem; margin: 0; font-family: var(--font-serif); font-size: 1.25rem; line-height: 1.5; }
   @media (max-width: 800px) {
     .expertise-hero__footer, .diagnosis__header, .method-map__header, .method-map__boundary { grid-template-columns: 1fr; }
     .expertise-hero__footer { gap: 1.25rem; }
     .expertise-hero__footer a, .method-map__boundary a { justify-self: start; }
     .diagnosis__header, .method-map__header { gap: 1.25rem; }
     .diagnosis-columns { display: none; }
-    .diagnosis-list article { grid-template-columns: 4.5rem minmax(0, 1fr); grid-template-areas: "index symptom" ". checks" ". link"; column-gap: 0; padding: 1.25rem 0; }
+    .diagnosis-list article { grid-template-columns: 4.5rem minmax(0, 1fr); grid-template-areas: "index symptom" ". checks"; column-gap: 0; padding: 1.25rem 0; }
     .diagnosis-index { padding: 0 .75rem; }
     .diagnosis-symptom { padding: 0 1rem; border-left: 1px solid var(--border); }
     .diagnosis-symptom > small { display: block; margin-bottom: .35rem; }
     .diagnosis-checks { grid-template-columns: 1fr 1fr; gap: 1rem; }
     .diagnosis-checks div { padding: 1rem; border-left: 1px solid var(--border); }
-    .diagnosis-list article > .text-link { min-height: 2.75rem; margin: .25rem 1rem 0; border: 1px solid var(--accent); }
     .method-map__table article { grid-template-columns: 3rem minmax(0, 1fr); grid-template-areas: "index definition" ". fit"; gap: .55rem 1rem; }
     .method-map__index { grid-area: index; }
     .method-map__definition { grid-area: definition; }
     .method-map__fit { grid-area: fit; padding: .75rem 0 0; border-top: 1px solid var(--border); border-left: 0; }
-    .method-map__table article > a { grid-column: 2; min-height: 2.75rem; }
     .method-route { grid-template-columns: 1fr; }
     .method-route ol { grid-template-columns: 1fr 1fr; gap: 1rem; }
     .method-map__boundary { gap: 1.25rem; }
@@ -210,7 +213,6 @@ const methodLinks = [
     .diagnosis-symptom h3 { font-size: 1.15rem; }
     .diagnosis-symptom p, .diagnosis-checks dd { font-size: .84rem; }
     .method-map__table article { padding: 1.25rem 0; }
-    .method-map__table article > a { grid-column: 1 / -1; }
     .method-route ol { grid-template-columns: 1fr; }
     .method-route li { padding: 0 0 1.5rem 1rem; border-left: 1px solid var(--accent); }
     .method-route li:not(:last-child)::after { right: auto; bottom: .25rem; left: .7rem; content: '↓'; }

@@ -33,7 +33,6 @@ CabLate.com 是公開權威中樞，不是把所有資料公開的知識庫。�
 | `/courses/` | 我離成果多遠，該買哪一層？ | 學習路線而非商品牆 | D 免費→講座→課程→手冊→陪跑 | 選擇當下可交付產品 |
 | `/courses/[slug]/` | 適不適合我，會拿到什麼？ | Outcome／fit／課綱／限制／proof | D 產品文案、E 專屬 proof、C FAQ | 購買或加入等待名單 |
 | `/services/` | 我需要內容、課程還是個別判斷？ | 服務決策與適配篩選 | D 企業／顧問、B 匿名案例、E 企業 proof | 提交合作情境 |
-| `/starter-pack/` | 免費資源能幫我跨過哪一步？ | 交付一個明確起點並取得同意訂閱 | D 免費邊界、C Claude Code 痛點、E 講座 proof | 領取 Starter Pack |
 | `/search/` | 我知道問題，但不知道在哪一頁 | 全站內容尋路 | 文章、課程、方法、作品 taxonomy | 開啟最相關內容 |
 | `/privacy/` | 你如何處理我的資料？ | 說清楚資料、第三方與退訂 | 實際表單／分析工具狀態 | 無商業 CTA |
 
@@ -100,7 +99,7 @@ CabLate.com 是公開權威中樞，不是把所有資料公開的知識庫。�
 
 ### Learn／Courses
 
-公開產品依序：免費 Starter Pack、短講／工作坊、金流課、VibeCoding、Claude Code 深度工程手冊。會員與高階陪跑仍屬 B，狀態未確認前只在策略層存在。
+公開產品依序：免費文章與問題診斷、短講／工作坊、金流課、VibeCoding、Claude Code 深度工程手冊。會員與高階陪跑仍屬 B，狀態未確認前只在策略層存在。
 
 ### Services
 
@@ -111,7 +110,7 @@ CabLate.com 是公開權威中樞，不是把所有資料公開的知識庫。�
 1. 正式 headshot 與多比例版本。
 2. Cab／CabLate／正式姓名公開關係最終核准。
 3. Newsletter promise、頻率、代表期數與 welcome sequence。
-4. Starter Pack 真實交付與 thank-you flow。
+4. 免費文章與問題診斷的入口與導覽持續維護。
 5. 現在可購買／可預約的產品狀態矩陣。
 6. 企業服務表單與適配條件。
 7. 首批三個案例的匿名／署名／圖片授權。
@@ -121,8 +120,7 @@ CabLate.com 是公開權威中樞，不是把所有資料公開的知識庫。�
 ## 8. 實作順序
 
 1. 將 A 級內容原子化到 `src/config/authority.ts`。
-2. 補強 Home／About／Articles／Courses／Services／Starter Pack。
+2. 補強 Home／About／Articles／Courses／Services。
 3. 建立 Work 與 Expertise，再建立 Guides／Methods。
 4. 完成 Newsletter／Contact 與跨站 CTA 追蹤。
 5. 最後補圖片與授權素材，不讓 placeholder 阻擋內容架構驗證。
-

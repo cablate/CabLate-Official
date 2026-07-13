@@ -38,6 +38,7 @@ madebypan-analysis/
 
 # misc
 .codex-dev*.log
+.codex-final-devserver*.log
 .playwright-mcp/
 Python/
 *.jpg

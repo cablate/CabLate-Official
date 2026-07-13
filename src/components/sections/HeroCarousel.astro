@@ -24,6 +24,7 @@ const hasMultipleSlides = slides.length > 1;
 <figure
   class="hero-frame paper-card paper-card--clip"
   data-hero-carousel
+  role="region"
   aria-label={label}
   aria-roledescription="輪播"
   tabindex={hasMultipleSlides ? '0' : undefined}
@@ -34,8 +35,10 @@ const hasMultipleSlides = slides.length > 1;
         <li
           class="hero-carousel__slide"
           data-carousel-slide
+          role="group"
           aria-label={`第 ${index + 1} 張，共 ${slides.length} 張`}
           aria-roledescription="投影片"
+          aria-hidden={index === 0 ? undefined : 'true'}
         >
           <img
             src={slide.src}
@@ -60,7 +63,7 @@ const hasMultipleSlides = slides.length > 1;
         <ChevronRight size={20} stroke-width={2} aria-hidden="true" />
       </button>
 
-      <div class="hero-carousel__pagination" aria-label="選擇圖片">
+      <div class="hero-carousel__pagination" role="group" aria-label="選擇圖片">
         <span class="hero-carousel__count" aria-hidden="true">
           <span data-carousel-current>01</span><span class="hero-carousel__count-divider">/</span>{String(slides.length).padStart(2, '0')}
         </span>
@@ -88,55 +91,65 @@ const hasMultipleSlides = slides.length > 1;
     carousels.forEach((carousel) => {
       if (carousel.dataset.carouselReady === 'true') return;
 
-    const viewport = carousel.querySelector<HTMLElement>('[data-carousel-viewport]');
-    const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-carousel-slide]'));
-    const previousButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-previous]');
-    const nextButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-next]');
-    const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>('[data-carousel-dot]'));
-    const currentLabel = carousel.querySelector<HTMLElement>('[data-carousel-current]');
+      const viewport = carousel.querySelector<HTMLElement>('[data-carousel-viewport]');
+      const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-carousel-slide]'));
+      const previousButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-previous]');
+      const nextButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-next]');
+      const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>('[data-carousel-dot]'));
+      const currentLabel = carousel.querySelector<HTMLElement>('[data-carousel-current]');
 
-    if (!viewport || slides.length < 2 || !previousButton || !nextButton) return;
+      if (!viewport || slides.length < 2 || !previousButton || !nextButton) return;
 
-    carousel.dataset.carouselReady = 'true';
-    let currentIndex = 0;
-    let animationFrame = 0;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      carousel.dataset.carouselReady = 'true';
+      let currentIndex = 0;
+      let animationFrame = 0;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    const updateState = (nextIndex: number) => {
-      currentIndex = Math.max(0, Math.min(slides.length - 1, nextIndex));
-      dots.forEach((dot, index) => {
-        if (index === currentIndex) dot.setAttribute('aria-current', 'true');
-        else dot.removeAttribute('aria-current');
-      });
-      if (currentLabel) currentLabel.textContent = String(currentIndex + 1).padStart(2, '0');
-    };
+      const updateState = (nextIndex: number) => {
+        currentIndex = Math.max(0, Math.min(slides.length - 1, nextIndex));
+        dots.forEach((dot, index) => {
+          if (index === currentIndex) dot.setAttribute('aria-current', 'true');
+          else dot.removeAttribute('aria-current');
+        });
+        slides.forEach((slide, index) => {
+          if (index === currentIndex) slide.removeAttribute('aria-hidden');
+          else slide.setAttribute('aria-hidden', 'true');
+        });
+        if (currentLabel) currentLabel.textContent = String(currentIndex + 1).padStart(2, '0');
+      };
 
-    const goToSlide = (index: number) => {
-      const nextIndex = (index + slides.length) % slides.length;
-      viewport.scrollTo({
-        left: slides[nextIndex].offsetLeft,
-        behavior: reduceMotion.matches ? 'auto' : 'smooth',
-      });
-      updateState(nextIndex);
-    };
-
-    previousButton.addEventListener('click', () => goToSlide(currentIndex - 1));
-    nextButton.addEventListener('click', () => goToSlide(currentIndex + 1));
-    dots.forEach((dot) => dot.addEventListener('click', () => goToSlide(Number(dot.dataset.slideIndex))));
-
-    carousel.addEventListener('keydown', (event) => {
-      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
-      event.preventDefault();
-      goToSlide(currentIndex + (event.key === 'ArrowRight' ? 1 : -1));
-    });
-
-    viewport.addEventListener('scroll', () => {
-      cancelAnimationFrame(animationFrame);
-      animationFrame = requestAnimationFrame(() => {
-        const nextIndex = Math.round(viewport.scrollLeft / Math.max(viewport.clientWidth, 1));
+      const goToSlide = (index: number) => {
+        const nextIndex = (index + slides.length) % slides.length;
+        viewport.scrollTo({
+          left: slides[nextIndex].offsetLeft,
+          behavior: reduceMotion.matches ? 'auto' : 'smooth',
+        });
         updateState(nextIndex);
+      };
+
+      previousButton.addEventListener('click', () => goToSlide(currentIndex - 1));
+      nextButton.addEventListener('click', () => goToSlide(currentIndex + 1));
+      dots.forEach((dot) => dot.addEventListener('click', () => goToSlide(Number(dot.dataset.slideIndex))));
+
+      carousel.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+        event.preventDefault();
+        goToSlide(currentIndex + (event.key === 'ArrowRight' ? 1 : -1));
       });
-    }, { passive: true });
+
+      viewport.addEventListener('scroll', () => {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = requestAnimationFrame(() => {
+          const nextIndex = slides.reduce((closestIndex, slide, index) => {
+            const closestDistance = Math.abs(slides[closestIndex].offsetLeft - viewport.scrollLeft);
+            const distance = Math.abs(slide.offsetLeft - viewport.scrollLeft);
+            return distance < closestDistance ? index : closestIndex;
+          }, 0);
+          updateState(nextIndex);
+        });
+      }, { passive: true });
+
+      updateState(0);
 
       new ResizeObserver(() => {
         viewport.scrollTo({ left: slides[currentIndex].offsetLeft, behavior: 'auto' });

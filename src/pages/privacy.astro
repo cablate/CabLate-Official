@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/siteConfig';
 ---
 
 <BaseLayout title="隱私權政策" description="CabLate 隱私權政策——說明本站如何收集和使用訪客資料。">
@@ -30,13 +31,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </section>
 
             <section>
-                <h2>電子報</h2>
-                <p>如果你訂閱了電子報，我會收集你提供的 Email 地址，僅用於寄送電子報內容。你可以隨時取消訂閱。</p>
+                <h2>更新通知</h2>
+                <p>如果你加入更新通知，我會收集你提供的 Email 地址，僅用於寄送新課程、手冊更新或公開活動等重要通知。這個 Email 不會自動成為合作聯絡資料、CabAI 帳號或 Discord 身分。你可以隨時退出通知名單。</p>
             </section>
 
             <section>
                 <h2>聯絡方式</h2>
-                <p>對隱私權政策有疑問，可以透過 <a href="https://threads.net/@cab_late" target="_blank" rel="noopener">Threads</a> 聯絡我。</p>
+                <p>對隱私權政策或個人資料使用有疑問，可以寄信到 <a href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>，也可以透過 <a href={siteConfig.threadsUrl} target="_blank" rel="noopener">Threads</a> 聯絡我。</p>
             </section>
         </div>
     </article>

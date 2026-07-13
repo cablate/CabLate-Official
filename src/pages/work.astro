@@ -7,7 +7,7 @@ const workStories = [
   {
     ...representativeWork[0],
     problem: '半年多的 Claude Code 實作經驗散落在筆記、對話與不同專案裡，遇到問題時很難快速找到真正原因。',
-    decision: '不按功能做百科，而是依 Skill、Memory、Context、Hook 與常見失效方式，整理成能查原因、修正與交接的工程手冊。',
+    decision: '這份手冊依 Skill、Memory、Context、Hook 與常見失效方式整理，方便讀者查原因、修正，也能交給團隊繼續使用。',
   },
   {
     ...representativeWork[1],
@@ -17,12 +17,12 @@ const workStories = [
   {
     ...representativeWork[2],
     problem: '許多 AI 寫程式示範停在畫面能動，真的接上金流後，訂單狀態、Webhook、簽章與錯誤處理才開始出現。',
-    decision: '課程不只示範 API 呼叫，而是帶學員走完整條收款流程，讓每個環節都有可檢查的狀態與失敗處理。',
+    decision: '學員會實際接上 API、建立訂單狀態、驗證 Webhook 與簽章，也處理付款失敗時該怎麼辦。',
   },
   {
     ...representativeWork[3],
     problem: '社群上的投資訊號很多，但貼文、AI 判讀、即時通知與後續股價驗證彼此分散，無法形成可追蹤的紀錄。',
-    decision: '把資料收集、AI 分析、推送與結果驗證接成一套可部署系統，並保留公開程式碼供外部檢查。',
+    decision: '系統會收集貼文、交給 AI 判讀、發出通知，再用後續股價檢查判斷是否正確；程式碼公開在 GitHub。',
   },
 ];
 
@@ -59,16 +59,15 @@ const limitedDisclosureWork = [
           <span class="work-hero__index-note">PUBLIC RECORD</span>
         </aside>
         <div class="work-hero__main">
-          <h1><span>作品不只看結果，</span><span>也看限制下怎麼選。</span></h1>
-          <p>作品可以看見結果，真正決定品質的，通常是過程裡那些不明顯的選擇。這裡只留下能說清楚問題、判斷與公開結果的項目。</p>
+          <h1 class="display-heading"><span class="heading-phrase">作品先看結果，</span><span class="heading-phrase">也要看限制下</span><span class="heading-phrase">做了哪些選擇。</span></h1>
+          <p>每件作品都會交代我面對的問題、當時的限制，以及最後能公開檢查的結果。</p>
           <div class="work-hero__actions">
-            <a class="work-hero__primary" href="/services/">查看合作方式 <ArrowRight size={18} aria-hidden="true" /></a>
-            <a class="work-hero__secondary" href="#selected-work">先看公開檔案</a>
+            <a class="work-hero__primary" href="#selected-work">先看公開檔案 <ArrowRight size={18} aria-hidden="true" /></a>
+            <a class="work-hero__secondary" href="/services/">查看合作方式</a>
           </div>
         </div>
         <aside class="work-hero__record" aria-label="檔案備註">
           <p class="work-hero__record-kicker">RECORD NOTE</p>
-          <p>不是把做過的事全部列出，而是留下能讓人回頭檢查的判斷。</p>
           <dl>
             <div><dt>先看</dt><dd>限制如何影響選擇</dd></div>
             <div><dt>再看</dt><dd>結果是否能被查證</dd></div>
@@ -97,6 +96,7 @@ const limitedDisclosureWork = [
                 <div class="work-file__meta"><span>工程手冊</span><span>公開摘要</span></div>
                 <h3>{work.title}</h3>
                 <p class="work-file__summary">{work.description}</p>
+                <p class="work-file__result"><span>公開結果</span><strong>{work.proof}</strong></p>
                 <dl class="work-story__facts">
                   <div><dt>原本的問題</dt><dd>{work.problem}</dd></div>
                   <div><dt>關鍵判斷</dt><dd>{work.decision}</dd></div>
@@ -105,7 +105,7 @@ const limitedDisclosureWork = [
               <aside class="work-featured__evidence">
                 <p>PUBLIC EVIDENCE</p>
                 <strong>{work.proof}</strong>
-                <a class="work-file__open" href={work.href} target={work.href.startsWith('http') ? '_blank' : undefined} rel={work.href.startsWith('http') ? 'noopener' : undefined}>查看檔案 <ArrowUpRight size={18} aria-hidden="true" /></a>
+                <a class="work-file__open" href={work.href} target={work.href.startsWith('http') ? '_blank' : undefined} rel={work.href.startsWith('http') ? 'noopener' : undefined}>查看試看與完整章節 <ArrowUpRight size={18} aria-hidden="true" /></a>
               </aside>
             </>
           );
@@ -164,7 +164,6 @@ const limitedDisclosureWork = [
   .work-hero__index-note { margin-top: auto; padding-top: 2.5rem; color: var(--text-muted); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .08em; }
   .work-hero__main { min-inline-size: 0; }
   .work-hero h1 { max-width: none !important; margin: 0 !important; }
-  .work-hero h1 span { display: block; }
   .work-hero__main > p { max-width: 48rem; margin: 2rem 0 0; color: var(--text-secondary); font-size: 1.06rem; line-height: 1.85; }
   .work-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.2rem; margin-top: 2rem; }
   .work-hero__primary { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
@@ -190,6 +189,7 @@ const limitedDisclosureWork = [
   .work-file__meta span + span { color: var(--text-muted); }
   .work-featured h3 { margin: .75rem 0 .85rem; font-size: clamp(1.55rem, 2.6vw, 2.2rem); }
   .work-file__summary { margin: 0; color: var(--text-secondary); font-size: .88rem; line-height: 1.75; }
+  .work-file__result { display: none; }
   .work-story__facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 1.35rem 0 0; }
   .work-story__facts div { min-inline-size: 0; padding-top: .85rem; border-top: 1px solid var(--border); }
   .work-story__facts dt, .work-index__decision small, .work-index__proof small { margin-bottom: .4rem; color: var(--text-muted); font-size: .68rem; font-weight: 700; }
@@ -248,6 +248,9 @@ const limitedDisclosureWork = [
     .work-featured__tag { margin: 0 0 0 auto; padding: 0; }
     .work-featured__body { padding: 1.25rem; }
     .work-story__facts { grid-template-columns: 1fr; gap: 1rem; }
+    .work-file__result { display: grid; gap: .25rem; margin: 1.1rem 0 0; padding: .8rem 0; border-block: 1px solid var(--border); }
+    .work-file__result span { color: var(--text-muted); font-size: .68rem; font-weight: 700; }
+    .work-file__result strong { color: var(--text-primary); font-size: .84rem; line-height: 1.6; }
     .work-featured__evidence { grid-column: auto; flex-wrap: wrap; padding: 1rem 1.25rem; }
     .work-featured__evidence strong { flex: 1 1 12rem; }
     .work-index__item { grid-template-columns: 2.5rem minmax(0, 1fr); gap: .7rem 1rem; padding: 1.35rem 0; }

@@ -17,13 +17,13 @@ change_context:
 
 ## Behavior Boundary
 
-- 本次統一首頁、關於、文章、學習、合作、Starter Pack、作品與專業方法的網站外框與品牌視覺。
+- 本次統一首頁、關於、文章、學習、合作、作品與專業方法的網站外框與品牌視覺；Starter Pack 已退役。
 - 各頁可以依任務使用列表、時間軸、網格或長文，但不得另建第二套導覽、色彩、字體與卡片語言。
 
 ## Consumers And Entrypoints
 
 - 共用入口：`src/layouts/BaseLayout.astro`、`src/styles/base.css`、`src/styles/global.css`。
-- 主要路由：`/`、`/about/`、`/articles/`、`/courses/`、`/services/`、`/starter-pack/`、`/work/`、`/expertise/`。
+- 主要路由：`/`、`/about/`、`/articles/`、`/courses/`、`/services/`、`/work/`、`/expertise/`。
 - 其他使用 `BaseLayout` 的文章、標籤、搜尋與內容頁，也必須沿用相同外框。
 
 ## Inputs And State
@@ -52,6 +52,8 @@ change_context:
 - 全站唯一主要紙面為 `#fffdf8`，外部背景為 `#eeeae2`。
 - 桌機與手機皆不得水平溢位。
 - 頁面任務與資訊架構可不同；導覽、字體、色彩、表面、圓角與陰影不可漂移。
+- 大標題必須由作者按語意片語指定可換行邊界；`text-wrap` 只能輔助視覺平衡，不能任由瀏覽器在中文字詞中間斷行。
+- 每個大標題片語都必須能放進手機紙張的內容安全寬度，不得用水平溢位或遮切換取桌機構圖。
 
 ## Acceptance Examples
 
@@ -93,6 +95,7 @@ And 不產生沒有 href 的連結
 - 內頁橫向頂部導覽改為首頁同款左側資料夾式導覽。
 - 內頁深色頁尾改回紙面頁尾。
 - 過大的內頁 hero 標題收斂到首頁尺度。
+- 七個主要入口頁使用共用 `display-heading`／`heading-phrase` 語法，讓桌機與手機只在語意邊界重新排列。
 
 ## Open Questions
 

@@ -77,7 +77,9 @@ Imagegen 只產出介面提案與可拆解的素材方向，不直接取代真�
 - 素材需求：不需要人物照；優先以排版、線條與小型流程圖完成。
 - 手機：決策矩陣拆成三個完整段落，Primary CTA 永遠是提交合作情境。
 
-### Starter Pack｜資源說明頁
+### Starter Pack｜已退役
+
+Starter Pack 已從正式網站移除，不再生成頁面或投入新的紙面視覺資產。
 
 - 任務：說清楚資源將解決什麼、適不適合，以及目前只是開放通知。
 - 構圖：像一份尚在整理中的 starter kit 內容清單；狀態必須明確，不用「下載」視覺誤導已可交付。
@@ -104,7 +106,7 @@ Imagegen 只產出介面提案與可拆解的素材方向，不直接取代真�
 ## 4. Imagegen 生產順序
 
 1. 先用 Home、About、Articles 產生三個不同頁型，確認整套紙面語言能變化而不分裂。
-2. 再生成 Courses、Services、Starter Pack，檢查決策型頁面是否仍清楚可用。
+2. 再生成 Courses、Services，檢查決策型頁面是否仍清楚可用。
 3. 最後生成 Work、Expertise，因為這兩頁更依賴真實截圖、證據與方法圖解。
 4. 每一頁先產桌機長頁提案；方向通過後才產 390×844 手機版本。
 5. 生成稿先存入 `docs/design/generated/<page>/`，經 review 後才拆成 production 所需的小素材或 CSS 元件。
