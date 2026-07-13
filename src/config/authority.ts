@@ -20,14 +20,14 @@ export const signatureMethods = [
     problem: '適合：對話愈長愈混亂，或換人、換回合後容易失去前文。',
   },
   {
-    title: 'Harness Engineering',
-    definition: '模型夠不夠強，只是其中一部分。任務怎麼寫、工具怎麼選、資料怎麼提供、錯誤怎麼發現與復原，合在一起才決定成果是否穩定。',
-    problem: '適合：AI 單次表現不錯，放進日常流程後卻經常失控。',
-  },
-  {
     title: 'Skill 路線設計',
     definition: 'Skill 是一套可重複執行的工作方法：何時啟動、先判斷什麼、哪些事不能做、最後怎麼驗收，都要事先說清楚。',
     problem: '適合：AI 每次都重新猜做法，導致產出品質忽好忽壞。',
+  },
+  {
+    title: 'Harness Engineering',
+    definition: '模型夠不夠強，只是其中一部分。任務怎麼寫、工具怎麼選、資料怎麼提供、錯誤怎麼發現與復原，合在一起才決定成果是否穩定。',
+    problem: '適合：AI 單次表現不錯，放進日常流程後卻經常失控。',
   },
 ] as const;
 

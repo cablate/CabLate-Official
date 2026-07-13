@@ -19,7 +19,7 @@ change_context:
 
 ## Change Context
 
-首頁的「查看診斷方法」會把已經被問題說中的訪客帶到 `/expertise/`。這一輪補齊首頁第三個「出錯後只能重來」的對應診斷，統一 Context、Harness、Skill 的方法順序，並在完成診斷後提供學習與合作兩條下一步。
+首頁的「查看診斷方法」會把已經被問題說中的訪客帶到 `/expertise/`。這一輪補齊首頁第三個「出錯後只能重來」的對應診斷，統一 Context、Skill、Harness 的方法路線，並在完成診斷後提供學習與合作兩條下一步。
 
 ## Behavior Boundary
 
@@ -52,13 +52,13 @@ change_context:
 
 - 頁面不依賴登入、遠端資料、JavaScript hydration 或使用者狀態。
 - 首頁三個問題固定為：背景接不起來、成果不能直接用、出錯後只能重來。
-- 方法固定為 Context、Harness、Skill；Harness 可對應多個症狀。
+- 方法固定為 Context、Skill、Harness；Harness 可對應多個症狀。Diagnosis 仍依症狀排列，不為了方法順序重排 Case。
 - Articles 路由可直接存在，但本頁不得產生 Article CTA。
 
 ## Outputs And Side Effects
 
 - 初次渲染輸出四個 Diagnosis 案例：A 至 D。
-- `signatureMethods` 依 Context、Harness、Skill 排序輸出。
+- `signatureMethods` 依 Context、Skill、Harness 排序輸出。
 - Hero 與 Route 的頁內連結只改變網址 hash 與捲動位置。
 - 頁尾 CTA 只進行站內導覽，不寫入資料、不呼叫 API、不觸發外部平台。
 
@@ -72,14 +72,15 @@ change_context:
 ### Desktop
 
 - 1280px 與 1440px 可橫向比較四個案例的症狀、檢查與誤判。
-- Method map 固定依 Context、Harness、Skill 顯示，不以症狀數量改變方法數量。
+- Method map 與 Route 固定依 Context、Skill、Harness 顯示，不以症狀數量改變方法數量。
+- Route 以 01 至 03、紫色導引線、箭頭與中文標籤呈現三層關係；recovery CTA 是有邊界的 paper button，不是小型底線連結。
 - Boundary note 後仍有頁面自己的 CTA，不直接落入 Footer。
 
 ### Mobile
 
 - 320px、360px、390px 依症狀、最小檢查、常見誤判垂直閱讀。
 - H1、H2 不出現孤立標點或拆開「檢查」等詞語的斷行。
-- CTA 垂直排列，互動高度至少 44px。
+- 頁尾 CTA 垂直排列，互動高度至少 44px；Route recovery CTA 在紙張安全內距內滿寬顯示。
 - 不以縮小正文或 `overflow: hidden` 掩蓋超出問題。
 
 ### Keyboard and focus
@@ -97,12 +98,14 @@ change_context:
 
 1. Expertise 先呈現症狀，再呈現方法名詞。
 2. 首頁三個問題都能在 Diagnosis 找到直接或明確相近的案例。
-3. 案例使用 A 至 D，方法使用 01 Context、02 Harness、03 Skill；兩套識別不混用。
-4. Context、Harness、Skill 在 Diagnosis、Method map 與 Route 的順序一致。
-5. Diagnosis 回答症狀、最小檢查與誤判；Method map 回答修好訊號與往下一層條件。
-6. 「不是每個問題都需要 Agent」維持正常閱讀權重。
-7. Articles CTA 維持暫停，不新增 CabAI、Discord、Email 或商品直連。
-8. 全頁不新增未經證實的數字、成果、案例或見證。
+3. 案例使用 A 至 D，方法使用 01 Context、02 Skill、03 Harness；兩套識別不混用。
+4. Diagnosis 依症狀與讀者帶入順序呈現，不被方法分類順序綁定。
+5. Method map 與 Route 的語意、DOM 與視覺順序一致為 Context → Skill → Harness。
+6. Diagnosis 回答症狀、最小檢查與誤判；Method map 回答修好訊號與往下一層條件。
+7. 「不是每個問題都需要 Agent」維持正常閱讀權重。
+8. Articles CTA 維持暫停，不新增 CabAI、Discord、Email 或商品直連。
+9. 全頁不新增未經證實的數字、成果、案例或見證。
+10. 關鍵互動不能只達成「存在、可聚焦、44px」；還必須從實際畫面一眼辨識 CTA 角色與可點邊界。
 
 ## Acceptance Examples
 
@@ -116,8 +119,17 @@ And 可以看見最後正確結果、第一個錯誤訊號與可恢復位置的�
 ```gherkin
 Given 訪客已經辨認出問題層級
 When 訪客閱讀 Method map
-Then 依序看見 Context、Harness、Skill
+Then 依序看見 Context、Skill、Harness
 And 每個方法都有修好後的可觀察訊號與往下一層條件
+```
+
+```gherkin
+Given 訪客看完 Method map 仍不確定自己的問題
+When 訪客在 Desktop、390px 或 320px 畫面查看 Route
+Then 可以一眼讀出 01 Context → 02 Skill → 03 Harness
+And 「仍不確定？回到診斷表」以 bordered paper button 顯示
+When 訪客以鍵盤聚焦並按 Enter
+Then 前往 #diagnosis 且內容不被 Mobile Headbar 遮住
 ```
 
 ```gherkin
@@ -180,23 +192,27 @@ test_mapping:
 - Courses 與 Services CTA 已分別實際前往 `/courses/`、`/services/`；accessible name 與 href 正確。
 - Hero 由連續四次 Tab 聚焦，Shift+Tab 後再 Tab 可返回，Enter 正確前往 `#diagnosis`；Route、Courses、Services 亦通過真實 Tab、Shift+Tab 與 Enter 操作。
 - Hero、Route、Courses、Services 均為原生 `<a href>`，可聚焦且 `:focus-visible` outline 清楚。
+- 2026-07-14 Route production 複核：1440 × 900、390 × 844、320 × 568 的 `scrollWidth === innerWidth`；DOM 與視覺順序都是 Context、Skill、Harness。
+- Route recovery button 在 Desktop 與 Mobile 都是 48px 高；390px 啟動後 `#diagnosis` 與 Mobile Headbar 保留約 110px 間距，focus ring 為 2px 實線紫色。
 - Expertise 可執行的 Article CTA 為 0；頁面沒有 CabAI、Discord、Email 或商品直連。
 
 ### Correction evidence verified
 
 - Diagnosis 在五種尺寸均先呈現 Case A 至 D 與症狀，方法名稱只在症狀之後作為弱化分類。
 - Method map 已移除重複定義；320／360／390／1280／1440 的高度皆短於 Diagnosis。
-- 公開方法名稱統一為 Context、Harness、Skill；中文僅作輔助說明。
+- 公開方法名稱統一為 Context、Skill、Harness；中文僅作輔助說明。
 - v2 evidence 已補齊 homepage entry、完整 Desktop Diagnosis、Desktop Method map／page end，以及五種尺寸長頁。
+- Route 的最新局部證據為 `desktop-1440x900-method-map.png`、`mobile-390x844-method-map.png`、`mobile-320x568-method-route-v4.png`。
 - 截圖、量測、DOM 與真實鍵盤紀錄：`docs/design/audits/2026-07-13-expertise-first-destination-v2/README.md`。
 
 ## Intentional Changes
 
 - Diagnosis 從三個案例增加為四個，新增 Harness 失敗發現與復原案例。
 - 案例識別由 01 至 03 改為 A 至 D；方法識別固定為 01 至 03。
-- `signatureMethods` 由 Harness、Context、Skill 改為 Context、Harness、Skill。
-- Method map 由「適合先看」改為「修好後會看見什麼」與「什麼時候往下一層查」。
-- Route 最後一項改為真正的 `#diagnosis` 連結。
+- `signatureMethods` 最終改為 Context、Skill、Harness。
+- Method map 由「適合先看」改為「修好後會看見什麼」與「接著怎麼判斷」。
+- Route 的方法順序改為 Context → Skill → Harness，並加入固定編號、導引線、箭頭與中文輔助標籤。
+- Route 最後一項改為真正的 `#diagnosis` bordered paper button。
 - Boundary note 後新增 Courses primary 與 Services secondary CTA。
 
 ## Open Questions

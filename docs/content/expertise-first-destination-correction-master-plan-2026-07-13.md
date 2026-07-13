@@ -11,6 +11,7 @@ scope:
   - correct desktop and mobile heading, interaction and accessibility issues
 canonical_parent: docs/content/site-purpose-page-role-and-cta-master-plan-2026-07-12.md
 related_plan: docs/design/expertise-layout-plan-2026-07-12.md
+acceptance_standard: docs/design/page-reading-and-interaction-acceptance-standard.md
 ---
 
 # Expertise 第一站修正 Master Plan
@@ -37,7 +38,7 @@ Expertise 現在已經具備正確的主體：
 
 - Hero 先說真實問題，沒有一開始就塞方法名詞。
 - 診斷表從症狀、最小檢查與常見誤判出發。
-- 方法對照讓訪客理解 Context、Harness、Skill 的差異。
+- 方法對照讓訪客理解 Context、Skill、Harness 的差異。
 - 「不是每個問題都需要 Agent」清楚表達 CabLate 的判斷邊界。
 - Desktop 能橫向掃讀，Mobile 沒有水平溢位。
 
@@ -77,9 +78,11 @@ Expertise 現在已經具備正確的主體：
 
 訪客按下 `查看診斷方法` 時，合理期待是：進入下一頁後，可以找到這三種情況分別該先檢查什麼。
 
-### 2.2 Expertise 目前的閱讀順序
+### 2.2 Expertise 實作前的閱讀順序（歷史基線）
 
 來源：`src/pages/expertise.astro`
+
+以下記錄 2026-07-13 規劃當下的舊狀態，用於說明當時為什麼需要修正；不是現在的規範性順序。
 
 1. Hero：提醒訪客不要只改 Prompt。
 2. Diagnosis：三個症狀、最小下一步檢查與常見誤判。
@@ -153,7 +156,7 @@ Expertise 要讓一個已經被首頁問題說中的訪客，在不必先懂技�
 | Goal ID | Goal | Depends on | Observable outcome |
 | --- | --- | --- | --- |
 | `EG-1` | 讓首頁三個問題都能在 Expertise 找到對應 | `EG-0` | 首頁第三種失效有清楚的 Harness 診斷內容 |
-| `EG-2` | 建立一套前後一致的方法識別與順序 | `EG-0` | Context、Harness、Skill 在全頁不再交換編號 |
+| `EG-2` | 建立一套前後一致的方法識別與順序 | `EG-0` | Method map 與 Route 固定使用 Context、Skill、Harness，不再交換編號 |
 | `EG-3` | 讓 Diagnosis 與 Method map 各自提供不同價值 | `EG-1`、`EG-2` | 後半段不再重述症狀，而是說明完成訊號與停止條件 |
 | `EG-4` | 在 Articles 暫停導流期間提供合理下一步 | `EG-0` | 頁尾能前往學習路線或討論實際情境 |
 | `EG-5` | 讓標題與互動在窄畫面仍自然、可點、可讀 | `EG-0` | 無孤立標點、詞語斷裂、小型點擊區或低對比連結 |
@@ -172,14 +175,15 @@ Expertise 要讓一個已經被首頁問題說中的訪客，在不必先懂技�
 
 1. Expertise 仍是失效診斷入口，不是方法名詞清單。
 2. 不要求症狀數量與方法數量相同；多個症狀可以指向同一層。
-3. 診斷順序固定為 Context → Harness → Skill，除非有實際證據需要例外。
-4. 首頁第三個「出錯後只能重來」維持原意，不為了配合三欄版面而改弱。
-5. Articles 可以存在，但本輪不恢復任何站內 Article CTA。
-6. CabAI 不成為 Expertise 的直接 Primary CTA；商品與平台選擇留給 Courses。
-7. 「不是每個問題都需要 Agent」必須保留，而且維持正常閱讀權重。
-8. 不新增未經證實的成果、數字、客戶案例或見證。
-9. 保留紫色、紙張材質、細線、編號與排查文件語法。
-10. 不用縮小正文或犧牲安全內距換取 Mobile 排版。
+3. Diagnosis 依訪客症狀排列 Case A 至 D，不為了配合方法分類而強迫重排。
+4. Method map 與 Route 的方法順序固定為 Context → Skill → Harness：先確認資訊，再留下可重複方法，最後接穩執行、驗收與復原環境。
+5. 首頁第三個「出錯後只能重來」維持原意，不為了配合三欄版面而改弱。
+6. Articles 可以存在，但本輪不恢復任何站內 Article CTA。
+7. CabAI 不成為 Expertise 的直接 Primary CTA；商品與平台選擇留給 Courses。
+8. 「不是每個問題都需要 Agent」必須保留，而且維持正常閱讀權重。
+9. 不新增未經證實的成果、數字、客戶案例或見證。
+10. 保留紫色、紙張材質、細線、編號與排查文件語法。
+11. 不用縮小正文或犧牲安全內距換取 Mobile 排版。
 
 ### 3.7 不處理的範圍
 
@@ -236,8 +240,8 @@ Diagnosis 改為四個症狀案例、三個方法層級：
 方法對照固定順序：
 
 1. Context Engineering
-2. Harness Engineering
-3. Skill
+2. Skill 路線設計
+3. Harness Engineering
 
 每個方法只回答 Diagnosis 尚未回答的兩件事：
 
@@ -248,9 +252,10 @@ Diagnosis 改為四個症狀案例、三個方法層級：
 
 ### 4.4 Route 與 Boundary note
 
-Route 保留 Context → Harness → Skill，但角色改成簡短摘要，不再像另一張重複的方法表。
+Route 使用 Context → Skill → Harness，角色是讓讀者一眼看懂三層的銜接，不再像另一張重複的方法表。
 
-- `仍不確定？回到診斷表` 必須變成真正的 `#diagnosis` 連結；如果不做成連結，就改成不帶行動語氣的說明。
+- Route 必須同時定義語意順序、DOM 順序、編號、箭頭與中文輔助標籤，不能只把三個名詞並排。
+- `仍不確定？回到診斷表` 是 recovery CTA，必須使用真正的 `<a href="#diagnosis">`，並呈現為有邊界、至少 44px 高的 bordered paper button；不得退回角落的小型底線連結。
 - Boundary note 繼續放在方法之後，提醒訪客簡單工具能穩定完成時就不必增加 Agent。
 
 ### 4.5 頁尾行動
@@ -312,9 +317,9 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 
 | 方法 | 修好後會看見什麼 | 什麼時候往下一層查 |
 | --- | --- | --- |
-| Context | AI 能說出正在使用的版本、資料與缺少的資訊；換回合後不會抓錯舊資料 | 資訊正確且足夠，成果仍不能穩定完成時，改查 Harness |
-| Harness | 同一個真實任務能依完成條件交付；失敗時知道停在哪一步，也能從那裡恢復 | 流程已穩定，但每次仍要重新解釋做法時，改查 Skill |
-| Skill | 做對一次的方法已留下啟動條件、判斷順序、限制與驗收方式 | 工作不重複、規則不明確或簡單自動化已足夠時，不必硬做 Skill 或 Agent |
+| Context | AI 能說出正在使用的版本、資料與缺少的資訊；換回合後不會抓錯舊資料 | 資訊正確且足夠，但每次仍要重新解釋做法、品質忽好忽壞時，改查 Skill |
+| Skill | 做對一次的方法已留下啟動條件、判斷順序、限制與驗收方式 | 做法已經留下，成果仍不能穩定交付或從失敗處恢復時，改查 Harness |
+| Harness | 同一個真實任務能依完成條件交付；失敗時知道停在哪一步，也能從那裡恢復 | 任務、工具、權限、完成條件與復原方式都已穩定，就停在這裡，不必再增加一層 |
 
 ### 5.4 頁尾引導
 
@@ -345,7 +350,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 
 - Hero 維持目前大標題與左右 footer，不增加第三欄。
 - Diagnosis 四個案例仍用固定欄位橫向比較；增加一列不代表增加一個方法。
-- Method map 採 Context、Harness、Skill 固定順序，移除重複的「適合先看」欄後，應比目前更短。
+- Method map 採 Context、Skill、Harness 固定順序，移除重複的「適合先看」欄後，應比 Diagnosis 更短。
 - 頁尾 CTA 放在 Boundary note 之後、Footer 之前，形成明確的頁面收尾。
 - 1280px 與 1440px 下，右側欄位都必須保留紙張內距，不貼齊瀏覽器邊緣。
 
@@ -356,6 +361,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 - Hero、Diagnosis、Method map、Boundary note 與頁尾 CTA 的標題都要在 320px、360px、390px 人工確認斷句。
 - 不得把「檢查、錯誤處理、完成條件」等詞拆成不自然的兩行。
 - 頁尾兩個 CTA 垂直排列，每個高度至少 44px。
+- Route 在 320px、360px、390px 必須保留 Context → Skill → Harness 的 DOM 與視覺順序；編號、導引線、箭頭與中文標籤均可辨識，且 recovery CTA 使用紙張內滿寬按鈕。
 - 新增第四個案例後，應靠刪除 Method map 的重複資訊控制全頁長度，不用縮小字級。
 
 ### 6.4 互動與可及性
@@ -401,7 +407,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 #### 契約最低內容
 
 - 首頁三個問題與 Expertise 四個症狀案例的對應。
-- Context、Harness、Skill 的固定順序與顯示識別。
+- Context、Skill、Harness 的固定順序與顯示識別。
 - Hero anchor、Route recovery link、頁尾兩個 CTA 的 accessible name 與 destination。
 - Desktop、Mobile、keyboard、reduced motion、no-overflow 等 UI states。
 - Articles 連結維持暫停的 regression boundary。
@@ -425,7 +431,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 #### 實作限制
 
 - Diagnosis 使用四個症狀案例，不新增第四個方法。
-- 案例以 A 至 D 識別；方法以 01 Context、02 Harness、03 Skill 識別。
+- 案例以 A 至 D 識別；方法以 01 Context、02 Skill、03 Harness 識別。
 - `signatureMethods` 目前只有 Expertise 使用；調整順序時仍需以 `rg` 再確認消費者。
 - 不修改首頁三個問題，除非實作後人工測試證明仍無法理解對應。
 - 不取消既有「最小下一步檢查」與「常見誤判」。
@@ -433,7 +439,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 #### 成果證據
 
 - DOM 中可找到四個症狀案例，Harness 有兩個不同失效情境。
-- Diagnosis、Method map、Route 的方法順序一致。
+- Diagnosis 維持症狀優先的 Case A 至 D；Method map 與 Route 的方法順序一致為 Context、Skill、Harness。
 - 首頁第三個情境能在 Expertise 首屏診斷區找到接近原句的症狀。
 
 ### Phase 2：讓 Method map 提供新判斷，補上頁尾行動
@@ -451,7 +457,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 
 - 移除或改寫重複的「適合先看」，不再重講 Diagnosis 症狀。
 - 每個方法必須顯示完成訊號與下一層條件。
-- `回到診斷表` 使用真正的 `<a href="#diagnosis">`。
+- `回到診斷表` 使用真正的 `<a href="#diagnosis">`，並以 bordered paper button 呈現，不得降級成只有顏色或底線的小型連結。
 - 頁尾只增加 `/courses/` 與 `/services/` 兩個 CTA。
 - 不把頁尾做成 CabAI 商品卡、Newsletter 或 Article 推薦區。
 
@@ -534,7 +540,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 | --- | --- | --- | --- |
 | `EG-0` | 完成從首頁問題到下一步的完整旅程 | Phase 0 至 4 | End-to-end browser path、人工讀者測試 |
 | `EG-1` | 四個症狀涵蓋首頁三個問題與 Skill 失效 | Phase 1 | DOM copy、homepage-to-expertise mapping |
-| `EG-2` | 固定 Context、Harness、Skill 順序與識別 | Phase 1 | DOM order、method ID assertions |
+| `EG-2` | 固定 Context、Skill、Harness 順序與識別 | Phase 1 | Method map／Route DOM order、method ID assertions、Desktop／Mobile screenshots |
 | `EG-3` | Method map 改為完成訊號與下一層條件 | Phase 2 | Copy diff、desktop/mobile screenshots |
 | `EG-4` | 新增 Courses primary 與 Services secondary | Phase 2 | href/name assertions、keyboard test |
 | `EG-5` | 修正標題、對比、觸控與 anchor offset | Phase 3 至 4 | Five viewport QA、contrast、geometry |
@@ -545,7 +551,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 ### 10.1 訪客成果
 
 - 從首頁三個問題任一項進入 Expertise，都能在 Diagnosis 找到直接對應或明確相近的症狀。
-- 訪客不必先懂 Context、Harness、Skill，也能知道下一個最小檢查。
+- 訪客不必先懂 Context、Skill、Harness，也能知道下一個最小檢查。
 - 訪客讀完 Method map 後，知道修到什麼狀態可以先停，以及何時改查下一層。
 - 訪客完成診斷後，不會直接落入 Footer；可以選擇自行學習或討論實際情境。
 - 不想買東西或談合作的人，仍能只使用這份診斷內容而得到完整價值。
@@ -553,7 +559,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 ### 10.2 內容
 
 - 首頁第三個「一出錯就找不到原因，只能從頭再來」有對應的 Harness 診斷。
-- 同一方法在 Diagnosis、Method map、Route 使用一致名稱與順序。
+- 同一方法在 Diagnosis、Method map、Route 使用一致名稱；Diagnosis 依症狀排序，Method map 與 Route 才固定使用 Context → Skill → Harness。
 - Diagnosis 回答症狀與檢查；Method map 回答完成訊號與停止條件，兩區不互相重寫。
 - 「不是每個問題都需要 Agent」保留，且沒有被縮成頁尾附註。
 - 所有可見文字使用繁體中文與全形標點。
@@ -566,6 +572,7 @@ Articles 暫停導流期間，頁尾使用一主一次的選擇：
 - 每個互動元素有可見 focus state，並可由鍵盤完成操作。
 - Mobile 觸控目標至少 44px。
 - 小型連結對比至少 4.5:1，色彩不是唯一可點提示。
+- Route 的 recovery CTA 必須一眼可辨識為按鈕；「存在、可聚焦、達 44px」不能取代實際視覺辨識驗收。
 - `#diagnosis` 不被 Desktop 或 Mobile 固定導覽遮住。
 
 ### 10.4 不可退步的範圍
@@ -611,7 +618,7 @@ Expertise 負責診斷，Courses 負責協助訪客選擇學習深度；CabAI �
 這輪不是在 build 通過時完成，而是在以下結果同時成立時完成：
 
 1. 首頁三個問題都能在 Expertise 找到對應診斷。
-2. Context、Harness、Skill 的名稱、識別與順序全頁一致。
+2. Context、Skill、Harness 的名稱與識別全頁一致，Method map 與 Route 的語意、DOM 與視覺順序一致。
 3. Diagnosis 與 Method map 不再重複同一份內容。
 4. 訪客知道每一層修好後會出現什麼變化，以及何時往下一層查。
 5. Articles 維持暫停導流，但頁面不再以 Footer 作為唯一出口。
@@ -625,13 +632,14 @@ Expertise 負責診斷，Courses 負責協助訪客選擇學習深度；CabAI �
 
 **Verdict: Verified**
 
-第 5 節文案、A 至 D 四個症狀、Context → Harness → Skill 順序、Boundary note，以及 Courses／Services 兩種下一步均已實作。2026-07-13 重新對照第 3、4、6、10 與 13 節後發現的五項落差，也已逐項修正並由 production runtime 證據覆蓋：
+第 5 節文案、A 至 D 四個症狀、Boundary note，以及 Courses／Services 兩種下一步均已實作。2026-07-14 再次人工複核後，方法路線修正為 Context → Skill → Harness，並補上 recovery CTA 與 Route 視覺層級的 production runtime 證據：
 
 1. Diagnosis 現在先顯示 Case 與症狀，方法分類只在症狀與提問後弱化呈現，符合 `ESG-1`。
 2. Method map 已移除方法定義，只保留完成訊號與下一層條件；五種尺寸均短於 Diagnosis。
-3. 公開方法名稱統一為 Context、Harness、Skill，中文只作輔助說明。
+3. 公開方法名稱統一為 Context、Skill、Harness；Method map 與 Route 固定使用 01 Context、02 Skill、03 Harness，中文只作輔助說明。
 4. v2 evidence 已包含首頁入口、完整 Desktop Diagnosis、Method map、page end，以及 320／360／390／1280／1440 長頁。
 5. Hero、Route、Courses、Services 均以真實 Tab、Shift+Tab 與 Enter 完成操作，不再以 href 或 click 取代鍵盤證據。
+6. Route 不再只是三個文字並排：Desktop 與 Mobile 均包含固定編號、紫色導引線、箭頭與中文輔助標籤；`仍不確定？回到診斷表` 改為 48px 高的 bordered paper button。
 
 ### 14.1 Git checkpoints
 
@@ -649,16 +657,16 @@ Expertise 負責診斷，Courses 負責協助訪客選擇學習深度；CabAI �
 - `npm run build`：通過，共 48 pages。
 - `git diff --check`：通過。
 - 320 × 568、360 × 800、390 × 844、1280 × 720、1440 × 900：`scrollWidth === clientWidth`，沒有水平溢位。
-- Hero button 高度為 48px；Route 的互動高度為 44px；Courses 與 Services CTA 高度為 48px。
+- Hero button、Route recovery button、Courses 與 Services CTA 高度均為 48px。
 - 人工複核後，Hero 入口已由只有底線的 `text-link` 改為全站既有 `.btn.btn-primary`；Desktop 為 232 × 48px，390px Mobile 為紙張內滿寬 326 × 48px。
 - `--accent-text` 對白底與紙面近似底色的對比分別約 6.40:1、6.03:1，高於一般文字 4.5:1。
 - 390px Mobile 點擊 Hero 後，固定 Headbar bottom 為 70px，Diagnosis heading top 為 260px，保留 190px 安全距離。
 - Diagnosis 與 Method map 高度比依序為：320px 0.754、360px 0.765、390px 0.765、1280px 0.824、1440px 0.880；方法對照在所有支援尺寸都更短。
 - 首頁 `查看診斷方法` 已實際前往 `/expertise/`；Hero 與 Route 均能回到未被 Headbar 遮住的 `#diagnosis`。
 - Hero 由連續四次 Tab 聚焦；Shift+Tab 後再 Tab 可返回，Enter 正確前往 `#diagnosis`。
-- Route 通過 Shift+Tab、Tab 與 Enter；Courses 以 Enter 前往 `/courses/`，再 Tab 至 Services 後以 Enter 前往 `/services/`。
+- Route recovery button 通過焦點與 Enter；390px Mobile 啟動後 `#diagnosis` 位於 Headbar 下方約 110px。Courses 以 Enter 前往 `/courses/`，再 Tab 至 Services 後以 Enter 前往 `/services/`。
 - Hero、Route、Courses、Services 均使用原生 `<a href>`，且紙張上的 `:focus-visible` outline 清楚。
-- 五種尺寸的 DOM 均為症狀先於方法分類，Method map 沒有舊方法定義，公開名稱為 Context、Harness、Skill。
+- 五種尺寸的 DOM 均為症狀先於方法分類，Method map 沒有舊方法定義；Method map 與 Route 的公開順序為 Context、Skill、Harness。
 - Expertise 可執行的 Article CTA 為 0；既有 Article URL 只留在註解中，未恢復導流。
 - Boundary note 保留，且本輪沒有修改首頁、About、Work、Courses 或 Services。
 
