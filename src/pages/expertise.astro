@@ -53,11 +53,11 @@ const diagnosticScenarios = [
 //   '/articles/agent-sdk-system-reminder-diff-fix/',
 // ];
 
-const methodDisplayNames: Record<string, string> = {
-  'Harness Engineering': '執行環境（Harness Engineering）',
-  'Context Engineering': '資訊脈絡（Context Engineering）',
-  'Skill 路線設計': '可重複方法（Skill）',
-};
+const methodDisplayNames = {
+  'Context Engineering': { label: '資訊脈絡', term: 'Context Engineering' },
+  'Harness Engineering': { label: '執行環境', term: 'Harness Engineering' },
+  'Skill 路線設計': { label: '可重複方法', term: 'Skill' },
+} as const;
 
 const methodGuidance: Record<string, { repaired: string; next: string }> = {
   'Context Engineering': {
@@ -119,7 +119,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
       </div>
     </section>
 
-    <section class="method-map page-paper paper-card" aria-labelledby="method-map-title">
+    <section class="method-map page-paper paper-card" id="method-map" aria-labelledby="method-map-title">
       <header class="method-map__header">
         <div>
           <p class="expertise-kicker">方法對照</p>
@@ -131,7 +131,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
         {signatureMethods.map((method, index) => (
           <article>
             <span class="method-map__index">0{index + 1}</span>
-            <div class="method-map__definition"><h3>{methodDisplayNames[method.title] ?? method.title}</h3><p>{method.definition}</p></div>
+            <div class="method-map__definition"><h3><span>{methodDisplayNames[method.title].label}</span><small>{methodDisplayNames[method.title].term}</small></h3><p>{method.definition}</p></div>
             <dl class="method-map__guidance">
               <div><dt>修好後會看見什麼</dt><dd>{methodGuidance[method.title].repaired}</dd></div>
               <div><dt>什麼時候往下一層查</dt><dd>{methodGuidance[method.title].next}</dd></div>
@@ -152,7 +152,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
       {/* Articles inbound links paused: 文章導流恢復時再放回延伸閱讀。 */}
     </section>
 
-    <section class="expertise-next page-paper paper-card paper-card--clip" aria-labelledby="expertise-next-title">
+    <section class="expertise-next page-paper paper-card paper-card--clip" id="next-step" aria-labelledby="expertise-next-title">
       <div>
         <p class="expertise-kicker">診斷之後</p>
         <h2 id="expertise-next-title" class="display-heading"><span class="heading-phrase">找到最像的問題後，</span><span class="heading-phrase">選一個現在用得上的</span><span class="heading-phrase">處理方式。</span></h2>
@@ -170,6 +170,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
 
 <style>
   .expertise-page > .page-paper { overflow: visible; }
+  #diagnosis, #method-map, #next-step { scroll-margin-top: 6rem; }
   .expertise-kicker { margin: 0 0 1rem; color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .1em; }
   .expertise-hero { padding-block: clamp(3.25rem, 7vw, 6.5rem) !important; }
   .expertise-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.35rem; border-bottom: 1px solid var(--border); }
@@ -206,6 +207,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
   .method-map__table article { display: grid; grid-template-columns: 3rem minmax(13rem, .8fr) minmax(0, 1.35fr); gap: 1.5rem; align-items: start; padding: 1.45rem 0; border-bottom: 1px solid var(--border); }
   .method-map__index { color: var(--accent); font-family: var(--font-mono); font-size: .7rem; }
   .method-map__definition h3 { margin: 0; font-size: 1.2rem; }
+  .method-map__definition h3 small { display: block; margin-top: .25rem; color: var(--text-muted); font-family: var(--font-sans); font-size: .68rem; font-weight: 600; letter-spacing: .02em; }
   .method-map__definition p, .method-map__guidance dd { margin: .4rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
   .method-map__guidance { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 0; padding-left: 1rem; border-left: 1px solid var(--border); }
   .method-map__guidance div { min-inline-size: 0; }
@@ -256,12 +258,12 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
     .expertise-hero { padding-block: 2.4rem 3rem !important; }
     .expertise-hero__topline { padding-bottom: 1rem; }
     .expertise-hero__topline > span { font-size: .55rem; }
-    .expertise-hero h1 { margin-top: 2.15rem; font-size: clamp(2.55rem, 11vw, 3.45rem) !important; line-height: 1.08 !important; }
+    .expertise-hero h1 { margin-top: 2.15rem; font-size: clamp(1.84rem, 9.2vw, 2.55rem) !important; line-height: 1.12 !important; }
     .expertise-hero__footer { margin-top: 2rem; }
     .expertise-hero__footer p { font-size: .9rem; }
     .diagnosis, .method-map, .expertise-next { padding-block: 2.8rem !important; }
     .diagnosis__header, .method-map__header { padding-bottom: 1.7rem; }
-    .diagnosis__header h2, .method-map__header h2, .expertise-next h2 { font-size: clamp(1.9rem, 8.4vw, 2.8rem); }
+    .diagnosis__header h2, .method-map__header h2, .expertise-next h2 { font-size: clamp(1.65rem, 8vw, 2.8rem); }
     .diagnosis-list article { gap: .75rem 1rem; padding: 1.35rem 0; }
     .diagnosis-list article:first-child { padding-top: 1.2rem; }
     .diagnosis-checks { grid-template-columns: 1fr; gap: 0; }
@@ -276,5 +278,26 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
     .boundary-stamp { width: 5.5rem; }
     .expertise-next__actions { display: grid; }
     .expertise-next__actions .btn { width: 100%; }
+  }
+  @media (max-width: 360px) {
+    .diagnosis-list article {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "index" "symptom" "checks";
+      gap: .9rem;
+    }
+    .diagnosis-index {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: 0 .75rem;
+    }
+    .diagnosis-index small { max-width: none; }
+    .diagnosis-symptom { padding: 0 .75rem; border-left: 0; }
+    .diagnosis-checks div { padding-inline: .75rem; border-left: 0; }
+    .method-map__table article {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "index" "definition" "guidance";
+    }
+    .method-map__definition, .method-map__guidance { padding-inline: .25rem; }
   }
 </style>
