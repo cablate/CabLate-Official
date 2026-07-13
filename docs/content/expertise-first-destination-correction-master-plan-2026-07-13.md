@@ -1,9 +1,9 @@
 ---
-status: proposed
+status: approved
 created: 2026-07-13
-implementation_status: not_started
-copy_status: pending_review
-verdict: ready_after_approval
+implementation_status: in_progress
+copy_status: approved
+verdict: executing
 scope:
   - align the homepage diagnosis promise with the Expertise page
   - complete the Expertise reader journey after diagnosis

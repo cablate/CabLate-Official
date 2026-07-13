@@ -4,6 +4,7 @@ import { ArrowRight } from '@lucide/astro';
 import { signatureMethods } from '../config/authority';
 const diagnosticScenarios = [
   {
+    caseId: 'A',
     symptom: '它常忘記前文，或讀到不該使用的舊資料。',
     question: '先檢查 AI 在這個時間點，究竟能看見哪些資訊。',
     method: 'Context Engineering',
@@ -14,6 +15,7 @@ const diagnosticScenarios = [
     // href: '/articles/claude-code-token-drain-system-reminder/',
   },
   {
+    caseId: 'B',
     symptom: '它做了很多事，結果卻不能直接使用。',
     question: '再檢查任務、工具、權限、錯誤處理與完成標準有沒有接起來。',
     method: 'Harness Engineering',
@@ -24,6 +26,16 @@ const diagnosticScenarios = [
     // href: '/articles/claude-code-workflow/',
   },
   {
+    caseId: 'C',
+    symptom: '一出錯就找不到問題發生在哪裡，只能從頭再來。',
+    question: '檢查流程有沒有留下每一步的輸入、輸出與失敗狀態，能不能從出錯的位置繼續。',
+    method: 'Harness Engineering',
+    methodLabel: '執行環境',
+    check: '挑一次真實失敗，標出最後一個正確結果、第一個錯誤訊號，以及重新執行時能從哪一步開始。',
+    mistake: '只增加重試次數，卻沒有留下錯誤位置、部分成果與復原條件。',
+  },
+  {
+    caseId: 'D',
     symptom: '同一件事每次都要重教，品質還是忽好忽壞。',
     question: '最後看做對一次的方法，有沒有被整理成可重複執行的流程。',
     method: 'Skill 設計',
@@ -46,6 +58,21 @@ const methodDisplayNames: Record<string, string> = {
   'Context Engineering': '資訊脈絡（Context Engineering）',
   'Skill 路線設計': '可重複方法（Skill）',
 };
+
+const methodGuidance: Record<string, { repaired: string; next: string }> = {
+  'Context Engineering': {
+    repaired: 'AI 能說出正在使用的版本、資料與缺少的資訊；換回合後不會抓錯舊資料。',
+    next: '資訊正確且足夠，成果仍不能穩定完成時，改查 Harness。',
+  },
+  'Harness Engineering': {
+    repaired: '同一個真實任務能依完成條件交付；失敗時知道停在哪一步，也能從那裡恢復。',
+    next: '流程已穩定，但每次仍要重新解釋做法時，改查 Skill。',
+  },
+  'Skill 路線設計': {
+    repaired: '做對一次的方法已留下啟動條件、判斷順序、限制與驗收方式。',
+    next: '工作不重複、規則不明確，或簡單自動化已經足夠時，不必硬做 Skill 或 Agent。',
+  },
+};
 ---
 
 <BaseLayout title="AI 工作流程與失效診斷｜CabLate" description="從 AI 忘記前文、成果不能用，到每次都要重新教，辨認問題出在 Context、工作環境，還是經驗沒有被留下來。">
@@ -55,7 +82,7 @@ const methodDisplayNames: Record<string, string> = {
         <p class="expertise-kicker">專業方法</p>
         <span>DIAGNOSTIC NOTE · DN-2026-01</span>
       </div>
-      <h1 class="display-heading"><span class="heading-phrase">AI 一直鬼打牆</span><span class="heading-phrase">時，</span><span class="heading-phrase">先別只改</span>{' '}<span class="heading-phrase">Prompt。</span></h1>
+      <h1 class="display-heading"><span class="heading-phrase">AI 一直</span><span class="heading-phrase">鬼打牆，</span><span class="heading-phrase">先別只改</span>{' '}<span class="heading-phrase">Prompt。</span></h1>
       <div class="expertise-hero__footer">
         <p>規則愈加愈多，AI 不一定會更穩。先查它當下讀到了什麼、能做什麼，以及你有沒有說清楚怎樣才算完成。</p>
         <a class="text-link" href="#diagnosis">先從你看到的問題開始 <ArrowRight size={18} aria-hidden="true" /></a>
@@ -66,7 +93,7 @@ const methodDisplayNames: Record<string, string> = {
       <header class="diagnosis__header">
         <div>
           <p class="expertise-kicker">先辨認現象</p>
-          <h2 id="diagnosis-title"><span>先找到最像的現象，</span><span>再做一個能排除</span><span>原因的檢查。</span></h2>
+          <h2 id="diagnosis-title" class="display-heading"><span class="heading-phrase">先找到最像的現象，</span><span class="heading-phrase">再做一個能排除</span><span class="heading-phrase">原因的檢查。</span></h2>
         </div>
         <p>先從你看見的失效現象開始，再找下一個可以驗證的問題；不用先記住方法名稱。</p>
       </header>
@@ -74,9 +101,9 @@ const methodDisplayNames: Record<string, string> = {
         <div class="diagnosis-columns" aria-hidden="true">
           <span>層級</span><span>你遇到的現象</span><span>最小下一步檢查</span><span>常見誤判</span>
         </div>
-        {diagnosticScenarios.map((scenario, index) => (
+        {diagnosticScenarios.map((scenario) => (
           <article>
-            <div class="diagnosis-index"><span>0{index + 1}</span><small>{scenario.methodLabel} · {scenario.method}</small></div>
+            <div class="diagnosis-index"><span>{scenario.caseId}</span><small>{scenario.methodLabel} · {scenario.method}</small></div>
             <div class="diagnosis-symptom">
               <small>你遇到的現象</small>
               <h3>{scenario.symptom}</h3>
@@ -96,7 +123,7 @@ const methodDisplayNames: Record<string, string> = {
       <header class="method-map__header">
         <div>
           <p class="expertise-kicker">方法對照</p>
-          <h2 id="method-map-title"><span>先知道要檢查哪一層，</span><span>再決定用什麼方法。</span></h2>
+          <h2 id="method-map-title" class="display-heading"><span class="heading-phrase">先知道要檢查哪一層，</span><span class="heading-phrase">再決定用什麼方法。</span></h2>
         </div>
         <p>下面三種方法各自檢查不同的地方。找到最像的問題後，再用你的實際工作確認一次。</p>
       </header>
@@ -105,14 +132,17 @@ const methodDisplayNames: Record<string, string> = {
           <article>
             <span class="method-map__index">0{index + 1}</span>
             <div class="method-map__definition"><h3>{methodDisplayNames[method.title] ?? method.title}</h3><p>{method.definition}</p></div>
-            <div class="method-map__fit"><small>適合先看</small><p>{method.problem.replace('適合：', '')}</p></div>
+            <dl class="method-map__guidance">
+              <div><dt>修好後會看見什麼</dt><dd>{methodGuidance[method.title].repaired}</dd></div>
+              <div><dt>什麼時候往下一層查</dt><dd>{methodGuidance[method.title].next}</dd></div>
+            </dl>
             {/* Articles inbound links paused. */}
           </article>
         ))}
       </div>
       <div class="method-route" aria-label="建議檢查順序">
         <strong>路徑建議</strong>
-        <ol><li>先檢查資訊 <small>Context</small></li><li>再檢查執行 <small>Harness</small></li><li>最後制度化 <small>Skill</small></li><li>仍不確定？ <small>回到診斷表</small></li></ol>
+        <ol><li>先檢查資訊 <small>Context</small></li><li>再檢查執行 <small>Harness</small></li><li>最後留下方法 <small>Skill</small></li><li><span>仍不確定？</span><a class="method-route__return" href="#diagnosis">回到診斷表</a></li></ol>
       </div>
       <aside class="method-map__boundary" aria-labelledby="boundary-title">
         <div class="boundary-stamp" aria-hidden="true">BOUNDARY<br />NOTE</div>
@@ -120,6 +150,20 @@ const methodDisplayNames: Record<string, string> = {
         <ol><li>是不是重複規則明確的工作？</li><li>有沒有固定輸入與可驗收的結果？</li><li>現有方法是否已經穩定解決？</li></ol>
       </aside>
       {/* Articles inbound links paused: 文章導流恢復時再放回延伸閱讀。 */}
+    </section>
+
+    <section class="expertise-next page-paper paper-card paper-card--clip" aria-labelledby="expertise-next-title">
+      <div>
+        <p class="expertise-kicker">診斷之後</p>
+        <h2 id="expertise-next-title" class="display-heading"><span class="heading-phrase">找到最像的問題後，</span><span class="heading-phrase">選一個現在用得上的</span><span class="heading-phrase">處理方式。</span></h2>
+      </div>
+      <div class="expertise-next__decision">
+        <p>想自己建立方法，可以先看學習路線；問題已經影響實際工作，也可以直接討論情境。</p>
+        <div class="expertise-next__actions">
+          <a class="btn btn-primary" href="/courses/">查看學習路線 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="btn btn-ghost" href="/services/">討論實際情境 <ArrowRight size={18} aria-hidden="true" /></a>
+        </div>
+      </div>
     </section>
   </article>
 </BaseLayout>
@@ -134,7 +178,7 @@ const methodDisplayNames: Record<string, string> = {
   .expertise-hero h1 { max-width: none !important; margin: clamp(2.75rem, 6vw, 5.75rem) 0 0; font-family: var(--font-serif); font-size: clamp(3rem, 6.2vw, 6.1rem) !important; letter-spacing: -.075em !important; line-height: 1.02 !important; }
   .expertise-hero__footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; margin-top: 2.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
   .expertise-hero__footer p { max-width: 52rem; margin: 0; color: var(--text-secondary); font-size: 1rem; line-height: 1.85; }
-  .expertise-hero__footer a { display: inline-flex; align-items: center; gap: .6rem; color: var(--accent); font-weight: 700; white-space: nowrap; }
+  .expertise-hero__footer a { min-block-size: 2.75rem; display: inline-flex; align-items: center; gap: .6rem; color: var(--accent-text); font-weight: 700; text-decoration: underline; text-decoration-thickness: .08em; text-underline-offset: .3em; white-space: nowrap; }
   .diagnosis { padding-block: clamp(3.5rem, 7vw, 6.5rem) !important; }
   .diagnosis__header, .method-map__header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .62fr); gap: 2rem; align-items: end; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
   .diagnosis__header h2, .method-map__header h2 { max-width: 17ch; margin: 0; font-size: clamp(2.2rem, 4.6vw, 4.2rem); letter-spacing: -.055em; line-height: 1.06; }
@@ -159,25 +203,36 @@ const methodDisplayNames: Record<string, string> = {
   .diagnosis-checks dd { margin: .4rem 0 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.7; }
   .method-map { padding-block: clamp(3.5rem, 7vw, 6.5rem) !important; }
   .method-map__table { border-top: 1px solid var(--border-strong); }
-  .method-map__table article { display: grid; grid-template-columns: 3rem minmax(0, 1.15fr) minmax(15rem, .85fr); gap: 1.5rem; align-items: start; padding: 1.45rem 0; border-bottom: 1px solid var(--border); }
+  .method-map__table article { display: grid; grid-template-columns: 3rem minmax(13rem, .8fr) minmax(0, 1.35fr); gap: 1.5rem; align-items: start; padding: 1.45rem 0; border-bottom: 1px solid var(--border); }
   .method-map__index { color: var(--accent); font-family: var(--font-mono); font-size: .7rem; }
   .method-map__definition h3 { margin: 0; font-size: 1.2rem; }
-  .method-map__definition p, .method-map__fit p { margin: .4rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
-  .method-map__fit { padding-left: 1rem; border-left: 1px solid var(--border); }
-  .method-map__fit small { color: var(--accent); font-size: .68rem; font-weight: 700; }
+  .method-map__definition p, .method-map__guidance dd { margin: .4rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
+  .method-map__guidance { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 0; padding-left: 1rem; border-left: 1px solid var(--border); }
+  .method-map__guidance div { min-inline-size: 0; }
+  .method-map__guidance dt { color: var(--accent-text); font-size: .68rem; font-weight: 700; }
+  .method-map__guidance dd { margin-inline: 0; }
   .method-route { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; align-items: center; padding: 1.3rem 0; border-bottom: 1px solid var(--border-strong); }
   .method-route strong { font-size: .8rem; }
   .method-route ol { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; padding: 0; list-style: none; }
   .method-route li { position: relative; padding-right: 1.5rem; font-size: .78rem; font-weight: 700; }
   .method-route li:not(:last-child)::after { position: absolute; right: .45rem; content: '→'; color: var(--accent); }
   .method-route small { display: block; margin-top: .25rem; color: var(--text-muted); font-weight: 400; }
+  .method-route__return { min-block-size: 2.75rem; display: inline-flex; align-items: center; color: var(--accent-text); font-weight: 700; text-decoration: underline; text-underline-offset: .25em; }
   .method-map__boundary { display: grid; grid-template-columns: 8rem minmax(0, 1fr) minmax(16rem, .7fr); gap: 2rem; align-items: center; margin-top: 2.5rem; padding: 2rem; border: 1px solid var(--border-strong); }
   .boundary-stamp { display: grid; place-items: center; width: 6.5rem; aspect-ratio: 1; border: 2px double var(--accent); border-radius: 50%; color: var(--accent); font-family: var(--font-mono); font-size: .68rem; line-height: 1.5; text-align: center; transform: rotate(-7deg); }
   .method-map__boundary h3 { margin: 0; font-size: 1.45rem; }
   .method-map__boundary p { margin: .55rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
   .method-map__boundary ol { margin: 0; padding-left: 1.2rem; color: var(--text-secondary); font-size: .8rem; line-height: 1.8; }
+  .expertise-next { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(20rem, .85fr); gap: clamp(2rem, 5vw, 5rem); align-items: end; padding-block: clamp(3.5rem, 7vw, 6rem) !important; }
+  .expertise-next h2 { max-width: 14ch; margin: 0; font-size: clamp(2.2rem, 4.5vw, 4rem); letter-spacing: -.055em; line-height: 1.08; }
+  .expertise-next h2 span { display: block; }
+  .expertise-next__decision { padding-top: 1.25rem; border-top: 1px solid var(--border-strong); }
+  .expertise-next__decision > p { max-width: 34rem; margin: 0; color: var(--text-secondary); line-height: 1.8; }
+  .expertise-next__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+  .expertise-next__actions .btn { min-block-size: 3rem; white-space: nowrap; }
+  .expertise-next__actions .btn-ghost { background: transparent; border-color: var(--border-strong); }
   @media (max-width: 800px) {
-    .expertise-hero__footer, .diagnosis__header, .method-map__header, .method-map__boundary { grid-template-columns: 1fr; }
+    .expertise-hero__footer, .diagnosis__header, .method-map__header, .method-map__boundary, .expertise-next { grid-template-columns: 1fr; }
     .expertise-hero__footer { gap: 1.25rem; }
     .expertise-hero__footer a, .method-map__boundary a { justify-self: start; }
     .diagnosis__header, .method-map__header { gap: 1.25rem; }
@@ -188,10 +243,10 @@ const methodDisplayNames: Record<string, string> = {
     .diagnosis-symptom > small { display: block; margin-bottom: .35rem; }
     .diagnosis-checks { grid-template-columns: 1fr 1fr; gap: 1rem; }
     .diagnosis-checks div { padding: 1rem; border-left: 1px solid var(--border); }
-    .method-map__table article { grid-template-columns: 3rem minmax(0, 1fr); grid-template-areas: "index definition" ". fit"; gap: .55rem 1rem; }
+    .method-map__table article { grid-template-columns: 3rem minmax(0, 1fr); grid-template-areas: "index definition" ". guidance"; gap: .75rem 1rem; }
     .method-map__index { grid-area: index; }
     .method-map__definition { grid-area: definition; }
-    .method-map__fit { grid-area: fit; padding: .75rem 0 0; border-top: 1px solid var(--border); border-left: 0; }
+    .method-map__guidance { grid-area: guidance; padding: .75rem 0 0; border-top: 1px solid var(--border); border-left: 0; }
     .method-route { grid-template-columns: 1fr; }
     .method-route ol { grid-template-columns: 1fr 1fr; gap: 1rem; }
     .method-map__boundary { gap: 1.25rem; }
@@ -204,19 +259,22 @@ const methodDisplayNames: Record<string, string> = {
     .expertise-hero h1 { margin-top: 2.15rem; font-size: clamp(2.55rem, 11vw, 3.45rem) !important; line-height: 1.08 !important; }
     .expertise-hero__footer { margin-top: 2rem; }
     .expertise-hero__footer p { font-size: .9rem; }
-    .diagnosis, .method-map { padding-block: 2.8rem !important; }
+    .diagnosis, .method-map, .expertise-next { padding-block: 2.8rem !important; }
     .diagnosis__header, .method-map__header { padding-bottom: 1.7rem; }
-    .diagnosis__header h2, .method-map__header h2 { font-size: clamp(2rem, 9vw, 2.8rem); }
+    .diagnosis__header h2, .method-map__header h2, .expertise-next h2 { font-size: clamp(1.9rem, 8.4vw, 2.8rem); }
     .diagnosis-list article { gap: .75rem 1rem; padding: 1.35rem 0; }
     .diagnosis-list article:first-child { padding-top: 1.2rem; }
     .diagnosis-checks { grid-template-columns: 1fr; gap: 0; }
     .diagnosis-symptom h3 { font-size: 1.15rem; }
     .diagnosis-symptom p, .diagnosis-checks dd { font-size: .84rem; }
     .method-map__table article { padding: 1.25rem 0; }
+    .method-map__guidance { grid-template-columns: 1fr; gap: 1rem; }
     .method-route ol { grid-template-columns: 1fr; }
     .method-route li { padding: 0 0 1.5rem 1rem; border-left: 1px solid var(--accent); }
     .method-route li:not(:last-child)::after { right: auto; bottom: .25rem; left: .7rem; content: '↓'; }
     .method-map__boundary { padding: 1.4rem; }
     .boundary-stamp { width: 5.5rem; }
+    .expertise-next__actions { display: grid; }
+    .expertise-next__actions .btn { width: 100%; }
   }
 </style>

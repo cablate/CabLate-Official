@@ -15,14 +15,14 @@ export const authorityProfile = {
 
 export const signatureMethods = [
   {
-    title: 'Harness Engineering',
-    definition: '模型夠不夠強，只是其中一部分。任務怎麼寫、工具怎麼選、資料怎麼提供、錯誤怎麼發現與復原，合在一起才決定成果是否穩定。',
-    problem: '適合：AI 單次表現不錯，放進日常流程後卻經常失控。',
-  },
-  {
     title: 'Context Engineering',
     definition: 'AI 在需要時拿到正確版本、剛好足夠的資訊，通常比一次塞入更多內容有用。',
     problem: '適合：對話愈長愈混亂，或換人、換回合後容易失去前文。',
+  },
+  {
+    title: 'Harness Engineering',
+    definition: '模型夠不夠強，只是其中一部分。任務怎麼寫、工具怎麼選、資料怎麼提供、錯誤怎麼發現與復原，合在一起才決定成果是否穩定。',
+    problem: '適合：AI 單次表現不錯，放進日常流程後卻經常失控。',
   },
   {
     title: 'Skill 路線設計',
