@@ -1,9 +1,9 @@
 ---
-status: in_progress
+status: completed
 created: 2026-07-13
-implementation_status: correction_in_progress
+implementation_status: completed
 copy_status: approved
-verdict: needs_revision
+verdict: verified
 scope:
   - align the homepage diagnosis promise with the Expertise page
   - complete the Expertise reader journey after diagnosis
@@ -623,42 +623,48 @@ Expertise 負責診斷，Courses 負責協助訪客選擇學習深度；CabAI �
 
 ## 14. 執行與驗證結果
 
-**Verdict: Needs Revision**
+**Verdict: Verified**
 
-第 5 節文案已於 2026-07-13 獲核准，A 至 D 四個症狀、Context → Harness → Skill 順序、Boundary note，以及 Courses／Services 兩種下一步均已實作。不過 2026-07-13 重新對照第 3、4、6、10 與 13 節後，確認目前版本尚未真正通過完成定義：
+第 5 節文案、A 至 D 四個症狀、Context → Harness → Skill 順序、Boundary note，以及 Courses／Services 兩種下一步均已實作。2026-07-13 重新對照第 3、4、6、10 與 13 節後發現的五項落差，也已逐項修正並由 production runtime 證據覆蓋：
 
-1. Diagnosis 的 Case 欄在症狀前顯示「資訊脈絡 · Context Engineering」等方法名稱，違反 `ESG-1` 與行為契約的症狀優先順序。
-2. Method map 同時顯示方法定義、完成訊號與下一層條件，仍重複 Diagnosis 已建立的概念，Mobile 篇幅沒有被有效縮短。
-3. 公開名稱混用「Skill 設計」「Skill 路線設計」與「Skill」，不符合 `EG-2` 的一致識別。
-4. 既有 visual evidence 缺少首頁入口，且標為 Diagnosis 的 Desktop 截圖沒有拍到完整診斷表。
-5. Enter／Shift+Tab 尚未取得真實鍵盤操作證據，因此不得以 href、focus 與 click 測試替代並宣稱完整通過。
-
-修正期間保留既有 checkpoints 作為可回退基線；只有症狀優先、Method map 去重、命名一致與 v2 runtime evidence 全部成立後，才能重新判定為 `Verified`。
+1. Diagnosis 現在先顯示 Case 與症狀，方法分類只在症狀與提問後弱化呈現，符合 `ESG-1`。
+2. Method map 已移除方法定義，只保留完成訊號與下一層條件；五種尺寸均短於 Diagnosis。
+3. 公開方法名稱統一為 Context、Harness、Skill，中文只作輔助說明。
+4. v2 evidence 已包含首頁入口、完整 Desktop Diagnosis、Method map、page end，以及 320／360／390／1280／1440 長頁。
+5. Hero、Route、Courses、Services 均以真實 Tab、Shift+Tab 與 Enter 完成操作，不再以 href 或 click 取代鍵盤證據。
 
 ### 14.1 Git checkpoints
 
 - `f3317f2 chore: checkpoint before expertise correction`：本輪修改前基線。
 - `300f909 feat: complete expertise diagnosis journey`：四個症狀、方法順序、頁尾 CTA 與行為契約。
 - `612c60a fix: refine expertise responsive experience`：320 至 1440px 排版、錨點、標題斷句與視覺證據。
+- `8dfb9ad docs: verify expertise correction`：第一版驗收記錄。
+- `ecefb96 docs: reopen expertise correction audit`：依 Master Plan 重新打開未落實項目。
+- `cdee402 fix: enforce symptom-first expertise flow`：完成症狀優先、方法去重、命名一致與 Route 壓縮。
 
-### 14.2 既有 Production evidence（待 v2 取代）
+### 14.2 Production evidence
 
 - `npm run check`：通過，0 errors、0 warnings、17 個既有 hints。
 - `npm run validate:content`：通過。
 - `npm run build`：通過，共 48 pages。
 - `git diff --check`：通過。
 - 320 × 568、360 × 800、390 × 844、1280 × 720、1440 × 900：`scrollWidth === clientWidth`，沒有水平溢位。
-- 360px Hero 入口的 CSS 高度為 44px；390px 頁尾兩個 CTA 高度約 48px。
+- Hero 與 Route 的互動高度為 44px；Courses 與 Services CTA 高度為 48px。
 - `--accent-text` 對白底與紙面近似底色的對比分別約 6.40:1、6.03:1，高於一般文字 4.5:1。
-- 首頁 `查看診斷方法` 已實際前往 `/expertise/`；Hero 與 Route 的 `#diagnosis` 點擊後，Diagnosis 和固定 Headbar 間仍保留約 109px。
-- `/courses/` 與 `/services/` 兩個 CTA 都已完成 production 導覽測試，accessible name 與 destination 正確。
-- Hero、Route、Courses、Services 均使用原生 `<a href>`，可聚焦且紙張上有清楚的 `:focus-visible` outline。實際 href、焦點狀態與 click navigation 已分別驗證；Enter 與 Shift+Tab 仍列為待驗證，不以其他操作證據替代。
+- 390px Mobile 點擊 Hero 後，固定 Headbar bottom 為 70px，Diagnosis heading top 為 260px，保留 190px 安全距離。
+- Diagnosis 與 Method map 高度比依序為：320px 0.754、360px 0.765、390px 0.765、1280px 0.824、1440px 0.880；方法對照在所有支援尺寸都更短。
+- 首頁 `查看診斷方法` 已實際前往 `/expertise/`；Hero 與 Route 均能回到未被 Headbar 遮住的 `#diagnosis`。
+- Hero 由連續四次 Tab 聚焦；Shift+Tab 後再 Tab 可返回，Enter 正確前往 `#diagnosis`。
+- Route 通過 Shift+Tab、Tab 與 Enter；Courses 以 Enter 前往 `/courses/`，再 Tab 至 Services 後以 Enter 前往 `/services/`。
+- Hero、Route、Courses、Services 均使用原生 `<a href>`，且紙張上的 `:focus-visible` outline 清楚。
+- 五種尺寸的 DOM 均為症狀先於方法分類，Method map 沒有舊方法定義，公開名稱為 Context、Harness、Skill。
 - Expertise 可執行的 Article CTA 為 0；既有 Article URL 只留在註解中，未恢復導流。
+- Boundary note 保留，且本輪沒有修改首頁、About、Work、Courses 或 Services。
 
-### 14.3 既有 Visual evidence（僅作基線）
+### 14.3 Visual evidence
 
-完整 Desktop 與 Mobile 截圖位於：
+完整 Desktop、Mobile、局部畫面、量測與鍵盤紀錄位於：
 
-- `docs/design/audits/2026-07-13-expertise-first-destination/`
+- `docs/design/audits/2026-07-13-expertise-first-destination-v2/README.md`
 
-既有資料涵蓋 Hero、部分 Diagnosis、Method map 與 page end，但不構成本輪修正後的完整證據。v2 必須另存首頁入口、完整 Desktop Diagnosis，以及 320／360／390／1280／1440 的對應畫面與量測結果。
+第一版 `docs/design/audits/2026-07-13-expertise-first-destination/` 只保留為基線，不作為最終 Verified 證據。

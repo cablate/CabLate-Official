@@ -2,7 +2,7 @@
 schema_version: behavior-contract/v1
 id: site.expertise-first-destination-correction
 title: Expertise 第一站修正
-status: active
+status: verified
 owner_surface: shared
 change_context:
   type: feature
@@ -165,6 +165,8 @@ test_mapping:
 
 - 內容與旅程第一版：`300f909 feat: complete expertise diagnosis journey`。
 - 響應式與視覺證據第一版：`612c60a fix: refine expertise responsive experience`。
+- 重新打開驗收：`ecefb96 docs: reopen expertise correction audit`。
+- 症狀優先與去重修正：`cdee402 fix: enforce symptom-first expertise flow`。
 - 第一版 Screenshot evidence：`docs/design/audits/2026-07-13-expertise-first-destination/`；重新稽核後只作基線，不再作為 Verified 證據。
 - `npm run check`：通過，0 errors、0 warnings、17 個既有 hints。
 - `npm run validate:content`：通過。
@@ -173,18 +175,19 @@ test_mapping:
 - 320 × 568、360 × 800、390 × 844、1280 × 720、1440 × 900：`scrollWidth === clientWidth`，沒有水平溢位。
 - 360px Hero 入口高度為 44px；390px Courses 與 Services CTA 高度約 48px。
 - `--accent-text` 對白底與紙面近似底色的對比分別約 6.40:1、6.03:1。
-- 首頁 `查看診斷方法` → `/expertise/` → Hero `#diagnosis` 已走完；Diagnosis 與固定 Headbar 間保留約 109px。Route 的 `回到診斷表` 亦產生相同安全間距。
+- 首頁 `查看診斷方法` → `/expertise/` → Hero `#diagnosis` 已走完；390px Mobile 的 Headbar bottom 為 70px，Diagnosis heading top 為 260px，保留 190px 安全距離。
 - Courses 與 Services CTA 已分別實際前往 `/courses/`、`/services/`；accessible name 與 href 正確。
-- Hero、Route、Courses、Services 均為原生 `<a href>`，可聚焦且 `:focus-visible` outline 清楚；href、焦點與 click navigation 已分別驗證。Enter 與 Shift+Tab 尚缺真實鍵盤證據，完成前維持 pending。
+- Hero 由連續四次 Tab 聚焦，Shift+Tab 後再 Tab 可返回，Enter 正確前往 `#diagnosis`；Route、Courses、Services 亦通過真實 Tab、Shift+Tab 與 Enter 操作。
+- Hero、Route、Courses、Services 均為原生 `<a href>`，可聚焦且 `:focus-visible` outline 清楚。
 - Expertise 可執行的 Article CTA 為 0；頁面沒有 CabAI、Discord、Email 或商品直連。
 
-### Correction evidence pending
+### Correction evidence verified
 
-- Diagnosis 必須先呈現 Case A 至 D 與症狀，方法名稱只能在症狀之後作為弱化分類。
-- Method map 必須移除重複定義，並在 390px viewport 明顯短於 Diagnosis。
+- Diagnosis 在五種尺寸均先呈現 Case A 至 D 與症狀，方法名稱只在症狀之後作為弱化分類。
+- Method map 已移除重複定義；320／360／390／1280／1440 的高度皆短於 Diagnosis。
 - 公開方法名稱統一為 Context、Harness、Skill；中文僅作輔助說明。
-- 必須補齊 homepage entry、完整 Desktop Diagnosis、Desktop Method map／page end，以及 320／360／390／1280／1440 的 v2 evidence。
-- Enter／Shift+Tab 若仍無法由驗證工具真實派送，必須維持 pending，不得再次標記完整鍵盤驗證通過。
+- v2 evidence 已補齊 homepage entry、完整 Desktop Diagnosis、Desktop Method map／page end，以及五種尺寸長頁。
+- 截圖、量測、DOM 與真實鍵盤紀錄：`docs/design/audits/2026-07-13-expertise-first-destination-v2/README.md`。
 
 ## Intentional Changes
 
@@ -197,4 +200,4 @@ test_mapping:
 
 ## Open Questions
 
-- Enter／Shift+Tab 的真實鍵盤操作證據仍待完成；若工具層無法派送，需在最終判定中明確保留限制。
+- None. Master Plan 的修正項目、五種尺寸、真實鍵盤操作與 regression boundaries 均已有 production evidence。
