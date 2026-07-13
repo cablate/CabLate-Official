@@ -1,9 +1,9 @@
 ---
-status: active
+status: completed
 created: 2026-07-13
-implementation_status: in_progress
+implementation_status: completed
 copy_status: approved
-verdict: ready
+verdict: verified
 scope:
   - remove the public search feature
   - correct homepage narrative, trust hierarchy and contextual CTA roles
@@ -678,8 +678,13 @@ About 只補信任，不承擔最終轉換。用 prominent text link，而不是
 7. 桌機、手機、鍵盤與螢幕閱讀器都能完成同一條決策旅程。
 8. 所有核准文字、連結與公開事實都通過人工回讀。
 
-## 15. Execution readiness verdict
+## 15. Execution verdict
 
-**Verdict: Ready**
+**Verdict: Verified**
 
-Repo reality、技術範圍、phase、驗證與回退邊界已具備執行條件。第 7 節的 12 項可見文案已於 2026-07-13 獲使用者確認，可依本計畫建立 change contract 並修改實作。
+第 7 節的 12 項可見文案已於 2026-07-13 獲使用者確認並完成實作。Search 已從 UI、route、build 與 dependency 移除；首頁在五個指定 viewport 完成 DOM geometry、可見層級、safe padding、hash offset 與 focus-visible 驗證；production build 完成 48 pages。
+
+完整驗證結果與逐項證據記錄於：
+
+- `docs/contracts/homepage-trust-conversion-correction-2026-07-13.md`
+- `docs/design/audits/2026-07-13-homepage-trust-conversion/`

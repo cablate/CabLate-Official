@@ -2,7 +2,7 @@
 schema_version: behavior-contract/v1
 id: cablate.homepage-trust-conversion-correction
 title: CabLate homepage trust and conversion correction
-status: active
+status: verified
 owner_surface: shared
 change_context:
   type: bugfix
@@ -206,8 +206,18 @@ manual_browser:
 
 ### After
 
-- Screenshots will be stored in `docs/design/audits/2026-07-13-homepage-trust-conversion/`.
-- Static command results, DOM checks and keyboard results will be recorded here before status changes to `verified`.
+- Search removal checkpoint：`00e9432 refactor: remove site search and pagefind`。
+- 首頁實作：`src/pages/index.astro` 已套用 12 項核准文案與 scoped responsive styles，沒有修改 Hero、carousel、照片、紙張材質、section order 或其他頁面。
+- Screenshot evidence：`docs/design/audits/2026-07-13-homepage-trust-conversion/`，包含 1280／1440 desktop 與 320／390 mobile 的 top、Diagnosis、Routes、Case、CabAI 畫面；360px 另以 DOM geometry 完成壓力測試。
+- `npm run check`：通過，0 errors、0 warnings、17 個既有 hints。
+- `npm run build`：通過，共 48 pages；build output 沒有 Pagefind 步驟，`dist/search` 不存在。
+- `git diff --check`：通過。
+- `rg -n -i "pagefind|/search/" src scripts package.json package-lock.json`：沒有命中。
+- `/search/`：HTTP 404；瀏覽器顯示既有 `找不到頁面 | CabLate`／`404` 畫面，桌機 rail、mobile menu 與 Footer 均無 Search。
+- 1440 × 1000、1280 × 800、390 × 844、360 × 800、320 × 568：`scrollWidth === clientWidth`，新增 CTA 均在 `.paper-card__inner` 內。
+- 320px：CabAI CTA 的 client／scroll width 相等並維持單行；mobile CTA computed `min-height` 為 44px，CabAI CTA 為 48px；Case proof 為 16px。
+- Mobile hash：390px 與 320px 點擊 Hero CTA 後，`#diagnosis` section top 約 83px、heading top 約 137px，均低於約 70px 的 fixed headbar，不被遮蔽。
+- Keyboard：所有行動均維持原生 `<a href>`；八個首頁 CTA 依視覺閱讀順序連續出現在 DOM tab order，逐一聚焦時 `:focus-visible` 皆為 true。
 
 ## Intentional Changes
 
