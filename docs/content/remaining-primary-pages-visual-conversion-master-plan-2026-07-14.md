@@ -581,13 +581,13 @@ Mobile：
 
 | Heading | 建議句組 |
 | --- | --- |
-| H1 | `把反覆重做的工作，`／`整理成能檢查、`／`也能交接的流程。` |
+| H1 | `把反覆重做的`／`工作，整理成`／`能檢查、也能`／`交接的流程。` |
 | Service options H2 | `先找出最接近的狀況，`／`再看適合哪種合作。` |
 | Process H2 | `先把問題釐清，`／`再決定怎麼做。` |
-| Boundaries H2 | `合作前，`／`先把責任與限制說清楚。` |
-| Contact H2 | `不用先寫需求書，`／`把目前怎麼做、卡在哪裡`／`告訴我就好。` |
+| Boundaries H2 | `合作前，先把責任`／`與限制說清楚。` |
+| Contact H2 | `不用先寫需求書，`／`把目前怎麼做、`／`卡在哪裡告訴我就好。` |
 
-目前 H1 使用六個過短 phrase，390px 實際斷成「工作，整理成／能檢查、也能／交接的流程」；實作時改為三個完整語意句組，但不改變原句文字。Boundaries 與 Contact 也必須用同一規則驗收，不能只修 H1。
+S1 已依 `docs/design/audits/2026-07-14-services-implementation/` 的 1280／390 實測完成。H1 從六個過短 phrase 收斂為四個等長語意句組；390px 各句組約 `238.38px`，沒有水平溢位。Options、Boundaries 與 Contact 也以同一規則驗收，完整文字未改，且不再留下「工作，」「也能」「卡在哪裡」等孤立短詞。
 
 ### 7.6 CTA inventory
 
@@ -630,6 +630,8 @@ Mobile：
 - `serviceTracks.notFit` 目前未渲染；確認全 repo 無引用後可移除，不能只因「看起來沒用」直接刪。
 
 ### 7.9 Services outcome-based DoD
+
+S1 已驗證：heading outline、四組 major heading phrase、合作經驗 H2 與 `診斷 → 設計 → 執行 → 驗收` 已有 1280／390 browser evidence。以下其餘 page-level 條件仍由 S2–S6 負責，不因 S1 通過而提前標示完成。
 
 - 訪客能在一個 options section 內分辨三種合作，不需讀完所有重複清單。
 - Options visible UI 不含 raw English slug；Desktop 清單正文 `>=15px`，Mobile 清單與流程正文 `>=16px`。

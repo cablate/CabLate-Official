@@ -303,7 +303,7 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 
 **Gate：** L0。**DoD：** 父計畫 7.0–7.9 與 S1–S6 能從 fresh session 直接執行，不把 planning evidence 寫成 implementation complete。
 
-### S1：文件大綱與流程用語
+### S1：文件大綱與流程用語（verified）
 
 **Exact files：** `src/pages/services.astro`。
 
@@ -311,6 +311,8 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 - 只重組 Hero、options、boundary、contact 的既有 heading phrases，修正實測的不自然斷句；不改原句文字、服務資料、CTA 或區塊順序。
 
 **Gate：** L1。**DoD：** heading outline 完整，四個 major heading 在 1280／390 沒有斷成孤立詞，流程 DOM／視覺順序一致。
+
+**Evidence：** `docs/design/audits/2026-07-14-services-implementation/`。1280／390 均無水平溢位；合作經驗以可見 H2 命名 aside；流程為 `診斷 → 設計 → 執行 → 驗收`；四個 major heading 完整文字未改，只調整 phrase 邊界。
 
 ### S2：服務適配資訊去重
 
@@ -422,7 +424,8 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 | C1–C3 | pending | 1–2／slice | 否 | 只限同頁施工中 |
 | C4 | pending | 0 | Courses L2 | 是 |
 | S0 | verified | 0 | L0 | 是，planning evidence only |
-| S1–S5 | pending | 1–2／slice | 否 | 只限同頁施工中 |
+| S1 | verified | 1 | L1 | 是，待使用者回饋後再進 S2 |
+| S2–S5 | pending | 1–2／slice | 否 | 只限同頁施工中 |
 | S6 | pending | 0 | Services L2 | 是 |
 | G1–G4 | pending | 0，修正回 owner | Cross-page L3 | G4 後完成 |
 
