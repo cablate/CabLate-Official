@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowRight, Github, AtSign } from '@lucide/astro';
-import { authorityProfile, openSourceProofs } from '../config/authority';
+import { authorityProfile, deliveryExperienceProofs, openSourceProofs } from '../config/authority';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 
 const personJsonLd = {
@@ -27,6 +27,8 @@ const timeline = [
   { time: '2024', datetime: '2024', title: '把工程經驗轉向 AI 應用', text: '我開始把工程背景轉向 AI 應用，也協助外部團隊理解 AI 可以怎麼進入實際工作。判斷與交付方法因此不再只留在工程專案裡。' },
   { time: '2025-06 至今', datetime: '2025-06', title: '全職投入 CabLate', text: '2025 年 6 月離開正職後，我全職投入 CabLate，陸續發展課程、講座、付費手冊、CabAI 平台與顧問服務。每一種形式都在處理同一件事：讓複雜方法能被理解、使用與接手。' },
 ];
+
+const [featuredOutput, ...supportingOutputs] = openSourceProofs;
 ---
 
 <BaseLayout title="關於 CabLate｜從工程實作到 AI 工作流程的判斷" description={authorityProfile.shortBio}>
@@ -44,13 +46,13 @@ const timeline = [
         </div>
         <div class="about-hero__aside">
           <p class="about-hero__lead">我是 CabLate，做過全端工程與系統設計，現在把這些經驗用在 AI 教學、產品和工作流程上。</p>
-          <p>我在意的是：做出來之後，別人能不能直接用、知道怎麼檢查，出錯時也接得下去。</p>
+          <p>我在意的是：做出來之後，別人能不能直接用。</p>
           <dl class="about-hero__facts">
             <div><dt>我在處理</dt><dd>任務、可用資料、工具與驗收</dd></div>
             <div><dt>我留下</dt><dd>能重複、能交接的工作方法</dd></div>
           </dl>
-          <p class="about-hero__referral">如果你或你的團隊已經在用 AI，工作卻一直重做、難以檢查，也不知道怎麼交給下一個人，我可以一起找出問題在哪裡。</p>
-          <a class="text-link about-hero__action" href="/work/">先看代表作品 <ArrowRight size={16} aria-hidden="true" /></a>
+          <p class="about-hero__referral">如果你或你的團隊已經在用 AI，工作卻一直重做，我可以一起找出問題在哪裡。</p>
+          <a class="btn btn-ghost about-hero__action" href="/work/">先看代表作品 <ArrowRight size={16} aria-hidden="true" /></a>
         </div>
       </div>
     </header>
@@ -62,7 +64,7 @@ const timeline = [
         <span class="about-story__mark" aria-hidden="true">↳</span>
       </div>
       <div class="about-story__body">
-        <p class="about-story__opening">早期我以為功能寫完就算完成。進入複雜系統後，我開始把資料、權限、驗收與復原一起算進交付。</p>
+        <p class="about-story__opening">早期我以為功能寫完就算完成。進入複雜系統後，我開始把「完成」改成一個可以被驗收的問題。</p>
         <div class="about-story__copy">
           <p>資料可能出錯、權限可能漏掉、需求可能在交接時變形。即使功能可以執行，只要沒有人說得清楚如何驗收、出錯後怎麼復原，它就還不是一個可靠的成果。</p>
           <p>AI 讓產出變快，也讓這些缺口更快暴露。現在不論做教學、產品或合作，我都先問四件事：任務拆清楚了嗎？AI 讀到哪些資料？結果怎麼檢查？做對一次的方法能不能留下來？</p>
@@ -76,7 +78,7 @@ const timeline = [
           <p class="about-kicker">關鍵轉折</p>
           <h2 id="timeline-title">四個轉折，慢慢形成現在這套工作方式。</h2>
         </div>
-        <p class="turning-points__note">從轉職、工程實務到全職投入 CabLate，這四段經歷改變了我判斷工作是否完成的方式。</p>
+        <p class="turning-points__note">從轉職、工程實務到全職投入 CabLate，這四段經歷交代我怎麼走到現在。</p>
       </header>
       <ol class="timeline">
         {timeline.map((item, index) => (
@@ -89,31 +91,93 @@ const timeline = [
       </ol>
     </section>
 
-    <section class="open-source page-paper paper-card" aria-labelledby="opensource-title">
-      <header class="open-source__header">
-        <div class="section-heading">
-          <p class="about-kicker">公開作品</p>
-          <h2 id="opensource-title">每件作品都附上公開程式碼、使用方式或可查證的數字。</h2>
+    <div class="trust-evidence page-paper paper-card">
+      <section class="public-output" aria-labelledby="public-output-title">
+        <header class="public-output__header section-heading">
+          <p class="about-kicker">公開輸出</p>
+          <h2 id="public-output-title">我做過的事，<br />都留下了可以查證的地方。</h2>
+          <p>從工具、資料產品到公開研究，我希望你先看到我怎麼拆問題、做取捨，再用公開來源檢查這些說法。</p>
+        </header>
+
+        <article class="public-output__featured">
+          <div class="public-output__featured-title">
+            <p class="public-output__category">{featuredOutput.kind}</p>
+            <h3>{featuredOutput.headline}</h3>
+          </div>
+          <div class="public-output__featured-copy">
+            <p>{featuredOutput.description}</p>
+            <p class="public-output__capability">{featuredOutput.capability}</p>
+            <div class="public-output__source-row">
+              <div class="public-output__source-meta">
+                <strong>{featuredOutput.title}</strong>
+              </div>
+              <a class="public-output__source-link" href={featuredOutput.href} target="_blank" rel="noopener">
+                <span>{featuredOutput.sourceLabel}</span><span class="visually-hidden">：{featuredOutput.title}</span>
+                <ArrowRight size={15} aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <div class="public-output__supporting">
+          {supportingOutputs.map((output) => (
+            <article>
+              <div class="public-output__identity">
+                <p class="public-output__category">{output.kind}</p>
+                <span>{output.title}</span>
+              </div>
+              <h3>{output.headline}</h3>
+              <p>{output.description}</p>
+              <p class="public-output__capability">{output.capability}</p>
+              <div class="public-output__source-row">
+                <a class="public-output__source-link" href={output.href} target="_blank" rel="noopener">
+                  <span>{output.sourceLabel}</span><span class="visually-hidden">：{output.title}</span>
+                  <ArrowRight size={15} aria-hidden="true" />
+                </a>
+              </div>
+            </article>
+          ))}
         </div>
-        <p>作品是判斷方式的證據。先看我怎麼拆問題，再決定要不要繼續往下讀。</p>
-      </header>
-      <div class="open-source__list">
-        {openSourceProofs.map((project) => (
-          <a href={project.href} target="_blank" rel="noopener">
-            <div><h3>{project.title}</h3><p>{project.description}</p></div>
-            <div class="open-source__proof"><strong>{project.metric}</strong><small>截至 {project.asOf}</small></div>
-          </a>
-        ))}
-      </div>
-      <div class="platform-proof" id="cabai-platform">
-        <div>
-          <p class="about-kicker">內容交付系統</p>
-          <h3>CabAI 是我用來提供試看、販售課程和交付已購內容的平台。</h3>
-          <p>訪客可以先免費試看，購買後再用同一個帳號讀課程、手冊和後續更新。</p>
+
+        <div class="trust-evidence__actions" id="public-output-actions">
+          <a class="btn btn-ghost trust-evidence__work-action" href="/work/#selected-work">看完整作品與關鍵判斷 <ArrowRight size={17} aria-hidden="true" /></a>
+          <ul class="trust-evidence__profile-actions" role="list">
+            <li><a class="btn btn-ghost trust-evidence__profile-action" href={siteConfig.githubUrl} target="_blank" rel="noopener"><Github size={17} aria-hidden="true" /> GitHub 個人頁</a></li>
+            <li><a class="btn btn-ghost trust-evidence__profile-action" href={siteConfig.threadsUrl} target="_blank" rel="noopener"><AtSign size={17} aria-hidden="true" /> Threads 帳號</a></li>
+          </ul>
         </div>
-        <a href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'about_platform')} target="_blank" rel="noopener">查看 CabAI 學習平台 <ArrowRight size={16} aria-hidden="true" /></a>
-      </div>
-    </section>
+      </section>
+
+      <section class="delivery-experience" aria-labelledby="delivery-experience-title">
+        <header class="delivery-experience__header section-heading">
+          <p class="about-kicker">交付經驗</p>
+          <h2 id="delivery-experience-title">做出來之後，<br />還要有人能使用。</h2>
+          <p>課程、教材與內容平台是另一種證據。我不只把東西做出來，也會把步驟、驗收與後續使用方式整理清楚。</p>
+        </header>
+        <div class="delivery-experience__body">
+          <div class="delivery-experience__list">
+            {deliveryExperienceProofs.map((proof) => (
+              <article>
+                <p class="delivery-experience__kind">{proof.kind}</p>
+                <div>
+                  <h3>{proof.headline}</h3>
+                  <p>{proof.description}</p>
+                  <small>{proof.proof}</small>
+                </div>
+              </article>
+            ))}
+          </div>
+          <article class="platform-proof" id="cabai-platform">
+            <div>
+              <p class="platform-proof__label">內容交付系統</p>
+              <h3>CabAI 把試看、購買與已購內容放在同一個使用流程裡。</h3>
+              <p>訪客可以先免費試看，購買後再用同一個帳號讀課程、手冊和後續更新。從第一次接觸到後續使用，內容都有清楚的交付位置。</p>
+            </div>
+            <a class="btn btn-ghost platform-proof__action" href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'about_platform')} target="_blank" rel="noopener">查看 CabAI 學習平台 <ArrowRight size={16} aria-hidden="true" /></a>
+          </article>
+        </div>
+      </section>
+    </div>
 
     <section class="principles page-paper paper-card paper-card--clip paper-card--clip-left" aria-labelledby="principles-title">
       <div class="principles__grid">
@@ -134,11 +198,13 @@ const timeline = [
     <section class="about-next page-paper paper-card paper-card--clip" id="next" aria-labelledby="next-title">
       <div>
         <p class="about-kicker">下一步</p>
-        <h2 id="next-title">想看這些原則怎麼用在實作上，先看代表作品。</h2>
+          <h2 id="next-title">找到適合你的<br />下一步。</h2>
+        <p class="about-next__intro">想先比較學習內容，或找我一起釐清與推進實際問題，都可以從適合你的方式開始。</p>
       </div>
       <div class="about-next__links">
-        <a class="about-next__primary" href="/work/">查看代表作品 <ArrowRight size={18} aria-hidden="true" /></a>
-        <div class="about-next__secondary"><a href="/expertise/">專業方法</a><a href="https://github.com/cablate" target="_blank" rel="noopener"><Github size={16} aria-hidden="true" /> GitHub</a><a href={siteConfig.threadsUrl} target="_blank" rel="noopener"><AtSign size={16} aria-hidden="true" /> Threads</a><a href={`mailto:${siteConfig.contactEmail}`}>Email</a></div>
+        <a class="btn btn-primary about-next__primary" href="/services/">了解服務與合作方式 <ArrowRight size={18} aria-hidden="true" /></a>
+        <a class="btn btn-ghost about-next__secondary-action" href="/courses/">看學習內容 <ArrowRight size={18} aria-hidden="true" /></a>
+        <div class="about-next__utility"><a href="/work/">先看代表作品</a><a href="/expertise/">專業方法</a><a href={siteConfig.githubUrl} target="_blank" rel="noopener"><Github size={16} aria-hidden="true" /> GitHub</a><a href={siteConfig.threadsUrl} target="_blank" rel="noopener"><AtSign size={16} aria-hidden="true" /> Threads</a><a href={`mailto:${siteConfig.contactEmail}`}>Email</a></div>
       </div>
     </section>
   </article>
@@ -185,23 +251,52 @@ const timeline = [
   .timeline__content { min-width: 0; }
   .timeline h3 { margin: 0 0 .55rem; font-size: 1.35rem; letter-spacing: -.025em; }
   .timeline li p { max-width: 47rem; margin: 0; color: var(--text-secondary); line-height: 1.8; }
-  .open-source { padding-block: clamp(3.5rem, 7vw, 6.5rem) !important; }
-  .open-source__header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .6fr); gap: 2rem; align-items: end; padding-bottom: 2.5rem; }
-  .open-source__header > p { max-width: 23rem; margin: 0; color: var(--text-secondary); font-size: .86rem; line-height: 1.8; }
-  .open-source__list { border-top: 1px solid var(--border-strong); }
-  .open-source__list a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: center; padding: 1.4rem 0; border-bottom: 1px solid var(--border); }
-  .open-source__list a:hover h3 { color: var(--accent); }
-  .open-source__list h3, .open-source__list p { margin: 0; }
-  .open-source__list h3 { font-size: 1.08rem; }
-  .open-source__list p { margin-top: .35rem; color: var(--text-secondary); font-size: .82rem; }
-  .open-source__proof { display: grid; justify-items: end; gap: .15rem; }
-  .open-source__proof strong { color: var(--accent); font-size: .78rem; white-space: nowrap; }
-  .open-source__proof small { color: var(--text-muted); font-size: .64rem; white-space: nowrap; }
-  .platform-proof { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-strong); }
-  .platform-proof .about-kicker { margin-bottom: .55rem; }
-  .platform-proof h3 { max-width: 34rem; margin: 0; font-size: clamp(1.35rem, 2.4vw, 1.9rem); line-height: 1.45; }
-  .platform-proof p:last-child { max-width: 42rem; margin: .75rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
-  .platform-proof > a { display: inline-flex; align-items: center; justify-self: start; gap: .45rem; color: var(--accent-text); font-size: .82rem; font-weight: 700; white-space: nowrap; }
+  .trust-evidence { padding-block: clamp(3.5rem, 7vw, 6.5rem) !important; }
+  #public-output-title, #public-output-actions, #delivery-experience-title { scroll-margin-top: 5.5rem; }
+  .public-output__header { max-width: 48rem; padding-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .public-output__header h2 { max-width: 14em; }
+  .public-output__header > p:last-child { max-width: 42rem; margin: 1.35rem 0 0; color: var(--text-secondary); font-size: .9rem; line-height: 1.85; }
+  .public-output__featured { display: grid; grid-template-columns: minmax(14rem, .82fr) minmax(0, 1.18fr); gap: clamp(2rem, 6vw, 5rem); padding: clamp(2rem, 4vw, 3.5rem) 0; border-top: 1px solid var(--border-strong); border-bottom: 1px solid var(--border); }
+  .public-output__featured-title, .public-output__featured-copy { min-width: 0; }
+  .public-output__category { margin: 0; color: var(--accent); font-size: .7rem; font-weight: 700; letter-spacing: .08em; }
+  .public-output__featured h3 { max-width: 18ch; margin: 1rem 0 0; font-family: var(--font-serif); font-size: clamp(1.7rem, 3.2vw, 2.75rem); letter-spacing: -.04em; line-height: 1.24; }
+  .public-output__featured-copy > p:first-child { margin: 0; color: var(--text-primary); font-size: 1rem; line-height: 1.9; }
+  .public-output__capability { margin: 1.2rem 0 0; padding-left: 1rem; border-left: 2px solid var(--accent); color: var(--text-secondary); font-size: .82rem; line-height: 1.75; }
+  .public-output__source-row { display: flex; align-items: end; justify-content: space-between; gap: 1.25rem; margin-top: 1.6rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
+  .public-output__source-meta { display: flex; flex-wrap: wrap; gap: .25rem .75rem; min-width: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: .64rem; line-height: 1.55; }
+  .public-output__source-meta strong { width: 100%; color: var(--text-primary); font-family: var(--font-sans); font-size: .78rem; }
+  .public-output__source-link { display: inline-flex; flex: 0 0 auto; align-items: center; gap: .45rem; min-height: 2.75rem; color: var(--accent-text); font-size: .76rem; font-weight: 700; }
+  .public-output__source-link:hover { color: var(--accent); }
+  .public-output__supporting { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .public-output__supporting article { min-width: 0; padding: clamp(2rem, 4vw, 3rem) 0; border-bottom: 1px solid var(--border); }
+  .public-output__supporting article:first-child { padding-right: clamp(1.5rem, 4vw, 3.25rem); border-right: 1px solid var(--border); }
+  .public-output__supporting article:last-child { padding-left: clamp(1.5rem, 4vw, 3.25rem); }
+  .public-output__identity { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .8rem; }
+  .public-output__identity > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .64rem; overflow-wrap: anywhere; }
+  .public-output__supporting h3 { max-width: 22ch; margin: 1.1rem 0 .8rem; font-size: clamp(1.2rem, 2vw, 1.55rem); letter-spacing: -.025em; line-height: 1.45; }
+  .public-output__supporting article > p:not(.public-output__category, .public-output__capability) { margin: 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.8; }
+  .public-output__supporting .public-output__source-row { align-items: flex-start; flex-direction: column; gap: .45rem; }
+  .trust-evidence__actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(21rem, .72fr); gap: .85rem; align-items: stretch; margin-top: 2rem; }
+  .trust-evidence__work-action { min-height: 3rem; margin: 0; white-space: nowrap; }
+  .trust-evidence__profile-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 0; padding: 0; list-style: none; }
+  .trust-evidence__profile-actions li { min-width: 0; }
+  .trust-evidence__profile-action { justify-content: center; gap: .55rem; width: 100%; min-height: 3rem; padding: .7rem .85rem; border-color: var(--border); color: var(--text-secondary); font-size: .78rem; white-space: nowrap; }
+  .trust-evidence__profile-action:hover:not(:disabled):not([aria-disabled='true']) { border-color: var(--accent-text); color: var(--accent-text); }
+  .delivery-experience { display: grid; grid-template-columns: minmax(13rem, .72fr) minmax(0, 1.28fr); gap: clamp(2.5rem, 7vw, 7rem); margin-top: clamp(4.5rem, 9vw, 8rem); padding-top: clamp(3rem, 6vw, 5rem); border-top: 1px solid var(--border-strong); }
+  .delivery-experience__header h2 { max-width: 13em; }
+  .delivery-experience__header > p:last-child { max-width: 28rem; margin: 1.35rem 0 0; color: var(--text-secondary); font-size: .86rem; line-height: 1.85; }
+  .delivery-experience__body { min-width: 0; }
+  .delivery-experience__list { border-top: 1px solid var(--border-strong); }
+  .delivery-experience__list article { display: grid; grid-template-columns: minmax(7rem, .38fr) minmax(0, 1fr); gap: 1.5rem; padding: 1.7rem 0; border-bottom: 1px solid var(--border); }
+  .delivery-experience__kind { margin: .15rem 0 0; color: var(--accent); font-size: .7rem; font-weight: 700; letter-spacing: .06em; }
+  .delivery-experience__list h3 { margin: 0; font-size: 1.12rem; letter-spacing: -.02em; line-height: 1.5; }
+  .delivery-experience__list article div > p { margin: .65rem 0 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.75; }
+  .delivery-experience__list small { display: block; margin-top: .85rem; color: var(--text-muted); font-family: var(--font-mono); font-size: .64rem; line-height: 1.55; }
+  .platform-proof { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; margin-top: 2rem; padding: clamp(1.35rem, 3vw, 2rem); border: 1px solid var(--border); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--accent) 4%, var(--bg-soft)); }
+  .platform-proof__label { margin: 0 0 .65rem; color: var(--accent); font-size: .7rem; font-weight: 700; letter-spacing: .06em; }
+  .platform-proof h3 { max-width: 34rem; margin: 0; font-size: clamp(1.25rem, 2.2vw, 1.7rem); line-height: 1.45; }
+  .platform-proof p:last-child { max-width: 42rem; margin: .75rem 0 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.75; }
+  .platform-proof > a { justify-self: start; min-height: 3rem; white-space: nowrap; }
   .principles { padding: clamp(3.5rem, 7vw, 6.5rem) !important; }
   .principles__grid { display: grid; grid-template-columns: minmax(12rem, .72fr) minmax(0, 1.28fr); gap: clamp(2.5rem, 7vw, 7rem); }
   .principles__note { max-width: 20rem; margin: 1.5rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.8; }
@@ -212,22 +307,45 @@ const timeline = [
   .principles article p { margin: 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.75; }
   .about-next { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(15rem, .9fr); gap: clamp(2.5rem, 7vw, 7rem); padding-block: clamp(3.5rem, 7vw, 6rem) !important; }
   .about-next h2 { max-width: 17ch; margin: 0; font-size: clamp(2rem, 4vw, 3.45rem); letter-spacing: -.055em; line-height: 1.1; }
+  .about-next__intro { max-width: 30rem; margin: 1.35rem 0 0; color: var(--text-secondary); line-height: 1.8; }
   .about-next__links { align-self: end; border-top: 1px solid var(--border-strong); }
-  .about-next__links a { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 3.2rem; padding: .9rem 0; border-bottom: 1px solid var(--border); font-weight: 700; }
-  .about-next__links a:hover { color: var(--accent); }
-  .about-next__primary { color: var(--accent-text); }
-  .about-next__secondary { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; padding-top: .75rem; }
-  .about-next__secondary a { display: inline-flex; justify-content: flex-start; min-height: 2rem; padding: .25rem 0; border: 0; color: var(--text-secondary); font-size: .78rem; }
+  .about-next__links > a { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 3.25rem; width: 100%; padding: .75rem 1rem; border-bottom: 1px solid var(--border); font-weight: 700; }
+  .about-next__links > a.about-next__primary {
+    width: 100%;
+    min-height: 3.25rem;
+    border: 1px solid var(--text-primary);
+    border-radius: var(--radius-sm);
+    background: var(--text-primary);
+    color: #fff;
+    padding: .75rem 1rem;
+  }
+  .about-next__links > a.about-next__primary:hover:not(:disabled):not([aria-disabled='true']) {
+    border-color: var(--accent-text);
+    background: var(--accent-text);
+    color: #fff;
+  }
+  .about-next__links > a.about-next__secondary-action { margin-top: .75rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: transparent; color: var(--text-primary); }
+  .about-next__links > a.about-next__secondary-action:hover:not(:disabled):not([aria-disabled='true']) { border-color: var(--accent-text); background: var(--bg-soft); color: var(--accent-text); }
+  .about-next__utility { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; padding-top: .75rem; }
+  .about-next__utility a { display: inline-flex; justify-content: flex-start; min-height: 2.75rem; align-items: center; padding: .25rem 0; border: 0; color: var(--text-secondary); font-size: .78rem; }
+  .about-next__utility a:hover { color: var(--accent); }
   @media (max-width: 800px) {
-    .about-hero__grid, .about-story, .turning-points__header, .open-source__header, .platform-proof, .principles__grid, .about-next { grid-template-columns: 1fr; }
+    .about-hero__grid, .about-story, .turning-points__header, .public-output__featured, .delivery-experience, .principles__grid, .about-next { grid-template-columns: 1fr; }
     .about-hero__grid { gap: 2.25rem; }
     .about-hero__aside { max-width: 38rem; }
+    .about-hero__action, .platform-proof__action, .trust-evidence__work-action { width: 100%; }
     .about-story__mark { right: 1rem; }
-    .turning-points__header, .open-source__header { gap: 1.25rem; }
+    .turning-points__header { gap: 1.25rem; }
+    .public-output__featured { gap: 1.75rem; }
+    .public-output__supporting { grid-template-columns: 1fr; }
+    .public-output__supporting article:first-child { padding-right: 0; border-right: 0; }
+    .public-output__supporting article:last-child { padding-left: 0; }
+    .trust-evidence__actions { grid-template-columns: 1fr; }
+    .delivery-experience { gap: 2.5rem; }
     .principles__list { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 560px) {
-    .about-page > .page-paper { padding-inline: 1.25rem !important; }
+    .about-page.paper-page > .page-paper { padding-inline: clamp(1rem, 5vw, 1.25rem) !important; }
     .about-hero { padding-block: 2.4rem 3rem !important; }
     .about-hero__topline { padding-bottom: 1rem; }
     .about-note { font-size: .55rem; }
@@ -235,11 +353,12 @@ const timeline = [
     .about-hero h1 { font-size: clamp(2.55rem, 11vw, 3.45rem) !important; line-height: 1.08 !important; }
     .about-hero__aside .about-hero__lead { font-size: 1rem; }
     .about-hero__facts { margin-top: 1.35rem; }
-    .about-story, .turning-points, .open-source, .principles, .about-next { padding-block: 2.8rem !important; }
+    .about-story, .turning-points, .trust-evidence, .principles, .about-next { padding-block: 2.8rem !important; }
     .about-story__opening { font-size: 1.25rem !important; }
     .about-story__mark { bottom: -.5rem; font-size: 2.6rem; }
-    .turning-points__header, .open-source__header { padding-bottom: 1.7rem; }
+    .turning-points__header { padding-bottom: 1.7rem; }
     .timeline::before { top: 1rem; bottom: 1.2rem; left: .85rem; }
+    .timeline__rail { align-self: stretch; }
     .timeline li { grid-template-columns: 1.7rem minmax(0, 1fr); column-gap: .85rem; padding: 1.25rem 0; }
     .timeline__rail { grid-column: 1; grid-row: 1 / span 2; }
     .timeline__node { width: 1.7rem; height: 1.7rem; font-size: .52rem; }
@@ -247,8 +366,20 @@ const timeline = [
     .timeline__content { grid-column: 2; grid-row: 2; }
     .timeline h3 { margin-top: .35rem; font-size: 1.15rem; }
     .timeline li p { font-size: .84rem; line-height: 1.75; }
-    .open-source__list a { grid-template-columns: 1fr; gap: .65rem; padding: 1.2rem 0; }
-    .open-source__proof { justify-items: start; }
+    .public-output__header { padding-bottom: 2rem; }
+    .public-output__header > p:last-child { font-size: .84rem; }
+    .public-output__featured { padding: 1.7rem 0; }
+    .public-output__featured h3 { font-size: 1.65rem; }
+    .public-output__source-row { align-items: flex-start; flex-direction: column; gap: .5rem; }
+    .public-output__supporting article { padding: 1.75rem 0; }
+    .public-output__supporting h3 { font-size: 1.18rem; }
+    .trust-evidence__work-action { white-space: normal; }
+    .trust-evidence__profile-actions { grid-template-columns: 1fr; }
+    .delivery-experience { margin-top: 4rem; padding-top: 3rem; }
+    .delivery-experience__list article { grid-template-columns: 1fr; gap: .7rem; padding: 1.45rem 0; }
+    .delivery-experience__kind { margin: 0; }
+    .platform-proof { padding: 1.25rem; }
+    .platform-proof > a { width: 100%; white-space: normal; }
     .principles__list { grid-template-columns: 1fr; }
     .principles article { min-height: auto; padding: 1.25rem; }
     .principles article h3 { margin-top: 1.8rem; }

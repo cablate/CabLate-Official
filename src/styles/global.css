@@ -424,7 +424,7 @@ body.site-shell-desk #main-content:has(> .desk-page) {
   color: #fff;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled):not([aria-disabled='true']) {
   background: var(--accent-text);
 }
 
@@ -434,8 +434,53 @@ body.site-shell-desk #main-content:has(> .desk-page) {
   color: var(--text-primary);
 }
 
-.btn:active {
+.btn-ghost:hover:not(:disabled):not([aria-disabled='true']) {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent-text);
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--accent-text);
+  outline-offset: 3px;
+}
+
+.btn:active:not(:disabled):not([aria-disabled='true']) {
   transform: translateY(1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+
+  .btn:active:not(:disabled):not([aria-disabled='true']) {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .btn {
+    border-color: ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+
+  .btn-primary {
+    background: ButtonText;
+    color: ButtonFace;
+  }
+
+  .btn-ghost:hover:not(:disabled):not([aria-disabled='true']),
+  .btn-primary:hover:not(:disabled):not([aria-disabled='true']) {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .btn:focus-visible {
+    outline-color: Highlight;
+  }
 }
 
 main .articles-section {

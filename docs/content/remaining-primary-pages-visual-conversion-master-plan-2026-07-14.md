@@ -10,6 +10,7 @@ scope:
 canonical_parent: docs/content/site-purpose-page-role-and-cta-master-plan-2026-07-12.md
 acceptance_standard: docs/design/page-reading-and-interaction-acceptance-standard.md
 baseline_audit: docs/design/audits/2026-07-14-remaining-primary-pages-plan/README.md
+execution_slicing: docs/content/remaining-primary-pages-incremental-execution-plan-2026-07-14.md
 ---
 
 # About、Work、Courses、Services 視覺與閱讀轉換 Master Plan
@@ -19,6 +20,8 @@ baseline_audit: docs/design/audits/2026-07-14-remaining-primary-pages-plan/READM
 這份文件是待使用者審閱的執行規格，不是已核准需求，也不是本輪已完成事項。使用者核准前，不修改 About、Work、Courses、Services 的程式或文案。
 
 本計畫的目的，是把 Home 與 Expertise 兩輪實作真正學到的標準，逐項落到剩餘四個主要頁面。這次不能再以「有 class、有 href、有 44px hit area」代替完成；每一個重要行動、標題、流程與 Mobile 版面都要有可檢查的規格與 production 證據。
+
+實際施工不直接以本文件的六個大 Phase 為單次工作單位。核准後應依 [`remaining-primary-pages-incremental-execution-plan-2026-07-14.md`](./remaining-primary-pages-incremental-execution-plan-2026-07-14.md) 的微型 slice、頁面 gate 與跨頁 gate 序列執行；任一 slice 未通過時不得往下累積變更。
 
 ## 1. 產品意圖（GORE）
 
@@ -47,14 +50,14 @@ CabLate.com 是公開的信任與決策中樞。它要讓正在使用 AI、卻�
 | 技術或產品決策者 | 驗證能力、限制與交付思路 | 只看到漂亮作品圖，沒有問題、判斷與揭露範圍 | 在 Work 快速掃讀公開案例，再決定是否前往 Services |
 | 想學習的個人或團隊 | 選擇不過量、也不買錯的學習方案 | 把路線誤認為必修漏斗，或被註冊按鈕帶離判斷 | 在 Courses 依問題與投入深度選一條路；未開放狀態真實 |
 | 有合作需求的企業／團隊 | 自行判斷適配程度，降低第一次聯絡成本 | 看不懂交付、流程與邊界，或不知道信中要提供什麼 | 在 Services 完成自我篩選，使用真實 Email 提交情境 |
-| 高意圖回訪者 | 不重讀全頁，直接找到作品、商品或聯絡 | 關鍵入口藏在紫色小字 | 首屏或相關證據後都有清楚但不搶戲的捷徑 |
+| 高意圖回訪者 | 不重讀全頁，直接找到作品、學習內容、服務或聯絡 | 關鍵入口藏在紫色小字 | 首屏或相關證據後都有清楚但不搶戲的捷徑 |
 
 ### 1.3 Goal hierarchy
 
 #### Primary goals
 
 - **G0：四頁各自完成一個清楚的訪客決策。** 五秒內能辨識頁面用途，讀完能找到符合意圖的下一步。
-- **G1 About／信任：** 讓人物歷程、公開證據與工作原則共同支持信任，再把高意圖訪客送往 Work。
+- **G1 About／信任：** 讓人物歷程、公開證據與工作原則共同支持信任，再讓高意圖訪客選擇代表作品、學習內容或服務方式。
 - **G2 Work／證據：** 讓案例的問題、限制、判斷、結果與揭露範圍可掃讀，再把有相似情境者送往 Services。
 - **G3 Courses／選擇：** 讓訪客知道路線是依投入與深度排列、不是必修順序，並能清楚啟動目前可用的路線。
 - **G4 Services／適配：** 讓訪客先判斷合作類型、理解交付與邊界，再用 `cablate@cablate.com` 提交情境。
@@ -210,9 +213,11 @@ Home 與 Expertise 不是四頁的版型來源，而是驗收標準：
 
 ### 4.1 唯一訪客任務
 
-訪客進站時想：「這個人是誰？為什麼他的判斷值得我相信？」讀完後應能回答：「他的經歷、公開作品與工作原則彼此一致，我願意去看代表作品。」
+訪客進站時想：「這個人是誰？為什麼他的判斷值得我相信？」讀完後應能回答：「他的經歷、公開作品與工作原則彼此一致，我知道接下來可以自己學，也可以找他一起處理問題。」
 
-頁級 Primary destination：`/work/`。
+About 的頁尾是付費路徑選擇區：`/services/` 作為服務／合作方式的 Primary，`/courses/` 作為學習內容的 Secondary；`/work/` 保留為 Hero 與 utility 的證據路徑，不再在頁尾重複做 filled Primary。
+
+About 的信任證據章節分成兩種，不把作品與課程混成同一張清單：`公開輸出` 回答「這個人有沒有持續留下可被外部查驗的成果」，`交付經驗` 回答「這個人能不能把方法、系統與知識交給別人使用」。前者以 GitHub、公開文章／研究、Threads 等具體輸出為主，後者以課程、教學、內訓、產品交付與 CabAI 內容交付為主；讀完後再由頁尾分流到服務／合作或付費學習。
 
 ### 4.2 情緒與決策旅程
 
@@ -221,21 +226,22 @@ Home 與 Expertise 不是四頁的版型來源，而是驗收標準：
 → 快速知道 CabLate 現在在做什麼
 → 理解為什麼他如此重視交付與可接手
 → 看到經歷如何形成方法
-→ 用公開作品與 CabAI 交付系統驗證能力
+→ 用公開輸出與交付經驗驗證能力
 → 知道合作前他會守住哪些原則
-→ 前往 Work 檢查實作證據
+→ 依意圖選擇代表作品、學習內容或服務方式
 ```
 
 ### 4.3 區塊目的
 
 | 區塊 | 讀前想法 | 唯一任務 | 證據／內容 | 讀後感受 | 行動 |
 | --- | --- | --- | --- | --- | --- |
-| Hero | 我只知道名字，不知道他能處理什麼 | 建立身份、工作範圍與問題對象 | 全端／系統設計背景、AI 教學／產品／流程、交付觀點 | 「這和我遇到的重做／交接問題有關」 | 高意圖者用 bordered paper CTA 前往 Work |
+| Hero | 我只知道名字，不知道他能處理什麼 | 建立身份、工作範圍與問題對象 | 全端／系統設計背景、AI 教學／產品／流程、交付觀點 | 「這和我遇到的重做／交接問題有關」 | 高意圖者先用 bordered paper CTA 前往 Work |
 | 專業歷程 | 這些主張是後來包裝的嗎 | 說明交付觀點如何從實務問題形成 | 資料、權限、驗收、復原的經驗 | 主張有原因，不是口號 | 無 CTA，保持閱讀推進 |
 | 關鍵轉折 | 經歷跟現在的工作有什麼關係 | 以四個轉折呈現能力形成，不堆履歷 | 非本科轉職、工程實務、AI 應用、全職 CabLate | 看見累積與方向一致 | 可跳過歷程者沿用 Hero Work 捷徑 |
-| 公開作品／CabAI | 有沒有可以查證的東西 | 用公開程式碼、數字與交付平台支撐能力 | 三個開源作品；CabAI 的試看、販售、交付能力 | 信任由主張提升為可查證 | GitHub rows；CabAI contextual action row |
+| 公開輸出 | 有沒有可以查證的東西 | 用可外部查驗的輸出呈現問題拆解與判斷 | GitHub、公開文章／研究、Threads 等具體輸出；問題／洞察／證據敘事 | 信任由主張提升為可查驗的工作痕跡 | 一個 contextual Work CTA；GitHub／Threads 個人頁是認識作者的 profile navigation |
+| 交付經驗 | 這些方法能不能真的交給別人使用 | 證明能教、能帶、能完成產品與內容交付 | 課程、教學、內訓、產品交付、CabAI 內容交付；不標成作品 repo | 知道 CabLate 不只會做，也能讓別人用起來 | 不在每筆重複推銷；由頁尾 Services／Courses 分流 |
 | 工作原則 | 真正一起做事時會怎麼判斷 | 呈現四個穩定工作原則 | 經驗／研究區分、可用版本、問題先於工具、留下方法 | 知道 CabLate 如何做決定 | 無產品 CTA |
-| 下一步 | 我相信這套方法，但想看實作 | 將信任轉成證據檢查 | 代表作品入口 | 不需先合作也能驗證 | filled Work Primary；其餘為 utility navigation |
+| 下一步 | 我相信這套方法，想知道適合怎麼開始 | 將信任轉成學習／服務選擇 | `/courses/` 學習路線、`/services/` 服務與合作方式、`/work/` 證據捷徑 | 不被迫先買課或先洽談，能依意圖選路 | Services filled Primary；Courses bordered Secondary；Work 為 utility navigation |
 
 ### 4.4 Desktop／Mobile 規格
 
@@ -243,15 +249,17 @@ Desktop：
 
 - Hero 保留 headline／aside 雙欄，Work CTA 位於 referral 之後，不能藏在段尾。
 - 時間軸使用 `01–04` 節點、垂直導引線、時間與內容三欄；不新增裝飾卡片。
-- 公開作品維持可掃讀 row；CabAI 是獨立 capability proof row，視覺低於開源證據主標、但高於普通補充連結。
-- 頁尾左右欄維持，Work filled CTA 是唯一頁級 Primary。
+- 公開輸出採 editorial hierarchy：一個主敘事搭配 3–4 個 supporting entries；About 不顯示 stars／forks，repo name 只作來源識別。
+- 交付經驗獨立成清楚的 proof sub-block；CabAI 是交付能力證據，不與公開輸出混成 repo row。
+- 公開輸出區保留一個 bordered Work CTA；另提供 GitHub 個人頁與 Threads 帳號兩個 profile actions，兩者不取代 Work 的完整案例角色。
+- 頁尾左右欄維持，Services filled CTA 是唯一頁級 Primary；Courses 使用 bordered Secondary，Work 降為 utility navigation。
 
 Mobile：
 
 - Hero 先身份、再問題、再 48px full-width Work CTA。
 - 時間軸轉為單一垂直 rail；節點、時間、標題、正文依 DOM 順序排列。
-- 公開作品每列可自然增高，不固定高度；數字與日期不擠在右側。
-- CabAI action row 與頁尾 Work CTA 皆至少 48px；不退回 22px 小字。
+- 公開輸出與交付經驗依 DOM 順序單欄自然增高；About 不顯示 stars／forks，GitHub／Threads profile actions 在窄寬度可垂直排列。
+- CabAI action row 與頁尾 Services／Courses actions 皆至少 48px；不退回 22px 小字。
 - 以刪除重述降低 5501px 高度；不刪時間軸、公開證據或工作原則。
 
 ### 4.5 Major heading phrase grouping
@@ -261,9 +269,10 @@ Mobile：
 | H1 | `從工程實作`／`走到 AI 應用，`／`我一直在意成果`／`能不能被接手。` |
 | 專業歷程 H2 | `我在意交付，`／`因為做出來`／`不等於能使用。` |
 | 時間軸 H2 | `四個轉折，`／`慢慢形成`／`現在這套工作方式。` |
-| 公開作品 H2 | `每件作品都附上`／`公開程式碼、使用方式`／`或可查證的數字。` |
+| 公開輸出 H2 | `我做過的事，`／`都留下了可以查證的地方。` |
+| 交付經驗 H2 | `做出來之後，`／`還要有人能使用。` |
 | 原則 H2 | `遇到不同工具與問題，`／`我仍會守住四件事。` |
-| 下一步 H2 | `想看這些原則`／`怎麼用在實作上，`／`先看代表作品。` |
+| 下一步 H2 | `找到適合你的`／`下一步。` |
 
 句組是可換行邊界，不代表 Desktop 必須每個 phrase 各佔一行。320／360／390px 必須逐一人工確認。
 
@@ -272,10 +281,15 @@ Mobile：
 | 可見文字 | Destination | Role／外觀 | Desktop | Mobile | 不可退回 |
 | --- | --- | --- | --- | --- | --- |
 | 先看代表作品 | `/work/` | Contextual／bordered paper | aside 內 inline，min 48px | full width，min 48px | 105 × 23px `text-link` |
-| 三個公開作品 row | 現有 GitHub URL | Evidence navigation／row link | 整列可點、min 44px，hover＋focus 清楚 | 自然高度，名稱與證據同一 accessible name | 只在標題換色、focus 不明顯 |
+| 公開輸出敘事項目 | 現有 GitHub／文章／Threads 具體 URL | Evidence narrative；來源連結為次要 action | 主文先讀問題／洞察，source link 不搶主導 | 自然高度，source link 可聚焦 | 回到 repo name／stars／forks 清單 |
+| 看完整作品與關鍵判斷 | `/work/#selected-work` | Contextual／bordered paper | 位於公開輸出區結尾，min 48px | full width，min 48px | 每個項目重複同一 Work CTA |
+| GitHub 個人頁 | `siteConfig.githubUrl` | Profile navigation／bordered utility | 與 Threads 成組，min 48px，不高於 Work | full width 或安全雙欄，min 48px | 只留 repo 連結，沒有作者 profile 入口 |
+| Threads 帳號 | `siteConfig.threadsUrl` | Profile navigation／bordered utility | 與 GitHub 成組，min 48px，不高於 Work | full width 或安全雙欄，min 48px | 只在頁尾出現，錯過認識作者的契機 |
+| 交付經驗 proof | 現有課程／CabAI／合作紀錄來源 | Evidence narrative；不標成作品 repo | 與公開輸出分組，保留揭露邊界 | 單欄自然增高，不製造假 href | 用課程人數或課程名稱冒充公開作品 |
 | 查看 CabAI 學習平台 | `withCabAiAttribution(siteConfig.cabAi.homeUrl, 'about_platform')` | Contextual／bordered action row | min 48px，低於 Work Primary | full width，min 48px | 145 × 22px 小字；改推商品 |
-| 查看代表作品 | `/work/` | Primary／filled | 右欄 min 52px | full width，min 48px | 降為普通文字列 |
-| 專業方法／GitHub／Threads／Email | 現有 route／config | Navigation／utility rows | 每項 min 44px，不與 Primary 同權重 | 可換成兩欄或垂直，但不擠壓 | 做成第二組 Primary |
+| 了解服務與合作方式 | `/services/` | Primary／filled | 右欄 min 52px | full width，min 48px | 只寫「合作」或降為普通文字列 |
+| 看學習內容 | `/courses/` | Secondary／bordered paper | 右欄 min 48px | full width，min 48px | 與 Services 同做 filled Primary，或降為小字 |
+| 先看代表作品／專業方法／GitHub／Threads／Email | 現有 route／config | Navigation／utility rows | 每項 min 44px，不與 Primary 同權重 | 可換成兩欄或垂直，但不擠壓 | 做成第二組 Primary |
 
 ### 4.7 Timeline sequence contract
 
@@ -284,19 +298,27 @@ Mobile：
 - **Desktop：** 垂直 rail；節點、時間、內容三欄；最後一項可收尾但不斷線到紙外。
 - **Mobile：** rail 位於左側；每項依節點 → time → title → body；不能把四項做橫向縮圖。
 - **辨識元素：** `01–04`、time、連續導引線；不加沒有用途的箭頭。
-- **Recovery／skip：** 不想讀完整歷程者可在 Hero 直接前往 Work；讀完則由頁尾 Primary 前往 Work。
+- **Recovery／skip：** 不想讀完整歷程者可在 Hero 直接前往 Work；讀完則由頁尾選擇 Services 或 Courses，Work 仍可由 utility link 回看證據。
 
 ### 4.8 文案待確認清單
 
 - Hero 第二段、referral、專業歷程 opening 都在說「可使用／可檢查／可接手」；實作時要各留一個角色，刪除同義重述。
 - 時間軸前言只說明「為什麼看這四段」，不再重講交付信念。
 - CabAI 維持能力證據，禁止改成商品銷售段落。
-- 所有日期、開源數字與作品描述維持現有事實來源。
+- 公開輸出與交付經驗必須分開命名；每筆公開輸出都要有具體可查驗來源，不能只放個人 profile 或空泛「看更多」。
+- 交付經驗可以導向既有課程／服務脈絡，但不可把課程、內訓或合作紀錄包裝成 GitHub 作品或未授權 Case Study。
+- 所有日期、開源數字與作品描述維持現有事實來源；stars／forks 保留於 canonical data，但不在 About 顯示。
 
 ### 4.9 About outcome-based DoD
 
 - 初次訪客五秒內知道 CabLate 的背景、現在做什麼、在意何種問題。
-- Hero Work CTA 與 CabAI action row 在 Desktop／Mobile 都一眼可辨識且至少 48px。
+- Hero Work CTA、頁尾 Services Primary 與 Courses Secondary 在 Desktop／Mobile 都一眼可辨識且至少 48px。
+- 頁尾路徑分流不誤導：Courses 只承接學習內容，Services 承接診斷、內訓／工作坊、導入與聯絡；不在 About 新增未核准的「陪跑」服務承諾。
+- 公開輸出與交付經驗在五秒掃讀內可被辨識為兩種不同證據；About 不再以 repo name／stars／forks 清單代表完整作品經驗。
+- 每項公開輸出的 repo 名稱只在卡片內顯示一次；來源連結改以動作文字承接，且交付成果不顯示「截至」日期。
+- 公開輸出區有且只有一個清楚的 Work contextual CTA；完整案例、限制與外部檔案仍在 Work 維護。
+- 公開輸出區能直接前往 canonical GitHub 個人頁與 Threads 帳號；兩者是 profile navigation，不與 Work 或頁尾 Services／Courses 爭奪 Primary。
+- 交付經驗能支持「能教、能帶、能交付」的信任判斷，但不改變課程產品狀態、價格、日期或合作揭露邊界。
 - 時間軸不讀內文也能看懂是四段時間順序。
 - 320／360／390／1280／1440px 標題句組自然、零水平溢位。
 - 鍵盤可依 DOM 順序操作所有 links；focus 不被紙張裁掉。
@@ -492,6 +514,20 @@ Route H3 要逐一檢查 320px；`AI`、`Claude Code`、`AgentSkill` 不孤立�
 
 ## 7. Services：合作簡報
 
+### 7.0 2026-07-14 嚴格規劃審核基線
+
+本節依 `docs/design/audits/2026-07-14-services-strict-plan-audit/` 的當次瀏覽器畫面、DOM 與尺寸事實修訂；這是 planning evidence，不代表 Services 已實作完成或通過頁面 gate。
+
+- 1280px Desktop 的 Hero、三種服務、流程與邊界順序清楚，Email Primary 高 `52.8px`，`mailto:` 與 Threads 目的地正確。
+- 390px Mobile 全頁約 `5778px`；320／360／390 均無水平溢位，`#service-options` 落在 viewport top 約 `83px`，高於 `69.7px` Headbar，anchor baseline 通過。
+- 三張 Mobile 服務卡各約 `573／573／601px`，每張重複 `3` 個 fit 與 `4` 個 deliverables；清單正文只有 `13.12px`，流程正文約 `13.44px`。問題不是單純「頁太長」，而是用小字承載重複資訊。
+- `WORKFLOW DIAGNOSIS／TRAINING／AGENT ADOPTION` 直接由內部 `id` 轉成英文顯示，沒有新增判斷價值；規劃改為不渲染 raw slug。
+- 「合作經驗」沒有 heading，且現有主張只直接支持內訓／工作坊／線上課程交付，不能被寫成三種服務皆已有相同交付證據。
+- Desktop「合作邊界」H2 斷成不自然的短行；第三條「不把熱門名詞直接包成方案」重述 Hero 的判斷原則，沒有完成邊界區應負責的具體契約任務。
+- Threads 目前高 `22.84px`、無 border；Mobile 的 Email 與 Threads 也都不是 full width。這是已量測的互動層級缺口，不再只寫成抽象 polish。
+
+**Services planning verdict：** 原規劃方向正確但執行條件不足；本次補齊內容責任、證據邊界、字級與 CTA 尺寸後，Services slices 可供逐步審閱，整體 approval 仍為 `pending_user_review`。
+
 ### 7.1 唯一訪客任務
 
 訪客進站時想：「我的情況適合合作嗎？會留下什麼？要怎麼開始？」讀完後應能自行排除不適合情境，選出最接近的合作類型，並用真實 Email 提交足以判斷的工作情境。
@@ -515,10 +551,10 @@ Route H3 要逐一檢查 320px；`AI`、`Claude Code`、`AgentSkill` 不孤立�
 | 區塊 | 讀前想法 | 唯一任務 | 證據／內容 | 讀後感受 | 行動 |
 | --- | --- | --- | --- | --- | --- |
 | Hero | 我知道有問題，但不知道算哪種合作 | 對應反覆重做情境並導向自我篩選 | 流程、訓練、系統三種可能方向 | 不用先寫需求書也能開始 | filled anchor 到 service options |
-| Service options | 哪個最像我的情況 | 比較適合情境與交付，不堆所有欄位 | 三種 serviceTracks，各 2–3 個 fit、3 個 deliverables | 能選最接近的一種 | 不在每卡放競爭 CTA；最後統一聯絡 |
-| 合作經驗 | 你真的交付過嗎 | 用一段有語意 heading 的 trust strip 支撐能力 | 企業內訓、系列工作坊、線上實作課；揭露限制 | 對交付經驗更安心 | 無 CTA，不硬塞作品方法 |
+| Service options | 哪個最像我的情況 | 只比較「問題訊號」與「會留下什麼」 | 三種 serviceTracks，各 2–3 個高訊號 fit、3 個 deliverables；不顯示 raw English id | 能選最接近的一種 | 不在每卡放競爭 CTA；最後統一聯絡 |
+| 合作經驗 | 你真的交付過嗎 | 用有語意 heading 的 trust strip，準確說明已能公開主張的交付範圍 | 企業內訓、系列工作坊、線上實作課與揭露限制；只支持實際有證據的主張 | 知道哪些做過、哪些不能由此推論 | 無 CTA；不以一句教學交付經驗替三種服務全面背書 |
 | 合作流程 | 合作之後會怎麼進行 | 說清楚四個可驗收階段 | 診斷 → 設計 → 執行 → 驗收 | 不再覺得合作是黑箱 | 無中途 CTA |
-| 合作邊界 | 有哪些不能假設或保證 | 定義責任、資料、驗收與維護邊界 | 現有四條邊界，移除與 service fit 重複文字 | 信任來自範圍清楚 | 無 CTA |
+| 合作邊界 | 有哪些不能假設或保證 | 只定義共通的責任、資料、驗收、修改與維護邊界 | 成效不保證、必要資料／owner、驗收與修改、維護／支援 | 信任來自範圍清楚 | 無 CTA；不重述 Hero 原則或單一 service fit |
 | 提交情境 | 我應該提供什麼 | 降低第一次聯絡成本 | 目標、使用者、現況、卡點、成功條件 | 準備好聯絡 | Email filled Primary；Threads bordered Secondary |
 
 ### 7.4 Desktop／Mobile 規格
@@ -526,15 +562,17 @@ Route H3 要逐一檢查 320px；`AI`、`Claude Code`、`AgentSkill` 不孤立�
 Desktop：
 
 - Hero 保留清楚的服務 brief 與單一 filled anchor。
-- 三種服務維持同頁比較，但每項只保留最能判斷的 2–3 個 fit 與 3 個 deliverables；標題、outcome 與清單分欄。
-- 合作經驗使用真正 H2／H3，形成 trust strip，不再只有 `aria-label`。
+- 三種服務維持同頁比較，但每項只保留最能判斷的 2–3 個問題訊號與 3 個 deliverables；標題、outcome 與清單分欄，清單正文不得低於 `15px`。
+- `01–03` 與中文 service title 已足以辨識；不把 `service.id` 轉成 raw English metadata 顯示。
+- 合作經驗使用真正 H2／H3，形成 trust strip，不再只有 `aria-label`；heading 與主張名稱必須讓人看出它實際支持的是哪種交付經驗。
 - 四步流程維持 `01–04`、水平導引線與可見方向；第三步名稱改為自然的「執行」。
+- Boundaries H2 依 7.5 句組固定成兩個完整語意單位，不讓大字在 Desktop 斷成「把責任與限／制說清楚」。
 - 頁尾 Email 是 filled Primary；Threads 是 bordered paper Secondary。
 
 Mobile：
 
-- 三種服務單欄閱讀，順序為 title／outcome → fit → deliverables；縮短重複清單但保留判斷所需內容。
-- 流程由水平四欄轉成垂直 rail；不能縮成四個小格。
+- 三種服務單欄閱讀，順序為 title／outcome → fit → deliverables；縮短重複清單但保留判斷所需內容，清單正文不得低於 `16px`。
+- 流程由水平四欄轉成垂直 rail；不能縮成四個小格，流程正文不得低於 `16px`。
 - 合作經驗有 heading、主張與揭露說明，保留清楚層級。
 - Email 與 Threads 皆 full width、至少 48px；只有 Email filled。
 - 目標是明顯低於目前 5713px 的重複負擔，但不以任意高度 KPI 取代內容完整。
@@ -549,7 +587,7 @@ Mobile：
 | Boundaries H2 | `合作前，`／`先把責任與限制說清楚。` |
 | Contact H2 | `不用先寫需求書，`／`把目前怎麼做、卡在哪裡`／`告訴我就好。` |
 
-目前 H1 使用六個過短 phrase，會造成碎裂節奏；實作時改為三個完整語意句組，但不改變原句文字。
+目前 H1 使用六個過短 phrase，390px 實際斷成「工作，整理成／能檢查、也能／交接的流程」；實作時改為三個完整語意句組，但不改變原句文字。Boundaries 與 Contact 也必須用同一規則驗收，不能只修 H1。
 
 ### 7.6 CTA inventory
 
@@ -557,7 +595,7 @@ Mobile：
 | --- | --- | --- | --- | --- | --- |
 | 先判斷是否適合 | `#service-options` | Primary navigation／filled | min 52px | min 48px，可 full width | anchor 被 Headbar 遮住 |
 | 寄信提交工作情境 | `mailto:${siteConfig.contactEmail}?subject=合作情境：` | Page Primary／filled | min 52px | full width，min 48px | 顯示 Email 但不是可用 `mailto:` |
-| 也可以透過 Threads 聯絡 | `siteConfig.threadsUrl` | Secondary／bordered paper | min 48px | full width，min 48px | 177 × 23px text link |
+| 也可以透過 Threads 聯絡 | `siteConfig.threadsUrl` | Secondary／bordered paper | min 48px；baseline `176.6 × 22.84px` | full width，min 48px | 仍是無 border 的文字連結 |
 
 ### 7.7 Service options 與 process contract
 
@@ -566,8 +604,9 @@ Mobile：
 - **語意順序：** AI 工作流診斷 → 企業內訓與工作坊 → AI 產品與 Agent 導入；由範圍較小、最適合先判斷的合作走向較高承諾的導入。
 - **DOM 順序：** 與 config 一致；每項依 title → outcome → fit → deliverables。
 - **Desktop：** 三項垂直比較、每項內左右欄；不改成三張同質商品卡。
-- **Mobile：** 單欄；每項縮短為 2–3 個高訊號 fit 與 3 個 deliverables。
-- **辨識元素：** `01–03`、service type、自然中文 outcome；英文 id 只作低權重 metadata。
+- **內容責任：** fit 只寫訪客能辨識的問題訊號；必要資料、內部 owner、驗收前提與維護承諾只由合作邊界負責，不可在 Agent card 與 boundary 重複一次。
+- **Mobile：** 單欄；每項縮短為 2–3 個高訊號 fit 與 3 個 deliverables；不以 13px 小字維持密度。
+- **辨識元素：** `01–03`、自然中文 service title 與 outcome；raw `service.id` 不進 visible UI。若未來需要英文分類，必須是獨立核准的人類文案欄位，不能由 slug 即時轉換。
 - **Recovery：** 不確定時，options intro 明示通常從工作流診斷開始；仍無法判斷者可在頁尾 Email 描述現況。
 
 #### 合作流程
@@ -585,16 +624,19 @@ Mobile：
 - 工作流診斷可保留「現況與問題地圖」「AI 可介入點與風險」「第一版工作流與驗收方式」；「後續建議」若無獨立決策價值則不再另列。
 - 企業內訓保留需求盤點、客製課綱／示範、工作坊／實作；課後建議可併入交付說明。
 - Agent 導入保留需求／風險、工作環境設計、原型／路線圖與驗收交接；只合併現有內容，不擴張服務範圍。
-- 合作經驗新增語意 heading，但保留現有實際交付範圍與不公開客戶資訊的說明。
-- 邊界只保留責任、資料、驗收、承諾與維護，不再重講三種服務的 fit。
+- 合作經驗新增語意 heading；現有證據只能直接主張企業內訓、系列工作坊與線上實作課程交付，不延伸成工作流診斷或 Agent 導入已有相同成果。保留不公開客戶資訊的說明。
+- 邊界只保留成效不保證、必要資料／內部 owner、驗收／修改、維護／後續支援。移除「熱門名詞」原則句，因 Hero 已完成這個判斷任務。
+- `service.id.replaceAll('-', ' ').toUpperCase()` 不再作 visible metadata；保留 id 作 anchor／資料 key，不等於刪除 data。
 - `serviceTracks.notFit` 目前未渲染；確認全 repo 無引用後可移除，不能只因「看起來沒用」直接刪。
 
 ### 7.9 Services outcome-based DoD
 
 - 訪客能在一個 options section 內分辨三種合作，不需讀完所有重複清單。
-- 「合作經驗」存在於 heading outline，視覺與語意都成立。
+- Options visible UI 不含 raw English slug；Desktop 清單正文 `>=15px`，Mobile 清單與流程正文 `>=16px`。
+- 「合作經驗」存在於 heading outline，視覺與語意都成立，且主張沒有超出現有交付證據。
 - 不看流程正文也能理解 `診斷 → 設計 → 執行 → 驗收`。
-- Email `mailto:` 真實使用 `siteConfig.contactEmail`；Threads 是清楚的 secondary paper button。
+- Boundary 四項各自屬於成效、前提、驗收／修改或維護／支援，不重述 Hero 原則與單一卡片 fit。
+- Email `mailto:` 真實使用 `siteConfig.contactEmail`；Threads 是清楚的 secondary paper button。Mobile 兩個 action 均 full width、`>=48px`，只有 Email filled。
 - `#service-options` 在三種 Mobile 寬度跳轉後不被 Headbar 遮住。
 - Service data 精簡不新增承諾；五 viewport 與新證據驗收後建立 Services checkpoint。
 
@@ -635,13 +677,13 @@ Mobile：
 - 只在共用 state 確實缺漏時修改 `src/styles/global.css`
 - 新增 evidence folder：`docs/design/audits/2026-07-14-about-implementation/`
 
-**Invariants：** timeline 四項與順序、公開作品數字／日期、CabAI capability role、Work 作為 Primary destination 不變。
+**Invariants：** timeline 四項與順序、公開輸出來源與可查驗事實、交付經驗的課程／合作揭露邊界、CabAI capability role、Hero Work evidence route、Courses／Services 真實目的地不變；頁尾改為 Services Primary、Courses Secondary 的路徑選擇。
 
-**Forbidden shortcuts：** 不刪時間軸換短卡；不把 CabAI 改成商品 pitch；不把 Hero、CabAI 或頁尾 Work CTA 留成 22–23px 小字；不固定 section 高度。
+**Forbidden shortcuts：** 不刪時間軸換短卡；不把 CabAI 改成商品 pitch；不把公開輸出縮回 repo name／stars／forks 索引；不把課程或交付經驗冒充作品 repo；不把 Hero、頁尾 Services／Courses actions 留成 22–23px 小字；不新增未核准的「陪跑」服務承諾；不固定 section 高度。
 
-**Evidence：** full Desktop／Mobile、Hero、timeline、CabAI row、頁尾 CTA；五 viewport；鍵盤、focus、外連、zero overflow。
+**Evidence：** full Desktop／Mobile、Hero、timeline、公開輸出敘事、交付經驗 proof、CabAI row、Work CTA、頁尾 CTA；五 viewport；鍵盤、focus、外連、zero overflow。
 
-**Outcome DoD：** 4.9 全部通過，人工開圖確認後建立 `fix: clarify about trust and work routes` checkpoint，不 push。
+**Outcome DoD：** 4.9 全部通過，人工開圖確認後建立 `fix: route about trust into learning and services` checkpoint，不 push。
 
 ### Phase 2：Work
 
@@ -695,9 +737,9 @@ Mobile：
 
 **Invariants：** 三種服務、真實交付經驗、四步流程、合作邊界、Email 唯一 Primary、Threads fallback 不變。
 
-**Forbidden shortcuts：** 不將合作經驗壓成一句；不新增客戶或成果；不把三種服務縮成無資訊的標題卡；不以 Threads 取代 Email；不讓 `service-proof` 無 heading。
+**Forbidden shortcuts：** 不將合作經驗壓成一句；不新增客戶或成果；不把教學交付經驗寫成三種服務的全面證明；不把三種服務縮成無資訊的標題卡；不靠 13px 小字塞回重複清單；不顯示 raw service slug；不以 Threads 取代 Email；不讓 `service-proof` 無 heading。
 
-**Evidence：** full Desktop／Mobile、service comparison、heading outline、process Desktop／Mobile、Email／Threads states、`#service-options` offset、mailto inspection。
+**Evidence：** full Desktop／Mobile、service comparison、15／16px computed type、heading outline、proof claim scope、process Desktop／Mobile、boundary responsibility、Email／Threads states、`#service-options` offset、mailto inspection。
 
 **Outcome DoD：** 7.9 全部通過後建立 `fix: sharpen services fit and contact flow` checkpoint，不 push。
 

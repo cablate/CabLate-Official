@@ -11,6 +11,7 @@ export function withCabAiAttribution(url: string, campaign: string) {
 export const siteConfig = {
   /** 社群 */
   threadsUrl: 'https://www.threads.net/@cab_late',
+  githubUrl: 'https://github.com/cablate',
 
   /** 公開聯絡方式 */
   contactEmail: 'cablate@cablate.com',

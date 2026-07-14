@@ -8,8 +8,8 @@ export const authorityProfile = {
   humanBio: '我把複雜技術講成人話，幫創作者、小團隊和企業釐清問題、設計流程，讓 AI 能穩定完成工作。',
   authorUrl: 'https://cablate.com/about/',
   sameAs: [
-    'https://www.threads.net/@cab_late',
-    'https://github.com/cablate',
+    siteConfig.threadsUrl,
+    siteConfig.githubUrl,
   ],
 } as const;
 
@@ -64,25 +64,52 @@ export const representativeWork = [
 
 export const openSourceProofs = [
   {
+    kind: '開源工具',
     title: 'mcp-google-map',
-    description: '把 Google Maps 能力包成 Agent 可使用的 MCP 工具。',
+    headline: '把一項 API 能力，整理成別人裝得起來、也接得下去的工具。',
+    description: '這個開源工具把 Google Maps 能力整理成可安裝的 MCP 工具，公開程式碼與 npm 套件。別人不只可以看到成果，也能實際使用、追查做法，再從現有介面繼續改。',
+    capability: '看得到工具介面、安裝方式與可延伸的公開程式碼。',
     metric: '365 stars／75 forks',
     asOf: '2026-07-02',
     href: 'https://github.com/cablate/mcp-google-map',
+    sourceLabel: '查看公開程式碼',
   },
   {
+    kind: '資料型產品',
     title: 'banini-tracker',
-    description: '把社群貼文、AI 分析、即時推送與股價驗證串成可部署的資料產品。',
+    headline: '把分散的社群訊號，做成能一路追到結果的資料流程。',
+    description: '這套資料產品串起社群貼文、AI 分析、即時推送與後續股價驗證。它留下的不是單次分析，而是一條可以部署、檢查與繼續追蹤的流程。',
+    capability: '看得到資料整合、AI 分析、通知與後續驗證怎麼接在一起。',
     metric: '287 stars／49 forks',
     asOf: '2026-07-02',
     href: 'https://github.com/cablate/banini-tracker',
+    sourceLabel: '查看公開程式碼',
   },
   {
+    kind: '公開研究',
     title: 'claude-code-research',
-    description: '持續整理 Claude Code 與 Agent 工作流的公開研究。',
+    headline: '把實作研究持續公開，讓方法不只停在一篇貼文裡。',
+    description: '這個公開研究庫持續整理 Claude Code 與 Agent 工作流的研究。讀者能回頭查資料、看更新，也能檢查方法怎麼形成。',
+    capability: '看得到研究資料、整理脈絡與持續更新的紀錄。',
     metric: '159 stars／67 forks',
     asOf: '2026-07-02',
     href: 'https://github.com/cablate/claude-code-research',
+    sourceLabel: '查看公開研究',
+  },
+] as const;
+
+export const deliveryExperienceProofs = [
+  {
+    kind: '實作型課程',
+    headline: '不只講懂概念，也帶人走完一條可以上線的流程。',
+    description: '從 API 一路做到訂單狀態、Webhook、簽章、權限與錯誤處理，讓學員實際走完收款流程，而不是只看功能示範。',
+    proof: '40+ 位學員',
+  },
+  {
+    kind: '工程手冊',
+    headline: '把長期實作整理成能查閱、排錯與交接的內容。',
+    description: 'Agent 深度工程手冊把半年以上的 Claude Code 經驗拆成 45 課，整理 Skill、Memory、Hook、Context 與 Harness 的實際用法。',
+    proof: '45 課已發布',
   },
 ] as const;
 
