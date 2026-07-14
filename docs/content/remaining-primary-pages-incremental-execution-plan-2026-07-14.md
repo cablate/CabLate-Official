@@ -34,7 +34,7 @@ execution_mode: serial-small-slices
 | --- | --- | --- | --- |
 | G0 | `G1–G4` | 六個主要頁面同時維持正確角色與下一步 | 六頁 production captures、runtime facts、final diff |
 | G1 About 信任 | `A1–A4` | 首屏、CabAI 證據與頁尾都能自然導向 Work | About targeted／full-page evidence |
-| G2 Work 證據 | `W1–W4` | 案例可掃讀、連結名稱不過長、合作入口清楚 | DOM outline、focus name、Work captures |
+| G2 Work 證據 | `W0a–W6` | Work 比 About 多提供真實決策深度，既有經驗不被抹除，案例可讀且合作入口清楚 | 跨頁 owner matrix、source-backed case matrix、DOM outline、computed type、focus name、Work captures |
 | G3 Courses 選擇 | `C1–C4` | 四條路不是必修漏斗，三條可走路線可明確啟動 | route facts、CTA states、Courses captures |
 | G4 Services 適配 | `S0–S6` | 服務、經驗、流程、邊界與聯絡各自完成單一任務，且不靠小字或過度主張維持完整感 | heading outline、type／CTA rect、mailto facts、Services captures |
 | S1／S3 共用互動 | `F1–F4` | 共用 CTA 狀態成立且 Home／Expertise 不回歸 | contract、state captures、regression captures |
@@ -188,7 +188,7 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 - 將 About 的信任證據拆成兩個明確資料群：`publicOutputs`（GitHub、公開文章／研究、Threads 等可外部查驗輸出）與 `deliveryProofs`（課程、教學、內訓、產品交付、CabAI 內容交付）。
 - 每筆資料至少要有 `title`、`type`、`problem`、`insight`、`evidence`、`destination`；About 讀的是「問題／判斷／證據透露的能力」，Work 才保留完整案例、限制與外部檔案連結。
 - stars／forks 保留於 canonical data 供其他頁面或日後查核，但不在 About 顯示；課程人數與日期只能作次要 evidence，不新增未由 canonical source 支持的成果、客戶或能力宣稱。
-- `representativeWork` 保留為 Work 的完整案例來源；`openSourceProofs` 只有 About 使用，確認 migration 後才可移除，不能先刪資料再補文案。
+- `representativeWork` 與 `openSourceProofs` 目前重複維護部分 repo facts；A3b-1 不先刪任何資料。Work W0c 核准後，由 W1 把可共用的 artifact identity／href／proof 收斂成 canonical facts，About 與 Work 仍各自維護不同的 author-signal／decision-record narrative。
 
 **Gate：** L0。**DoD：** 建立 public output／delivery proof content matrix，所有 visible claim 都能回到 `authority.ts`、既有 Work story、公開文章或明確外部 URL；待使用者確認內容分組後才進版面施工。
 
@@ -217,42 +217,116 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 
 **DoD：** 父計畫 4.9 全通過，建立 `fix: route about trust into learning and services` checkpoint。
 
-## 6. Work：四小步完成證據到合作路徑
+## 6. Work：W0a–W6 完成跨頁證據到合作路徑
 
-### W1：案例語意與長卡拆分
+### W0a：Work 視覺與互動規劃審核（verified）
 
-**Exact files：** `src/pages/work.astro`。
+**Exact files：** 父計畫、本文件、`docs/design/audits/2026-07-14-work-strict-plan-audit/`；零 production files。
 
-- 將三張整卡 anchor 改為語意 article＋獨立 action row；內容與順序不變。
-- 不先改 Hero、featured handbook 或頁尾 Services CTA 樣式。
+- 以 1280／390 captures、320／360／390 runtime facts、heading outline、computed type、CTA rect、whole-card accessible name 與 href／target／rel 回查原規劃。
+- 已成立的 baseline：閱讀順序、Hero H1、原 limited-disclosure 誠信邊界、三種 Mobile width zero overflow、`#selected-work` offset 與 external link safety；原頁尾內容後續由 W0d 的使用者決策取代。
+- 待修 baseline：whole-card anchors、`166–192` 字 link names、`11.2–13.44px` case text、Mobile proof 重複、低辨識 actions 與不可執行的長 H2 句組。
 
-**Gate：** L1。**DoD：** accessible name 簡短、Tab 範圍可理解、整張 417px 長卡不再是唯一 anchor。
+**Gate：** L0。**DoD：** planning evidence 與 production status 分離；不得把既有四件案例名單視為已核准 invariant。
 
-### W2：Featured 與 Services CTA 層級
+### W0b：跨頁重疊與既有經驗 owner audit（verified）
 
-**Exact files：** `src/pages/work.astro`。
+**Exact files：** 父計畫、本文件、`docs/design/audits/2026-07-14-work-public-records-overlap-audit/`；零 production files。
 
-- 對齊 Desktop／Mobile handbook CTA，提升 Hero 高意圖捷徑與頁尾 Services Primary。
-- 不新增案例、客戶名、成果數字或產品承諾。
+- Fresh 比對 Home handbook、About public output／delivery、Work records、Courses learning map、Services delivery proof 與 Expertise diagnosis。
+- 確認 `mcp-google-map`／`banini-tracker` 在 About 與 Work 語意近似；手冊橫跨 Home／About／Work／Courses；金流教學對應 course entry 是 draft，公開 route 404，`/courses/` 未列該項目。
+- 建立跨頁 owner contract：共享 artifact facts，不共享頁面 narrative；About 擁有 author signal、Work 擁有 decision record、Courses 擁有 product state、Services 擁有服務詳情與合作條件。非公開經驗不再於 Work 逐筆呈現。
+- 建議 public decision roster：`mcp-google-map` featured、`banini-tracker`、`claude-code-research`；手冊與金流教學退出 Work Public Records。
 
-**Gate：** L1。**DoD：** 同一行動跨 viewport 不降級；讀完證據可清楚前往 Services。
+**Gate：** L0。**DoD：** 原 W1 execution-ready 判定撤回；重疊與早期專業經驗都有明確 owner，不以 UI 修補取代內容決策。
 
-### W3：Mobile 密度與 heading phrases
+### W0c：案例 source matrix 與名單核准（pending）
 
-**Exact files：** `src/pages/work.astro`。
+**Exact files：** 更新 overlap audit README、父計畫與本文件；只讀 `src/config/authority.ts`、Home／About／Work／Courses／Services sources 與核准的第一方公開來源；零 production files。
 
-- 只調案例內容分工、間距、標題句組與 `#selected-work` sticky offset。
-- 不刪限制、日期或揭露範圍，不把案例壓成成果口號。
+- 對 `mcp-google-map`、`banini-tracker`、`claude-code-research` 逐項填 context、real constraint、alternatives／trade-off、decision、artifact、verification source；缺少來源的欄位明確留白，不用推測補齊。
+- 不再為 Work 建立 limited-disclosure candidate roster；使用者已核准 W0d，以不含客戶、公司或合作方線索的服務橋接卡取代該區塊。
+- 驗證每個 `PUBLIC DECISION RECORD` destination 可公開開啟；draft、404、泛用索引頁或只有個人主張的項目不通過。
+- 使用者核准三件 public decision roster 與 source-backed decision depth 後才解除 W1 blocker。
 
-**Gate：** L1。**DoD：** 320–390px 可讀、零裁切，頁面縮短來自去重與結構而非縮字。
+**Gate：** L0＋user review。**DoD：** 每個 Work record 都比 About 多一層 source-backed decision depth；名單、順序、資料來源與排除項明確核准。
 
-### W4：Work page gate
+### W0d：作品證據後的黃色服務橋接（verified）
 
-**Exact files：** 新增 `docs/design/audits/2026-07-14-work-implementation/`。
+**Exact files：** `src/pages/work.astro`、`docs/contracts/work-service-bridge-2026-07-14.md`、父計畫、本文件、`docs/design/audits/2026-07-14-work-service-bridge/`。
 
-- 跑 L2；驗證 full page、featured CTA、case action、limited disclosure、Services CTA、anchor offset、focus name。
+- 使用者核准 ideation option 2：左側說明「從做過的判斷，走到可以合作的方式」，右側用三張既有黃色紙張素材呈現 `serviceTracks`。
+- 完整移除企業／客戶／合作方與揭露限制敘述；Work 只寫三種服務情境，完整 fit、deliverables、流程與邊界仍由 Services 擁有。
+- 三張卡是非互動 `<article>`；區塊只有一個「查看完整服務與合作方式」CTA，destination `/services/`。
+- Desktop 保留微幅錯落紙卡；320–390px 依 DOM 順序單欄，取消位移與旋轉，不使用 fixed height 或縮字掩蓋內容。
 
-**DoD：** 父計畫 5.9 全通過，建立 `fix: turn work evidence into clear case routes` checkpoint。
+**Gate：** L1＋user-selected visual。**DoD：** 1280／390 畫面與 option 2 的構圖、黃色紙卡、標題與單一 CTA 對齊；320／360／390 zero overflow、CTA `>=48px`、無客戶或保密字樣。此切片不解除 W0c 的 public record roster blocker。
+
+### W1：Canonical facts 與 page-specific projections
+
+**Exact files：** `src/config/authority.ts`、`src/pages/work.astro`，新增／更新 `docs/design/audits/2026-07-14-work-implementation/README.md` 的 narrow change contract。
+
+- 建立可由 About／Work 共用的 public artifact identity／href／proof facts；至少有兩個 consumer，避免 `representativeWork` 與 `openSourceProofs` 各自維護相同 repo 事實。
+- About 保留 author-signal narrative；Work 另有 W0c 核准的 context／constraint／trade-off／decision／verification projection。禁止建立一段兩頁共用的 generic summary。
+- Work roster 切為 `mcp-google-map` featured、`banini-tracker`、`claude-code-research`；只從 Work 移除手冊與金流教學，不改 Home／About／Courses 的既有可見內容與產品狀態。
+- 保留 W0d 已核准的服務橋接，不在 W1 重新加入 limited-disclosure roster 或客戶線索。
+- 不先處理 whole-card anchor、字級、CTA 或 heading。
+
+**Gate：** L1。**DoD：** canonical facts 只有一個 owner，About 可見內容零回歸；Work 三件公開紀錄符合核准矩陣，無 draft／404 destination；W0d 服務橋接零回歸。
+
+### W2：Decision-record 語意與獨立目的地
+
+**Exact files：** `src/pages/work.astro`，更新 W1 evidence README。
+
+- Featured DOM 依 context → constraint → alternatives／trade-off → decision → artifact → verification → action；次要 records 依 title → new decision insight → evidence → action。
+- 將 whole-card anchors 改為語意 `<article>`；只有末端 action 是 anchor。
+- Actions 顯示「查看公開程式碼與使用文件」「查看公開程式碼」「查看公開研究」；accessible name 包含 case title，但排除整張 article 內文。
+- 不先改字級、heading 或 CTA 視覺層級。
+
+**Gate：** L1。**DoD：** 每件 record 都有 About 未提供的新 decision layer；Tab 只停在明確 action，整張長卡不再是唯一 anchor，external target／rel 正確。
+
+### W3：證據 owner 與可讀字級
+
+**Exact files：** `src/pages/work.astro`，更新 W1 evidence README；只讀 canonical facts 核對 proof。
+
+- 每個 viewport 的同一 proof 只由一個 evidence owner 顯示。
+- Decision-record body 設為 Desktop `>=15px`、Mobile `>=16px`；proof metadata 設為 Desktop `>=14px`、Mobile `>=15px`。
+- Stars／forks／日期只作 corroborating metadata，不取代 constraint、decision 或 verification；不以縮字、fixed height、overflow hidden 或刪除推理追求短頁。
+- 不改 CTA 外觀、destination 或 W0d 服務橋接文案。
+
+**Gate：** L1。**DoD：** 1280／390 能完整閱讀三件公開紀錄；同一 proof 不重複；320–390 zero overflow。
+
+### W4：證據後的 action hierarchy
+
+**Exact files：** `src/pages/work.astro`，更新 W1 evidence README；不修改 `src/styles/global.css`。
+
+- Hero `#selected-work` 維持唯一 filled Primary；Hero Services shortcut 成為 `>=48px` bordered Secondary。
+- Featured public-source action 成為有可見 boundary 的 contextual action，Desktop／Mobile `>=48px`，Mobile full width。
+- W2 的 record actions 具清楚 action row，Mobile full width／`>=48px`。
+- 頁尾 W0d 只顯示「查看完整服務與合作方式」，成為唯一 filled Services Primary；Desktop `>=52px`、Mobile full width／`>=48px`。
+
+**Gate：** L1。**DoD：** 越接近證據高點，行動辨識不下降；同一區只有一個 filled Primary，href／target／rel 全部正確。
+
+### W5：公開作品 Heading 與 Mobile reflow
+
+**Exact files：** `src/pages/work.astro`，更新 W1 evidence README。
+
+- H1 原文與三個既有 phrase 不變。
+- Selected H2 使用核准短句「每件作品，都從問題開始。」並建立 phrase spans。
+- W0d service bridge heading 與 grid 已完成，不在本 slice 改寫；只驗證公開作品調整沒有推擠或覆蓋頁尾服務卡。
+- Mobile 處理 320–390px heading、紙張安全內距與自然 section spacing；保護已通過的 `#selected-work` 約 `83px` offset。
+- W0c 核准的 public record body、W0d service bridge 與所有 actions 不在本 slice 改寫。
+
+**Gate：** L1。**DoD：** 320／360／390／1280／1440 的公開作品與 service bridge H2 不拆壞中文詞組、zero overflow；anchor 不退步。
+
+### W6：Work page gate
+
+**Exact files：** 更新 `docs/design/audits/2026-07-14-work-implementation/`。
+
+- 跑 L2；驗證 About → Work 不重複閱讀測試、full page、heading outline、case source mapping、featured proof owner、computed type、article／action、W0d service bridge、Services hierarchy、anchor offset、focus name、Tab／Enter 與 external links。
+- 捕捉 320／360／390／1280／1440，逐張重開；錯頁、paint artifact、裁切或 stale scroll capture 一律作廢。
+
+**DoD：** 父計畫 5.9 全通過，建立 `fix: turn work evidence into clear decision records` checkpoint。
 
 ## 7. Courses：四小步完成非必修選擇地圖
 
@@ -419,8 +493,12 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 | A3b-1 | pending | 1 | L0 | 是，限資料責任與內容矩陣 |
 | A3b-2 | pending | 1 | L1 | 否，需瀏覽器證據 |
 | A4 | pending | 0 | About L2 | 是 |
-| W1–W3 | pending | 1／slice | 否 | 只限同頁施工中 |
-| W4 | pending | 0 | Work L2 | 是 |
+| W0a | verified | 0 | L0 | 是，visual planning evidence only |
+| W0b | verified | 0 | L0 | 是，cross-page owner evidence only |
+| W0c | pending | 0 | L0＋user review | 是，source matrix 與 roster 核准前阻塞 W1 |
+| W0d | verified | 1 | L1＋user-selected visual | 是，使用者已確認 production 畫面；此切片不解除 W0c |
+| W1–W5 | pending | 1–2／slice | L1 | 否，需各自瀏覽器證據 |
+| W6 | pending | 0 | Work L2 | 是 |
 | C1–C3 | pending | 1–2／slice | 否 | 只限同頁施工中 |
 | C4 | pending | 0 | Courses L2 | 是 |
 | S0 | verified | 0 | L0 | 是，planning evidence only |
@@ -470,10 +548,10 @@ Previous gate／checkpoint：
 
 ## 13. Execution-readiness verdict
 
-**Verdict：Ready after approval。**
+**Verdict：Needs Revision。**
 
 - Repo reality：所有列出的 production files 與資料來源已存在。
 - Phase sizing：每個 production slice 只動 1–2 個主要檔案與一種風險；browser evidence 與 heavy gate 分層執行。
 - Contract：F1 指定正式 artifact，各 UI slice 有 narrow change record 與 acceptance evidence。
 - Serial coordination：`global.css`、頁面 implementation、final gate 均明確序列化，不允許跨 slice 混改。
-- Remaining blocker：P0 使用者核准。核准前只能補文件與 repo facts，不能宣稱四頁已完成。
+- Remaining blockers：P0 其餘整體規劃的逐段核准，以及 Work W0c 的 source-backed public decision matrix／roster。W0d 已完成 production、internal QA 與 user confirmation；W0c 完成前不能進 W1 或宣稱 Work 已完成。

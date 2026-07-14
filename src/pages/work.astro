@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowRight, ArrowUpRight } from '@lucide/astro';
-import { representativeWork } from '../config/authority';
+import { representativeWork, serviceTracks } from '../config/authority';
 
 const workStories = [
   {
@@ -26,18 +26,17 @@ const workStories = [
   },
 ];
 
-const limitedDisclosureWork = [
-  {
-    title: '企業 AI 導入與內訓',
-    scope: '已完成需求盤點、內容與實作設計、執行及交付。',
-    boundary: '企業名稱、Logo、照片、參與人數與內部成果尚未取得公開授權，因此目前只列為合作紀錄，不包裝成完整 Case Study。',
-  },
-  {
-    title: '電商平台 MCP 合作測試',
-    scope: '將 MCP 工具能力轉成實際營運分析情境，驗證工具如何進入既有工作流程。',
-    boundary: '合作方身分、內部資料與測試結果需保密；缺少可公開脈絡前，只說明負責範圍，不宣稱商業成效。',
-  },
-];
+const serviceBridgeSummaries = {
+  'workflow-diagnosis': '釐清反覆重做、驗收失焦與 AI 適合介入的位置。',
+  training: '用團隊的真實任務練習分工、檢查與可沿用的方法。',
+  'agent-adoption': '從需求、資料、權限與驗收條件開始接進既有流程。',
+} satisfies Record<(typeof serviceTracks)[number]['id'], string>;
+
+const serviceBridgeItems = serviceTracks.map((service) => ({
+  id: service.id,
+  title: service.title,
+  summary: serviceBridgeSummaries[service.id],
+}));
 ---
 
 <BaseLayout title="代表作品與關鍵判斷｜CabLate" description="從工程手冊、MCP 工具、金流教學到資料產品，了解 CabLate 面對問題與限制時如何做選擇，以及有哪些成果可以公開檢查。">
@@ -131,20 +130,26 @@ const limitedDisclosureWork = [
       </div>
     </section>
 
-    <section class="project-notes page-paper paper-card paper-card--clip paper-card--clip-left" aria-labelledby="notes-title">
-      <div>
-        <p class="section-label">有限揭露的合作紀錄</p>
-        <h2 id="notes-title">把做過的範圍與不能公開的部分放在一起說清楚。</h2>
-        <span class="project-notes__stamp">PROJECT NOTES</span>
+    <section class="service-bridge page-paper paper-card" id="service-bridge" aria-labelledby="service-bridge-title">
+      <div class="service-bridge__intro">
+        <h2 class="display-heading" id="service-bridge-title">
+          <span class="heading-phrase">從做過的判斷，</span>
+          <span class="heading-phrase">走到可以合作的</span>
+          <span class="heading-phrase">方式。</span>
+        </h2>
+        <p>不用先知道服務名稱；先看哪一種情境最接近你現在的問題。</p>
       </div>
-      <div>
-        {limitedDisclosureWork.map(item => (
-          <article>
-            <h3>{item.title}</h3>
-            <dl><div><dt>可公開範圍</dt><dd>{item.scope}</dd></div><div><dt>揭露限制</dt><dd>{item.boundary}</dd></div></dl>
-          </article>
-        ))}
-        <a class="text-link" href="/services/">如果你有相似情境，查看合作方式 <ArrowRight size={16} aria-hidden="true" /></a>
+      <div class="service-bridge__content">
+        <div class="service-bridge__cards">
+          {serviceBridgeItems.map((service, index) => (
+            <article class="service-bridge__card" id={`service-${service.id}`}>
+              <span class="service-bridge__number">0{index + 1}</span>
+              <h3>{service.title}</h3>
+              <p>{service.summary}</p>
+            </article>
+          ))}
+        </div>
+        <a class="service-bridge__cta" href="/services/">查看完整服務與合作方式 <ArrowRight size={18} aria-hidden="true" /></a>
       </div>
     </section>
   </article>
@@ -177,7 +182,7 @@ const limitedDisclosureWork = [
   .work-hero__record dt { color: var(--accent); font-size: .68rem; font-weight: 700; }
   .work-hero__record dd { margin: .3rem 0 0; color: var(--text-secondary); font-size: .78rem; line-height: 1.6; }
   .selected-work__header { position: relative; max-width: 52rem; margin-bottom: 3.25rem; }
-  .selected-work h2, .project-notes h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
+  .selected-work h2, .service-bridge h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
   .selected-work__header .paper-label { top: -.35rem; right: 1.5rem; left: auto; transform: rotate(2deg); }
   .work-featured { display: grid; grid-template-columns: minmax(8rem, .24fr) minmax(0, 1fr) minmax(10rem, .3fr); gap: 0; border: 1px solid var(--border-strong); }
   .work-featured__rail { display: flex; flex-direction: column; min-inline-size: 0; padding: 1.35rem 1rem; border-right: 1px solid var(--border); }
@@ -212,16 +217,21 @@ const limitedDisclosureWork = [
   .work-index__proof strong { color: var(--text-muted); font-size: .7rem; line-height: 1.55; }
   .work-file__open { display: inline-flex; align-items: center; justify-content: flex-end; gap: .4rem; color: var(--accent); font-size: .76rem; font-weight: 700; white-space: nowrap; }
   .work-index__item:hover h3, .work-index__item:hover .work-file__open, .work-featured__evidence .work-file__open:hover { color: var(--accent-hover); }
-  .project-notes { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); }
-  .project-notes > div:first-child { position: relative; }
-  .project-notes__stamp { display: inline-block; margin-top: 2rem; padding: .35rem .65rem; border: 1px solid var(--border-strong); color: var(--accent); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .08em; transform: rotate(-2deg); }
-  .project-notes > div:last-child { border-top: 1px solid var(--border-strong); }
-  .project-notes article { padding: 1.3rem 0; border-bottom: 1px solid var(--border); }
-  .project-notes h3 { margin: 0 0 1rem; }
-  .project-notes dl { display: grid; gap: .8rem; margin: 0; }
-  .project-notes dt { color: var(--text-muted); font-size: .72rem; font-weight: 700; }
-  .project-notes dd { margin: .3rem 0 0; color: var(--text-secondary); line-height: 1.7; }
-  .project-notes .text-link { margin-top: 1.5rem; }
+  .service-bridge { display: grid; grid-template-columns: minmax(17rem, .72fr) minmax(0, 1.28fr); gap: clamp(3rem, 7vw, 6.5rem); align-items: center; scroll-margin-top: 5.5rem; }
+  .service-bridge__intro, .service-bridge__content { min-inline-size: 0; }
+  .service-bridge h2 { max-width: 10ch; }
+  .service-bridge__intro > p:last-child { max-width: 24rem; margin: 1.75rem 0 0; padding-top: 1.5rem; border-top: 2px solid var(--accent-bright); color: var(--text-secondary); font-size: 1rem; line-height: 1.8; text-wrap: pretty; }
+  .service-bridge__cards { display: grid; gap: 1rem; min-inline-size: 0; }
+  .service-bridge__card { position: relative; min-inline-size: 0; padding: 1.45rem clamp(1.8rem, 3vw, 2.5rem) 1.55rem; background-color: #f5ebd5; background-image: var(--paper-reading-card-image); background-repeat: no-repeat; background-position: center; background-size: 112% 152%; box-shadow: 0 .45rem .5rem rgb(69 58 43 / .12); transform-origin: center; }
+  .service-bridge__card:nth-child(1) { transform: translateX(-.35rem) rotate(-.28deg); }
+  .service-bridge__card:nth-child(2) { transform: translateX(.2rem) rotate(.22deg); }
+  .service-bridge__card:nth-child(3) { transform: translateX(-.12rem) rotate(-.16deg); }
+  .service-bridge__number { display: inline-flex; align-items: center; min-height: 2rem; margin: -.8rem 0 .55rem -1.1rem; padding: .25rem .72rem; background-color: var(--bg-soft); background-image: var(--paper-white-image); background-repeat: no-repeat; background-position: center; background-size: 155% 210%; color: var(--accent); font-family: var(--font-mono); font-size: .72rem; box-shadow: 0 .2rem .4rem rgb(69 58 43 / .1); }
+  .service-bridge__card h3 { margin: 0 0 .45rem; font-size: clamp(1.3rem, 2.25vw, 1.72rem); line-height: 1.25; }
+  .service-bridge__card p { margin: 0; color: var(--text-secondary); font-size: .94rem; line-height: 1.72; text-wrap: pretty; }
+  .service-bridge__cta { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 3.25rem; margin-top: 1.45rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
+  .service-bridge__cta:hover { background: var(--accent); }
+  .service-bridge__cta:focus-visible { outline: 2px solid var(--accent); outline-offset: .3rem; }
   @media (max-width: 980px) {
     .work-hero__grid { grid-template-columns: minmax(7rem, .24fr) minmax(0, 1fr); }
     .work-hero__record { grid-column: 2; padding-top: 1.25rem; padding-left: 0; border-top: 1px solid var(--border); border-left: 0; }
@@ -232,6 +242,7 @@ const limitedDisclosureWork = [
     .work-featured__evidence .work-file__open { margin-left: auto; padding-top: 0; }
     .work-index__item { grid-template-columns: 3rem minmax(0, 1fr) minmax(9rem, .7fr) auto; }
     .work-index__proof { grid-column: 2 / 4; padding-left: 0; padding-top: .8rem; border-top: 1px solid var(--border); border-left: 0; }
+    .service-bridge { grid-template-columns: minmax(15rem, .78fr) minmax(0, 1.22fr); gap: 2.5rem; }
   }
   @media (max-width: 760px) {
     .work-hero__topline { align-items: flex-start; }
@@ -258,7 +269,11 @@ const limitedDisclosureWork = [
     .work-index__decision { grid-column: 2; padding: .8rem 0 0; border-top: 1px solid var(--border); border-left: 0; }
     .work-index__proof { grid-column: 2; padding: .8rem 0 0; border-top: 1px solid var(--border); }
     .work-index__item .work-file__open { grid-column: 2; justify-content: flex-start; min-height: 2.75rem; margin-top: .15rem; }
-    .project-notes { grid-template-columns: 1fr; }
+    .service-bridge { grid-template-columns: 1fr; gap: 2.25rem; }
+    .service-bridge h2 { max-width: 12ch; }
+    .service-bridge__intro > p:last-child { max-width: 32rem; }
+    .service-bridge__card:nth-child(n) { transform: none; }
+    .service-bridge__cta { width: 100%; min-height: 3rem; }
   }
   @media (max-width: 520px) {
     .work-hero__topline { padding-bottom: 1rem; }
@@ -271,5 +286,10 @@ const limitedDisclosureWork = [
     .work-featured h3 { font-size: 1.45rem; }
     .work-index__item h3 { font-size: 1.15rem; }
     .work-index__item p, .work-index__decision p { font-size: .84rem; }
+    .service-bridge__intro > p:last-child { margin-top: 1.4rem; padding-top: 1.2rem; font-size: .94rem; }
+    .service-bridge__card { padding: 1.35rem 1.45rem 1.45rem; background-size: 125% 150%; }
+    .service-bridge__number { margin-left: -.55rem; }
+    .service-bridge__card h3 { font-size: 1.35rem; }
+    .service-bridge__card p { font-size: 1rem; }
   }
 </style>

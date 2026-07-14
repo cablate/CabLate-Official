@@ -47,3 +47,25 @@ Date: 2026-07-11
 - Review generated page proposals before extracting any raster assets into `public/`.
 
 Final result: content and shared-shell baseline passed; image-generation proposal phase may begin.
+
+## Work service bridge Design QA — 2026-07-14
+
+- Source truth：`C:/Users/User/.codex/generated_images/019f5dfa-f4ec-7012-8453-21d555901f17/exec-a3fb69ab-0d33-4a96-b81e-3b0e7bcd75e3.png`
+- Implementation screenshot：`docs/design/audits/2026-07-14-work-service-bridge/14-desktop-1280x900-final.png`
+- Viewport／state：1280 × 900，`/work/#service-bridge`，section top `87.95px`；Mobile evidence 為 390 × 845。
+- Full-view comparison：`docs/design/audits/2026-07-14-work-service-bridge/15-source-vs-implementation-1280x900.png`
+- Focused responsive evidence：`docs/design/audits/2026-07-14-work-service-bridge/12-mobile-390x845-final.png`
+
+Required fidelity surfaces：
+
+- Typography：核准三行標題節奏成立；card body Desktop `15.04px`、Mobile `16px`。
+- Spacing：Desktop 左文右卡與三張錯落紙卡成立；Mobile 改為單欄並取消 transform。
+- Colors：沿用 CabLate 紙張、紫色與深墨色 token；黃色 fallback 為素材中心色 `#f5ebd5`。
+- Image quality：使用真實 1x／2x paper WebP image-set；移除會造成黑色 paint artifact 的 CSS filter。
+- Copy：三個 canonical service titles 與 Work 專用摘要完整；沒有公司、客戶、有限揭露或假案例語言。
+
+Interaction／runtime：區塊只有一個 focusable CTA，href `/services/`、Desktop／Mobile 高度 `52.78px`，`focus-visible` outline 規則存在；Desktop 與 Mobile 均 zero horizontal overflow，console 無 runtime error。
+
+Comparison history：先排除 stale HMR capture，再修正透明 WebP 黑色 paint artifact、標題斷行與 Mobile body 字級；最終 source／implementation 同畫面比較沒有 P0、P1 或 P2 mismatch。卡片實際寬度與上方頁面露出量的差異，是套入 production Work layout 與真實 viewport 後的可接受變化。
+
+Final result: passed
