@@ -4,22 +4,22 @@ interface Props {
   description?: string;
   noSEO?: boolean;
   noindex?: boolean;
+  shell?: 'desk' | 'bare';
 }
 
 import { ViewTransitions } from 'astro:transitions';
-import { Compass } from '@lucide/astro';
 import SEO from '../components/SEO.astro';
-import { siteConfig } from '../config/siteConfig';
+import ArchiveNavigation from '../components/ArchiveNavigation.astro';
+import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 import '@fontsource/noto-sans-tc/400.css';
 import '@fontsource/noto-sans-tc/500.css';
 import '@fontsource/noto-sans-tc/700.css';
 import '@fontsource/noto-serif-tc/400.css';
 import '@fontsource/noto-serif-tc/700.css';
 
-const { title, description = 'AI 時代的軟體開發洞察 - 判斷力才是你的護城河', noSEO = false, noindex = false } = Astro.props;
+const { title, description = '關於 AI 工作流程、產品實作與交付判斷的研究與紀錄。', noSEO = false, noindex = false, shell = 'desk' } = Astro.props;
+const seoTitle = title.includes('CabLate') ? title : `${title} | CabLate`;
 const currentYear = new Date().getFullYear();
-const siteUrl = import.meta.env.SITE || 'https://cablate.com';
-const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 ---
 
 <!DOCTYPE html>
@@ -28,14 +28,14 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {!noSEO && (
-      <SEO title={title === 'CabLate' ? title : `${title} | CabLate`} description={description} noindex={noindex} />
+      <SEO title={seoTitle} description={description} noindex={noindex} />
     )}
     {/* noSEO 模式：title 由子 layout 透過 slot="head" 的 SEO 元件提供 */}
     <slot name="head" />
     <ViewTransitions />
     <link rel="icon" type="image/webp" href="/favicon.webp">
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32">
-    <link rel="alternate" type="application/rss+xml" title="CabLate" href="/rss.xml" />
+    <!-- Articles inbound links paused: RSS endpoint 保留，但暫不在全站主動曝光。 -->
 
     <!-- Google Search Console 驗證 -->
     <meta name="google-site-verification" content={siteConfig.gscVerification} />
@@ -110,57 +110,40 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     </script>
 
 </head>
-<body>
+<body class:list={[`site-shell-${shell}`]}>
     <a href="#main-content" class="skip-link">跳到主要內容</a>
 
-    <!-- Navigation -->
-    <nav class="nav" aria-label="主導覽列">
-        <div class="nav-inner">
-            <a href="/" class="logo" aria-label="CabLate 首頁">
-                <span class="logo-icon" aria-hidden="true">
-                    <Compass size={22} stroke-width={2} />
-                </span>
-                <span class="logo-text">CabLate</span>
-            </a>
-            <ul class="nav-links" role="list">
-                <li><a href="/articles/">文章</a></li>
-                <li><a href="/courses/">課程</a></li>
-                <li><a href="/services/">服務</a></li>
-                <li><a href="/about/">關於我</a></li>
-                <li><a href="/search/">搜尋</a></li>
-            </ul>
-        </div>
-    </nav>
+    {shell === 'desk' && <ArchiveNavigation />}
 
     <!-- Main Content -->
-    <main id="main-content">
+    <main id="main-content" tabindex="-1">
         <slot />
     </main>
 
-    <!-- Footer -->
-    <footer class="footer" role="contentinfo">
+    {shell === 'desk' && <footer class="footer" role="contentinfo">
         <div class="footer-inner">
-            <div class="footer-brand">CabLate</div>
-            <nav class="footer-nav" aria-label="網站連結">
-                <a href="/articles/" class="footer-nav-link">文章</a>
-                <a href="/courses/" class="footer-nav-link">課程</a>
-                <a href="/services/" class="footer-nav-link">服務</a>
-                <a href="/about/" class="footer-nav-link">關於我</a>
-                <a href="/search/" class="footer-nav-link">搜尋</a>
-                <a href="/rss.xml" class="footer-nav-link">RSS</a>
+          <div class="footer-statement">
+            <a href="/" class="footer-brand">CabLate</a>
+            <p>找出 AI 為什麼一直重做，讓它不只開始做，而是真的把事情完成。</p>
+          </div>
+          <div class="footer-links">
+            <nav aria-label="內容與服務">
+              <strong>探索</strong>
+              {/* Articles inbound links paused. */}<a href="/expertise/">專業方法</a><a href="/courses/">學習</a><a href="/services/">合作</a><a href="/about/">關於</a>
             </nav>
-            <nav class="footer-social" aria-label="社群連結">
-                <a href="https://threads.net/@cab_late" class="footer-social-link" target="_blank" rel="noopener">Threads</a>
-                <a href="https://github.com/cablate" class="footer-social-link" target="_blank" rel="noopener">GitHub</a>
+            <nav aria-label="外部連結">
+              <strong>連結</strong>
+              <a href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'site_navigation')} target="_blank" rel="noopener">CabAI 學習平台</a><a href={`mailto:${siteConfig.contactEmail}`}>Email</a><a href={siteConfig.threadsUrl} target="_blank" rel="noopener">Threads</a><a href="https://github.com/cablate" target="_blank" rel="noopener">GitHub</a>{/* Articles inbound links paused: RSS 入口暫停。 */}
             </nav>
-            <p class="footer-copy">&copy; {currentYear} CabLate · <a href="/privacy/" class="footer-link">隱私權政策</a></p>
+          </div>
+          <div class="footer-meta"><p>&copy; {currentYear} CabLate</p><a href="/privacy/">隱私權政策</a></div>
         </div>
-    </footer>
+    </footer>}
 
     <!-- Scroll Reveal Observer -->
     <script is:inline>
       (function initReveal() {
-        const selectors = '.reveal, .reveal-left, .reveal-right, .reveal-scale';
+        const selectors = '.reveal';
         const els = document.querySelectorAll(selectors);
         if (!els.length) return;
 
@@ -199,8 +182,8 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     /* Phase 1: 模組化 CSS 載入順序 */
     @import '../styles/base.css';       /* CSS Variables + Reset + Typography */
     @import '../styles/utilities.css';  /* Layout + Section + Reveal */
-    @import '../styles/animations.css'; /* @keyframes + Animation Utilities */
     @import '../styles/global.css';     /* 元件樣式（待 Phase 2 遷移） */
+    @import '../styles/article-archive.css'; /* 文章分類與標籤索引 */
 
     /* Accessibility: Skip Link */
     .skip-link {
@@ -209,15 +192,15 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
       left: 0;
       z-index: 9999;
       padding: 0.75rem 1.5rem;
-      background: var(--accent, #6d28d9);
+      background: var(--accent);
       color: #fff;
       font-size: 0.9rem;
       text-decoration: none;
-      border-radius: 0 0 8px 0;
+      border-radius: 0 0 var(--radius-sm) 0;
     }
-    .skip-link:focus {
-      top: 0;
-    }
+     .skip-link:focus-visible {
+       top: 0;
+     }
 
     /* Accessibility: Focus Visible */
     :focus-visible {

@@ -14,7 +14,7 @@ export async function GET(context: APIContext) {
 
   return rss({
     title: 'CabLate',
-    description: 'AI 時代的軟體開發洞察 - 判斷力才是你的護城河',
+    description: 'CabLate 關於 AI 協作、Agent 工作流程與產品實作的研究和經驗整理。',
     site: context.site ?? 'https://cablate.com',
     items: published.map(entry => ({
       title: entry.data.title,

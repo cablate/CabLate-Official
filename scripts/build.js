@@ -8,21 +8,7 @@ execSync('node scripts/validate-content.js', { stdio: 'inherit' });
 // 1. Astro build
 execSync('npx astro build', { stdio: 'inherit' });
 
-// 2. Pagefind — build search index
-// Skip on Windows unless ENABLE_PAGEFIND=1 (pagefind binary not available for windows-x64)
-const skipPagefind = process.platform === 'win32' && process.env.ENABLE_PAGEFIND !== '1';
-if (skipPagefind) {
-  console.log('[postbuild] Pagefind skipped (Windows — set ENABLE_PAGEFIND=1 to override)');
-} else {
-  try {
-    execSync('npx pagefind --site dist --glob "**/*.html"', { stdio: 'inherit' });
-    console.log('[postbuild] Pagefind index built');
-  } catch {
-    console.log('[postbuild] Pagefind failed — search index not generated');
-  }
-}
-
-// 3. Sitemap ping
+// 2. Sitemap ping
 try {
   await fetch('https://www.google.com/ping?sitemap=https://cablate.com/sitemap.xml');
   console.log('[postbuild] Sitemap ping sent');
@@ -30,7 +16,7 @@ try {
   console.log('[postbuild] Sitemap ping failed (network)');
 }
 
-// 4. IndexNow — only runs in CI (Cloudflare Pages or generic CI)
+// 3. IndexNow — only runs in CI (Cloudflare Pages or generic CI)
 async function submitIndexNow() {
   const isCI = process.env.CF_PAGES || process.env.CI;
   if (!isCI) {

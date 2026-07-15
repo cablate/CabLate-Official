@@ -1,6 +1,6 @@
 ---
-title: "Agent SDK diff 注入修復：逆向 C26 函數用 JSONL 預處理解決"
-description: "Agent SDK 每次 submitMessage() 都重建 readFileState 導致 diff 重複注入。逆向 C26 函數找到根因，用 JSONL 預處理破壞追蹤條件，附完整 TypeScript 實作。"
+title: "Agent SDK 的 diff 注入怎麼繞過：逆向 C26 函數與 JSONL 預處理"
+description: "Agent SDK 每次 `submitMessage()` 都重建 `readFileState`，因此重複注入 diff。本文逆向 C26 函數找到原因，示範如何在 resume 前用 JSONL 預處理避開注入，並附 TypeScript 實作。"
 publishDate: 2026-03-10T14:00:00+08:00
 updatedDate: 2026-04-04
 category: 技術觀點

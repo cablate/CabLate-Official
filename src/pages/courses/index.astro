@@ -1,275 +1,175 @@
 ---
-/**
- * Courses Index Page - 課程列表
- */
-
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SectionTitle from '../../components/common/SectionTitle.astro';
-import KitForm from '../../components/common/KitForm.astro';
-import {
-  type CourseStatus,
-  type CourseLevel,
-  getStatusLabel,
-  getStatusBadgeClass,
-  getLevelBadgeClass,
-  formatPrice,
-} from '../../config/courseDisplay';
+import { ArrowRight, Check } from '@lucide/astro';
+import { learningPath } from '../../config/authority';
+import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
 
-// 取得所有已發布課程
-const allCourses = await getCollection('courses');
-const publishedCourses = allCourses
-  .filter(entry => !entry.data.draft && entry.data.status !== 'archived')
-  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 ---
 
-<BaseLayout title="課程 | CabLate">
-  <section class="section section-light">
-    <div class="container">
-      <SectionTitle
-        title="課程"
-        subtitle="Courses"
-      />
-
-      <div class="courses-grid">
-        {publishedCourses.map((entry, index) => (
-          <a href={`/courses/${entry.slug}`} class={`course-card reveal`} style={`animation-delay: ${index * 0.1}s`}>
-            <div class="course-card-header">
-              <span class={`badge badge-sm ${getLevelBadgeClass(entry.data.level as CourseLevel)}`}>
-                {entry.data.level}
-              </span>
-              {entry.data.status !== 'draft' && (
-                <span class={`badge badge-sm ${getStatusBadgeClass(entry.data.status as CourseStatus)}`}>
-                  {getStatusLabel(entry.data.status as CourseStatus)}
-                </span>
-              )}
-            </div>
-
-            <h2 class="course-card-title">{entry.data.title}</h2>
-
-            <p class="course-card-description">
-              {entry.data.excerpt || entry.data.description}
-            </p>
-
-            <div class="course-card-footer">
-              <div class="course-info">
-                <span class="duration">{entry.data.duration}</span>
-                <span class="price">{formatPrice(entry.data.price)}</span>
-              </div>
-              <span class="view-details">查看詳情 →</span>
-            </div>
-          </a>
-        ))}
+<BaseLayout title="學習內容與課程" description="還不知道 AI 問題出在哪，或已經在使用 Skill、Claude Code 卻反覆卡住？依目前狀況比較免費診斷、講座、課程與工程手冊，選擇適合的開始方式。">
+  <article class="learn-page paper-page">
+    <header class="learn-hero page-paper paper-card">
+      <div class="learn-hero__topline">
+        <p class="eyebrow section-label">學習內容</p>
+        <span>LEARNING MAP / 04</span>
       </div>
+      <h1 class="display-heading"><span class="heading-phrase">不用先學完整套，</span><span class="heading-phrase">直接從你現在卡住的</span><span class="heading-phrase">地方開始。</span></h1>
+      <p class="learn-hero__intro">有些人還不知道問題在哪；有些人已經在使用 Skill 或 Claude Code，只是一直卡在相同地方。下面四種內容彼此不是固定順序，你可以直接選目前最需要的一種。</p>
+      <a class="learn-hero__cta" href="#learning-map">找適合我的內容 <ArrowRight size={18} aria-hidden="true" /></a>
+    </header>
 
-      {publishedCourses.length === 0 && (
-        <div class="empty-state">
-          <div class="empty-content">
-            <div class="empty-icon">
-              <div class="pulse-ring"></div>
-              <div class="pulse-ring pulse-ring-delay"></div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-
-            <h2 class="empty-title">課程籌備中</h2>
-
-            <p class="empty-note">訂閱電子報，開課時會專屬通知</p>
-
-            <KitForm />
-          </div>
+    <section class="learn-map page-paper paper-card paper-card--clip paper-card--clip-left" id="learning-map" aria-labelledby="map-title">
+      <header class="learn-map__header">
+        <div>
+          <p class="section-label">依目前狀況選擇</p>
+          <h2 id="map-title">哪個問題最像你現在的情況？</h2>
+          <p class="learn-map__lead">還不確定問題在哪，就先從免費診斷開始；已經知道自己的卡點，再往下選擇需要的深度。</p>
         </div>
-      )}
-    </div>
-  </section>
+        <span class="paper-label" aria-hidden="true">CHOOSE ONE</span>
+      </header>
+
+      <ul class="learn-map__list" role="list">
+        {learningPath.map((item, index) => (
+          <li class:list={[
+            'learn-map__step',
+            index === 0 && 'learn-map__step--start',
+            item.href ? 'learn-map__step--available' : 'learn-map__step--pending',
+          ]}>
+            <div class="learn-map__marker" aria-hidden="true">
+              <span>0{index + 1}</span>
+            </div>
+            <div class="learn-map__content">
+              <div class="learn-map__meta">
+                <small>{item.stage}</small>
+                {item.href ? <span class="learn-map__available"><Check size={13} aria-hidden="true" /> 目前可開始</span> : <span class="learn-map__pending">尚未開放</span>}
+              </div>
+              <h3>{item.situation}</h3>
+              <div class="learn-map__solution">
+                <span>建議從這裡開始</span>
+                <h4>{item.title}</h4>
+                <p>{item.outcome}</p>
+                <div class="learn-map__action">
+                  {item.price && <strong>{item.price}</strong>}
+                  {item.href ? (
+                    <a class="learn-map__route-action" href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener' : undefined}>{item.cta} <ArrowRight size={15} aria-hidden="true" /></a>
+                  ) : (
+                    <span class="learn-map__status">有新場次時會在這裡更新</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="cabai-onboarding page-paper paper-card paper-card--clip-left" id="cabai-platform" aria-labelledby="cabai-onboarding-title">
+      <div>
+        <p class="section-label">內容如何交付</p>
+        <h2 id="cabai-onboarding-title">免費試看、已購課程與後續更新，都留在 CabAI 帳號裡。</h2>
+      </div>
+      <div class="cabai-onboarding__body">
+        <p>使用 Google 帳號登入 CabAI 後，就能查看免費試看、已購課程、工程手冊與後續更新。你也可以到個人資料頁連結 Discord，加入免費社群，和其他學習者交流 AI 應用、開發與實作問題。</p>
+        <div class="cabai-onboarding__actions">
+          <a class="learn-hero__cta" href={withCabAiAttribution(siteConfig.cabAi.accountUrl, 'courses_account')} target="_blank" rel="noopener">建立 CabAI 免費帳號 <ArrowRight size={17} aria-hidden="true" /></a>
+        </div>
+      </div>
+    </section>
+  </article>
 </BaseLayout>
 
 <style>
-  .courses-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
+  .learn-page { padding-top: 0; }
+  .learn-hero, .learn-map, .cabai-onboarding { width: min(100% - 3rem, 82rem); margin-inline: auto; }
+  #learning-map { scroll-margin-top: 2rem; }
+  .learn-hero { padding-block: clamp(3.2rem, 7vw, 6rem); }
+  .learn-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-inline-size: 0; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .learn-hero__topline .section-label { margin: 0; }
+  .learn-hero__topline > span { min-inline-size: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; text-align: end; text-wrap: pretty; }
+  .learn-hero h1 { max-width: 17ch; margin: clamp(2.75rem, 5vw, 4.5rem) 0 0; font-size: clamp(3rem, 5.8vw, 5.6rem); }
+  .learn-hero__intro { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
+  .learn-hero__cta { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
+  .learn-hero__cta:hover { background: var(--accent); }
+  .learn-hero__cta:active { transform: translateY(1px); }
+  .learn-hero__cta:focus-visible, .learn-map a:focus-visible { outline: 2px solid var(--accent); outline-offset: .3rem; }
+
+  .learn-map { padding-block: clamp(3.5rem, 7vw, 6rem); }
+  .learn-map__header { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; margin-bottom: 3.5rem; }
+  .learn-map__header h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
+  .learn-map__lead { max-width: 40rem; margin: 1.25rem 0 0; color: var(--text-secondary); line-height: 1.8; text-wrap: pretty; }
+  .learn-map__header .paper-label { top: -.35rem; right: 1.5rem; left: auto; transform: rotate(2deg); }
+  .learn-map__list { position: relative; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
+  .learn-map__list::before { position: absolute; top: 2.75rem; bottom: 2.75rem; left: 2rem; width: 1px; content: ''; background: linear-gradient(to bottom, var(--accent), var(--border-strong) 28%, var(--border-strong) 72%, var(--accent)); opacity: .55; }
+  .learn-map__step { position: relative; display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 2rem; padding: 2.2rem 0; border-bottom: 1px solid var(--border); }
+  .learn-map__marker { position: relative; z-index: 1; display: grid; place-items: center; width: 4rem; height: 4rem; border: 1px solid var(--border-strong); border-radius: 50%; background: var(--paper); color: var(--text-primary); font-family: var(--font-mono); font-size: .72rem; }
+  .learn-map__step--available .learn-map__marker { border-color: color-mix(in oklab, var(--accent) 62%, var(--border-strong)); color: var(--accent); }
+  .learn-map__step--pending .learn-map__marker { border-style: dashed; color: var(--text-muted); }
+  .learn-map__step--start .learn-map__marker { border-color: var(--accent); background: #f1ecff; color: var(--accent); }
+  .learn-map__content { min-width: 0; }
+  .learn-map__meta { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; }
+  .learn-map__meta small { color: var(--text-muted); }
+  .learn-map__available, .learn-map__pending { display: inline-flex; align-items: center; gap: .25rem; min-block-size: 1.55rem; padding: .22rem .55rem; border: 1px solid transparent; border-radius: .15rem; font-size: .68rem; font-weight: 700; line-height: 1.25; }
+  .learn-map__available { border-color: rgb(112 91 177 / .22); background: rgb(112 91 177 / .09); color: var(--accent); }
+  .learn-map__pending { border-color: var(--border); background: rgb(69 58 43 / .035); color: var(--text-muted); }
+  .learn-map h3 { max-width: 30ch; margin: .55rem 0 1.15rem; font-size: clamp(1.55rem, 2.5vw, 2.15rem); line-height: 1.25; text-wrap: balance; }
+  .learn-map h4 { margin: .3rem 0 .65rem; font-size: 1.35rem; line-height: 1.35; text-wrap: balance; }
+  .learn-map p { max-width: 50rem; margin: 0; color: var(--text-secondary); line-height: 1.75; }
+  .learn-map__solution { min-width: 0; padding: 1.25rem clamp(1.2rem, 2.4vw, 1.65rem) 1.4rem; background-image: var(--paper-reading-card-image); background-repeat: no-repeat; background-position: center; background-size: 124% 170%; }
+  .learn-map__solution > span { color: var(--accent); font-size: .68rem; font-weight: 700; }
+  .learn-map__action { display: flex; align-items: center; flex-wrap: wrap; gap: .8rem 1.4rem; margin-top: 1rem; }
+  .learn-map__action strong { color: var(--text-primary); font-size: .78rem; }
+  .learn-map__route-action { display: inline-flex; align-items: center; justify-content: space-between; gap: .8rem; min-block-size: 3rem; max-inline-size: 100%; padding: .7rem .95rem; border: 1px solid var(--border-strong); background-color: rgb(255 253 248 / .88); background-image: var(--paper-white-image); background-repeat: no-repeat; background-position: center; background-size: 145% 205%; color: var(--accent-text); font-size: .86rem; font-weight: 700; line-height: 1.35; white-space: nowrap; box-shadow: 0 .18rem .35rem rgb(69 58 43 / .1); transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast); }
+  .learn-map__route-action:hover { border-color: var(--accent); background-color: var(--bg-soft); color: var(--accent-hover); }
+  .learn-map__route-action:active { transform: translateY(1px); }
+  .learn-map__route-action :global(svg) { flex: 0 0 auto; }
+  .learn-map__status { display: block; padding-top: .8rem; border-top: 1px dashed var(--border-strong); color: var(--text-muted); font-size: .78rem; }
+
+  .cabai-onboarding { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: clamp(2rem, 6vw, 5rem); padding-block: clamp(2.25rem, 4vw, 3.25rem); }
+  .cabai-onboarding h2 { max-width: 18ch; margin: 0; font-size: clamp(1.75rem, 3vw, 2.7rem); letter-spacing: -.04em; line-height: 1.12; }
+  .cabai-onboarding__body { align-self: end; }
+  .cabai-onboarding__body > p { max-width: 38rem; margin: 0; color: var(--text-secondary); line-height: 1.85; }
+  .cabai-onboarding__actions { display: grid; justify-items: start; gap: .9rem; margin-top: 1.25rem; }
+
+  @media (max-width: 760px) {
+    .cabai-onboarding { grid-template-columns: 1fr; }
+    .learn-map__header { gap: 1.25rem; }
+    .learn-map__step { grid-template-columns: 3.5rem minmax(0, 1fr); gap: 1.25rem; }
+    .learn-map__marker { width: 3.5rem; height: 3.5rem; }
+    .learn-map__list::before { left: 1.75rem; }
   }
 
-  .course-card {
-    display: flex;
-    flex-direction: column;
-    padding: 1.75rem;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    text-decoration: none;
-    transition: all 0.2s ease;
+  @media (max-width: 520px) {
+    .learn-hero, .learn-map, .cabai-onboarding { width: min(100% - 2rem, 82rem); }
+    .learn-page .display-heading > .heading-phrase { white-space: normal; }
+    #learning-map { scroll-margin-top: 5.5rem; }
+    .learn-hero__topline { align-items: flex-start; gap: .75rem; }
+    .learn-hero__topline > span { max-inline-size: 12ch; padding-top: .1rem; font-size: .56rem; line-height: 1.45; }
+    .learn-hero h1 { margin-top: 2.2rem; font-size: 2.75rem; }
+    .learn-map__header { margin-bottom: 2.5rem; }
+    .learn-map__header .paper-label { top: -.55rem; right: .2rem; }
+    .learn-map__step { padding-block: 1.6rem; }
+    .learn-map h3 { font-size: 1.45rem; }
+    .learn-map p { font-size: .9rem; }
+    .learn-map__meta { gap: .5rem; }
+    .learn-map__available, .learn-map__pending { font-size: .62rem; }
+    .learn-map__solution { padding: 1.1rem; }
+    .learn-map__action { display: grid; gap: .7rem; }
+    .learn-map__route-action { inline-size: 100%; }
+    .cabai-onboarding__actions .learn-hero__cta { width: 100%; justify-content: center; }
   }
 
-  .course-card:hover {
-    border-color: var(--text-muted);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  @media (max-width: 340px) {
+    .learn-map h4 { font-size: 1.25rem; }
+    .learn-map__route-action { min-inline-size: 0; white-space: normal; }
   }
 
-  .course-card-header {
-    display: flex;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
+  @media (forced-colors: active) {
+    .learn-map__solution, .learn-map__route-action { border-color: CanvasText; background-image: none; box-shadow: none; }
+    .learn-map__route-action { color: LinkText; }
+    .learn-map__status { border-color: GrayText; color: GrayText; }
   }
 
-  .course-card-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.4;
-    margin-bottom: 0.5rem;
-  }
-
-  .course-card-description {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
-    flex-grow: 1;
-  }
-
-  .course-card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-light);
-  }
-
-  .course-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .duration {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
-
-  .price {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-
-  .view-details {
-    color: var(--accent);
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-
-  .empty-state {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5rem 2rem;
-    min-height: 50vh;
-  }
-
-  .empty-content {
-    text-align: center;
-    max-width: 600px;
-  }
-
-  .empty-icon {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent);
-  }
-
-  .empty-icon svg {
-    width: 56px;
-    height: 56px;
-    position: relative;
-    z-index: 2;
-    filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.3));
-  }
-
-  .pulse-ring {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 2px solid var(--accent-border);
-    animation: pulse-scale 2s ease-out infinite;
-  }
-
-  .pulse-ring-delay {
-    animation-delay: 1s;
-  }
-
-  @keyframes pulse-scale {
-    0% {
-      transform: scale(0.8);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(1.5);
-      opacity: 0;
-    }
-  }
-
-  .empty-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.75rem;
-  }
-
-  .empty-note {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-  }
-
-  .empty-content :global(.kit-form-wrapper) {
-    margin: 0;
-  }
-
-  @media (max-width: 768px) {
-    .courses-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .course-card {
-      padding: 1.5rem;
-    }
-
-    .course-card-title {
-      font-size: 1.3rem;
-    }
-
-    .empty-state {
-      padding: 4rem 1.5rem;
-      min-height: 40vh;
-    }
-
-    .empty-icon {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 1.25rem;
-    }
-
-    .empty-icon svg {
-      width: 44px;
-      height: 44px;
-    }
-
-    .empty-title {
-      font-size: 1.5rem;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .learn-hero__cta, .learn-map a { transition: none; }
   }
 </style>

@@ -1,0 +1,326 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ArrowRight } from '@lucide/astro';
+import { signatureMethods } from '../config/authority';
+const diagnosticScenarios = [
+  {
+    caseId: 'A',
+    symptom: '它常忘記前文，或拿舊資料回答現在的問題。',
+    question: '先確認 AI 在這個時間點，究竟看得到哪些資訊。',
+    method: 'Context',
+    methodLabel: '資訊脈絡',
+    check: '列出這次任務實際讀到的檔案、對話與資料版本，再和你以為它知道的內容逐項比對。',
+    mistake: '把更多資料一次塞進 Context，卻沒有處理版本、優先順序與使用時機。',
+    // Articles inbound links paused.
+    // href: '/articles/claude-code-token-drain-system-reminder/',
+  },
+  {
+    caseId: 'B',
+    symptom: '它做了很多事，結果卻不能直接拿來用。',
+    question: '確認任務、工具、權限與完成條件是不是彼此接得起來。',
+    method: 'Harness',
+    methodLabel: '執行環境',
+    check: '挑一個真實案例，寫下輸入、允許使用的工具、完成條件，以及遇到什麼情況必須停下來。',
+    mistake: '看到模型成功一次，就直接把它當成可以長期運作的流程。',
+    // Articles inbound links paused.
+    // href: '/articles/claude-code-workflow/',
+  },
+  {
+    caseId: 'C',
+    symptom: '一出錯就找不到問題在哪，只能全部重跑。',
+    question: '看流程有沒有留下每一步的輸入、輸出與失敗狀態。',
+    method: 'Harness',
+    methodLabel: '執行環境',
+    check: '挑一次真實失敗，找出最後一個正確結果、第一個錯誤訊號，以及重新執行時可以從哪一步開始。',
+    mistake: '只增加重試次數，卻沒有保存錯誤位置、部分成果與重新開始的條件。',
+  },
+  {
+    caseId: 'D',
+    symptom: '同一件事每次都要重教，品質還是忽好忽壞。',
+    question: '回頭看上次做對時，真正有用的方法有沒有被留下來。',
+    method: 'Skill',
+    methodLabel: '可重複方法',
+    check: '整理上次做對時真正影響結果的判斷、順序、限制與例外，確認它們是否已被明確記錄。',
+    mistake: '只保存最後使用的 Prompt，沒有保存何時啟動、遇到例外怎麼處理，以及結果怎麼檢查。',
+    // Articles inbound links paused.
+    // href: '/articles/agent-sdk-system-reminder-diff-fix/',
+  },
+];
+// Articles inbound links paused.
+// const methodLinks = [
+//   '/articles/claude-code-workflow/',
+//   '/articles/claude-code-token-drain-system-reminder/',
+//   '/articles/agent-sdk-system-reminder-diff-fix/',
+// ];
+
+const methodDisplayNames = {
+  'Context Engineering': { label: '資訊脈絡', term: 'Context' },
+  'Harness Engineering': { label: '執行環境', term: 'Harness' },
+  'Skill 路線設計': { label: '可重複方法', term: 'Skill' },
+} as const;
+
+const methodGuidance: Record<string, { repaired: string; next: string }> = {
+  'Context Engineering': {
+    repaired: 'AI 能說清楚正在使用哪個版本、哪些資料，以及目前還缺什麼；換回合後不會抓錯舊內容。',
+    next: '資料已經正確，但每次仍要重新解釋做法、品質忽好忽壞，就改查 Skill。',
+  },
+  'Harness Engineering': {
+    repaired: '同一個真實任務可以按照完成條件走完；途中失敗時，知道停在哪裡，也知道如何繼續。',
+    next: '任務、工具、權限、完成條件與失敗處理都已穩定，就停在這裡，不需要再為了熱門名詞增加複雜度。',
+  },
+  'Skill 路線設計': {
+    repaired: '上次做對的判斷、順序、限制與驗收方式已經被留下，下次不用全部重教。',
+    next: '做法已經留下，但結果仍無法穩定完成，或失敗後無法繼續，就改查 Harness。',
+  },
+};
+---
+
+<BaseLayout title="AI 工作流程與失效診斷" description="AI 忘記前文、每次都要重教，或做了很多卻不能直接使用？從實際症狀判斷問題出在 Context、Skill，還是 Harness。">
+  <article class="expertise-page paper-page">
+    <header class="expertise-hero page-paper paper-card">
+      <div class="expertise-hero__topline">
+        <p class="expertise-kicker">專業方法</p>
+        <span>DIAGNOSTIC NOTE · DN-2026-01</span>
+      </div>
+      <h1 class="display-heading"><span class="heading-phrase">AI 一直</span><span class="heading-phrase">鬼打牆，</span><span class="heading-phrase">先別只改</span>{' '}<span class="heading-phrase">Prompt。</span></h1>
+      <div class="expertise-hero__footer">
+        <p>規則寫得更多，不代表 AI 就會更穩。先看它這一刻到底讀到了什麼、能使用哪些工具，以及你有沒有講清楚什麼才叫完成。</p>
+        <a class="btn btn-primary expertise-hero__cta" href="#diagnosis">從你遇到的問題開始 <ArrowRight size={17} aria-hidden="true" /></a>
+      </div>
+    </header>
+
+    <section class="diagnosis page-paper paper-card paper-card--clip paper-card--clip-left" id="diagnosis" aria-labelledby="diagnosis-title">
+      <header class="diagnosis__header">
+        <div>
+          <p class="expertise-kicker">先看症狀</p>
+          <h2 id="diagnosis-title" class="display-heading"><span class="heading-phrase">不用先背方法名稱，</span><span class="heading-phrase">看看哪個情況最像</span><span class="heading-phrase">你現在遇到的。</span></h2>
+        </div>
+        <p>每一種失效都先做一個最小檢查。檢查能排除原因，再決定下一步，不用一開始就把整套流程推倒重來。</p>
+      </header>
+      <div class="diagnosis-list">
+        <div class="diagnosis-columns" aria-hidden="true">
+          <span>案例</span><span>你遇到的現象</span><span>最小下一步檢查</span><span>常見誤判</span>
+        </div>
+        {diagnosticScenarios.map((scenario) => (
+          <article>
+            <div class="diagnosis-index"><span>{scenario.caseId}</span><small>CASE</small></div>
+            <div class="diagnosis-symptom">
+              <small>你遇到的現象</small>
+              <h3>{scenario.symptom}</h3>
+              <p>{scenario.question}</p>
+              <p class="diagnosis-method"><span>可能卡在：</span><strong>{scenario.methodLabel}</strong><small>／{scenario.method}</small></p>
+            </div>
+            <dl class="diagnosis-checks">
+              <div><dt>最小下一步檢查</dt><dd>{scenario.check}</dd></div>
+              <div><dt>常見誤判</dt><dd>{scenario.mistake}</dd></div>
+            </dl>
+            {/* Articles inbound links paused. */}
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="method-map page-paper paper-card" id="method-map" aria-labelledby="method-map-title">
+      <header class="method-map__header">
+        <div>
+          <p class="expertise-kicker">怎樣才算有改善</p>
+          <h2 id="method-map-title" class="display-heading"><span class="heading-phrase">不是改完設定就算修好，</span><span class="heading-phrase">要看實際行為</span><span class="heading-phrase">有沒有改變。</span></h2>
+        </div>
+        <p>每一層都只需要回答兩個問題：修好後，你應該看到什麼？如果還沒好，下一個該查哪裡？</p>
+      </header>
+      <div class="method-map__table">
+        {signatureMethods.map((method, index) => (
+          <article>
+            <span class="method-map__index">0{index + 1}</span>
+            <div class="method-map__identity"><h3><span>{methodDisplayNames[method.title].term}</span><small>{methodDisplayNames[method.title].label}</small></h3></div>
+            <dl class="method-map__guidance">
+              <div><dt>修好後會看見什麼</dt><dd>{methodGuidance[method.title].repaired}</dd></div>
+              <div><dt>接著怎麼判斷</dt><dd>{methodGuidance[method.title].next}</dd></div>
+            </dl>
+            {/* Articles inbound links paused. */}
+          </article>
+        ))}
+      </div>
+      <div class="method-route" id="method-route" aria-labelledby="method-route-title">
+        <div class="method-route__label">
+          <strong id="method-route-title">建議順序</strong>
+          <small>先確認資訊，再固定方法，最後把執行接穩</small>
+        </div>
+        <ol>
+          <li><span>01</span><strong>Context</strong><small>資訊脈絡</small></li>
+          <li><span>02</span><strong>Skill</strong><small>可重複方法</small></li>
+          <li><span>03</span><strong>Harness</strong><small>執行環境</small></li>
+        </ol>
+        <a class="btn btn-ghost method-route__return" href="#diagnosis">還是不確定？回到診斷表 <ArrowRight size={17} aria-hidden="true" /></a>
+      </div>
+      <aside class="method-map__boundary" aria-labelledby="boundary-title">
+        <div class="boundary-stamp" aria-hidden="true">BOUNDARY<br />NOTE</div>
+        <div><p class="expertise-kicker">邊界備註</p><h3 id="boundary-title">不是每個問題都值得做成 Agent。</h3><p>表單、試算表或一般自動化已經能穩定完成，就不需要硬加 Agent。只有現有方法真的處理不了判斷、變化或工具協作，才值得提高複雜度。</p></div>
+        <ol><li>這是不是規則明確、重複性高的工作？</li><li>輸入與結果是否固定，而且可以直接驗收？</li><li>現有工具是不是其實已經能穩定解決？</li></ol>
+      </aside>
+      {/* Articles inbound links paused: 文章導流恢復時再放回延伸閱讀。 */}
+    </section>
+
+    <section class="expertise-next page-paper paper-card paper-card--clip" id="next-step" aria-labelledby="expertise-next-title">
+      <div>
+        <p class="expertise-kicker">下一步</p>
+        <h2 id="expertise-next-title" class="display-heading"><span class="heading-phrase">知道問題在哪之後，</span><span class="heading-phrase">再選適合的</span><span class="heading-phrase">處理方式。</span></h2>
+      </div>
+      <div class="expertise-next__decision">
+        <p>想自己建立方法，可以看學習內容；問題已經影響實際工作，也可以直接把情境交給我一起拆。</p>
+        <div class="expertise-next__actions">
+          <a class="btn btn-primary" href="/courses/">查看學習內容 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="btn btn-ghost" href="/services/">討論實際情境 <ArrowRight size={18} aria-hidden="true" /></a>
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .expertise-page > .page-paper { overflow: visible; }
+  #diagnosis, #method-map, #method-route, #next-step { scroll-margin-top: 6rem; }
+  .expertise-kicker { margin: 0 0 1rem; color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .1em; }
+  .expertise-hero { padding-block: clamp(3.25rem, 7vw, 6.5rem) !important; }
+  .expertise-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.35rem; border-bottom: 1px solid var(--border); }
+  .expertise-hero__topline p { margin: 0; }
+  .expertise-hero__topline > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
+  .expertise-hero h1 { max-width: none !important; margin: clamp(2.75rem, 6vw, 5.75rem) 0 0; font-family: var(--font-serif); font-size: clamp(3rem, 6.2vw, 6.1rem) !important; letter-spacing: -.075em !important; line-height: 1.02 !important; }
+  .expertise-hero__footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; margin-top: 2.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .expertise-hero__footer p { max-width: 52rem; margin: 0; color: var(--text-secondary); font-size: 1rem; line-height: 1.85; }
+  .expertise-hero__cta { min-inline-size: 14.5rem; white-space: nowrap; }
+  .diagnosis { padding-block: clamp(3.5rem, 7vw, 6.5rem) !important; }
+  .diagnosis__header, .method-map__header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .62fr); gap: 2rem; align-items: end; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+  .diagnosis__header h2, .method-map__header h2 { max-width: 17ch; margin: 0; font-size: clamp(2.2rem, 4.6vw, 4.2rem); letter-spacing: -.055em; line-height: 1.06; }
+  .diagnosis__header h2 span, .method-map__header h2 span { display: block; }
+  .diagnosis__header > p, .method-map__header > p { max-width: 23rem; margin: 0; color: var(--text-secondary); font-size: .86rem; line-height: 1.8; }
+  .diagnosis-list { border: 1px solid var(--border-strong); }
+  .diagnosis-columns { display: grid; grid-template-columns: 5.5rem minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, .95fr); border-bottom: 1px solid var(--border-strong); }
+  .diagnosis-columns span { padding: .75rem .8rem; color: var(--accent); font-size: .67rem; font-weight: 700; }
+  .diagnosis-columns span + span { border-left: 1px solid var(--border); }
+  .diagnosis-list article { display: grid; grid-template-columns: 5.5rem minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, .95fr); grid-template-areas: "index symptom checks checks"; gap: 0; padding: 0; border-bottom: 1px solid var(--border-strong); }
+  .diagnosis-list article:last-child { border-bottom: 0; padding-bottom: .35rem; }
+  .diagnosis-index { grid-area: index; display: grid; align-content: start; justify-items: start; gap: .25rem; padding: 1.35rem .8rem; }
+  .diagnosis-index span { color: var(--accent); font-family: var(--font-serif); font-size: 1.55rem; }
+  .diagnosis-index small { color: var(--text-muted); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .08em; line-height: 1.4; }
+  .diagnosis-symptom { grid-area: symptom; min-width: 0; padding: 1.35rem 1rem; border-left: 1px solid var(--border); }
+  .diagnosis-symptom > small { display: none; color: var(--accent); font-size: .68rem; font-weight: 700; }
+  .diagnosis-symptom h3 { margin: 0; font-size: 1.05rem; letter-spacing: -.02em; line-height: 1.5; }
+  .diagnosis-symptom p { margin: .55rem 0 0; color: var(--text-secondary); line-height: 1.75; }
+  .diagnosis-symptom .diagnosis-method { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .45rem; margin-top: .85rem; padding-top: .65rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: .68rem; line-height: 1.5; }
+  .diagnosis-method strong { color: var(--accent-text); }
+  .diagnosis-method small { font-family: var(--font-mono); font-size: .62rem; letter-spacing: .02em; }
+  .diagnosis-checks { grid-area: checks; display: grid; grid-template-columns: 1fr 1fr; margin: 0; }
+  .diagnosis-checks div { padding: 1.35rem 1rem; border-left: 1px solid var(--border); }
+  .diagnosis-checks dt { color: var(--accent); font-size: .68rem; font-weight: 700; }
+  .diagnosis-checks dd { margin: .4rem 0 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.7; }
+  .method-map { padding-block: clamp(3.5rem, 7vw, 6.5rem) !important; }
+  .method-map__table { border-top: 1px solid var(--border-strong); }
+  .method-map__table article { display: grid; grid-template-columns: 3rem minmax(8rem, .52fr) minmax(0, 1.48fr); gap: 1.25rem; align-items: start; padding: 1.35rem 0; border-bottom: 1px solid var(--border); }
+  .method-map__index { color: var(--accent); font-family: var(--font-mono); font-size: .7rem; }
+  .method-map__identity h3 { margin: 0; font-size: 1.2rem; }
+  .method-map__identity h3 small { display: block; margin-top: .25rem; color: var(--text-muted); font-family: var(--font-sans); font-size: .68rem; font-weight: 600; letter-spacing: .02em; }
+  .method-map__guidance dd { margin: .4rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
+  .method-map__guidance { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 0; padding-left: 1rem; border-left: 1px solid var(--border); }
+  .method-map__guidance div { min-inline-size: 0; }
+  .method-map__guidance dt { color: var(--accent-text); font-size: .68rem; font-weight: 700; }
+  .method-map__guidance dd { margin-inline: 0; }
+  .method-route { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr) auto; gap: 1.5rem; align-items: center; padding: 1.35rem 0; border-bottom: 1px solid var(--border-strong); }
+  .method-route__label { display: grid; gap: .25rem; }
+  .method-route__label strong { font-size: .82rem; }
+  .method-route__label small { color: var(--text-muted); font-size: .66rem; line-height: 1.5; }
+  .method-route ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6rem; margin: 0; padding: 0; list-style: none; }
+  .method-route li { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "index term" "index label"; column-gap: .65rem; align-items: center; min-width: 0; padding-inline-start: .75rem; border-inline-start: 2px solid var(--accent); }
+  .method-route li > span { grid-area: index; color: var(--accent); font-family: var(--font-mono); font-size: .62rem; }
+  .method-route li > strong { grid-area: term; min-width: 0; font-size: .86rem; line-height: 1.2; }
+  .method-route li > small { grid-area: label; color: var(--text-muted); font-size: .64rem; line-height: 1.4; }
+  .method-route li:not(:last-child)::after { position: absolute; top: 50%; left: calc(100% + .45rem); content: '→'; color: var(--accent); font-size: .8rem; transform: translateY(-50%); }
+  .method-route__return { min-block-size: 3rem; border-color: var(--border-strong); background: transparent; white-space: nowrap; }
+  .method-route__return:hover { border-color: var(--accent); background: var(--accent-subtle); color: var(--accent-text); }
+  .method-route__return :global(svg) { transition: transform var(--transition-fast); }
+  .method-route__return:hover :global(svg) { transform: translateX(.2rem); }
+  .method-map__boundary { display: grid; grid-template-columns: 8rem minmax(0, 1fr) minmax(16rem, .7fr); gap: 2rem; align-items: center; margin-top: 2.5rem; padding: 2rem; border: 1px solid var(--border-strong); }
+  .boundary-stamp { display: grid; place-items: center; width: 6.5rem; aspect-ratio: 1; border: 2px double var(--accent); border-radius: 50%; color: var(--accent); font-family: var(--font-mono); font-size: .68rem; line-height: 1.5; text-align: center; transform: rotate(-7deg); }
+  .method-map__boundary h3 { margin: 0; font-size: 1.45rem; }
+  .method-map__boundary p { margin: .55rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
+  .method-map__boundary ol { margin: 0; padding-left: 1.2rem; color: var(--text-secondary); font-size: .8rem; line-height: 1.8; }
+  .expertise-next { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(20rem, .85fr); gap: clamp(2rem, 5vw, 5rem); align-items: end; padding-block: clamp(3.5rem, 7vw, 6rem) !important; }
+  .expertise-next h2 { max-width: 14ch; margin: 0; font-size: clamp(2.2rem, 4.5vw, 4rem); letter-spacing: -.055em; line-height: 1.08; }
+  .expertise-next h2 span { display: block; }
+  .expertise-next__decision { padding-top: 1.25rem; border-top: 1px solid var(--border-strong); }
+  .expertise-next__decision > p { max-width: 34rem; margin: 0; color: var(--text-secondary); line-height: 1.8; }
+  .expertise-next__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+  .expertise-next__actions .btn { min-block-size: 3rem; white-space: nowrap; }
+  .expertise-next__actions .btn-ghost { background: transparent; border-color: var(--border-strong); }
+  @media (max-width: 800px) {
+    .expertise-hero__footer, .diagnosis__header, .method-map__header, .method-map__boundary, .expertise-next { grid-template-columns: 1fr; }
+    .expertise-hero__footer { gap: 1.25rem; }
+    .expertise-hero__cta, .method-map__boundary a { justify-self: start; }
+    .diagnosis__header, .method-map__header { gap: 1.25rem; }
+    .diagnosis-columns { display: none; }
+    .diagnosis-list article { grid-template-columns: 4.5rem minmax(0, 1fr); grid-template-areas: "index symptom" ". checks"; column-gap: 0; padding: 1.25rem 0; }
+    .diagnosis-index { padding: 0 .75rem; }
+    .diagnosis-symptom { padding: 0 1rem; border-left: 1px solid var(--border); }
+    .diagnosis-symptom > small { display: block; margin-bottom: .35rem; }
+    .diagnosis-checks { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .diagnosis-checks div { padding: 1rem; border-left: 1px solid var(--border); }
+    .method-map__table article { grid-template-columns: 3rem minmax(0, 1fr); grid-template-areas: "index identity" ". guidance"; gap: .75rem 1rem; }
+    .method-map__index { grid-area: index; }
+    .method-map__identity { grid-area: identity; }
+    .method-map__guidance { grid-area: guidance; padding: .75rem 0 0; border-top: 1px solid var(--border); border-left: 0; }
+    .method-route { grid-template-columns: 1fr; gap: 1rem; }
+    .method-route__label { grid-template-columns: auto 1fr; align-items: baseline; gap: .75rem; }
+    .method-route__return { justify-self: start; }
+    .method-map__boundary { gap: 1.25rem; }
+  }
+  @media (max-width: 560px) {
+    .expertise-page > .page-paper { padding-inline: 1.25rem !important; }
+    .expertise-hero { padding-block: 2.4rem 3rem !important; }
+    .expertise-hero__topline { padding-bottom: 1rem; }
+    .expertise-hero__topline > span { font-size: .55rem; }
+    .expertise-hero h1 { margin-top: 2.15rem; font-size: clamp(1.84rem, 9.2vw, 2.55rem) !important; line-height: 1.12 !important; }
+    .expertise-hero__footer { margin-top: 2rem; }
+    .expertise-hero__footer p { font-size: .9rem; }
+    .expertise-hero__cta { width: 100%; min-inline-size: 0; justify-self: stretch; }
+    .diagnosis, .method-map, .expertise-next { padding-block: 2.8rem !important; }
+    .diagnosis__header, .method-map__header { padding-bottom: 1.7rem; }
+    .diagnosis__header h2, .method-map__header h2, .expertise-next h2 { font-size: clamp(1.65rem, 8vw, 2.8rem); }
+    .diagnosis-list article { gap: .75rem 1rem; padding: 1.35rem 0; }
+    .diagnosis-list article:first-child { padding-top: 1.2rem; }
+    .diagnosis-checks { grid-template-columns: 1fr; gap: 0; }
+    .diagnosis-symptom h3 { font-size: 1.15rem; }
+    .diagnosis-symptom p, .diagnosis-checks dd { font-size: .84rem; }
+    .method-map__table article { padding: 1.25rem 0; }
+    .method-map__guidance { grid-template-columns: 1fr; gap: 1rem; }
+    .method-route { align-items: stretch; }
+    .method-route ol { gap: 1rem; }
+    .method-route li { grid-template-columns: 1fr; grid-template-areas: "index" "term" "label"; gap: .2rem; padding-inline-start: .55rem; }
+    .method-route li:not(:last-child)::after { left: calc(100% + .25rem); }
+    .method-route__return { width: 100%; }
+    .method-map__boundary { padding: 1.4rem; }
+    .boundary-stamp { width: 5.5rem; }
+    .expertise-next__actions { display: grid; }
+    .expertise-next__actions .btn { width: 100%; }
+  }
+  @media (max-width: 360px) {
+    .diagnosis-list article {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "index" "symptom" "checks";
+      gap: .9rem;
+    }
+    .diagnosis-index {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: 0 .75rem;
+    }
+    .diagnosis-index small { max-width: none; }
+    .diagnosis-symptom { padding: 0 .75rem; border-left: 0; }
+    .diagnosis-checks div { padding-inline: .75rem; border-left: 0; }
+    .method-map__table article {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "index" "identity" "guidance";
+    }
+    .method-map__identity, .method-map__guidance { padding-inline: .25rem; }
+  }
+</style>

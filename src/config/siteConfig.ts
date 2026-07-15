@@ -3,34 +3,27 @@
  * 所有需要動態更新的數字、連結都在這裡修改，不要 hardcode 在頁面裡。
  */
 
+export function withCabAiAttribution(url: string, campaign: string) {
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}utm_source=cablate&utm_medium=personal_site&utm_campaign=${encodeURIComponent(campaign)}`;
+}
+
 export const siteConfig = {
-  /** 社群 & 訂閱 */
-  threadsFollowers: '5K+',
+  /** 社群 */
   threadsUrl: 'https://www.threads.net/@cab_late',
-  newsletterSubscribers: '500+',
+  githubUrl: 'https://github.com/cablate',
 
-  /** 課程 */
-  vibeCodingStudents: '',      // 待填
-  paymentCourseStudents: '',   // 待填
-  vibeCodingUrl: '/courses/vibe-coding/',
-  paymentCourseUrl: '/courses/payment-integration/',
+  /** 公開聯絡方式 */
+  contactEmail: 'cablate@cablate.com',
 
-  /** 講座 */
-  lectureFeedbackScore: '4.59',
-  lectureFeedbackCount: '81',
-
-  /** 諮詢 */
-  consultingSessions: '',      // 待填
-
-  /** 內容 */
-  totalViews: '1000 萬+',
-  yearsExperience: '5',
-
-  /** Lead Magnet */
-  starterPackUrl: '/starter-pack/',
-
-  /** 服務頁 */
-  servicesUrl: '/services/',
+  /** CabAI 學習、商品與社群入口 */
+  cabAi: {
+    homeUrl: 'https://cabai.cablate.com/',
+    productsUrl: 'https://cabai.cablate.com/products',
+    agentSkillUrl: 'https://cabai.cablate.com/products/agentskill-course',
+    handbookUrl: 'https://cabai.cablate.com/products/cc-deep-engineering',
+    accountUrl: 'https://cabai.cablate.com/login?callbackUrl=%2Fdashboard',
+  },
 
   // External service IDs
   ga4Id: 'G-HY45BRFPS6',

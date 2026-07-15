@@ -5,8 +5,11 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://cablate.com',
   trailingSlash: 'always',
+  redirects: {
+    '/work': '/about/#public-output-title',
+  },
   integrations: [
-    sitemap({ filter: (page) => !page.includes('/search/') }),
+    sitemap({ filter: (page) => !page.includes('/search/') && !page.includes('/work/') }),
   ],
   prefetch: {
     defaultStrategy: 'hover',

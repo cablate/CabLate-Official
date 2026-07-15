@@ -1,0 +1,344 @@
+---
+import { ChevronLeft, ChevronRight } from '@lucide/astro';
+
+interface Slide {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+}
+
+interface Props {
+  slides: Slide[];
+  label?: string;
+}
+
+const {
+  slides,
+  label = '首頁精選圖片',
+} = Astro.props;
+
+const hasMultipleSlides = slides.length > 1;
+---
+
+<figure
+  class="hero-frame paper-card paper-card--clip"
+  data-hero-carousel
+  role="region"
+  aria-label={label}
+  aria-roledescription="輪播"
+  tabindex={hasMultipleSlides ? '0' : undefined}
+>
+  <div class="hero-carousel__viewport" data-carousel-viewport>
+    <ul class="hero-carousel__track" role="list">
+      {slides.map((slide, index) => (
+        <li
+          class="hero-carousel__slide"
+          data-carousel-slide
+          role="group"
+          aria-label={`第 ${index + 1} 張，共 ${slides.length} 張`}
+          aria-roledescription="投影片"
+          aria-hidden={index === 0 ? undefined : 'true'}
+        >
+          <img
+            src={slide.src}
+            alt={slide.alt}
+            width={slide.width ?? 1024}
+            height={slide.height ?? 1024}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            fetchpriority={index === 0 ? 'high' : 'low'}
+            draggable="false"
+          />
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {hasMultipleSlides && (
+    <>
+      <button class="hero-carousel__arrow hero-carousel__arrow--previous" type="button" data-carousel-previous aria-label="上一張圖片">
+        <ChevronLeft size={20} stroke-width={2} aria-hidden="true" />
+      </button>
+      <button class="hero-carousel__arrow hero-carousel__arrow--next" type="button" data-carousel-next aria-label="下一張圖片">
+        <ChevronRight size={20} stroke-width={2} aria-hidden="true" />
+      </button>
+
+      <div class="hero-carousel__pagination" role="group" aria-label="選擇圖片">
+        <span class="hero-carousel__count" aria-hidden="true">
+          <span data-carousel-current>01</span><span class="hero-carousel__count-divider">/</span>{String(slides.length).padStart(2, '0')}
+        </span>
+        <div class="hero-carousel__dots">
+          {slides.map((_, index) => (
+            <button
+              type="button"
+              class="hero-carousel__dot"
+              data-carousel-dot
+              data-slide-index={index}
+              aria-label={`顯示第 ${index + 1} 張圖片`}
+              aria-current={index === 0 ? 'true' : undefined}
+            />
+          ))}
+        </div>
+      </div>
+    </>
+  )}
+</figure>
+
+<script>
+  const initializeHeroCarousels = () => {
+    const carousels = document.querySelectorAll<HTMLElement>('[data-hero-carousel]');
+
+    carousels.forEach((carousel) => {
+      if (carousel.dataset.carouselReady === 'true') return;
+
+      const viewport = carousel.querySelector<HTMLElement>('[data-carousel-viewport]');
+      const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-carousel-slide]'));
+      const previousButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-previous]');
+      const nextButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-next]');
+      const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>('[data-carousel-dot]'));
+      const currentLabel = carousel.querySelector<HTMLElement>('[data-carousel-current]');
+
+      if (!viewport || slides.length < 2 || !previousButton || !nextButton) return;
+
+      carousel.dataset.carouselReady = 'true';
+      let currentIndex = 0;
+      let animationFrame = 0;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      const updateState = (nextIndex: number) => {
+        currentIndex = Math.max(0, Math.min(slides.length - 1, nextIndex));
+        dots.forEach((dot, index) => {
+          if (index === currentIndex) dot.setAttribute('aria-current', 'true');
+          else dot.removeAttribute('aria-current');
+        });
+        slides.forEach((slide, index) => {
+          if (index === currentIndex) slide.removeAttribute('aria-hidden');
+          else slide.setAttribute('aria-hidden', 'true');
+        });
+        if (currentLabel) currentLabel.textContent = String(currentIndex + 1).padStart(2, '0');
+      };
+
+      const goToSlide = (index: number) => {
+        const nextIndex = (index + slides.length) % slides.length;
+        viewport.scrollTo({
+          left: slides[nextIndex].offsetLeft,
+          behavior: reduceMotion.matches ? 'auto' : 'smooth',
+        });
+        updateState(nextIndex);
+      };
+
+      previousButton.addEventListener('click', () => goToSlide(currentIndex - 1));
+      nextButton.addEventListener('click', () => goToSlide(currentIndex + 1));
+      dots.forEach((dot) => dot.addEventListener('click', () => goToSlide(Number(dot.dataset.slideIndex))));
+
+      carousel.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+        event.preventDefault();
+        goToSlide(currentIndex + (event.key === 'ArrowRight' ? 1 : -1));
+      });
+
+      viewport.addEventListener('scroll', () => {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = requestAnimationFrame(() => {
+          const nextIndex = slides.reduce((closestIndex, slide, index) => {
+            const closestDistance = Math.abs(slides[closestIndex].offsetLeft - viewport.scrollLeft);
+            const distance = Math.abs(slide.offsetLeft - viewport.scrollLeft);
+            return distance < closestDistance ? index : closestIndex;
+          }, 0);
+          updateState(nextIndex);
+        });
+      }, { passive: true });
+
+      updateState(0);
+
+      new ResizeObserver(() => {
+        viewport.scrollTo({ left: slides[currentIndex].offsetLeft, behavior: 'auto' });
+      }).observe(viewport);
+    });
+  };
+
+  initializeHeroCarousels();
+  document.addEventListener('astro:page-load', initializeHeroCarousels);
+</script>
+
+<style>
+  .hero-frame {
+    position: relative;
+    margin: 0;
+    padding: 1.15rem;
+    transform: rotate(.25deg);
+  }
+
+  .hero-carousel__viewport {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #d0c9dc;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-inline: contain;
+  }
+
+  .hero-carousel__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hero-carousel__track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hero-carousel__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .hero-carousel__slide img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    user-select: none;
+  }
+
+  .hero-carousel__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: grid;
+    width: 2.45rem;
+    aspect-ratio: 1;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgb(73 63 90 / .3);
+    border-radius: 50%;
+    background: rgb(255 253 248 / .9);
+    color: #3f3950;
+    box-shadow: 0 .25rem .7rem rgb(45 38 58 / .14);
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: background-color .2s ease, transform .2s ease;
+  }
+
+  .hero-carousel__arrow:hover {
+    background: #fffdf8;
+  }
+
+  .hero-carousel__arrow:active {
+    transform: translateY(calc(-50% + 1px));
+  }
+
+  .hero-carousel__arrow:focus-visible,
+  .hero-carousel__dot:focus-visible,
+  .hero-frame:focus-visible {
+    outline: 3px solid #8064ea;
+    outline-offset: 3px;
+  }
+
+  .hero-carousel__arrow--previous {
+    left: 1.6rem;
+  }
+
+  .hero-carousel__arrow--next {
+    right: 1.6rem;
+  }
+
+  .hero-carousel__pagination {
+    position: absolute;
+    bottom: 1.65rem;
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    inline-size: 7.4rem;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 2rem;
+    padding: .35rem .65rem;
+    border: 1px solid rgb(73 63 90 / .22);
+    background: rgb(255 253 248 / .9);
+    color: #51495f;
+    box-shadow: 0 .2rem .6rem rgb(45 38 58 / .12);
+    transform: translateX(-50%);
+  }
+
+  .hero-carousel__count {
+    inline-size: 2.45rem;
+    flex: 0 0 2.45rem;
+    font-size: .67rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .04em;
+    white-space: nowrap;
+  }
+
+  .hero-carousel__count-divider {
+    margin-inline: .2rem;
+    color: #9a92a5;
+  }
+
+  .hero-carousel__dots {
+    display: flex;
+    inline-size: 2.2rem;
+    flex: 0 0 2.2rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: .35rem;
+  }
+
+  .hero-carousel__dot {
+    width: .5rem;
+    flex: 0 0 .5rem;
+    aspect-ratio: 1;
+    padding: 0;
+    border: 1px solid #675d78;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .hero-carousel__dot[aria-current='true'] {
+    background: #675d78;
+  }
+
+  @media (max-width: 900px) {
+    .hero-frame {
+      padding: .85rem;
+      transform: none;
+    }
+
+    .hero-carousel__slide img {
+      aspect-ratio: 4 / 3;
+    }
+
+    .hero-carousel__arrow {
+      width: 2.25rem;
+    }
+
+    .hero-carousel__arrow--previous {
+      left: 1.15rem;
+    }
+
+    .hero-carousel__arrow--next {
+      right: 1.15rem;
+    }
+
+    .hero-carousel__pagination {
+      bottom: 1.25rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-carousel__arrow {
+      transition: none;
+    }
+
+    .hero-carousel__viewport {
+      scroll-behavior: auto;
+    }
+  }
+</style>

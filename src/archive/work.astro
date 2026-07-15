@@ -1,0 +1,296 @@
+---
+// Archived on 2026-07-15. Keep this source intact until Work has a distinct page role.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ArrowRight, ArrowUpRight } from '@lucide/astro';
+import { representativeWork, serviceTracks } from '../config/authority';
+
+const workStories = [
+  {
+    ...representativeWork[0],
+    problem: '半年多的 Claude Code 實作經驗散落在筆記、對話與不同專案裡，遇到問題時很難快速找到真正原因。',
+    decision: '這份手冊依 Skill、Memory、Context、Hook 與常見失效方式整理，方便讀者查原因、修正，也能交給團隊繼續使用。',
+  },
+  {
+    ...representativeWork[1],
+    problem: 'Agent 能回答地點問題，卻缺少一套可安裝、可重複呼叫，也方便其他開發者延伸的 Google Maps 工具。',
+    decision: '把地圖能力包成標準 MCP 工具，補齊安裝方式、工具介面與公開程式碼，再發布到 GitHub 與 npm。',
+  },
+  {
+    ...representativeWork[2],
+    problem: '許多 AI 寫程式示範停在畫面能動，真的接上金流後，訂單狀態、Webhook、簽章與錯誤處理才開始出現。',
+    decision: '學員會實際接上 API、建立訂單狀態、驗證 Webhook 與簽章，也處理付款失敗時該怎麼辦。',
+  },
+  {
+    ...representativeWork[3],
+    problem: '社群上的投資訊號很多，但貼文、AI 判讀、即時通知與後續股價驗證彼此分散，無法形成可追蹤的紀錄。',
+    decision: '系統會收集貼文、交給 AI 判讀、發出通知，再用後續股價檢查判斷是否正確；程式碼公開在 GitHub。',
+  },
+];
+
+const serviceBridgeSummaries = {
+  'workflow-diagnosis': '釐清反覆重做、驗收失焦與 AI 適合介入的位置。',
+  training: '用團隊的真實任務練習分工、檢查與可沿用的方法。',
+  'agent-adoption': '從需求、資料、權限與驗收條件開始接進既有流程。',
+} satisfies Record<(typeof serviceTracks)[number]['id'], string>;
+
+const serviceBridgeItems = serviceTracks.map((service) => ({
+  id: service.id,
+  title: service.title,
+  summary: serviceBridgeSummaries[service.id],
+}));
+---
+
+<BaseLayout title="代表作品與關鍵判斷｜CabLate" description="從工程手冊、MCP 工具、金流教學到資料產品，了解 CabLate 面對問題與限制時如何做選擇，以及有哪些成果可以公開檢查。">
+  <article class="work-page paper-page">
+    <header class="work-hero page-paper paper-card">
+      <div class="work-hero__topline">
+        <p class="eyebrow section-label">作品與公開證據</p>
+        <span>CASE FILES / 03</span>
+      </div>
+      <div class="work-hero__grid">
+        <aside class="work-hero__index" aria-label="案例檔案索引">
+          <p class="work-hero__index-kicker">INDEX / EVIDENCE</p>
+          <ol>
+            <li>問題定義</li>
+            <li>限制條件</li>
+            <li>判斷與取捨</li>
+            <li>公開結果</li>
+          </ol>
+          <span class="work-hero__index-note">PUBLIC RECORD</span>
+        </aside>
+        <div class="work-hero__main">
+          <h1 class="display-heading"><span class="heading-phrase">作品先看結果，</span><span class="heading-phrase">也要看限制下</span><span class="heading-phrase">做了哪些選擇。</span></h1>
+          <p>每件作品都會交代我面對的問題、當時的限制，以及最後能公開檢查的結果。</p>
+          <div class="work-hero__actions">
+            <a class="work-hero__primary" href="#selected-work">先看公開檔案 <ArrowRight size={18} aria-hidden="true" /></a>
+            <a class="work-hero__secondary" href="/services/">查看合作方式</a>
+          </div>
+        </div>
+        <aside class="work-hero__record" aria-label="檔案備註">
+          <p class="work-hero__record-kicker">RECORD NOTE</p>
+          <dl>
+            <div><dt>先看</dt><dd>限制如何影響選擇</dd></div>
+            <div><dt>再看</dt><dd>結果是否能被查證</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </header>
+
+    <section class="selected-work page-paper paper-card paper-card--clip" id="selected-work" aria-labelledby="selected-title">
+      <header class="selected-work__header">
+        <p class="section-label">代表項目</p>
+        <h2 id="selected-title">每個檔案，都從一個具體問題開始。</h2>
+        <span class="paper-label" aria-hidden="true">OPEN FILES</span>
+      </header>
+      <div class="work-featured">
+        {(() => {
+          const work = workStories[0];
+          return (
+            <>
+              <div class="work-featured__rail">
+                <span class="work-featured__number">01</span>
+                <small>{work.type}</small>
+                <span class="work-featured__tag">FEATURED DOSSIER</span>
+              </div>
+              <div class="work-featured__body">
+                <div class="work-file__meta"><span>工程手冊</span><span>公開摘要</span></div>
+                <h3>{work.title}</h3>
+                <p class="work-file__summary">{work.description}</p>
+                <p class="work-file__result"><span>公開結果</span><strong>{work.proof}</strong></p>
+                <dl class="work-story__facts">
+                  <div><dt>原本的問題</dt><dd>{work.problem}</dd></div>
+                  <div><dt>關鍵判斷</dt><dd>{work.decision}</dd></div>
+                </dl>
+              </div>
+              <aside class="work-featured__evidence">
+                <p>PUBLIC EVIDENCE</p>
+                <strong>{work.proof}</strong>
+                <a class="work-file__open" href={work.href} target={work.href.startsWith('http') ? '_blank' : undefined} rel={work.href.startsWith('http') ? 'noopener' : undefined}>查看試看與完整章節 <ArrowUpRight size={18} aria-hidden="true" /></a>
+              </aside>
+            </>
+          );
+        })()}
+      </div>
+      <div class="work-list" aria-label="其他公開案例">
+        {workStories.slice(1).map((work, index) => {
+          const number = index + 2;
+          return (
+            <a class="work-index__item" href={work.href} target={work.href.startsWith('http') ? '_blank' : undefined} rel={work.href.startsWith('http') ? 'noopener' : undefined}>
+              <span class="work-index__number">0{number}</span>
+              <div class="work-index__body">
+                <div class="work-file__meta"><small>{work.type}</small><span>PUBLIC RECORD</span></div>
+                <h3>{work.title}</h3>
+                <p>{work.problem}</p>
+              </div>
+              <div class="work-index__decision"><small>關鍵判斷</small><p>{work.decision}</p></div>
+              <div class="work-index__proof"><small>公開證據</small><strong>{work.proof}</strong></div>
+              <span class="work-file__open">查看檔案 <ArrowUpRight size={18} aria-hidden="true" /></span>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="service-bridge page-paper paper-card" id="service-bridge" aria-labelledby="service-bridge-title">
+      <div class="service-bridge__intro">
+        <h2 class="display-heading" id="service-bridge-title">
+          <span class="heading-phrase">從做過的判斷，</span>
+          <span class="heading-phrase">走到可以合作的</span>
+          <span class="heading-phrase">方式。</span>
+        </h2>
+        <p>不用先知道服務名稱；先看哪一種情境最接近你現在的問題。</p>
+      </div>
+      <div class="service-bridge__content">
+        <div class="service-bridge__cards">
+          {serviceBridgeItems.map((service, index) => (
+            <article class="service-bridge__card" id={`service-${service.id}`}>
+              <span class="service-bridge__number">0{index + 1}</span>
+              <h3>{service.title}</h3>
+              <p>{service.summary}</p>
+            </article>
+          ))}
+        </div>
+        <a class="service-bridge__cta" href="/services/">查看完整服務與合作方式 <ArrowRight size={18} aria-hidden="true" /></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .work-page .eyebrow { text-transform: none; }
+  .work-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .work-hero__topline .section-label { margin: 0; }
+  .work-hero__topline > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
+  .work-hero__grid { display: grid; grid-template-columns: minmax(7rem, .2fr) minmax(0, 1fr) minmax(11rem, .28fr); gap: clamp(1.5rem, 4vw, 3.5rem); margin-top: clamp(2.5rem, 5vw, 4.5rem); }
+  .work-hero__index { display: flex; flex-direction: column; min-inline-size: 0; padding-right: 1.25rem; border-right: 1px solid var(--border); }
+  .work-hero__index-kicker, .work-hero__record-kicker { margin: 0 0 1rem; color: var(--accent); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
+  .work-hero__index ol { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; color: var(--text-secondary); font-family: var(--font-mono); font-size: .7rem; line-height: 1.45; }
+  .work-hero__index li { display: flex; gap: .6rem; }
+  .work-hero__index li::before { color: var(--accent); content: '·'; }
+  .work-hero__index-note { margin-top: auto; padding-top: 2.5rem; color: var(--text-muted); font-family: var(--font-mono); font-size: .58rem; letter-spacing: .08em; }
+  .work-hero__main { min-inline-size: 0; }
+  .work-hero h1 { max-width: none !important; margin: 0 !important; }
+  .work-hero__main > p { max-width: 48rem; margin: 2rem 0 0; color: var(--text-secondary); font-size: 1.06rem; line-height: 1.85; }
+  .work-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.2rem; margin-top: 2rem; }
+  .work-hero__primary { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
+  .work-hero__primary:hover { background: var(--accent); }
+  .work-hero__secondary { color: var(--accent); font-size: .8rem; font-weight: 700; }
+  .work-hero__secondary:hover { color: var(--accent-hover); }
+  .work-hero__record { align-self: stretch; min-inline-size: 0; padding-left: 1.25rem; border-left: 1px solid var(--border); }
+  .work-hero__record > p:not(.work-hero__record-kicker) { margin: 0; color: var(--text-secondary); font-size: .83rem; line-height: 1.8; }
+  .work-hero__record dl { display: grid; gap: .9rem; margin: 2rem 0 0; }
+  .work-hero__record dl div { padding-top: .75rem; border-top: 1px solid var(--border); }
+  .work-hero__record dt { color: var(--accent); font-size: .68rem; font-weight: 700; }
+  .work-hero__record dd { margin: .3rem 0 0; color: var(--text-secondary); font-size: .78rem; line-height: 1.6; }
+  .selected-work__header { position: relative; max-width: 52rem; margin-bottom: 3.25rem; }
+  .selected-work h2, .service-bridge h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
+  .selected-work__header .paper-label { top: -.35rem; right: 1.5rem; left: auto; transform: rotate(2deg); }
+  .work-featured { display: grid; grid-template-columns: minmax(8rem, .24fr) minmax(0, 1fr) minmax(10rem, .3fr); gap: 0; border: 1px solid var(--border-strong); }
+  .work-featured__rail { display: flex; flex-direction: column; min-inline-size: 0; padding: 1.35rem 1rem; border-right: 1px solid var(--border); }
+  .work-featured__number { color: var(--accent); font-family: var(--font-serif); font-size: 1.8rem; line-height: 1; }
+  .work-featured__rail small { margin-top: .7rem; color: var(--accent); font-size: .66rem; line-height: 1.45; }
+  .work-featured__tag { margin-top: auto; padding-top: 2rem; color: var(--text-muted); font-family: var(--font-mono); font-size: .56rem; letter-spacing: .08em; }
+  .work-featured__body { min-inline-size: 0; padding: 1.35rem 1.5rem 1.6rem; }
+  .work-file__meta { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem 1rem; color: var(--accent); font-family: var(--font-mono); font-size: .6rem; letter-spacing: .06em; }
+  .work-file__meta span + span { color: var(--text-muted); }
+  .work-featured h3 { margin: .75rem 0 .85rem; font-size: clamp(1.55rem, 2.6vw, 2.2rem); }
+  .work-file__summary { margin: 0; color: var(--text-secondary); font-size: .88rem; line-height: 1.75; }
+  .work-file__result { display: none; }
+  .work-story__facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 1.35rem 0 0; }
+  .work-story__facts div { min-inline-size: 0; padding-top: .85rem; border-top: 1px solid var(--border); }
+  .work-story__facts dt, .work-index__decision small, .work-index__proof small { margin-bottom: .4rem; color: var(--text-muted); font-size: .68rem; font-weight: 700; }
+  .work-story__facts dd { margin: 0; color: var(--text-secondary); line-height: 1.7; }
+  .work-featured__evidence { display: flex; flex-direction: column; min-inline-size: 0; padding: 1.35rem 1.25rem; border-left: 1px solid var(--border); background: rgb(246 242 232 / .35); }
+  .work-featured__evidence p { margin: 0 0 1rem; color: var(--accent); font-family: var(--font-mono); font-size: .6rem; letter-spacing: .08em; }
+  .work-featured__evidence strong { color: var(--text-secondary); font-size: .78rem; line-height: 1.65; }
+  .work-featured__evidence .work-file__open { margin-top: auto; padding-top: 2rem; justify-content: flex-start; }
+  .work-list { margin-top: 1.5rem; border-top: 1px solid var(--border-strong); }
+  .work-index__item { display: grid; grid-template-columns: 3rem minmax(0, 1.05fr) minmax(14rem, .95fr) minmax(8rem, .5fr) auto; gap: 1.25rem; align-items: start; min-inline-size: 0; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .work-index__number { color: var(--accent); font-family: var(--font-mono); font-size: .7rem; }
+  .work-index__body, .work-index__decision, .work-index__proof { min-inline-size: 0; }
+  .work-index__body .work-file__meta { justify-content: space-between; gap: .5rem; }
+  .work-index__body .work-file__meta span { color: var(--text-muted); font-size: .56rem; }
+  .work-index__item h3 { margin: .45rem 0 .55rem; font-size: 1.25rem; }
+  .work-index__item p { margin: 0; color: var(--text-secondary); font-size: .8rem; line-height: 1.7; }
+  .work-index__decision, .work-index__proof { padding-left: 1rem; border-left: 1px solid var(--border); }
+  .work-index__decision p { font-size: .76rem; }
+  .work-index__proof { display: grid; gap: .35rem; }
+  .work-index__proof strong { color: var(--text-muted); font-size: .7rem; line-height: 1.55; }
+  .work-file__open { display: inline-flex; align-items: center; justify-content: flex-end; gap: .4rem; color: var(--accent); font-size: .76rem; font-weight: 700; white-space: nowrap; }
+  .work-index__item:hover h3, .work-index__item:hover .work-file__open, .work-featured__evidence .work-file__open:hover { color: var(--accent-hover); }
+  .service-bridge { display: grid; grid-template-columns: minmax(17rem, .72fr) minmax(0, 1.28fr); gap: clamp(3rem, 7vw, 6.5rem); align-items: center; scroll-margin-top: 5.5rem; }
+  .service-bridge__intro, .service-bridge__content { min-inline-size: 0; }
+  .service-bridge h2 { max-width: 10ch; }
+  .service-bridge__intro > p:last-child { max-width: 24rem; margin: 1.75rem 0 0; padding-top: 1.5rem; border-top: 2px solid var(--accent-bright); color: var(--text-secondary); font-size: 1rem; line-height: 1.8; text-wrap: pretty; }
+  .service-bridge__cards { display: grid; gap: 1rem; min-inline-size: 0; }
+  .service-bridge__card { position: relative; min-inline-size: 0; padding: 1.45rem clamp(1.8rem, 3vw, 2.5rem) 1.55rem; background-color: #f5ebd5; background-image: var(--paper-reading-card-image); background-repeat: no-repeat; background-position: center; background-size: 112% 152%; box-shadow: 0 .45rem .5rem rgb(69 58 43 / .12); transform-origin: center; }
+  .service-bridge__card:nth-child(1) { transform: translateX(-.35rem) rotate(-.28deg); }
+  .service-bridge__card:nth-child(2) { transform: translateX(.2rem) rotate(.22deg); }
+  .service-bridge__card:nth-child(3) { transform: translateX(-.12rem) rotate(-.16deg); }
+  .service-bridge__number { display: inline-flex; align-items: center; min-height: 2rem; margin: -.8rem 0 .55rem -1.1rem; padding: .25rem .72rem; background-color: var(--bg-soft); background-image: var(--paper-white-image); background-repeat: no-repeat; background-position: center; background-size: 155% 210%; color: var(--accent); font-family: var(--font-mono); font-size: .72rem; box-shadow: 0 .2rem .4rem rgb(69 58 43 / .1); }
+  .service-bridge__card h3 { margin: 0 0 .45rem; font-size: clamp(1.3rem, 2.25vw, 1.72rem); line-height: 1.25; }
+  .service-bridge__card p { margin: 0; color: var(--text-secondary); font-size: .94rem; line-height: 1.72; text-wrap: pretty; }
+  .service-bridge__cta { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 3.25rem; margin-top: 1.45rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
+  .service-bridge__cta:hover { background: var(--accent); }
+  .service-bridge__cta:focus-visible { outline: 2px solid var(--accent); outline-offset: .3rem; }
+  @media (max-width: 980px) {
+    .work-hero__grid { grid-template-columns: minmax(7rem, .24fr) minmax(0, 1fr); }
+    .work-hero__record { grid-column: 2; padding-top: 1.25rem; padding-left: 0; border-top: 1px solid var(--border); border-left: 0; }
+    .work-hero__record dl { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .work-featured { grid-template-columns: 5.75rem minmax(0, 1fr); }
+    .work-featured__evidence { grid-column: 2; flex-direction: row; align-items: center; gap: 1rem; padding: 1rem 1.5rem; border-top: 1px solid var(--border); border-left: 0; }
+    .work-featured__evidence p { margin: 0; }
+    .work-featured__evidence .work-file__open { margin-left: auto; padding-top: 0; }
+    .work-index__item { grid-template-columns: 3rem minmax(0, 1fr) minmax(9rem, .7fr) auto; }
+    .work-index__proof { grid-column: 2 / 4; padding-left: 0; padding-top: .8rem; border-top: 1px solid var(--border); border-left: 0; }
+    .service-bridge { grid-template-columns: minmax(15rem, .78fr) minmax(0, 1.22fr); gap: 2.5rem; }
+  }
+  @media (max-width: 760px) {
+    .work-hero__topline { align-items: flex-start; }
+    .work-hero__topline > span { padding-top: .1rem; font-size: .56rem; }
+    .work-hero__grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .work-hero__index { padding-right: 0; padding-bottom: 1rem; border-right: 0; border-bottom: 1px solid var(--border); }
+    .work-hero__index ol { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem .9rem; }
+    .work-hero__index-note { margin-top: 1.25rem; padding-top: 0; }
+    .work-hero__record { grid-column: auto; }
+    .work-featured { grid-template-columns: 1fr; }
+    .work-featured__rail { flex-direction: row; align-items: center; gap: .75rem; padding: 1rem 1.25rem; border-right: 0; border-bottom: 1px solid var(--border); }
+    .work-featured__number { font-size: 1.5rem; }
+    .work-featured__rail small { margin-top: 0; }
+    .work-featured__tag { margin: 0 0 0 auto; padding: 0; }
+    .work-featured__body { padding: 1.25rem; }
+    .work-story__facts { grid-template-columns: 1fr; gap: 1rem; }
+    .work-file__result { display: grid; gap: .25rem; margin: 1.1rem 0 0; padding: .8rem 0; border-block: 1px solid var(--border); }
+    .work-file__result span { color: var(--text-muted); font-size: .68rem; font-weight: 700; }
+    .work-file__result strong { color: var(--text-primary); font-size: .84rem; line-height: 1.6; }
+    .work-featured__evidence { grid-column: auto; flex-wrap: wrap; padding: 1rem 1.25rem; }
+    .work-featured__evidence strong { flex: 1 1 12rem; }
+    .work-index__item { grid-template-columns: 2.5rem minmax(0, 1fr); gap: .7rem 1rem; padding: 1.35rem 0; }
+    .work-index__body .work-file__meta { justify-content: flex-start; }
+    .work-index__decision { grid-column: 2; padding: .8rem 0 0; border-top: 1px solid var(--border); border-left: 0; }
+    .work-index__proof { grid-column: 2; padding: .8rem 0 0; border-top: 1px solid var(--border); }
+    .work-index__item .work-file__open { grid-column: 2; justify-content: flex-start; min-height: 2.75rem; margin-top: .15rem; }
+    .service-bridge { grid-template-columns: 1fr; gap: 2.25rem; }
+    .service-bridge h2 { max-width: 12ch; }
+    .service-bridge__intro > p:last-child { max-width: 32rem; }
+    .service-bridge__card:nth-child(n) { transform: none; }
+    .service-bridge__cta { width: 100%; min-height: 3rem; }
+  }
+  @media (max-width: 520px) {
+    .work-hero__topline { padding-bottom: 1rem; }
+    .work-hero h1 { font-size: clamp(2.55rem, 11vw, 3.45rem) !important; line-height: 1.08 !important; }
+    .work-hero__main > p { margin-top: 1.5rem; font-size: .92rem; }
+    .work-hero__record dl { grid-template-columns: 1fr; }
+    .selected-work__header { margin-bottom: 2.5rem; }
+    .selected-work__header .paper-label { top: -.55rem; right: .2rem; }
+    .work-featured__tag { font-size: .5rem; }
+    .work-featured h3 { font-size: 1.45rem; }
+    .work-index__item h3 { font-size: 1.15rem; }
+    .work-index__item p, .work-index__decision p { font-size: .84rem; }
+    .service-bridge__intro > p:last-child { margin-top: 1.4rem; padding-top: 1.2rem; font-size: .94rem; }
+    .service-bridge__card { padding: 1.35rem 1.45rem 1.45rem; background-size: 125% 150%; }
+    .service-bridge__number { margin-left: -.55rem; }
+    .service-bridge__card h3 { font-size: 1.35rem; }
+    .service-bridge__card p { font-size: 1rem; }
+  }
+</style>

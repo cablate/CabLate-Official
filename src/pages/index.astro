@@ -1,117 +1,731 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { ChevronUp } from '@lucide/astro';
-
-// Section Components
-import Hero from '../components/sections/Hero.astro';
-import RoleSelector from '../components/sections/RoleSelector.astro';
-import Portfolio from '../components/sections/Portfolio.astro';
 import Newsletter from '../components/sections/Newsletter.astro';
-import LatestArticles from '../components/sections/LatestArticles.astro';
+import HeroCarousel from '../components/sections/HeroCarousel.astro';
+import { ArrowRight } from '@lucide/astro';
+import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 
-// 首頁 FAQ 結構化資料
-const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-        {
-            '@type': 'Question',
-            name: 'CabLate 是誰？',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'CabLate（Cab）是全端工程師與技術顧問，專注 AI 協作、軟體架構與自動化整合。在 Threads 上擁有 5K+ 追蹤者，分享 AI 工具實戰與技術觀點。',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'CabLate 提供什麼服務？',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: '提供 AI 導入諮詢、自動化整合開發、企業內訓、以及 Claude Code 等 AI 工具的線上課程與教學資源。',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: '如何開始學習 AI 協作開發？',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: '可以從 CabLate 的入門懶人包（Starter Pack）開始，裡面包含 Claude Code 新手起步所需的設定指南與實戰範例。也可以閱讀文章專區的 AI 工具實戰系列。',
-            },
-        },
-    ],
-};
+const heroSlides = [
+  {
+    src: '/images/photos/cablate-speaking-ai-meetup-april.webp',
+    alt: 'CabLate 在四月 AI 小聚現場分享 AI 協作與技術實作',
+    width: 2000,
+    height: 1333,
+  },
+  {
+    src: '/images/photos/cablate-speaking-workshop-0627.webp',
+    alt: 'CabLate 在工作坊現場帶領學員進行 AI 實作',
+    width: 1970,
+    height: 1970,
+  },
+];
 
-// 首頁 WebSite 結構化資料
-const websiteJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'CabLate',
-    url: 'https://cablate.com',
-    description: 'AI 時代的軟體開發洞察 — 判斷力才是你的護城河',
-    inLanguage: 'zh-TW',
-    publisher: {
-        '@type': 'Person',
-        name: 'CabLate',
-        url: 'https://cablate.com',
-    },
-};
+const diagnosticRows = [
+  {
+    titleLines: ['背景講過很多次，它還是接不起來。'],
+    explanation: 'AI 當下拿到的資訊不完整，或讀到了過期、互相衝突的內容。',
+    // Articles inbound links paused.
+    // href: '/articles/claude-code-token-drain-system-reminder/',
+    // label: '看資訊脈絡怎麼失效',
+  },
+  {
+    titleLines: ['它做了很多，最後還是得自己重做。'],
+    explanation: '任務看似完成，但沒有清楚的完成條件，也缺少能直接檢查結果的方法。',
+    // Articles inbound links paused.
+    // href: '/articles/claude-code-workflow/',
+    // label: '看怎麼建立完成標準',
+  },
+  {
+    titleLines: ['只要一步出錯，', '整個流程就得重來。'],
+    explanation: '過程沒有留下可追查的節點，失敗後也不知道該從哪裡繼續。',
+    // Articles inbound links paused.
+    // href: '/articles/agent-sdk-system-reminder-diff-fix/',
+    // label: '看怎麼留下檢查順序',
+  },
+];
 
-// 首頁 Person 結構化資料
-const personJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'CabLate',
-    url: 'https://cablate.com',
-    jobTitle: '全端工程師 / 技術顧問',
-    description: '工程師出身，靠架構思維跟 AI 協作，把技術翻譯成人話。',
-    knowsAbout: ['軟體架構', 'AI 協作', '全端開發', '技術顧問', '開源貢獻'],
-    sameAs: [
-        'https://threads.net/@cab_late',
-        'https://github.com/cablate'
-    ]
-};
+const visitorRoutes = [
+  {
+    title: '我想先知道 AI 為什麼一直出錯',
+    description: '已經開始使用 AI，但常遇到忘記前文、產出不穩，或不知道應該先改 Prompt、資料還是流程。',
+    href: '/expertise/',
+    label: '先做問題診斷',
+  },
+  {
+    title: '我想把想法一路做到能使用',
+    description: '手上已經有網站、工具或工作流程的題目，希望學會如何拆解、實作、部署與持續改善。',
+    href: '/courses/',
+    label: '找適合的學習內容',
+  },
+  {
+    title: '我想改善團隊目前的 AI 用法',
+    description: '團隊已經有工作內容、資料與使用者，但不知道該先培訓、調整流程，還是導入新的工具或系統。',
+    href: '/services/',
+    label: '查看合作方式',
+  },
+];
 
 ---
 
-<BaseLayout title="CabLate — AI 協作・技術觀點・開發實戰" description="CabLate — 全端工程師、技術顧問與社群創作者。分享 AI 協作、軟體架構、開發實戰與職涯觀點，用架構思維把技術翻譯成人話。">
-    <script slot="head" type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
-    <script slot="head" type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
-    <script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+<BaseLayout title="CabLate — AI 協作、Agent 工作流程與開發實戰" description="AI 做得很快，不代表事情真的做完。CabLate 從全端工程與系統設計出發，協助個人與團隊找出 AI 工作流程中的問題，改善任務、資料、工具與驗收方式，讓成果真正進入工作。">
+  <div class="desk-page">
+    <div class="desk-content">
+      <section class="hero-grid" aria-labelledby="home-title">
+        <div class="identity-card paper-card">
+          <div class="paper-card__inner">
+            <p class="section-label">AI 協作・工作流程設計</p>
+            <h1 class="display-heading" id="home-title"><span class="heading-phrase">AI 做得很快，</span><span class="heading-phrase">但你需要的是</span><span class="heading-phrase">做完。</span></h1>
+            <p class="hero-copy">你明明交代過背景，它下一輪還是忘記；產出看起來很多，最後卻不敢直接用。問題不一定出在模型，也不一定是 Prompt 寫得不夠長。AI 有沒有讀到正確資料、能不能使用需要的工具、知不知道什麼才算完成，都會改變結果。</p>
+            <a class="btn btn-primary home-hero-action" href="#diagnosis">看看問題出在哪裡 <ArrowRight size={17} aria-hidden="true" /></a>
+          </div>
+        </div>
 
-    <!-- HERO -->
-    <Hero />
+        <HeroCarousel slides={heroSlides} />
+      </section>
 
-    <!-- ROLE SELECTOR -->
-    <RoleSelector />
+      <section class="paper-card" id="diagnosis" aria-labelledby="diagnosis-title">
+        <div class="paper-card__inner">
+          <div class="home-split diagnosis-layout">
+            <div class="diagnosis-intro">
+              <p class="section-label">你可能也遇過</p>
+              <h2 id="diagnosis-title">AI 偶爾成功一次，和真的能拿來工作，是兩回事。</h2>
+              <p>真正的問題通常不是「AI 不夠聰明」，而是它不知道現在該看什麼、怎麼做，以及做到哪裡才算結束。</p>
+              <p class="diagnosis-conclusion">不用急著換模型，也不用再堆一大段規則。先從最常出錯的地方開始查。</p>
+            </div>
+            <div class="home-list diagnostic-list">
+              {diagnosticRows.map((row) => (
+                <article>
+                  <h3>{row.titleLines.map((line, index) => <>{index > 0 && <br class="mobile-heading-break" />}{line}</>)}</h3>
+                  <p>{row.explanation}</p>
+                  {/* Articles inbound links paused: 保留診斷內容，不主動導向文章。 */}
+                </article>
+              ))}
+            </div>
+          </div>
+          <div class="diagnosis-actions">
+            <a class="btn btn-primary diagnosis-action" href="/expertise/">查看診斷方法 <ArrowRight size={17} aria-hidden="true" /></a>
+            <a class="btn btn-paper diagnosis-action" href="/services/">直接討論你的情境 <ArrowRight size={17} aria-hidden="true" /></a>
+          </div>
+        </div>
+      </section>
 
-    <!-- PORTFOLIO -->
-    <Portfolio />
+      <section class="thesis-card paper-card" aria-labelledby="thesis-title">
+        <div class="paper-card__inner home-split thesis-layout">
+          <div>
+            <p class="section-label">我是 CabLate</p>
+            <h2 id="thesis-title"><span class="thesis-heading-line">執行愈來愈便宜，</span><span class="thesis-heading-line">判斷反而更重要。</span></h2>
+          </div>
+          <div class="thesis-copy">
+            <p class="identity-lead">我是 CabLate。原本做全端工程與系統設計，這幾年把大部分時間放在 AI 應用、Agent 與實際工作流程上。</p>
+            <p>我關心的不是 AI 能不能漂亮地示範一次，而是它進入真實工作之後，能不能持續做對。很多看起來像模型能力的問題，最後其實出在資料、流程、工具或一開始根本沒有定義完成。</p>
+            <a class="btn btn-paper home-trust-action" href="/about/">認識我的經歷與工作方式 <ArrowRight size={17} aria-hidden="true" /></a>
+          </div>
+        </div>
+      </section>
 
-    <!-- LATEST ARTICLES -->
-    <LatestArticles />
+      <section class="paper-card" aria-labelledby="routes-title">
+        <div class="paper-card__inner">
+          <header class="section-header">
+            <p class="section-label">從你的問題開始</p>
+            <h2 id="routes-title">你現在比較想解決<br class="mobile-heading-break" />哪一件事？</h2>
+            <p class="section-intro">還不知道問題在哪，可以先自己診斷；想系統學會，可以看學習內容；已經影響工作，就直接談實際情境。</p>
+          </header>
+          <div class="home-list route-list">
+            {visitorRoutes.map((route) => (
+              <article class="route-row">
+                <h3>{route.title}</h3>
+                <p>{route.description}</p>
+                <div class="route-action">
+                  <a class="btn btn-paper" href={route.href}>{route.label} <ArrowRight size={16} aria-hidden="true" /></a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-    <!-- NEWSLETTER -->
-    <Newsletter />
+      <section class="case-card paper-card paper-card--clip" aria-labelledby="case-title">
+        <div class="paper-card__inner home-split">
+          <div class="case-story">
+            <p class="section-label">工程手冊案例</p>
+            <h2 id="case-title"><span>規則寫得愈來愈長，</span><span>為什麼 AI 還是照樣</span><span>忘記、重做？</span></h2>
+            <div class="case-product-intro">
+              <h3>Agent 深度工程手冊</h3>
+              <p>這份手冊整理了我半年多反覆遇到的問題、排查順序與修正方法。遇到失效時，可以先從症狀往回查，不用每次都靠猜。</p>
+            </div>
+            <div class="case-step">
+              <strong>問題</strong>
+              <p>為了讓 AI 記住更多事情，我不斷增加規則、設定與文件，結果不但沒有更穩，反而更難知道是哪裡出了問題。</p>
+            </div>
+            <div class="case-step">
+              <strong>發現</strong>
+              <p>後來才發現，真正缺的往往不是更多規則，而是 AI 當下讀不到需要的資料、不知道有哪些工具可以用，或流程根本沒有留下失敗後的處理方式。</p>
+            </div>
+            <div class="case-step">
+              <strong>手冊內容</strong>
+              <p>手冊把常見問題拆成 Skill、Memory、Context、Hook 與 Harness 等層次，整理成可以逐步排查的工程方法。</p>
+            </div>
+            <a class="btn btn-primary case-handbook-action" href={withCabAiAttribution(siteConfig.cabAi.handbookUrl, 'home_case_handbook')} target="_blank" rel="noopener">查看工程手冊 <ArrowRight size={17} aria-hidden="true" /></a>
+          </div>
+        </div>
+      </section>
 
-    <!-- 回到頂部按鈕 -->
-    <button class="back-to-top" id="backToTop" aria-label="回到頂部">
-        <ChevronUp size={24} />
-    </button>
+      <section class="cabai-card paper-card" id="cabai" aria-labelledby="cabai-title">
+        <div class="paper-card__inner home-split cabai-layout">
+          <div>
+            <p class="section-label">CabAI 學習平台</p>
+            <h2 id="cabai-title"><span>課程、手冊與免費試看，</span><span>都放在同一個地方。</span></h2>
+          </div>
+          <div class="cabai-copy">
+            <p>你可以先看目前開放的免費內容，再決定要不要購買。登入後，試看、已購課程、工程手冊與後續更新都會保留在同一個帳號裡。</p>
+            <a class="btn btn-primary cabai-primary" href={withCabAiAttribution(siteConfig.cabAi.productsUrl, 'home_learning')} target="_blank" rel="noopener">查看免費試看與學習內容 <ArrowRight size={17} aria-hidden="true" /></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="paper-card" aria-label="更新通知">
+        <div class="paper-card__inner"><Newsletter /></div>
+      </section>
+    </div>
+  </div>
 </BaseLayout>
 
-<script>
-    // 回到頂部按鈕
-    const backToTopBtn = document.getElementById('backToTop');
+<style>
+  :global(body) {
+    background: #eeeae2;
+    color: #253047;
+  }
 
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 400) {
-            backToTopBtn?.classList.add('visible');
-        } else {
-            backToTopBtn?.classList.remove('visible');
-        }
-    });
+  .desk-page {
+    --ink: #253047;
+    --muted: #697184;
+    --purple: #8064ea;
+    --purple-soft: #f1edff;
+    --line: #d7d1c6;
+    --home-display-font: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --home-editorial-font: 'Noto Serif TC', 'Noto Sans TC', serif;
+    --home-ui-font: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100dvh;
+    background-color: #eeeae2;
+    background-image: radial-gradient(rgb(60 50 40 / .045) .7px, transparent .7px);
+    background-size: .42rem .42rem;
+  }
 
-    backToTopBtn?.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-</script>
+  .desk-page :is(h1, h2, h3, p, li, .btn) {
+    font-size-adjust: from-font;
+  }
+
+  .desk-page :where(p, li) {
+    letter-spacing: .008em;
+  }
+
+  .desk-page .section-label {
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    letter-spacing: .075em;
+    line-height: 1.45;
+  }
+
+  .desk-page .btn {
+    font-family: var(--home-ui-font);
+    font-size: .9rem;
+    letter-spacing: .015em;
+  }
+
+  .desk-content {
+    display: grid;
+    width: min(100%, 86rem);
+    min-width: 0;
+    gap: 1rem;
+    margin-inline: auto;
+    padding-block: 1rem 1.5rem;
+  }
+
+  .desk-content > *,
+  .hero-grid > * {
+    min-width: 0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    overflow-wrap: break-word;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .identity-card {
+    z-index: 2;
+    margin-right: -2.5rem;
+  }
+
+  .identity-card .paper-card__inner {
+    padding: clamp(2.4rem, 4vw, 3.4rem) clamp(2.1rem, 3.5vw, 3rem);
+  }
+
+  .identity-card h1 {
+    max-width: 10.5em;
+    margin: 0;
+    font-family: var(--home-display-font);
+    font-size: clamp(2.35rem, 3.4vw, 3.25rem);
+    line-height: 1.14;
+    letter-spacing: -.055em;
+  }
+
+  .hero-copy {
+    max-width: 33rem;
+    margin: 1.35rem 0 1.55rem;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .home-hero-action {
+    border-radius: 0;
+  }
+
+  .home-hero-action:hover {
+    background: var(--purple);
+  }
+
+  .home-split {
+    display: grid;
+    align-items: start;
+  }
+
+  .diagnosis-layout {
+    grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+
+  .diagnosis-intro h2,
+  .thesis-card h2,
+  .section-header h2,
+  .case-story h2 {
+    margin: 0;
+    font-family: var(--home-display-font);
+    color: var(--ink);
+  }
+
+  .diagnosis-intro h2,
+  .section-header h2 {
+    font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+    letter-spacing: -.035em;
+    line-height: 1.28;
+  }
+
+  .diagnosis-intro > p:not(.section-label) {
+    margin: 1rem 0 0;
+    color: var(--muted);
+    line-height: 1.76;
+  }
+
+  .diagnosis-conclusion {
+    color: var(--ink) !important;
+    font-weight: 700;
+  }
+
+  .diagnosis-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: .75rem;
+    margin-top: 1.6rem;
+    padding-top: 1.35rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .diagnosis-action {
+    min-width: 12rem;
+    white-space: nowrap;
+  }
+
+  .diagnosis-action,
+  .btn-paper,
+  .case-handbook-action {
+    border-radius: 0;
+  }
+
+  .btn-paper {
+    border-color: rgb(128 100 234 / .62);
+    background: rgb(241 237 255 / .78);
+    box-shadow: 0 .14rem 0 rgb(128 100 234 / .14);
+    color: #6047c7;
+  }
+
+  .btn-paper:hover {
+    border-color: var(--purple);
+    background: var(--purple-soft);
+    color: #4f36b8;
+    transform: translateY(-1px);
+  }
+
+  .home-list {
+    min-width: 0;
+  }
+
+  .diagnostic-list article {
+    padding: 1.15rem 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .diagnostic-list article:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .diagnostic-list h3 {
+    margin: 0;
+    font-family: var(--home-display-font);
+    font-size: 1.15rem;
+    letter-spacing: -.018em;
+    line-height: 1.48;
+  }
+
+  .diagnostic-list p {
+    margin: .4rem 0 0;
+    color: var(--muted);
+    line-height: 1.72;
+  }
+
+  .diagnosis-action {
+    margin-top: .65rem;
+  }
+
+  .thesis-layout {
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+
+  .thesis-card h2 {
+    max-width: 8em;
+    font-family: var(--home-editorial-font);
+    font-size: clamp(2.2rem, 4.5vw, 4.4rem);
+    line-height: 1.22;
+    letter-spacing: -.04em;
+  }
+
+  .thesis-copy p {
+    margin: 0 0 1rem;
+    color: var(--muted);
+    line-height: 1.82;
+  }
+
+  .thesis-copy .identity-lead {
+    color: var(--ink);
+    font-family: var(--home-editorial-font);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.6;
+  }
+
+  .home-trust-action {
+    margin-top: .25rem;
+  }
+
+  .diagnosis-actions .btn svg,
+  .home-trust-action svg,
+  .route-action .btn svg,
+  .case-handbook-action svg {
+    flex: none;
+    transition: transform var(--transition-fast);
+  }
+
+  .diagnosis-actions .btn:hover svg,
+  .home-trust-action:hover svg,
+  .route-action .btn:hover svg,
+  .case-handbook-action:hover svg {
+    transform: translateX(.2rem);
+  }
+
+  .section-header {
+    max-width: 43rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-intro {
+    max-width: 40rem;
+    margin: .85rem 0 0;
+    color: var(--muted);
+    line-height: 1.74;
+  }
+
+  .route-row {
+    display: grid;
+    grid-template-columns: minmax(13rem, .8fr) minmax(20rem, 1.35fr) minmax(11rem, .75fr);
+    align-items: start;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    padding: 1.45rem 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .route-row h3 {
+    margin: 0;
+    font-family: var(--home-display-font);
+    font-size: 1.15rem;
+    letter-spacing: -.018em;
+    line-height: 1.48;
+  }
+
+  .route-row > p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.72;
+  }
+
+  .route-action {
+    display: grid;
+    justify-items: start;
+    gap: .7rem;
+  }
+
+  .route-action .btn {
+    min-width: 10.5rem;
+    white-space: nowrap;
+  }
+
+  .case-story {
+    max-width: 58rem;
+  }
+
+  .case-story h2 {
+    max-width: 19em;
+    font-size: clamp(1.8rem, 3.4vw, 3.1rem);
+    letter-spacing: -.04em;
+    line-height: 1.24;
+  }
+
+  .thesis-card h2 .thesis-heading-line,
+  .case-story h2 span {
+    display: block;
+  }
+
+  .mobile-heading-break {
+    display: none;
+  }
+
+  .case-step {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .case-step strong {
+    color: var(--purple);
+    font-size: .78rem;
+  }
+
+  .case-step p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.72;
+  }
+
+  .case-product-intro {
+    max-width: 44rem;
+    margin: 1.1rem 0 1.5rem;
+    padding: .9rem 1rem;
+    border-left: .2rem solid var(--purple);
+    background: rgb(241 237 255 / .62);
+  }
+
+  .case-product-intro h3 {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--home-display-font);
+    font-size: clamp(1.12rem, 2vw, 1.35rem);
+    font-weight: 700;
+    letter-spacing: -.018em;
+    line-height: 1.48;
+  }
+
+  .case-product-intro p {
+    margin: .45rem 0 0;
+    color: var(--muted);
+    line-height: 1.72;
+  }
+
+  .case-handbook-action {
+    margin-top: 1.5rem;
+  }
+
+  .cabai-layout {
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+
+  .cabai-card h2 {
+    max-width: 12em;
+    margin: 0;
+    font-family: var(--home-display-font);
+    color: var(--ink);
+    font-size: clamp(1.9rem, 3.4vw, 3.1rem);
+    letter-spacing: -.04em;
+    line-height: 1.24;
+  }
+
+  .cabai-card h2 span {
+    display: block;
+  }
+
+  .cabai-copy > p {
+    max-width: 38rem;
+    margin: 0 0 1.3rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .cabai-primary {
+    border-radius: 0;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1100px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    }
+
+    .identity-card {
+      margin-right: -1.5rem;
+    }
+
+    .route-row {
+      grid-template-columns: minmax(13rem, .9fr) minmax(20rem, 1.3fr);
+    }
+
+    .route-action {
+      grid-column: 2;
+    }
+
+  }
+
+  @media (max-width: 900px) {
+    .desk-content {
+      width: 100%;
+      max-width: 100%;
+      padding-block: .75rem 1rem;
+      overflow: visible;
+    }
+
+    .hero-grid,
+    .diagnosis-layout,
+    .thesis-layout,
+    .cabai-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .identity-card {
+      margin-right: 0;
+    }
+
+    .identity-card .paper-card__inner {
+      padding: 2rem 1.25rem;
+    }
+
+    .identity-card h1 {
+      max-width: 12em;
+      font-size: clamp(2.1rem, 9vw, 3rem);
+    }
+
+    .hero-copy {
+      font-size: .96rem;
+    }
+
+    .diagnosis-layout,
+    .thesis-layout,
+    .cabai-layout {
+      gap: 1.75rem;
+    }
+
+    .thesis-card h2 {
+      max-width: 10em;
+      font-size: clamp(2rem, 10vw, 3rem);
+    }
+
+    .route-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: .55rem;
+      padding: 1.25rem 0;
+    }
+
+    .route-action {
+      grid-column: auto;
+    }
+
+    .route-action {
+      margin-top: .25rem;
+    }
+
+    .diagnosis-actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .diagnosis-actions .btn,
+    .home-trust-action,
+    .route-action .btn,
+    .case-handbook-action {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .case-step {
+      grid-template-columns: minmax(0, 1fr);
+      gap: .35rem;
+    }
+
+  }
+
+  @media (max-width: 480px) {
+    .identity-card h1 {
+      font-size: clamp(2rem, 10.5vw, 2.6rem);
+    }
+
+    .home-hero-action {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .cabai-primary {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .diagnosis-intro h2,
+    .section-header h2 {
+      font-size: 1.65rem;
+    }
+
+    .case-story h2 {
+      font-size: 1.75rem;
+    }
+
+    .cabai-card h2 {
+      font-size: clamp(1.55rem, 7.6vw, 1.9rem);
+    }
+
+    .mobile-heading-break {
+      display: initial;
+    }
+  }
+</style>

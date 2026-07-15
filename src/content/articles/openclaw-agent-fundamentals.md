@@ -1,6 +1,6 @@
 ---
-title: "OpenClaw 爆火讓我不解：AI Agent 這些底層架構一年前就有了"
-description: "李宏毅教授用 OpenClaw 解剖 AI Agent 的五層架構，每一層我都做過。這不是新技術，是舊觀念終於被講清楚。你該學的不是龍蝦，是 Agent 本身。"
+title: "OpenClaw 讓 AI Agent 重新受到注意：五層架構其實早就存在"
+description: "李宏毅教授用 OpenClaw 拆解 AI Agent 的五層架構；我把每一層對照到自己做過的實作，說明哪些是既有概念、哪些只是新的包裝。"
 publishDate: 2026-03-10T18:00:00+08:00
 updatedDate: 2026-04-04
 category: 技術觀點

@@ -1,0 +1,121 @@
+---
+/**
+ * ProductRecommend - 文章底部產品推薦元件
+ * 根據文章分類/標籤推薦對應的產品或資源。
+ * 依文章問題脈絡導向站內學習路線或 CabAI 的對應商品詳情。
+ */
+
+import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
+
+interface Props {
+    category: string;
+    tags: string[];
+}
+
+const { category, tags } = Astro.props;
+
+// 分類 → 推薦產品對應
+const recommendMap: Record<string, { title: string; url: string; desc: string }[]> = {
+    'AI工具實戰': [
+        { title: '把有效做法整理成可重複使用的 Skill', url: withCabAiAttribution(siteConfig.cabAi.agentSkillUrl, 'article_agentskill'), desc: '前往 CabAI 查看 AgentSkill 課程、免費試看、完整內容與適合對象。' },
+    ],
+};
+
+// 根據標籤的推薦邏輯
+const tagBased: { match: string[]; rec: { title: string; url: string; desc: string } }[] = [
+    { match: ['Claude Code', 'Claude Agent SDK', 'Agent SDK', 'Context Engineering', 'Harness Engineering', 'Harness', 'Memory', 'prompt caching', 'token 成本優化', 'system-reminder'], rec: { title: '繼續看 Agent 深度工程手冊', url: withCabAiAttribution(siteConfig.cabAi.handbookUrl, 'article_handbook'), desc: '前往 CabAI 查看免費試看片段、完整章節與適合處理的失效問題。' } },
+    { match: ['AI Agent', 'Agent 架構', 'AI 協作', 'OpenClaw', '自動化'], rec: { title: '把協作方法整理成 AgentSkill', url: withCabAiAttribution(siteConfig.cabAi.agentSkillUrl, 'article_agentskill'), desc: '前往 CabAI 查看課程如何從觀念、案例走到一套能重複使用的 Skill。' } },
+    { match: ['金流', 'Payment', 'payment', 'Portaly'], rec: { title: '查看目前可取得的學習內容', url: withCabAiAttribution(siteConfig.cabAi.productsUrl, 'article_learning'), desc: '前往 CabAI 比較目前已開放的課程、工程手冊與免費試看。' } },
+];
+
+// 決定推薦
+function getRecommendations(): { title: string; url: string; desc: string }[] {
+    // 1. 先用更精確的標籤對應
+    for (const { match, rec } of tagBased) {
+        if (tags.some(tag => match.includes(tag))) {
+            return [rec];
+        }
+    }
+
+    // 2. 再檢查分類對應
+    const fromCategory = recommendMap[category];
+    if (fromCategory) return fromCategory;
+
+    // 3. 預設推薦：學習路線（目前可取得的入口）
+    return [{ title: '查看學習路線', url: '/courses/', desc: '先看目前能開始的內容，再決定下一步需要哪種深度。' }];
+}
+
+const recs = getRecommendations();
+---
+
+{recs.length > 0 && (
+    <aside class="product-recommend" id="continue-exploring">
+        <div class="product-recommend-inner">
+            <h3 class="product-recommend-heading">繼續探索</h3>
+            <div class="product-recommend-list">
+                {recs.map(rec => (
+                    <a href={rec.url} class="product-recommend-card" target={rec.url.startsWith('http') ? '_blank' : undefined} rel={rec.url.startsWith('http') ? 'noopener' : undefined}>
+                        <strong class="product-recommend-title">{rec.title}</strong>
+                        <span class="product-recommend-desc">{rec.desc}</span>
+                    </a>
+                ))}
+            </div>
+        </div>
+    </aside>
+)}
+
+<style>
+    .product-recommend {
+        max-width: 820px;
+        margin: 2rem auto;
+        padding: 0;
+    }
+    .product-recommend-inner {
+        padding: 1.5rem 2rem;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+    }
+    .product-recommend-heading {
+        font-family: 'Noto Serif TC', serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0 0 1rem;
+    }
+    .product-recommend-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .product-recommend-card {
+        display: flex;
+        flex-direction: column;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .product-recommend-card:hover {
+        border-color: var(--accent-border);
+        background: var(--accent-subtle);
+    }
+    .product-recommend-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.2rem;
+    }
+    .product-recommend-desc {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+        .product-recommend-inner {
+            padding: 1.25rem 1.5rem;
+        }
+    }
+</style>

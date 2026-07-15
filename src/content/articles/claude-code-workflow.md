@@ -1,6 +1,6 @@
 ---
 title: "Claude Code 實戰：我怎麼用 AI 寫完一整個網站"
-description: "分享用 Claude Code 從零建站的真實工作流，包含 SEO 設定、設計改版、內容規劃的完整過程與踩坑經驗。"
+description: "記錄我用 Claude Code 從零建站的過程：SEO、設計改版、內容規劃，以及哪些地方讓我重做。"
 publishDate: 2026-02-11T10:00:00+08:00
 updatedDate: 2026-04-04
 category: "AI工具實戰"

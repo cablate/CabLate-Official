@@ -40,208 +40,40 @@ const breadcrumbJsonLd = {
   description={`瀏覽 CabLate 所有文章標籤，共 ${tags.length} 個標籤、${published.length} 篇文章`}
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
-
-  <nav class="breadcrumb" aria-label="麵包屑導覽">
-    <ol>
-      <li><a href="/">首頁</a></li>
-      <li><a href="/articles/">文章</a></li>
-      <li aria-current="page">標籤</li>
-    </ol>
-  </nav>
-
-  <section class="tags-section">
-    <div class="container">
-      <div class="tags-header">
-        <h1 class="tags-title">標籤</h1>
-        <p class="tags-subtitle">共 {tags.length} 個標籤 · {published.length} 篇文章</p>
-      </div>
-
-      {tags.length > 0 ? (
-        <div class="tags-cloud">
-          {tags.map(({ tag, count }) => (
-            <a href={`/articles/tag/${tag}/`} class="tag-pill">
-              <span class="tag-name">#{tag}</span>
-              <span class="tag-badge">{count}</span>
-            </a>
-          ))}
+  <div class="archive-page paper-page">
+    <section class="archive-shell page-paper paper-card paper-card--clip">
+      <header class="archive-hero">
+        <div class="archive-hero__topline">
+          <p class="section-label">標籤索引</p>
+          <span>ALL TAGS / {String(tags.length).padStart(2, '0')}</span>
         </div>
-      ) : (
-        <div class="empty-state">
-          <p>目前沒有任何標籤。</p>
-        </div>
-      )}
+        <h1>沿著標籤繼續讀。</h1>
+        <p class="archive-hero__intro">先從問題索引找起點，再用標籤把相關文章串起來。</p>
+      </header>
 
-      <div class="back-link-wrap">
-        <a href="/articles/" class="back-link">← 返回所有文章</a>
-      </div>
+      <section class="archive-section" aria-labelledby="tags-title">
+        <header class="archive-section__header">
+          <p class="section-label">{tags.length} 個標籤・{published.length} 篇文章</p>
+          <h2 id="tags-title">選一個主題，看看它曾經在哪些問題裡出現。</h2>
+        </header>
+        {tags.length > 0 ? (
+          <div class="archive-tag-list">
+            {tags.map(({ tag, count }) => (
+              <a href={`/articles/tag/${tag}/`}>
+                <span>{String(count).padStart(2, '0')}</span>
+                <strong>#{tag}</strong>
+                <span aria-hidden="true">→</span>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p class="archive-empty">目前沒有任何標籤。</p>
+        )}
+      </section>
+
+      <nav class="archive-back-links" aria-label="文章索引導覽">
+        <a class="text-link" href="/articles/">回到文章索引</a>
+      </nav>
     </div>
-  </section>
+  </div>
 </BaseLayout>
-
-<style>
-  .breadcrumb {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 6rem 2rem 0;
-  }
-
-  @media (max-width: 768px) {
-    .breadcrumb {
-      padding-left: 1.25rem;
-      padding-right: 1.25rem;
-    }
-  }
-
-  .breadcrumb ol {
-    display: flex;
-    gap: 0.5rem;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
-
-  .breadcrumb li + li::before {
-    content: '/';
-    margin-right: 0.5rem;
-    color: var(--border);
-  }
-
-  .breadcrumb a {
-    color: var(--text-muted);
-    text-decoration: none;
-  }
-
-  .breadcrumb a:hover {
-    color: var(--text-secondary);
-  }
-
-  .tags-section {
-    padding: 2rem 0 4rem;
-    min-height: 60vh;
-  }
-
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      padding: 0 1.25rem;
-    }
-  }
-
-  .tags-header {
-    margin-bottom: 3rem;
-  }
-
-  .tags-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-  }
-
-  .tags-subtitle {
-    font-size: 1rem;
-    color: var(--text-muted);
-  }
-
-  .tags-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 3rem;
-  }
-
-  .tag-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 9999px;
-    text-decoration: none;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-  }
-
-  .tag-pill:hover {
-    border-color: var(--accent);
-    background: var(--accent-subtle);
-    color: var(--accent);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.12);
-  }
-
-  .tag-name {
-    font-weight: 500;
-  }
-
-  .tag-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.4rem;
-    height: 1.4rem;
-    padding: 0 0.35rem;
-    background: var(--bg-muted);
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    transition: all 0.2s ease;
-  }
-
-  .tag-pill:hover .tag-badge {
-    background: var(--accent-border);
-    color: var(--accent);
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--text-muted);
-  }
-
-  .back-link-wrap {
-    text-align: center;
-    margin-top: 1rem;
-  }
-
-  .back-link {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.2s ease;
-  }
-
-  .back-link:hover {
-    color: var(--text-primary);
-  }
-
-  @media (max-width: 768px) {
-    .tags-section {
-      padding-top: 6rem;
-    }
-
-    .tags-title {
-      font-size: 2rem;
-    }
-
-    .tags-cloud {
-      gap: 0.6rem;
-    }
-
-    .tag-pill {
-      font-size: 0.85rem;
-      padding: 0.4rem 0.85rem;
-    }
-  }
-</style>
