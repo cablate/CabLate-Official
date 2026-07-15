@@ -6,29 +6,29 @@ import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
 
 ---
 
-<BaseLayout title="學習路線｜CabLate" description="依照目前卡點比較免費診斷、講座與工作坊、AgentSkill 與深度手冊，選擇現在適合開始的下一步。">
+<BaseLayout title="學習內容與課程" description="還不知道 AI 問題出在哪，或已經在使用 Skill、Claude Code 卻反覆卡住？依目前狀況比較免費診斷、講座、課程與工程手冊，選擇適合的開始方式。">
   <article class="learn-page paper-page">
     <header class="learn-hero page-paper paper-card">
       <div class="learn-hero__topline">
-        <p class="eyebrow section-label">學習路線</p>
+        <p class="eyebrow section-label">學習內容</p>
         <span>LEARNING MAP / 04</span>
       </div>
-      <h1 class="display-heading"><span class="heading-phrase">不用一次</span><span class="heading-phrase">學完全部，</span><span class="heading-phrase">先跨過你現在</span><span class="heading-phrase">最卡的那一步。</span></h1>
-      <p class="learn-hero__intro">依照你現在遇到的問題選下一步。還不確定問題在哪，就先做免費診斷。</p>
-      <a class="learn-hero__cta" href="#learning-map">看看我該從哪裡開始 <ArrowRight size={18} aria-hidden="true" /></a>
+      <h1 class="display-heading"><span class="heading-phrase">不用先學完整套，</span><span class="heading-phrase">直接從你現在卡住的</span><span class="heading-phrase">地方開始。</span></h1>
+      <p class="learn-hero__intro">有些人還不知道問題在哪；有些人已經在使用 Skill 或 Claude Code，只是一直卡在相同地方。下面四種內容彼此不是固定順序，你可以直接選目前最需要的一種。</p>
+      <a class="learn-hero__cta" href="#learning-map">找適合我的內容 <ArrowRight size={18} aria-hidden="true" /></a>
     </header>
 
     <section class="learn-map page-paper paper-card paper-card--clip paper-card--clip-left" id="learning-map" aria-labelledby="map-title">
       <header class="learn-map__header">
         <div>
-          <p class="section-label">依狀況選擇</p>
-          <h2 id="map-title">你現在卡在哪一層？</h2>
-          <p class="learn-map__lead">免費內容先幫你看懂問題；需要反覆練習或查閱時，再考慮付費內容。</p>
+          <p class="section-label">依目前狀況選擇</p>
+          <h2 id="map-title">哪個問題最像你現在的情況？</h2>
+          <p class="learn-map__lead">還不確定問題在哪，就先從免費診斷開始；已經知道自己的卡點，再往下選擇需要的深度。</p>
         </div>
-        <span class="paper-label" aria-hidden="true">START HERE</span>
+        <span class="paper-label" aria-hidden="true">CHOOSE ONE</span>
       </header>
 
-      <ol class="learn-map__list">
+      <ul class="learn-map__list" role="list">
         {learningPath.map((item, index) => (
           <li class:list={[
             'learn-map__step',
@@ -51,7 +51,7 @@ import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
                 <div class="learn-map__action">
                   {item.price && <strong>{item.price}</strong>}
                   {item.href ? (
-                    <a class="text-link" href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener' : undefined}>{item.cta} <ArrowRight size={15} aria-hidden="true" /></a>
+                    <a class="learn-map__route-action" href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener' : undefined}>{item.cta} <ArrowRight size={15} aria-hidden="true" /></a>
                   ) : (
                     <span class="learn-map__status">有新場次時會在這裡更新</span>
                   )}
@@ -60,16 +60,16 @@ import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
             </div>
           </li>
         ))}
-      </ol>
+      </ul>
     </section>
 
     <section class="cabai-onboarding page-paper paper-card paper-card--clip-left" id="cabai-platform" aria-labelledby="cabai-onboarding-title">
       <div>
         <p class="section-label">內容如何交付</p>
-        <h2 id="cabai-onboarding-title">試看與購買內容，都留在 CabAI 帳號裡。</h2>
+        <h2 id="cabai-onboarding-title">免費試看、已購課程與後續更新，都留在 CabAI 帳號裡。</h2>
       </div>
       <div class="cabai-onboarding__body">
-        <p>CabAI 使用 Google 帳號登入。登入後可以保留免費試看與已購內容；需要社群權限時，再到個人資料連結 Discord。</p>
+        <p>使用 Google 帳號登入 CabAI 後，就能查看免費試看、已購課程、工程手冊與後續更新。你也可以到個人資料頁連結 Discord，加入免費社群，和其他學習者交流 AI 應用、開發與實作問題。</p>
         <div class="cabai-onboarding__actions">
           <a class="learn-hero__cta" href={withCabAiAttribution(siteConfig.cabAi.accountUrl, 'courses_account')} target="_blank" rel="noopener">建立 CabAI 免費帳號 <ArrowRight size={17} aria-hidden="true" /></a>
         </div>
@@ -114,13 +114,15 @@ import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
   .learn-map h3 { max-width: 30ch; margin: .55rem 0 1.15rem; font-size: clamp(1.55rem, 2.5vw, 2.15rem); line-height: 1.25; text-wrap: balance; }
   .learn-map h4 { margin: .3rem 0 .65rem; font-size: 1.35rem; line-height: 1.35; text-wrap: balance; }
   .learn-map p { max-width: 50rem; margin: 0; color: var(--text-secondary); line-height: 1.75; }
-  .learn-map__solution { min-width: 0; padding: 1.1rem 1.2rem 1.2rem; border-inline-start: 3px solid rgb(112 91 177 / .28); background: rgb(112 91 177 / .045); }
-  .learn-map__step--pending .learn-map__solution { border-inline-start-style: dashed; border-inline-start-color: var(--border-strong); background: rgb(69 58 43 / .025); }
+  .learn-map__solution { min-width: 0; padding: 1.25rem clamp(1.2rem, 2.4vw, 1.65rem) 1.4rem; background-image: var(--paper-reading-card-image); background-repeat: no-repeat; background-position: center; background-size: 124% 170%; }
   .learn-map__solution > span { color: var(--accent); font-size: .68rem; font-weight: 700; }
-  .learn-map__action { display: flex; align-items: baseline; flex-wrap: wrap; gap: .8rem 1.4rem; margin-top: 1rem; }
+  .learn-map__action { display: flex; align-items: center; flex-wrap: wrap; gap: .8rem 1.4rem; margin-top: 1rem; }
   .learn-map__action strong { color: var(--text-primary); font-size: .78rem; }
-  .learn-map__action .text-link { margin: 0; }
-  .learn-map__status { color: var(--text-muted); font-size: .78rem; }
+  .learn-map__route-action { display: inline-flex; align-items: center; justify-content: space-between; gap: .8rem; min-block-size: 3rem; max-inline-size: 100%; padding: .7rem .95rem; border: 1px solid var(--border-strong); background-color: rgb(255 253 248 / .88); background-image: var(--paper-white-image); background-repeat: no-repeat; background-position: center; background-size: 145% 205%; color: var(--accent-text); font-size: .86rem; font-weight: 700; line-height: 1.35; white-space: nowrap; box-shadow: 0 .18rem .35rem rgb(69 58 43 / .1); transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast); }
+  .learn-map__route-action:hover { border-color: var(--accent); background-color: var(--bg-soft); color: var(--accent-hover); }
+  .learn-map__route-action:active { transform: translateY(1px); }
+  .learn-map__route-action :global(svg) { flex: 0 0 auto; }
+  .learn-map__status { display: block; padding-top: .8rem; border-top: 1px dashed var(--border-strong); color: var(--text-muted); font-size: .78rem; }
 
   .cabai-onboarding { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: clamp(2rem, 6vw, 5rem); padding-block: clamp(2.25rem, 4vw, 3.25rem); }
   .cabai-onboarding h2 { max-width: 18ch; margin: 0; font-size: clamp(1.75rem, 3vw, 2.7rem); letter-spacing: -.04em; line-height: 1.12; }
@@ -138,6 +140,7 @@ import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
 
   @media (max-width: 520px) {
     .learn-hero, .learn-map, .cabai-onboarding { width: min(100% - 2rem, 82rem); }
+    .learn-page .display-heading > .heading-phrase { white-space: normal; }
     #learning-map { scroll-margin-top: 5.5rem; }
     .learn-hero__topline { align-items: flex-start; gap: .75rem; }
     .learn-hero__topline > span { max-inline-size: 12ch; padding-top: .1rem; font-size: .56rem; line-height: 1.45; }
@@ -149,9 +152,21 @@ import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
     .learn-map p { font-size: .9rem; }
     .learn-map__meta { gap: .5rem; }
     .learn-map__available, .learn-map__pending { font-size: .62rem; }
-    .learn-map__solution { padding: 1rem; }
+    .learn-map__solution { padding: 1.1rem; }
     .learn-map__action { display: grid; gap: .7rem; }
+    .learn-map__route-action { inline-size: 100%; }
     .cabai-onboarding__actions .learn-hero__cta { width: 100%; justify-content: center; }
+  }
+
+  @media (max-width: 340px) {
+    .learn-map h4 { font-size: 1.25rem; }
+    .learn-map__route-action { min-inline-size: 0; white-space: normal; }
+  }
+
+  @media (forced-colors: active) {
+    .learn-map__solution, .learn-map__route-action { border-color: CanvasText; background-image: none; box-shadow: none; }
+    .learn-map__route-action { color: LinkText; }
+    .learn-map__status { border-color: GrayText; color: GrayText; }
   }
 
   @media (prefers-reduced-motion: reduce) {

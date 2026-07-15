@@ -11,7 +11,7 @@ const isCurrent = (href: string) => href === '/'
 
 <header class="site-header">
   <aside class="site-rail" aria-label="網站導覽">
-    <a class="site-rail__brand" href="/" aria-label="CabLate 首頁">
+    <a class="site-rail__brand" href="/" aria-label="CabLate 首頁" aria-current={currentPath === '/' ? 'page' : undefined}>
       <img src="/images/cablate-author-avatar.webp" alt="" width="256" height="256" aria-hidden="true" />
       <span>
         <strong>CabLate</strong>

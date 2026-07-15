@@ -18,7 +18,7 @@ import '@fontsource/noto-serif-tc/400.css';
 import '@fontsource/noto-serif-tc/700.css';
 
 const { title, description = '關於 AI 工作流程、產品實作與交付判斷的研究與紀錄。', noSEO = false, noindex = false, shell = 'desk' } = Astro.props;
-const seoTitle = title === 'CabLate' || title.endsWith('| CabLate') ? title : `${title} | CabLate`;
+const seoTitle = title.includes('CabLate') ? title : `${title} | CabLate`;
 const currentYear = new Date().getFullYear();
 ---
 
@@ -124,12 +124,12 @@ const currentYear = new Date().getFullYear();
         <div class="footer-inner">
           <div class="footer-statement">
             <a href="/" class="footer-brand">CabLate</a>
-            <p>找出 AI 工作卡住的地方，讓結果可以直接使用，也知道該怎麼檢查。</p>
+            <p>找出 AI 為什麼一直重做，讓它不只開始做，而是真的把事情完成。</p>
           </div>
           <div class="footer-links">
             <nav aria-label="內容與服務">
               <strong>探索</strong>
-              {/* Articles inbound links paused. */}<a href="/expertise/">專業方法</a><a href="/work/">作品</a><a href="/courses/">學習</a><a href="/services/">合作</a><a href="/about/">關於</a>
+              {/* Articles inbound links paused. */}<a href="/expertise/">專業方法</a><a href="/courses/">學習</a><a href="/services/">合作</a><a href="/about/">關於</a>
             </nav>
             <nav aria-label="外部連結">
               <strong>連結</strong>

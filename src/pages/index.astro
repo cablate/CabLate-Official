@@ -3,19 +3,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Newsletter from '../components/sections/Newsletter.astro';
 import HeroCarousel from '../components/sections/HeroCarousel.astro';
 import { ArrowRight } from '@lucide/astro';
-import { authorityProfile } from '../config/authority';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 
 const heroSlides = [
   {
     src: '/images/photos/cablate-speaking-ai-meetup-april.webp',
-    alt: 'CabLate 在四月 AI 小聚現場以麥克風分享技術內容',
+    alt: 'CabLate 在四月 AI 小聚現場分享 AI 協作與技術實作',
     width: 2000,
     height: 1333,
   },
   {
     src: '/images/photos/cablate-speaking-workshop-0627.webp',
-    alt: 'CabLate 在工作坊現場手持麥克風分享 AI 實作經驗',
+    alt: 'CabLate 在工作坊現場帶領學員進行 AI 實作',
     width: 1970,
     height: 1970,
   },
@@ -23,22 +22,22 @@ const heroSlides = [
 
 const diagnosticRows = [
   {
-    titleLines: ['每次換個任務，都得重新交代背景。'],
-    explanation: 'AI 每次拿到的背景不完整，前一次的判斷接不起來。',
+    titleLines: ['背景講過很多次，它還是接不起來。'],
+    explanation: 'AI 當下拿到的資訊不完整，或讀到了過期、互相衝突的內容。',
     // Articles inbound links paused.
     // href: '/articles/claude-code-token-drain-system-reminder/',
     // label: '看資訊脈絡怎麼失效',
   },
   {
-    titleLines: ['AI 做了很多，最後還是不敢直接用。'],
-    explanation: '完成標準與驗收方式沒有先說清楚。',
+    titleLines: ['它做了很多，最後還是得自己重做。'],
+    explanation: '任務看似完成，但沒有清楚的完成條件，也缺少能直接檢查結果的方法。',
     // Articles inbound links paused.
     // href: '/articles/claude-code-workflow/',
     // label: '看怎麼建立完成標準',
   },
   {
-    titleLines: ['一出錯就找不到原因，', '只能從頭再來。'],
-    explanation: '流程沒有留下可檢查的節點，也沒有出錯後的復原方式。',
+    titleLines: ['只要一步出錯，', '整個流程就得重來。'],
+    explanation: '過程沒有留下可追查的節點，失敗後也不知道該從哪裡繼續。',
     // Articles inbound links paused.
     // href: '/articles/agent-sdk-system-reminder-diff-fix/',
     // label: '看怎麼留下檢查順序',
@@ -47,20 +46,20 @@ const diagnosticRows = [
 
 const visitorRoutes = [
   {
-    title: '我想先把 AI 用得更穩',
-    description: '已經開始使用 AI，但常遇到忘記前文、產出不穩，或不知道應該從哪裡修正。',
+    title: '我想先知道 AI 為什麼一直出錯',
+    description: '已經開始使用 AI，但常遇到忘記前文、產出不穩，或不知道應該先改 Prompt、資料還是流程。',
     href: '/expertise/',
     label: '先做問題診斷',
   },
   {
-    title: '我想把一個想法完整做出來',
-    description: '已經有網站、工具或工作流程的題目，希望學會把它推到能使用、能部署，也能繼續維護。',
+    title: '我想把想法一路做到能使用',
+    description: '手上已經有網站、工具或工作流程的題目，希望學會如何拆解、實作、部署與持續改善。',
     href: '/courses/',
-    label: '找適合的學習路線',
+    label: '找適合的學習內容',
   },
   {
-    title: '我想改善團隊的 AI 流程',
-    description: '團隊已經有工作內容、資料與使用者，希望判斷哪些地方該培訓、調整流程，或導入自動化。',
+    title: '我想改善團隊目前的 AI 用法',
+    description: '團隊已經有工作內容、資料與使用者，但不知道該先培訓、調整流程，還是導入新的工具或系統。',
     href: '/services/',
     label: '查看合作方式',
   },
@@ -68,16 +67,16 @@ const visitorRoutes = [
 
 ---
 
-<BaseLayout title="CabLate — AI 協作・技術觀點・開發實戰" description={authorityProfile.shortBio}>
+<BaseLayout title="CabLate — AI 協作、Agent 工作流程與開發實戰" description="AI 做得很快，不代表事情真的做完。CabLate 從全端工程與系統設計出發，協助個人與團隊找出 AI 工作流程中的問題，改善任務、資料、工具與驗收方式，讓成果真正進入工作。">
   <div class="desk-page">
     <div class="desk-content">
       <section class="hero-grid" aria-labelledby="home-title">
         <div class="identity-card paper-card">
           <div class="paper-card__inner">
             <p class="section-label">AI 協作・工作流程設計</p>
-            <h1 class="display-heading" id="home-title"><span class="heading-phrase">讓 AI 把工作</span><span class="heading-phrase">做完，</span><span class="heading-phrase">成果也能</span><span class="heading-phrase">放心交付。</span></h1>
-            <p class="hero-copy">你已經在用 AI，卻還是常常重做、卡住，或不敢直接交付。模型和 Prompt 可能沒有問題。只要任務、資料、工具或完成標準少了一塊，AI 一樣會走偏。</p>
-            <a class="btn btn-primary home-hero-action" href="#diagnosis">找出問題卡在哪一層 <ArrowRight size={17} aria-hidden="true" /></a>
+            <h1 class="display-heading" id="home-title"><span class="heading-phrase">AI 做得很快，</span><span class="heading-phrase">但你需要的是</span><span class="heading-phrase">做完。</span></h1>
+            <p class="hero-copy">你明明交代過背景，它下一輪還是忘記；產出看起來很多，最後卻不敢直接用。問題不一定出在模型，也不一定是 Prompt 寫得不夠長。AI 有沒有讀到正確資料、能不能使用需要的工具、知不知道什麼才算完成，都會改變結果。</p>
+            <a class="btn btn-primary home-hero-action" href="#diagnosis">看看問題出在哪裡 <ArrowRight size={17} aria-hidden="true" /></a>
           </div>
         </div>
 
@@ -88,10 +87,10 @@ const visitorRoutes = [
         <div class="paper-card__inner">
           <div class="home-split diagnosis-layout">
             <div class="diagnosis-intro">
-              <p class="section-label">你可能也遇過這些問題</p>
-              <h2 id="diagnosis-title">AI 偶爾做得到，不代表你已經有一套可靠流程。</h2>
-              <p>可靠流程要能在換任務、工具或交接對象後，仍讓成果被重現、檢查與修正。</p>
-              <p class="diagnosis-conclusion">這三種失效都可以逐層檢查。先找出最容易出錯的一層，不用先換掉整套工具。</p>
+              <p class="section-label">你可能也遇過</p>
+              <h2 id="diagnosis-title">AI 偶爾成功一次，和真的能拿來工作，是兩回事。</h2>
+              <p>真正的問題通常不是「AI 不夠聰明」，而是它不知道現在該看什麼、怎麼做，以及做到哪裡才算結束。</p>
+              <p class="diagnosis-conclusion">不用急著換模型，也不用再堆一大段規則。先從最常出錯的地方開始查。</p>
             </div>
             <div class="home-list diagnostic-list">
               {diagnosticRows.map((row) => (
@@ -105,7 +104,7 @@ const visitorRoutes = [
           </div>
           <div class="diagnosis-actions">
             <a class="btn btn-primary diagnosis-action" href="/expertise/">查看診斷方法 <ArrowRight size={17} aria-hidden="true" /></a>
-            <a class="btn btn-paper diagnosis-action" href="/services/">討論合作 <ArrowRight size={17} aria-hidden="true" /></a>
+            <a class="btn btn-paper diagnosis-action" href="/services/">直接討論你的情境 <ArrowRight size={17} aria-hidden="true" /></a>
           </div>
         </div>
       </section>
@@ -114,12 +113,12 @@ const visitorRoutes = [
         <div class="paper-card__inner home-split thesis-layout">
           <div>
             <p class="section-label">我是 CabLate</p>
-            <h2 id="thesis-title"><span class="thesis-heading-line">判斷力比</span><span class="thesis-heading-line">執行力值錢。</span></h2>
+            <h2 id="thesis-title"><span class="thesis-heading-line">執行愈來愈便宜，</span><span class="thesis-heading-line">判斷反而更重要。</span></h2>
           </div>
           <div class="thesis-copy">
-            <p class="identity-lead">我是 CabLate，從全端工程走進 AI 工作流程設計，現在把這些經驗整理成能用的方法。</p>
-            <p>我先確認成果能不能直接使用，再找出系統在哪裡失效。問題可能少了資料、工具，也可能是一開始就沒說清楚怎樣才算完成。</p>
-            <a class="btn btn-paper home-trust-action" href="/about/">認識我的經歷與判斷方式 <ArrowRight size={17} aria-hidden="true" /></a>
+            <p class="identity-lead">我是 CabLate。原本做全端工程與系統設計，這幾年把大部分時間放在 AI 應用、Agent 與實際工作流程上。</p>
+            <p>我關心的不是 AI 能不能漂亮地示範一次，而是它進入真實工作之後，能不能持續做對。很多看起來像模型能力的問題，最後其實出在資料、流程、工具或一開始根本沒有定義完成。</p>
+            <a class="btn btn-paper home-trust-action" href="/about/">認識我的經歷與工作方式 <ArrowRight size={17} aria-hidden="true" /></a>
           </div>
         </div>
       </section>
@@ -127,9 +126,9 @@ const visitorRoutes = [
       <section class="paper-card" aria-labelledby="routes-title">
         <div class="paper-card__inner">
           <header class="section-header">
-            <p class="section-label">從最接近你的問題開始</p>
-            <h2 id="routes-title">你現在最想改善<br class="mobile-heading-break" />哪一件事？</h2>
-            <p class="section-intro">你可以先自己診斷、系統學習，或直接討論合作。選最符合現況的一種就好。</p>
+            <p class="section-label">從你的問題開始</p>
+            <h2 id="routes-title">你現在比較想解決<br class="mobile-heading-break" />哪一件事？</h2>
+            <p class="section-intro">還不知道問題在哪，可以先自己診斷；想系統學會，可以看學習內容；已經影響工作，就直接談實際情境。</p>
           </header>
           <div class="home-list route-list">
             {visitorRoutes.map((route) => (
@@ -149,22 +148,22 @@ const visitorRoutes = [
         <div class="paper-card__inner home-split">
           <div class="case-story">
             <p class="section-label">工程手冊案例</p>
-            <h2 id="case-title"><span>規則愈加愈多，</span><span>為什麼 AI 還是會</span><span>忘記、重做？</span></h2>
+            <h2 id="case-title"><span>規則寫得愈來愈長，</span><span>為什麼 AI 還是照樣</span><span>忘記、重做？</span></h2>
             <div class="case-product-intro">
               <h3>Agent 深度工程手冊</h3>
-              <p>我把半年多反覆遇到的問題、排查順序與修正方法整理進這份手冊。遇到類似失效時，可以從症狀開始查，不必再靠猜。</p>
+              <p>這份手冊整理了我半年多反覆遇到的問題、排查順序與修正方法。遇到失效時，可以先從症狀往回查，不用每次都靠猜。</p>
             </div>
             <div class="case-step">
               <strong>問題</strong>
-              <p>為了讓 AI 記得更多背景，我不斷增加規則與設定，成果卻沒有因此變穩。</p>
+              <p>為了讓 AI 記住更多事情，我不斷增加規則、設定與文件，結果不但沒有更穩，反而更難知道是哪裡出了問題。</p>
             </div>
             <div class="case-step">
               <strong>發現</strong>
-              <p>追查後才發現，規則已經夠多了。AI 當下讀不到需要的資料，也不知道能用哪些工具；出錯後更沒有一套檢查和復原方式。</p>
+              <p>後來才發現，真正缺的往往不是更多規則，而是 AI 當下讀不到需要的資料、不知道有哪些工具可以用，或流程根本沒有留下失敗後的處理方式。</p>
             </div>
             <div class="case-step">
               <strong>手冊內容</strong>
-              <p>手冊把這些失效拆成 Skill、Memory、Context 等層次，並整理檢查、修正與交接的排查順序。</p>
+              <p>手冊把常見問題拆成 Skill、Memory、Context、Hook 與 Harness 等層次，整理成可以逐步排查的工程方法。</p>
             </div>
             <a class="btn btn-primary case-handbook-action" href={withCabAiAttribution(siteConfig.cabAi.handbookUrl, 'home_case_handbook')} target="_blank" rel="noopener">查看工程手冊 <ArrowRight size={17} aria-hidden="true" /></a>
           </div>
@@ -175,10 +174,10 @@ const visitorRoutes = [
         <div class="paper-card__inner home-split cabai-layout">
           <div>
             <p class="section-label">CabAI 學習平台</p>
-            <h2 id="cabai-title"><span>課程、手冊與免費試看，</span><span>都整理在這裡。</span></h2>
+            <h2 id="cabai-title"><span>課程、手冊與免費試看，</span><span>都放在同一個地方。</span></h2>
           </div>
           <div class="cabai-copy">
-            <p>CabAI 收錄免費試看、系統課程、工程手冊和已購內容。你可以先看目前開放的內容，確定適合，再決定要不要付費。</p>
+            <p>你可以先看目前開放的免費內容，再決定要不要購買。登入後，試看、已購課程、工程手冊與後續更新都會保留在同一個帳號裡。</p>
             <a class="btn btn-primary cabai-primary" href={withCabAiAttribution(siteConfig.cabAi.productsUrl, 'home_learning')} target="_blank" rel="noopener">查看免費試看與學習內容 <ArrowRight size={17} aria-hidden="true" /></a>
           </div>
         </div>
@@ -203,10 +202,34 @@ const visitorRoutes = [
     --purple: #8064ea;
     --purple-soft: #f1edff;
     --line: #d7d1c6;
+    --home-display-font: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --home-editorial-font: 'Noto Serif TC', 'Noto Sans TC', serif;
+    --home-ui-font: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     min-height: 100dvh;
     background-color: #eeeae2;
     background-image: radial-gradient(rgb(60 50 40 / .045) .7px, transparent .7px);
     background-size: .42rem .42rem;
+  }
+
+  .desk-page :is(h1, h2, h3, p, li, .btn) {
+    font-size-adjust: from-font;
+  }
+
+  .desk-page :where(p, li) {
+    letter-spacing: .008em;
+  }
+
+  .desk-page .section-label {
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    letter-spacing: .075em;
+    line-height: 1.45;
+  }
+
+  .desk-page .btn {
+    font-family: var(--home-ui-font);
+    font-size: .9rem;
+    letter-spacing: .015em;
   }
 
   .desk-content {
@@ -260,10 +283,10 @@ const visitorRoutes = [
   .identity-card h1 {
     max-width: 10.5em;
     margin: 0;
-    font-family: 'Noto Serif TC', serif;
+    font-family: var(--home-display-font);
     font-size: clamp(2.35rem, 3.4vw, 3.25rem);
-    line-height: 1.18;
-    letter-spacing: -.045em;
+    line-height: 1.14;
+    letter-spacing: -.055em;
   }
 
   .hero-copy {
@@ -271,7 +294,7 @@ const visitorRoutes = [
     margin: 1.35rem 0 1.55rem;
     color: var(--muted);
     font-size: 1rem;
-    line-height: 1.85;
+    line-height: 1.8;
   }
 
   .home-hero-action {
@@ -297,20 +320,21 @@ const visitorRoutes = [
   .section-header h2,
   .case-story h2 {
     margin: 0;
-    font-family: 'Noto Serif TC', serif;
+    font-family: var(--home-display-font);
     color: var(--ink);
   }
 
   .diagnosis-intro h2,
   .section-header h2 {
-    font-size: clamp(1.75rem, 3vw, 2.6rem);
-    line-height: 1.35;
+    font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+    letter-spacing: -.035em;
+    line-height: 1.28;
   }
 
   .diagnosis-intro > p:not(.section-label) {
     margin: 1rem 0 0;
     color: var(--muted);
-    line-height: 1.8;
+    line-height: 1.76;
   }
 
   .diagnosis-conclusion {
@@ -370,15 +394,16 @@ const visitorRoutes = [
 
   .diagnostic-list h3 {
     margin: 0;
-    font-family: 'Noto Serif TC', serif;
+    font-family: var(--home-display-font);
     font-size: 1.15rem;
-    line-height: 1.5;
+    letter-spacing: -.018em;
+    line-height: 1.48;
   }
 
   .diagnostic-list p {
     margin: .4rem 0 0;
     color: var(--muted);
-    line-height: 1.7;
+    line-height: 1.72;
   }
 
   .diagnosis-action {
@@ -392,6 +417,7 @@ const visitorRoutes = [
 
   .thesis-card h2 {
     max-width: 8em;
+    font-family: var(--home-editorial-font);
     font-size: clamp(2.2rem, 4.5vw, 4.4rem);
     line-height: 1.22;
     letter-spacing: -.04em;
@@ -400,12 +426,12 @@ const visitorRoutes = [
   .thesis-copy p {
     margin: 0 0 1rem;
     color: var(--muted);
-    line-height: 1.85;
+    line-height: 1.82;
   }
 
   .thesis-copy .identity-lead {
     color: var(--ink);
-    font-family: 'Noto Serif TC', serif;
+    font-family: var(--home-editorial-font);
     font-size: clamp(1.2rem, 2vw, 1.5rem);
     font-weight: 700;
     line-height: 1.6;
@@ -439,7 +465,7 @@ const visitorRoutes = [
     max-width: 40rem;
     margin: .85rem 0 0;
     color: var(--muted);
-    line-height: 1.75;
+    line-height: 1.74;
   }
 
   .route-row {
@@ -453,15 +479,16 @@ const visitorRoutes = [
 
   .route-row h3 {
     margin: 0;
-    font-family: 'Noto Serif TC', serif;
+    font-family: var(--home-display-font);
     font-size: 1.15rem;
-    line-height: 1.5;
+    letter-spacing: -.018em;
+    line-height: 1.48;
   }
 
   .route-row > p {
     margin: 0;
     color: var(--muted);
-    line-height: 1.75;
+    line-height: 1.72;
   }
 
   .route-action {
@@ -482,7 +509,8 @@ const visitorRoutes = [
   .case-story h2 {
     max-width: 19em;
     font-size: clamp(1.8rem, 3.4vw, 3.1rem);
-    line-height: 1.35;
+    letter-spacing: -.04em;
+    line-height: 1.24;
   }
 
   .thesis-card h2 .thesis-heading-line,
@@ -509,7 +537,7 @@ const visitorRoutes = [
   .case-step p {
     margin: 0;
     color: var(--muted);
-    line-height: 1.75;
+    line-height: 1.72;
   }
 
   .case-product-intro {
@@ -523,16 +551,17 @@ const visitorRoutes = [
   .case-product-intro h3 {
     margin: 0;
     color: var(--ink);
-    font-family: 'Noto Serif TC', serif;
+    font-family: var(--home-display-font);
     font-size: clamp(1.12rem, 2vw, 1.35rem);
     font-weight: 700;
-    line-height: 1.5;
+    letter-spacing: -.018em;
+    line-height: 1.48;
   }
 
   .case-product-intro p {
     margin: .45rem 0 0;
     color: var(--muted);
-    line-height: 1.75;
+    line-height: 1.72;
   }
 
   .case-handbook-action {
@@ -547,10 +576,11 @@ const visitorRoutes = [
   .cabai-card h2 {
     max-width: 12em;
     margin: 0;
-    font-family: 'Noto Serif TC', serif;
+    font-family: var(--home-display-font);
     color: var(--ink);
     font-size: clamp(1.9rem, 3.4vw, 3.1rem);
-    line-height: 1.3;
+    letter-spacing: -.04em;
+    line-height: 1.24;
   }
 
   .cabai-card h2 span {
@@ -561,7 +591,7 @@ const visitorRoutes = [
     max-width: 38rem;
     margin: 0 0 1.3rem;
     color: var(--muted);
-    line-height: 1.85;
+    line-height: 1.8;
   }
 
   .cabai-primary {

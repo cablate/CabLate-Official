@@ -13,7 +13,7 @@ baseline_audit: docs/design/audits/2026-07-14-remaining-primary-pages-plan/READM
 execution_slicing: docs/content/remaining-primary-pages-incremental-execution-plan-2026-07-14.md
 ---
 
-# About、Work、Courses、Services 視覺與閱讀轉換 Master Plan
+# About、Courses、Services 視覺與閱讀轉換 Master Plan（Work 暫時封存）
 
 ## 0. 決策狀態
 
@@ -58,7 +58,7 @@ CabLate.com 是公開的信任與決策中樞。它要讓正在使用 AI、卻�
 
 - **G0：四頁各自完成一個清楚的訪客決策。** 五秒內能辨識頁面用途，讀完能找到符合意圖的下一步。
 - **G1 About／信任：** 讓人物歷程、公開證據與工作原則共同支持信任，再讓高意圖訪客選擇代表作品、學習內容或服務方式。
-- **G2 Work／證據：** 讓案例的問題、限制、判斷、結果與揭露範圍可掃讀，再把有相似情境者送往 Services。
+- **G2 Work／封存：** Work 在沒有相對於 Home／About 的獨占任務時不出現在公開路徑；舊連結安全回到 About 公開輸出，原始碼保留供未來重啟。
 - **G3 Courses／選擇：** 讓訪客知道路線是依投入與深度排列、不是必修順序，並能清楚啟動目前可用的路線。
 - **G4 Services／適配：** 讓訪客先判斷合作類型、理解交付與邊界，再用 `cablate@cablate.com` 提交情境。
 
@@ -364,6 +364,31 @@ Mobile：
 
 **Service-bridge verdict：Approved and verified。** 此決策只取代 Work 頁尾 limited-disclosure 區塊；public decision roster 與 W0c source matrix 仍為 pending。
 
+### 5.0c 2026-07-15 使用者決策：Work 暫時 archive
+
+全局比對後，Work 目前最難成立的不是視覺，而是頁面角色：手冊由 Home／About／Courses 說得更完整，三個公開 repo 又已由 About 完成作者能力與公開來源敘事。若沒有 source-backed constraint／trade-off／verification，獨立 Work 只會要求訪客重讀同一批內容。
+
+- Work 從主導覽、手機選單、Footer、About Hero、公開輸出 actions 與頁尾 utility links 撤下。
+- `src/pages/work.astro` 移至 `src/archive/work.astro`，保留 W0d 黃色服務橋接與完整程式碼，不再生成正式內容頁。
+- 舊 `/work/` 靜態轉向 `/about/#public-output-title`，避免舊書籤與外部連結掉進 404；sitemap 排除 Work。
+- About 自己承擔公開輸出與 GitHub／Threads 外連；讀完後的付費路徑仍由 Services／Courses 承擔。
+- 5.1–5.9 與 Phase 2 自此是 **archived recovery plan**，不得視為待執行 production backlog。重新上線前必須先證明 Work 有不可由 Home／About／Services 完成的獨占任務。
+
+**Work archive verdict：Implemented, awaiting user review。** 自動檢查、Desktop in-app browser evidence、mobile navigation DOM、redirect 與 sitemap 均已完成；驗收依 `docs/contracts/work-route-archive-2026-07-15.md`。使用者確認畫面後才建立 checkpoint；390px 視覺留在 final page gate 補驗。
+
+### 5.0d 2026-07-15 黃色紙張跨頁歸屬審查
+
+本節依 `docs/design/audits/2026-07-15-work-archive-yellow-paper-audit/` 的當次 Services、Courses、Expertise、Home、Articles 與 About 畫面，重新判斷 W0d 黃色紙張在 Work 封存後應由誰持有。
+
+- **Services 是唯一明確 owner。** 黃色紙張原本投影的就是 `serviceTracks`，也符合「這是現在可採取的合作方向」語意。
+- Services 不另加一排重複卡片。三個既有 service option 的 `01–03`、中文標題與一句 outcome 改成黃色摘要面；fit／deliverables 留在白底詳細內容，維持同頁比較。
+- 不增加客戶、公司、成效、服務名稱或每卡 CTA；頁級行動仍由最後的 Email Primary 與 Threads Secondary 統一收斂。
+- Courses 只在未來需要標示「目前真的可開始／可購買」時條件式使用；目前已有 `START HERE`、route rail 與狀態標籤，不再疊加。
+- Expertise 最多使用單一 next-step note；Home 的中立分流、About 的信任證據與 Articles 的閱讀導覽都不適合變黃。
+- 正式施工另拆 Services `S2a`，不在 WA0 或其他頁面順手實作。
+
+**Yellow-paper verdict：Services best fit, planned only。** 本輪不改 Services production UI；先完成 Work 封存畫面確認與 checkpoint。
+
 ### 5.1 唯一訪客任務
 
 訪客進站時想：「你實際做過什麼？遇到限制時怎麼判斷？」讀完後應能回答：「這些案例有問題、判斷、證據與揭露邊界；若我的情境相似，可以去看合作方式。」
@@ -470,6 +495,20 @@ H1 已在 1280／390 實測成立，不重寫。公開作品 H2 待後續 W5 核
 
 ## 6. Courses：學習地圖
 
+### 6.0 2026-07-15 嚴格內容重審基線
+
+本節依 `docs/design/audits/2026-07-15-courses-strict-content-reaudit/` 的 fresh in-app browser 畫面、runtime DOM／computed rect，以及兩個第一方 CabAI 商品頁修訂；這是 planning evidence，不代表 Courses 已實作完成或通過頁面 gate。
+
+- 1280px Desktop Hero 主張與 anchor 已成立；問題集中在選擇語意與行動權重，不需要重做整頁。
+- `START HERE`、`01–04`、連續 rail、「卡在哪一層」與 free-to-paid lead 同時暗示 `01 → 04` 必修，和「四條 route 可獨立進入」的目標衝突。
+- 三個可走 route action 實測約為 `103.6 × 22.8px`、`143.9 × 22.8px`、`143.9 × 22.8px`；CabAI account action 約為 `214.0 × 52.8px` 且為深色 filled，畫面優先順序顛倒。
+- AgentSkill 第一方商品頁確認 `NT$1,500`、1 堂免登入免費試看、永久觀看，且主要適合已開始使用 Skill／AI 工具並想理解設計方法的人；Courses 現有 situation 太寬。
+- 手冊第一方商品頁的正式 H1 是「Claude Code 深度工程手冊」，現價 `NT$5,999`、17 章／45 課、6 堂免登入免費試看；Courses 現有「Agent 深度工程手冊」需先在產品 owner surface 對齊，其他公開頁舊名稱留到 cross-page fact gate。
+- 兩個商品頁都明寫免費試看不需登入；CabAI onboarding 必須先說清楚試看與帳號的關係，不能用註冊 CTA 製造前置門檻錯覺。
+- 本輪 Mobile viewport override 沒有生效且 screenshot timeout，因此不沿用舊圖冒充 fresh evidence；Mobile 仍由 C3／C4 驗收。
+
+**Courses planning verdict：** 原有四 route 骨架與 C1–C4 方向成立，但 C1 必須增加產品 fit／名稱／試看事實校正；整體 approval 仍為 `pending_user_review`。
+
 ### 6.1 唯一訪客任務
 
 訪客進站時想：「我該從哪裡學？需要免費診斷、短時間建立全貌、課程，還是深入手冊？」讀完後應能選一條符合當下問題與投入深度的路，不必照順序完成所有內容。
@@ -492,12 +531,12 @@ H1 已在 1280／390 實測成立，不重寫。公開作品 H2 待後續 W5 核
 | 區塊 | 讀前想法 | 唯一任務 | 證據／內容 | 讀後感受 | 行動 |
 | --- | --- | --- | --- | --- | --- |
 | Hero | 選項很多，我怕一開始就選錯 | 降低一次學完的壓力，導向選擇面 | 「先跨過現在最卡的一步」 | 願意開始比較 | filled anchor 到 learning map |
-| Map header | 這四個編號是不是必修順序 | 說明排序規則與 recovery | 依承諾／學習深度排列；不確定先診斷 | 知道可直接選其中一條 | 不另加重複 CTA |
+| Map header | 這四個編號是不是必修順序 | 說明排序規則與 recovery，避免「層」暗示必修 | 依承諾／學習深度排列；不照編號走；不確定先診斷 | 知道可直接選其中一條 | 不另加重複 CTA |
 | 01 免費診斷 | 我還不知道真正卡點 | 提供最低成本的重新判斷 | 問題診斷、免費 | 安心，不必先買 | Recovery／bordered paper CTA |
 | 02 講座與工作坊 | 我想短時間建立共同語言 | 保留真實產品類型與目前狀態 | 主題、示範、小型練習；尚未開放 | 知道未來有這條路，但不被假連結欺騙 | status，不是按鈕 |
-| 03 AgentSkill | AI 每次都要重新交代 | 呈現建立可重複協作能力的課程 | 現有 outcome、價格、免費試看 | 看懂課程解決哪個問題 | Contextual／bordered paper CTA |
-| 04 工程手冊 | 已在用 Claude Code，流程仍不穩 | 呈現較深、可反覆查閱的內容 | 現有 outcome、價格、免費試看 | 知道手冊適合更深的診斷需求 | Contextual／bordered paper CTA |
-| CabAI onboarding | 點進商品後內容會放哪裡 | 說明試看、購買與已購內容交付 | 同一 CabAI 帳號 | 對外站用途有預期 | Secondary account CTA，低於具體路線 |
+| 03 AgentSkill | 已開始用 Skill，但規則與成果仍反覆重做 | 呈現建立可重複協作能力的課程，排除純新手誤選 | Skill 設計原則、`NT$1,500`、1 堂免登入免費試看 | 看懂課程前提與能帶走的能力 | Contextual／bordered paper CTA |
+| 04 Claude Code 深度工程手冊 | 已在用 Claude Code，設定、記憶或成本仍不穩 | 呈現較深、可反覆查閱與排錯的內容 | `CLAUDE.md／Memory／Skill／成本` 設計、`NT$5,999`、6 堂免登入免費試看 | 知道手冊適合更深的診斷需求 | Contextual／bordered paper CTA |
+| CabAI onboarding | 免費試看需要先註冊嗎；買完去哪裡看 | 先說免登入試看，再說明購買與已購內容交付 | 免費試看不需登入；已購內容留在 CabAI 帳號 | 對外站與帳號用途有預期，不把註冊當前置門檻 | Secondary account CTA，低於具體路線 |
 
 ### 6.4 Desktop／Mobile 規格
 
@@ -522,8 +561,8 @@ Mobile：
 | Heading | 建議句組 |
 | --- | --- |
 | H1 | `不用一次學完全部，`／`先跨過你現在`／`最卡的那一步。` |
-| Map H2 | `你現在卡在哪一層？`（單一完整問句，必要時只在語意邊界換行） |
-| CabAI H2 | `試看與購買內容，`／`都留在 CabAI 帳號裡。` |
+| Map H2 | `先找出最接近`／`你的狀況。` |
+| CabAI H2 | `免費試看不用登入，`／`已購內容留在 CabAI 帳號裡。` |
 
 Route H3 要逐一檢查 320px；`AI`、`Claude Code`、`AgentSkill` 不孤立，不為避免換行而縮小字級。
 
@@ -536,7 +575,7 @@ Route H3 要逐一檢查 320px；`AI`、`Claude Code`、`AgentSkill` 不孤立�
 | 尚未開放 | 無 href | Status／非互動 | 明確 disabled-like status，但不使用 `<button>` | 同 Desktop | 製造假連結或可點游標 |
 | 查看課程與免費試看 | `withCabAiAttribution(siteConfig.cabAi.agentSkillUrl, 'courses_agentskill')` | Contextual／bordered paper | min 48px | full width，min 48px | 144 × 23px text link |
 | 查看手冊與免費試看 | `withCabAiAttribution(siteConfig.cabAi.handbookUrl, 'courses_handbook')` | Contextual／bordered paper | min 48px | full width，min 48px | 144 × 23px text link |
-| 建立 CabAI 免費帳號 | `withCabAiAttribution(siteConfig.cabAi.accountUrl, 'courses_account')` | Secondary／bordered paper | min 48px，視覺低於 route CTA | full width，min 48px | 比商品路線更搶眼的唯一深色按鈕 |
+| 登入／建立 CabAI 帳號 | `withCabAiAttribution(siteConfig.cabAi.accountUrl, 'courses_account')` | Secondary／bordered paper | min 48px，視覺低於 route CTA | full width，min 48px | 比商品路線更搶眼的唯一深色按鈕，或讓人誤會試看前必須註冊 |
 
 ### 6.7 Learning route contract
 
@@ -545,14 +584,21 @@ Route H3 要逐一檢查 320px；`AI`、`Claude Code`、`AgentSkill` 不孤立�
 - **Desktop：** 四條獨立 route；編號、stage、situation、title、outcome、price／status、action 層級固定。
 - **Mobile：** 單欄；每條 route 自成一個可掃讀單位，不使用橫向 carousel。
 - **辨識元素：** `01–04`、stage label、可用／尚未開放狀態、明確 action；導引線不能暗示強制流向。
+- **材質責任：** 外層白紙描述訪客狀況；四條 route 的 recommendation surface 使用既有黃色閱讀紙，承接建議、名稱、結果、價格／狀態與 action。黃色紙不等於另一排商品卡，第二條即使未開放仍保留黃紙但不得產生互動暗示。
 - **Recovery：** 「還不確定問題在哪」固定回 `/expertise/`；不能把 CabAI 註冊當 recovery。
 
 ### 6.8 文案待確認清單
 
-- Map header 補上等價於「依投入與深度排列，不必照順序；不確定先診斷」的白話說明。
-- Hero 負責降低壓力，Map header 負責解釋選擇規則；兩者不再重講「卡在哪」。
-- 所有 route 的 title、outcome、price、CTA、URL 與免費試看承諾受保護。
+- Hero 負責降低壓力與導向比較；Map header 改用不帶「層」暗示的 H2，並補上等價於「依投入與深度排列、不照編號走；不確定先診斷」的白話說明。兩者不再重講「卡在哪」。
+- AgentSkill situation 必須包含「已開始使用 Skill」的前提；outcome 改寫成使用者能帶走的可重複協作能力，不再只描述「用觀念與案例說明」。
+- 手冊 route title 對齊第一方商品 H1「Claude Code 深度工程手冊」；outcome 具體承接 `CLAUDE.md／Memory／Skill／成本` 的設計與排錯。其他公開頁舊名稱列入 cross-page fact gate，不在 Courses slice 順手擴張。
+- CabAI onboarding 明寫兩項商品皆可免登入試看；帳號只負責購買前後的身分、已購內容與社群權限。
+- 產品價格、destination、CabAI campaign、免費試看承諾、永久觀看與未開放狀態受保護；source-backed 的 title／situation／outcome 修正不再被舊 copy invariant 阻擋。
 - 「講座與工作坊」完整保留；沒有開放時只更新狀態，未來可直接補真實活動入口。
+
+**C1 implementation evidence（2026-07-15）：** `docs/design/audits/2026-07-15-courses-c1/` 已完成上述 Hero／Map／AgentSkill／手冊內容修正，並把 ordered list 改為 `UL[role="list"]`，讓原生語意和「四條路可獨立選擇」一致。Fresh 1280px browser evidence 無水平 overflow，四 route、價格、href、campaign 與 unavailable state 均保留。
+
+**C2 implementation evidence（2026-07-15）：** `docs/design/audits/2026-07-15-courses-c2/` 已把四個 recommendation surface 改為既有黃色閱讀紙，三個可走 route 升為至少 `48px` 的 bordered paper actions；1280px 與 390px 全頁無水平 overflow，320px learning map 本身為 zero overflow。320px 的較長 action 只在 `max-width: 340px` 自然換行，不以縮小文字維持單行。未開放 route 仍為 `a === 0`、`button === 0`、cursor `auto`。320px 全頁仍有既有 Hero H1 phrase 造成的 `5px` document overflow，明列交給 C3 的 Mobile 句組處理；C3 CabAI secondary／Mobile map 與 C4 page gate 仍未執行。
 
 ### 6.9 Courses outcome-based DoD
 
@@ -560,6 +606,7 @@ Route H3 要逐一檢查 320px；`AI`、`Claude Code`、`AgentSkill` 不孤立�
 - 三個可用 route CTA 在 Desktop／Mobile 均至少 48px 且一眼可辨識。
 - 未開放講座沒有 href、按鈕語意或假 hover。
 - CabAI 帳號用途清楚，但不壓過具體 route。
+- 免費試看不需登入的事實清楚，Courses 不製造註冊前置門檻；手冊正式商品名和第一方 H1 一致。
 - `#learning-map` 在三種 Mobile 寬度都不被 Headbar 遮住。
 - 產品名、價格、免費試看與 URL 未被誤改；完成五 viewport 與新證據後建立 Courses checkpoint。
 
@@ -602,7 +649,7 @@ Route H3 要逐一檢查 320px；`AI`、`Claude Code`、`AgentSkill` 不孤立�
 | 區塊 | 讀前想法 | 唯一任務 | 證據／內容 | 讀後感受 | 行動 |
 | --- | --- | --- | --- | --- | --- |
 | Hero | 我知道有問題，但不知道算哪種合作 | 對應反覆重做情境並導向自我篩選 | 流程、訓練、系統三種可能方向 | 不用先寫需求書也能開始 | filled anchor 到 service options |
-| Service options | 哪個最像我的情況 | 只比較「問題訊號」與「會留下什麼」 | 三種 serviceTracks，各 2–3 個高訊號 fit、3 個 deliverables；不顯示 raw English id | 能選最接近的一種 | 不在每卡放競爭 CTA；最後統一聯絡 |
+| Service options | 哪個最像我的情況 | 只比較「問題訊號」與「會留下什麼」 | 三種 serviceTracks；黃色摘要面只放 `01–03`、中文標題與一句 outcome，白底詳細面各放 2–3 個高訊號 fit、3 個 deliverables；不顯示 raw English id | 能選最接近的一種 | 不在每卡放競爭 CTA；最後統一聯絡 |
 | 合作經驗 | 你真的交付過嗎 | 用有語意 heading 的 trust strip，準確說明已能公開主張的交付範圍 | 企業內訓、系列工作坊、線上實作課與揭露限制；只支持實際有證據的主張 | 知道哪些做過、哪些不能由此推論 | 無 CTA；不以一句教學交付經驗替三種服務全面背書 |
 | 合作流程 | 合作之後會怎麼進行 | 說清楚四個可驗收階段 | 診斷 → 設計 → 執行 → 驗收 | 不再覺得合作是黑箱 | 無中途 CTA |
 | 合作邊界 | 有哪些不能假設或保證 | 只定義共通的責任、資料、驗收、修改與維護邊界 | 成效不保證、必要資料／owner、驗收與修改、維護／支援 | 信任來自範圍清楚 | 無 CTA；不重述 Hero 原則或單一 service fit |
@@ -613,7 +660,7 @@ Route H3 要逐一檢查 320px；`AI`、`Claude Code`、`AgentSkill` 不孤立�
 Desktop：
 
 - Hero 保留清楚的服務 brief 與單一 filled anchor。
-- 三種服務維持同頁比較，但每項只保留最能判斷的 2–3 個問題訊號與 3 個 deliverables；標題、outcome 與清單分欄，清單正文不得低於 `15px`。
+- 三種服務維持同頁比較；每項的標題與 outcome 使用小型黃色摘要面，fit／deliverables 留在同一 service article 的白底詳細面。每項只保留最能判斷的 2–3 個問題訊號與 3 個 deliverables，清單正文不得低於 `15px`。
 - `01–03` 與中文 service title 已足以辨識；不把 `service.id` 轉成 raw English metadata 顯示。
 - 合作經驗使用真正 H2／H3，形成 trust strip，不再只有 `aria-label`；heading 與主張名稱必須讓人看出它實際支持的是哪種交付經驗。
 - 四步流程維持 `01–04`、水平導引線與可見方向；第三步名稱改為自然的「執行」。
@@ -622,7 +669,7 @@ Desktop：
 
 Mobile：
 
-- 三種服務單欄閱讀，順序為 title／outcome → fit → deliverables；縮短重複清單但保留判斷所需內容，清單正文不得低於 `16px`。
+- 三種服務單欄閱讀，順序為黃色 summary（number／title／outcome）→ fit → deliverables；黃色面不可變成獨立 CTA 或把正文縮小，清單正文不得低於 `16px`。
 - 流程由水平四欄轉成垂直 rail；不能縮成四個小格，流程正文不得低於 `16px`。
 - 合作經驗有 heading、主張與揭露說明，保留清楚層級。
 - Email 與 Threads 皆 full width、至少 48px；只有 Email filled。
@@ -654,9 +701,9 @@ S1 已依 `docs/design/audits/2026-07-14-services-implementation/` 的 1280／39
 
 - **語意順序：** AI 工作流診斷 → 企業內訓與工作坊 → AI 產品與 Agent 導入；由範圍較小、最適合先判斷的合作走向較高承諾的導入。
 - **DOM 順序：** 與 config 一致；每項依 title → outcome → fit → deliverables。
-- **Desktop：** 三項垂直比較、每項內左右欄；不改成三張同質商品卡。
+- **Desktop：** 三項垂直比較、每項內左右欄；左側黃色摘要面、右側白底詳細內容，不另加一排三張同質商品卡。
 - **內容責任：** fit 只寫訪客能辨識的問題訊號；必要資料、內部 owner、驗收前提與維護承諾只由合作邊界負責，不可在 Agent card 與 boundary 重複一次。
-- **Mobile：** 單欄；每項縮短為 2–3 個高訊號 fit 與 3 個 deliverables；不以 13px 小字維持密度。
+- **Mobile：** 單欄；黃色摘要面先於白底詳細內容，每項縮短為 2–3 個高訊號 fit 與 3 個 deliverables；不以 13px 小字維持密度。
 - **辨識元素：** `01–03`、自然中文 service title 與 outcome；raw `service.id` 不進 visible UI。若未來需要英文分類，必須是獨立核准的人類文案欄位，不能由 slug 即時轉換。
 - **Recovery：** 不確定時，options intro 明示通常從工作流診斷開始；仍無法判斷者可在頁尾 Email 描述現況。
 
@@ -730,17 +777,19 @@ S1 已驗證：heading outline、四組 major heading phrase、合作經驗 H2 �
 - 只在共用 state 確實缺漏時修改 `src/styles/global.css`
 - 新增 evidence folder：`docs/design/audits/2026-07-14-about-implementation/`
 
-**Invariants：** timeline 四項與順序、公開輸出來源與可查驗事實、交付經驗的課程／合作揭露邊界、CabAI capability role、Hero Work evidence route、Courses／Services 真實目的地不變；頁尾改為 Services Primary、Courses Secondary 的路徑選擇。
+**Invariants：** timeline 四項與順序、公開輸出來源與可查驗事實、交付經驗的課程／合作揭露邊界、CabAI capability role、Hero 同頁 public-output route、Courses／Services 真實目的地不變；頁尾維持 Services Primary、Courses Secondary 的路徑選擇。
 
 **Forbidden shortcuts：** 不刪時間軸換短卡；不把 CabAI 改成商品 pitch；不把公開輸出縮回 repo name／stars／forks 索引；不把課程或交付經驗冒充作品 repo；不把 Hero、頁尾 Services／Courses actions 留成 22–23px 小字；不新增未核准的「陪跑」服務承諾；不固定 section 高度。
 
-**Evidence：** full Desktop／Mobile、Hero、timeline、公開輸出敘事、交付經驗 proof、CabAI row、Work CTA、頁尾 CTA；五 viewport；鍵盤、focus、外連、zero overflow。
+**Evidence：** full Desktop／Mobile、Hero、timeline、公開輸出敘事、GitHub／Threads actions、交付經驗 proof、CabAI row、頁尾 CTA；五 viewport；鍵盤、focus、外連、zero overflow。
 
 **Outcome DoD：** 4.9 全部通過，人工開圖確認後建立 `fix: route about trust into learning and services` checkpoint，不 push。
 
-### Phase 2：Work
+### Phase 2：Work（archived／superseded by WA0）
 
 **Goal contribution：** G2、S1、S2、S3、S4、S6。
+
+**Archive note：** 以下內容只保留作未來恢復參考，目前不得執行。
 
 **Exact files：**
 

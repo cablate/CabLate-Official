@@ -5,43 +5,43 @@ import { signatureMethods } from '../config/authority';
 const diagnosticScenarios = [
   {
     caseId: 'A',
-    symptom: '它常忘記前文，或讀到不該使用的舊資料。',
-    question: '先檢查 AI 在這個時間點，究竟能看見哪些資訊。',
+    symptom: '它常忘記前文，或拿舊資料回答現在的問題。',
+    question: '先確認 AI 在這個時間點，究竟看得到哪些資訊。',
     method: 'Context',
     methodLabel: '資訊脈絡',
     check: '列出這次任務實際讀到的檔案、對話與資料版本，再和你以為它知道的內容逐項比對。',
-    mistake: '把更多資料一次塞進 Context，卻沒有確認版本、優先順序與使用時機。',
+    mistake: '把更多資料一次塞進 Context，卻沒有處理版本、優先順序與使用時機。',
     // Articles inbound links paused.
     // href: '/articles/claude-code-token-drain-system-reminder/',
   },
   {
     caseId: 'B',
-    symptom: '它做了很多事，結果卻不能直接使用。',
-    question: '再檢查任務、工具、權限、錯誤處理與完成標準有沒有接起來。',
+    symptom: '它做了很多事，結果卻不能直接拿來用。',
+    question: '確認任務、工具、權限與完成條件是不是彼此接得起來。',
     method: 'Harness',
     methodLabel: '執行環境',
-    check: '挑一個真實案例，寫下輸入、允許使用的工具、完成條件，以及失敗後應停在哪裡。',
-    mistake: '看到模型單次成功，就直接把它當成可重複運作的流程。',
+    check: '挑一個真實案例，寫下輸入、允許使用的工具、完成條件，以及遇到什麼情況必須停下來。',
+    mistake: '看到模型成功一次，就直接把它當成可以長期運作的流程。',
     // Articles inbound links paused.
     // href: '/articles/claude-code-workflow/',
   },
   {
     caseId: 'C',
-    symptom: '一出錯就找不到問題發生在哪裡，只能從頭再來。',
-    question: '檢查流程有沒有留下每一步的輸入、輸出與失敗狀態，能不能從出錯的位置繼續。',
+    symptom: '一出錯就找不到問題在哪，只能全部重跑。',
+    question: '看流程有沒有留下每一步的輸入、輸出與失敗狀態。',
     method: 'Harness',
     methodLabel: '執行環境',
-    check: '挑一次真實失敗，標出最後一個正確結果、第一個錯誤訊號，以及重新執行時能從哪一步開始。',
-    mistake: '只增加重試次數，卻沒有留下錯誤位置、部分成果與復原條件。',
+    check: '挑一次真實失敗，找出最後一個正確結果、第一個錯誤訊號，以及重新執行時可以從哪一步開始。',
+    mistake: '只增加重試次數，卻沒有保存錯誤位置、部分成果與重新開始的條件。',
   },
   {
     caseId: 'D',
     symptom: '同一件事每次都要重教，品質還是忽好忽壞。',
-    question: '最後看做對一次的方法，有沒有被整理成可重複執行的流程。',
+    question: '回頭看上次做對時，真正有用的方法有沒有被留下來。',
     method: 'Skill',
     methodLabel: '可重複方法',
-    check: '回看上次做對時真正影響結果的判斷、順序與限制，確認它們是否已被明確留下。',
-    mistake: '只保存最後的 Prompt，沒有保存啟動條件、例外處理與驗收方式。',
+    check: '整理上次做對時真正影響結果的判斷、順序、限制與例外，確認它們是否已被明確記錄。',
+    mistake: '只保存最後使用的 Prompt，沒有保存何時啟動、遇到例外怎麼處理，以及結果怎麼檢查。',
     // Articles inbound links paused.
     // href: '/articles/agent-sdk-system-reminder-diff-fix/',
   },
@@ -61,21 +61,21 @@ const methodDisplayNames = {
 
 const methodGuidance: Record<string, { repaired: string; next: string }> = {
   'Context Engineering': {
-    repaired: 'AI 能說出正在使用的版本、資料與缺少的資訊；換回合後不會抓錯舊資料。',
-    next: '資訊正確且足夠，但每次仍要重新解釋做法、品質忽好忽壞時，改查 Skill。',
+    repaired: 'AI 能說清楚正在使用哪個版本、哪些資料，以及目前還缺什麼；換回合後不會抓錯舊內容。',
+    next: '資料已經正確，但每次仍要重新解釋做法、品質忽好忽壞，就改查 Skill。',
   },
   'Harness Engineering': {
-    repaired: '同一個真實任務能依完成條件交付；失敗時知道停在哪一步，也能從那裡恢復。',
-    next: '任務、工具、權限、完成條件與復原方式都已穩定，就停在這裡，不必再增加一層。',
+    repaired: '同一個真實任務可以按照完成條件走完；途中失敗時，知道停在哪裡，也知道如何繼續。',
+    next: '任務、工具、權限、完成條件與失敗處理都已穩定，就停在這裡，不需要再為了熱門名詞增加複雜度。',
   },
   'Skill 路線設計': {
-    repaired: '做對一次的方法已留下啟動條件、判斷順序、限制與驗收方式。',
-    next: '做法已經留下，成果仍不能穩定交付或從失敗處恢復時，改查 Harness。',
+    repaired: '上次做對的判斷、順序、限制與驗收方式已經被留下，下次不用全部重教。',
+    next: '做法已經留下，但結果仍無法穩定完成，或失敗後無法繼續，就改查 Harness。',
   },
 };
 ---
 
-<BaseLayout title="AI 工作流程與失效診斷｜CabLate" description="從 AI 忘記前文、每次都要重新教，到成果不能穩定交付，先辨認問題出在 Context、Skill，還是 Harness。">
+<BaseLayout title="AI 工作流程與失效診斷" description="AI 忘記前文、每次都要重教，或做了很多卻不能直接使用？從實際症狀判斷問題出在 Context、Skill，還是 Harness。">
   <article class="expertise-page paper-page">
     <header class="expertise-hero page-paper paper-card">
       <div class="expertise-hero__topline">
@@ -84,18 +84,18 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
       </div>
       <h1 class="display-heading"><span class="heading-phrase">AI 一直</span><span class="heading-phrase">鬼打牆，</span><span class="heading-phrase">先別只改</span>{' '}<span class="heading-phrase">Prompt。</span></h1>
       <div class="expertise-hero__footer">
-        <p>規則愈加愈多，AI 不一定會更穩。先查它當下讀到了什麼、能做什麼，以及你有沒有說清楚怎樣才算完成。</p>
-        <a class="btn btn-primary expertise-hero__cta" href="#diagnosis">先從你看到的問題開始 <ArrowRight size={17} aria-hidden="true" /></a>
+        <p>規則寫得更多，不代表 AI 就會更穩。先看它這一刻到底讀到了什麼、能使用哪些工具，以及你有沒有講清楚什麼才叫完成。</p>
+        <a class="btn btn-primary expertise-hero__cta" href="#diagnosis">從你遇到的問題開始 <ArrowRight size={17} aria-hidden="true" /></a>
       </div>
     </header>
 
     <section class="diagnosis page-paper paper-card paper-card--clip paper-card--clip-left" id="diagnosis" aria-labelledby="diagnosis-title">
       <header class="diagnosis__header">
         <div>
-          <p class="expertise-kicker">先辨認現象</p>
-          <h2 id="diagnosis-title" class="display-heading"><span class="heading-phrase">先找到最像的現象，</span><span class="heading-phrase">再做一個能排除</span><span class="heading-phrase">原因的檢查。</span></h2>
+          <p class="expertise-kicker">先看症狀</p>
+          <h2 id="diagnosis-title" class="display-heading"><span class="heading-phrase">不用先背方法名稱，</span><span class="heading-phrase">看看哪個情況最像</span><span class="heading-phrase">你現在遇到的。</span></h2>
         </div>
-        <p>先從你看見的失效現象開始，再找下一個可以驗證的問題；不用先記住方法名稱。</p>
+        <p>每一種失效都先做一個最小檢查。檢查能排除原因，再決定下一步，不用一開始就把整套流程推倒重來。</p>
       </header>
       <div class="diagnosis-list">
         <div class="diagnosis-columns" aria-hidden="true">
@@ -123,10 +123,10 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
     <section class="method-map page-paper paper-card" id="method-map" aria-labelledby="method-map-title">
       <header class="method-map__header">
         <div>
-          <p class="expertise-kicker">確認改善</p>
-          <h2 id="method-map-title" class="display-heading"><span class="heading-phrase">知道問題卡在哪一層，</span><span class="heading-phrase">接著看什麼變化</span><span class="heading-phrase">代表真的有改善。</span></h2>
+          <p class="expertise-kicker">怎樣才算有改善</p>
+          <h2 id="method-map-title" class="display-heading"><span class="heading-phrase">不是改完設定就算修好，</span><span class="heading-phrase">要看實際行為</span><span class="heading-phrase">有沒有改變。</span></h2>
         </div>
-        <p>每一層只回答兩件事：修好後會出現什麼，以及什麼時候該往下一層查。</p>
+        <p>每一層都只需要回答兩個問題：修好後，你應該看到什麼？如果還沒好，下一個該查哪裡？</p>
       </header>
       <div class="method-map__table">
         {signatureMethods.map((method, index) => (
@@ -144,32 +144,32 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
       <div class="method-route" id="method-route" aria-labelledby="method-route-title">
         <div class="method-route__label">
           <strong id="method-route-title">建議順序</strong>
-          <small>從資訊到方法，再接穩執行</small>
+          <small>先確認資訊，再固定方法，最後把執行接穩</small>
         </div>
         <ol>
           <li><span>01</span><strong>Context</strong><small>資訊脈絡</small></li>
           <li><span>02</span><strong>Skill</strong><small>可重複方法</small></li>
           <li><span>03</span><strong>Harness</strong><small>執行環境</small></li>
         </ol>
-        <a class="btn btn-ghost method-route__return" href="#diagnosis">仍不確定？回到診斷表 <ArrowRight size={17} aria-hidden="true" /></a>
+        <a class="btn btn-ghost method-route__return" href="#diagnosis">還是不確定？回到診斷表 <ArrowRight size={17} aria-hidden="true" /></a>
       </div>
       <aside class="method-map__boundary" aria-labelledby="boundary-title">
         <div class="boundary-stamp" aria-hidden="true">BOUNDARY<br />NOTE</div>
-        <div><p class="expertise-kicker">邊界備註</p><h3 id="boundary-title">不是每個問題都需要 Agent。</h3><p>表單、試算表或一般自動化能穩定完成，就停在那裡。只有現有做法真的處理不了的限制，才值得增加 Agent。</p></div>
-        <ol><li>是不是重複規則明確的工作？</li><li>有沒有固定輸入與可驗收的結果？</li><li>現有方法是否已經穩定解決？</li></ol>
+        <div><p class="expertise-kicker">邊界備註</p><h3 id="boundary-title">不是每個問題都值得做成 Agent。</h3><p>表單、試算表或一般自動化已經能穩定完成，就不需要硬加 Agent。只有現有方法真的處理不了判斷、變化或工具協作，才值得提高複雜度。</p></div>
+        <ol><li>這是不是規則明確、重複性高的工作？</li><li>輸入與結果是否固定，而且可以直接驗收？</li><li>現有工具是不是其實已經能穩定解決？</li></ol>
       </aside>
       {/* Articles inbound links paused: 文章導流恢復時再放回延伸閱讀。 */}
     </section>
 
     <section class="expertise-next page-paper paper-card paper-card--clip" id="next-step" aria-labelledby="expertise-next-title">
       <div>
-        <p class="expertise-kicker">診斷之後</p>
-        <h2 id="expertise-next-title" class="display-heading"><span class="heading-phrase">找到最像的問題後，</span><span class="heading-phrase">選一個現在用得上的</span><span class="heading-phrase">處理方式。</span></h2>
+        <p class="expertise-kicker">下一步</p>
+        <h2 id="expertise-next-title" class="display-heading"><span class="heading-phrase">知道問題在哪之後，</span><span class="heading-phrase">再選適合的</span><span class="heading-phrase">處理方式。</span></h2>
       </div>
       <div class="expertise-next__decision">
-        <p>想自己建立方法，可以先看學習路線；問題已經影響實際工作，也可以直接討論情境。</p>
+        <p>想自己建立方法，可以看學習內容；問題已經影響實際工作，也可以直接把情境交給我一起拆。</p>
         <div class="expertise-next__actions">
-          <a class="btn btn-primary" href="/courses/">查看學習路線 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="btn btn-primary" href="/courses/">查看學習內容 <ArrowRight size={18} aria-hidden="true" /></a>
           <a class="btn btn-ghost" href="/services/">討論實際情境 <ArrowRight size={18} aria-hidden="true" /></a>
         </div>
       </div>

@@ -22,16 +22,16 @@ const personJsonLd = {
 };
 
 const timeline = [
-  { time: '非本科轉職', title: '從前端一路補到系統整合', text: '我從前端進入工程，在實務專案裡補上後端、部署、系統整合與團隊協作。這段經歷讓我很早就知道，聽懂名詞和把事情完成是兩回事。' },
-  { time: '工程實務期', title: '開始把驗收與復原一起算進交付', text: '進入政府與企業系統後，我開始承接系統分析與設計工作。功能能跑還不夠，資料、權限、驗收、復原與交接都要一起考慮。' },
-  { time: '2024', datetime: '2024', title: '把工程經驗轉向 AI 應用', text: '我開始把工程背景轉向 AI 應用，也協助外部團隊理解 AI 可以怎麼進入實際工作。判斷與交付方法因此不再只留在工程專案裡。' },
-  { time: '2025-06 至今', datetime: '2025-06', title: '全職投入 CabLate', text: '2025 年 6 月離開正職後，我全職投入 CabLate，陸續發展課程、講座、付費手冊、CabAI 平台與顧問服務。每一種形式都在處理同一件事：讓複雜方法能被理解、使用與接手。' },
+  { time: '非本科轉職', title: '從前端開始，一路補到能把系統接起來', text: '我從前端進入工程，在實務專案裡補上後端、部署、系統整合與團隊協作。這段經歷讓我很早就知道，聽懂名詞和真的把事情完成，是兩回事。' },
+  { time: '工程實務期', title: '開始把資料、權限與失敗處理一起算進成果', text: '進入政府與企業系統後，我開始承接系統分析與設計工作。功能能跑還不夠，資料、權限、驗收、異常處理與交接都必須一起考慮。' },
+  { time: '2024', datetime: '2024', title: '把工程判斷帶進 AI 應用', text: '我開始把工程背景轉向 AI 應用，也協助外部團隊理解 AI 可以怎麼進入真實工作。原本只出現在工程專案裡的判斷方式，逐漸延伸到內容、教學與產品。' },
+  { time: '2025-06 至今', datetime: '2025-06', title: '全職投入 CabLate', text: '2025 年 6 月離開正職後，我全職投入 CabLate，陸續發展課程、講座、付費手冊、CabAI 平台與顧問服務。形式不同，但核心一直是同一件事：讓複雜的方法不只被看懂，也能真的被拿去使用。' },
 ];
 
 const [featuredOutput, ...supportingOutputs] = openSourceProofs;
 ---
 
-<BaseLayout title="關於 CabLate｜從工程實作到 AI 工作流程的判斷" description={authorityProfile.shortBio}>
+<BaseLayout title="關於 CabLate｜從全端工程到 AI 工作流程" description="CabLate 從全端工程與系統設計出發，持續研究 AI 應用、Claude Code、Agent 工作流程與數位產品落地，並透過課程、開源工具、公開研究與顧問合作分享實作方法。">
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
 
   <article class="about-page paper-page">
@@ -42,32 +42,32 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
       </div>
       <div class="about-hero__grid">
         <div class="about-hero__headline">
-          <h1 class="display-heading"><span class="heading-phrase">從工程實作</span><span class="heading-phrase">走到 AI 應用，</span><span class="heading-phrase">我一直在意成果</span><span class="heading-phrase">能不能被接手。</span></h1>
+          <h1 class="display-heading"><span class="heading-phrase">我從工程出發，</span><span class="heading-phrase">也因此很難把</span><span class="heading-phrase">「AI 成功做過一次」</span><span class="heading-phrase">當成真正完成。</span></h1>
         </div>
         <div class="about-hero__aside">
-          <p class="about-hero__lead">我是 CabLate，做過全端工程與系統設計，現在把這些經驗用在 AI 教學、產品和工作流程上。</p>
-          <p>我在意的是：做出來之後，別人能不能直接用。</p>
+          <p class="about-hero__lead">我是 CabLate，做過全端工程、系統設計與產品實作，現在把這些經驗用在 AI 教學、Agent 工作流程與數位產品上。</p>
+          <p>比起展示 AI 可以多快產出，我更在意它放進真實工作後會不會失控，以及別人接手時能不能看懂發生了什麼。</p>
           <dl class="about-hero__facts">
-            <div><dt>我在處理</dt><dd>任務、可用資料、工具與驗收</dd></div>
-            <div><dt>我留下</dt><dd>能重複、能交接的工作方法</dd></div>
+            <div><dt>我處理的問題</dt><dd>AI 應用、工作流程、產品實作與系統整合</dd></div>
+            <div><dt>我持續留下</dt><dd>開源工具、公開研究、課程與工程手冊</dd></div>
           </dl>
-          <p class="about-hero__referral">如果你或你的團隊已經在用 AI，工作卻一直重做，我可以一起找出問題在哪裡。</p>
-          <a class="btn btn-ghost about-hero__action" href="/work/">先看代表作品 <ArrowRight size={16} aria-hidden="true" /></a>
+          <p class="about-hero__referral">你可以先看我做過的東西，再決定這套判斷是否適合你。</p>
+          <a class="btn btn-ghost about-hero__action" href="#public-output-title">先看公開作品 <ArrowRight size={16} aria-hidden="true" /></a>
         </div>
       </div>
     </header>
 
     <section class="about-story page-paper paper-card" aria-labelledby="story-title">
       <div class="about-story__intro section-heading">
-        <p class="about-kicker">專業歷程</p>
-        <h2 id="story-title">我在意交付，因為做出來不等於能使用。</h2>
+        <p class="about-kicker">我怎麼走到這裡</p>
+        <h2 id="story-title">工程經驗讓我學會，功能能跑只是開始。</h2>
         <span class="about-story__mark" aria-hidden="true">↳</span>
       </div>
       <div class="about-story__body">
-        <p class="about-story__opening">早期我以為功能寫完就算完成。進入複雜系統後，我開始把「完成」改成一個可以被驗收的問題。</p>
+        <p class="about-story__opening">剛開始做開發時，我也會把「功能寫完」當成完成。進入更複雜的系統後，才發現真正麻煩的往往發生在功能寫完之後。</p>
         <div class="about-story__copy">
-          <p>資料可能出錯、權限可能漏掉、需求可能在交接時變形。即使功能可以執行，只要沒有人說得清楚如何驗收、出錯後怎麼復原，它就還不是一個可靠的成果。</p>
-          <p>AI 讓產出變快，也讓這些缺口更快暴露。現在不論做教學、產品或合作，我都先問四件事：任務拆清楚了嗎？AI 讀到哪些資料？結果怎麼檢查？做對一次的方法能不能留下來？</p>
+          <p>資料可能不一致、權限可能漏掉、需求可能在交接時變形。即使畫面看起來正常，只要沒有人知道怎麼驗收、出了問題該查哪裡，它就很難成為可靠的成果。</p>
+          <p>AI 把產出速度拉得更快，也把這些問題一起放大。現在做課程、產品或合作時，我仍然會回頭看：AI 拿到了什麼、用了什麼、做對的原因有沒有被留下，以及最後誰能確認它真的完成。</p>
         </div>
       </div>
     </section>
@@ -76,9 +76,9 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
       <header class="turning-points__header">
         <div class="section-heading">
           <p class="about-kicker">關鍵轉折</p>
-          <h2 id="timeline-title">四個轉折，慢慢形成現在這套工作方式。</h2>
+          <h2 id="timeline-title">四段經歷，慢慢形成現在的工作方式。</h2>
         </div>
-        <p class="turning-points__note">從轉職、工程實務到全職投入 CabLate，這四段經歷交代我怎麼走到現在。</p>
+        <p class="turning-points__note">從非本科轉職、工程實務，到把重心轉向 AI 應用，這些經歷共同塑造了我現在看問題的方法。</p>
       </header>
       <ol class="timeline">
         {timeline.map((item, index) => (
@@ -94,9 +94,9 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
     <div class="trust-evidence page-paper paper-card">
       <section class="public-output" aria-labelledby="public-output-title">
         <header class="public-output__header section-heading">
-          <p class="about-kicker">公開輸出</p>
-          <h2 id="public-output-title">我做過的事，<br />都留下了可以查證的地方。</h2>
-          <p>從工具、資料產品到公開研究，我希望你先看到我怎麼拆問題、做取捨，再用公開來源檢查這些說法。</p>
+          <p class="about-kicker">公開作品</p>
+          <h2 id="public-output-title">先看我做過什麼，<br />再決定要不要相信我說的。</h2>
+          <p>我盡量把工具、研究與方法留在可以查證的地方。你可以直接看程式碼、文件與更新紀錄，而不是只看一段自我介紹。</p>
         </header>
 
         <article class="public-output__featured">
@@ -108,9 +108,6 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
             <p>{featuredOutput.description}</p>
             <p class="public-output__capability">{featuredOutput.capability}</p>
             <div class="public-output__source-row">
-              <div class="public-output__source-meta">
-                <strong>{featuredOutput.title}</strong>
-              </div>
               <a class="public-output__source-link" href={featuredOutput.href} target="_blank" rel="noopener">
                 <span>{featuredOutput.sourceLabel}</span><span class="visually-hidden">：{featuredOutput.title}</span>
                 <ArrowRight size={15} aria-hidden="true" />
@@ -139,20 +136,20 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
           ))}
         </div>
 
-        <div class="trust-evidence__actions" id="public-output-actions">
-          <a class="btn btn-ghost trust-evidence__work-action" href="/work/#selected-work">看完整作品與關鍵判斷 <ArrowRight size={17} aria-hidden="true" /></a>
-          <ul class="trust-evidence__profile-actions" role="list">
-            <li><a class="btn btn-ghost trust-evidence__profile-action" href={siteConfig.githubUrl} target="_blank" rel="noopener"><Github size={17} aria-hidden="true" /> GitHub 個人頁</a></li>
-            <li><a class="btn btn-ghost trust-evidence__profile-action" href={siteConfig.threadsUrl} target="_blank" rel="noopener"><AtSign size={17} aria-hidden="true" /> Threads 帳號</a></li>
+        <div class="trust-evidence__channels" id="public-output-actions">
+          <p>繼續看公開輸出</p>
+          <ul role="list">
+            <li><a class="btn btn-ghost" href={siteConfig.githubUrl} target="_blank" rel="noopener"><Github size={17} aria-hidden="true" /><span>GitHub 個人頁</span><ArrowRight size={15} aria-hidden="true" /></a></li>
+            <li><a class="btn btn-ghost" href={siteConfig.threadsUrl} target="_blank" rel="noopener"><AtSign size={17} aria-hidden="true" /><span>Threads 帳號</span><ArrowRight size={15} aria-hidden="true" /></a></li>
           </ul>
         </div>
       </section>
 
       <section class="delivery-experience" aria-labelledby="delivery-experience-title">
         <header class="delivery-experience__header section-heading">
-          <p class="about-kicker">交付經驗</p>
-          <h2 id="delivery-experience-title">做出來之後，<br />還要有人能使用。</h2>
-          <p>課程、教材與內容平台是另一種證據。我不只把東西做出來，也會把步驟、驗收與後續使用方式整理清楚。</p>
+          <p class="about-kicker">課程與內容</p>
+          <h2 id="delivery-experience-title">除了做工具，<br />我也把方法整理成別人可以學會的內容。</h2>
+          <p>課程、教材與內容平台是另一種成果。重點不只是講懂概念，而是讓學員知道下一步怎麼做，以及出錯時可以回到哪裡查。</p>
         </header>
         <div class="delivery-experience__body">
           <div class="delivery-experience__list">
@@ -169,9 +166,9 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
           </div>
           <article class="platform-proof" id="cabai-platform">
             <div>
-              <p class="platform-proof__label">內容交付系統</p>
-              <h3>CabAI 把試看、購買與已購內容放在同一個使用流程裡。</h3>
-              <p>訪客可以先免費試看，購買後再用同一個帳號讀課程、手冊和後續更新。從第一次接觸到後續使用，內容都有清楚的交付位置。</p>
+              <p class="platform-proof__label">內容平台</p>
+              <h3>從免費試看到已購內容，都留在同一個 CabAI 帳號裡。</h3>
+              <p>訪客可以先免費試看，購買後再用同一個帳號閱讀課程、手冊與後續更新。內容不會散落在不同信件、連結與平台裡。</p>
             </div>
             <a class="btn btn-ghost platform-proof__action" href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'about_platform')} target="_blank" rel="noopener">查看 CabAI 學習平台 <ArrowRight size={16} aria-hidden="true" /></a>
           </article>
@@ -183,14 +180,14 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
       <div class="principles__grid">
         <div class="principles__intro section-heading">
           <p class="about-kicker">工作原則</p>
-          <h2 id="principles-title">遇到不同工具與問題，我仍會守住四件事。</h2>
-        <p class="principles__note">每次開始前，我都用下面四個問題確認方向。</p>
+          <h2 id="principles-title">工具會一直換，但這四件事不會。</h2>
+        <p class="principles__note">不論做研究、教學、產品或合作，我都會用下面四個原則確認自己沒有被熱門名詞帶著走。</p>
         </div>
         <div class="principles__list">
-          <article><span>01</span><h3>沒有做過的，不假裝熟悉</h3><p>區分實際經驗、研究判斷與仍待驗證的想法，也說清楚方法適用到哪裡。</p></article>
-          <article><span>02</span><h3>先做出能使用的版本</h3><p>讓真實使用者、限制與錯誤早點出現，再根據證據修正。</p></article>
-          <article><span>03</span><h3>先看問題，再選工具</h3><p>簡單的方法能穩定解決，就不為了熱門名詞硬塞 Agent 或複雜架構。</p></article>
-          <article><span>04</span><h3>做對一次，就把原因留下來</h3><p>把有效的判斷、順序與驗收方式整理成手冊、Skill 或工具。</p></article>
+          <article><span>01</span><h3>沒有做過的，不假裝熟悉</h3><p>我會區分實際經驗、研究判斷與仍待驗證的想法，也會說清楚方法適用到哪裡。</p></article>
+          <article><span>02</span><h3>先做出能被真實使用的版本</h3><p>讓使用者、限制與錯誤提早出現，再根據實際證據修正。</p></article>
+          <article><span>03</span><h3>先看問題，再決定要不要用 AI</h3><p>簡單方法已經能穩定解決，就不為了 Agent、MCP 或自動化硬加複雜度。</p></article>
+          <article><span>04</span><h3>做對一次，就把真正有效的原因留下來</h3><p>不只保存最後的 Prompt，也保存判斷、順序、例外與檢查方式。</p></article>
         </div>
       </div>
     </section>
@@ -198,13 +195,12 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
     <section class="about-next page-paper paper-card paper-card--clip" id="next" aria-labelledby="next-title">
       <div>
         <p class="about-kicker">下一步</p>
-          <h2 id="next-title">找到適合你的<br />下一步。</h2>
-        <p class="about-next__intro">想先比較學習內容，或找我一起釐清與推進實際問題，都可以從適合你的方式開始。</p>
+          <h2 id="next-title">先從最接近你目前問題的<br />地方開始。</h2>
+        <p class="about-next__intro">想自己學，可以看課程與手冊；手上的問題已經影響工作，也可以直接把情境交給我一起釐清。</p>
       </div>
       <div class="about-next__links">
         <a class="btn btn-primary about-next__primary" href="/services/">了解服務與合作方式 <ArrowRight size={18} aria-hidden="true" /></a>
         <a class="btn btn-ghost about-next__secondary-action" href="/courses/">看學習內容 <ArrowRight size={18} aria-hidden="true" /></a>
-        <div class="about-next__utility"><a href="/work/">先看代表作品</a><a href="/expertise/">專業方法</a><a href={siteConfig.githubUrl} target="_blank" rel="noopener"><Github size={16} aria-hidden="true" /> GitHub</a><a href={siteConfig.threadsUrl} target="_blank" rel="noopener"><AtSign size={16} aria-hidden="true" /> Threads</a><a href={`mailto:${siteConfig.contactEmail}`}>Email</a></div>
       </div>
     </section>
   </article>
@@ -219,7 +215,8 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
   .about-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.35rem; border-bottom: 1px solid var(--border); }
   .about-hero__topline p { margin: 0; }
   .about-hero__grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(16rem, .92fr); gap: clamp(2.5rem, 7vw, 7rem); align-items: end; padding-top: clamp(2.5rem, 5vw, 4.75rem); }
-  .about-hero h1 { max-width: none !important; margin: 0; font-family: var(--font-serif); font-size: clamp(3rem, 5.8vw, 5.75rem) !important; letter-spacing: -.07em !important; line-height: 1.04 !important; }
+  .about-hero__headline { container-type: inline-size; }
+  .about-hero h1 { max-width: none !important; margin: 0; font-family: var(--font-serif); font-size: clamp(3rem, 13cqi, 5.75rem) !important; letter-spacing: -.07em !important; line-height: 1.04 !important; }
   .about-hero__aside { max-width: 31rem; padding-bottom: .35rem; }
   .about-hero__aside p { margin: 0; color: var(--text-secondary); line-height: 1.85; }
   .about-hero__aside .about-hero__lead { margin-bottom: 1.2rem; color: var(--text-primary); font-size: 1.1rem; font-weight: 700; line-height: 1.65; }
@@ -263,8 +260,6 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
   .public-output__featured-copy > p:first-child { margin: 0; color: var(--text-primary); font-size: 1rem; line-height: 1.9; }
   .public-output__capability { margin: 1.2rem 0 0; padding-left: 1rem; border-left: 2px solid var(--accent); color: var(--text-secondary); font-size: .82rem; line-height: 1.75; }
   .public-output__source-row { display: flex; align-items: end; justify-content: space-between; gap: 1.25rem; margin-top: 1.6rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
-  .public-output__source-meta { display: flex; flex-wrap: wrap; gap: .25rem .75rem; min-width: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: .64rem; line-height: 1.55; }
-  .public-output__source-meta strong { width: 100%; color: var(--text-primary); font-family: var(--font-sans); font-size: .78rem; }
   .public-output__source-link { display: inline-flex; flex: 0 0 auto; align-items: center; gap: .45rem; min-height: 2.75rem; color: var(--accent-text); font-size: .76rem; font-weight: 700; }
   .public-output__source-link:hover { color: var(--accent); }
   .public-output__supporting { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -276,12 +271,13 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
   .public-output__supporting h3 { max-width: 22ch; margin: 1.1rem 0 .8rem; font-size: clamp(1.2rem, 2vw, 1.55rem); letter-spacing: -.025em; line-height: 1.45; }
   .public-output__supporting article > p:not(.public-output__category, .public-output__capability) { margin: 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.8; }
   .public-output__supporting .public-output__source-row { align-items: flex-start; flex-direction: column; gap: .45rem; }
-  .trust-evidence__actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(21rem, .72fr); gap: .85rem; align-items: stretch; margin-top: 2rem; }
-  .trust-evidence__work-action { min-height: 3rem; margin: 0; white-space: nowrap; }
-  .trust-evidence__profile-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 0; padding: 0; list-style: none; }
-  .trust-evidence__profile-actions li { min-width: 0; }
-  .trust-evidence__profile-action { justify-content: center; gap: .55rem; width: 100%; min-height: 3rem; padding: .7rem .85rem; border-color: var(--border); color: var(--text-secondary); font-size: .78rem; white-space: nowrap; }
-  .trust-evidence__profile-action:hover:not(:disabled):not([aria-disabled='true']) { border-color: var(--accent-text); color: var(--accent-text); }
+  /* Public profile links stay visible as buttons without competing with the page's final CTA. */
+  .trust-evidence__channels { box-sizing: border-box; display: grid; grid-template-columns: minmax(10rem, .55fr) minmax(0, 1.45fr); gap: clamp(1.5rem, 4vw, 3rem); align-items: center; margin-top: 2rem; padding: 1.25rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--accent) 3%, var(--bg-soft)); }
+  .trust-evidence__channels > p { margin: 0; color: var(--text-secondary); font-size: .82rem; font-weight: 700; letter-spacing: .02em; }
+  .trust-evidence__channels ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 0; padding: 0; list-style: none; }
+  .trust-evidence__channels li { min-width: 0; }
+  .trust-evidence__channels a { display: grid; grid-template-columns: auto 1fr auto; gap: .6rem; align-items: center; width: 100%; min-height: 3.25rem; padding: .75rem .9rem; border-color: var(--border-strong); background: var(--bg-soft); color: var(--text-primary); font-size: .78rem; font-weight: 700; }
+  .trust-evidence__channels a:hover:not(:disabled):not([aria-disabled='true']) { border-color: var(--accent-text); color: var(--accent-text); }
   .delivery-experience { display: grid; grid-template-columns: minmax(13rem, .72fr) minmax(0, 1.28fr); gap: clamp(2.5rem, 7vw, 7rem); margin-top: clamp(4.5rem, 9vw, 8rem); padding-top: clamp(3rem, 6vw, 5rem); border-top: 1px solid var(--border-strong); }
   .delivery-experience__header h2 { max-width: 13em; }
   .delivery-experience__header > p:last-child { max-width: 28rem; margin: 1.35rem 0 0; color: var(--text-secondary); font-size: .86rem; line-height: 1.85; }
@@ -326,26 +322,23 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
   }
   .about-next__links > a.about-next__secondary-action { margin-top: .75rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: transparent; color: var(--text-primary); }
   .about-next__links > a.about-next__secondary-action:hover:not(:disabled):not([aria-disabled='true']) { border-color: var(--accent-text); background: var(--bg-soft); color: var(--accent-text); }
-  .about-next__utility { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; padding-top: .75rem; }
-  .about-next__utility a { display: inline-flex; justify-content: flex-start; min-height: 2.75rem; align-items: center; padding: .25rem 0; border: 0; color: var(--text-secondary); font-size: .78rem; }
-  .about-next__utility a:hover { color: var(--accent); }
   @media (max-width: 800px) {
     .about-hero__grid, .about-story, .turning-points__header, .public-output__featured, .delivery-experience, .principles__grid, .about-next { grid-template-columns: 1fr; }
     .about-hero__grid { gap: 2.25rem; }
     .about-hero__aside { max-width: 38rem; }
-    .about-hero__action, .platform-proof__action, .trust-evidence__work-action { width: 100%; }
+    .about-hero__action, .platform-proof__action { width: 100%; }
     .about-story__mark { right: 1rem; }
     .turning-points__header { gap: 1.25rem; }
     .public-output__featured { gap: 1.75rem; }
     .public-output__supporting { grid-template-columns: 1fr; }
     .public-output__supporting article:first-child { padding-right: 0; border-right: 0; }
     .public-output__supporting article:last-child { padding-left: 0; }
-    .trust-evidence__actions { grid-template-columns: 1fr; }
     .delivery-experience { gap: 2.5rem; }
     .principles__list { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 560px) {
     .about-page.paper-page > .page-paper { padding-inline: clamp(1rem, 5vw, 1.25rem) !important; }
+    .about-page .display-heading > .heading-phrase { white-space: normal; }
     .about-hero { padding-block: 2.4rem 3rem !important; }
     .about-hero__topline { padding-bottom: 1rem; }
     .about-note { font-size: .55rem; }
@@ -373,8 +366,8 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
     .public-output__source-row { align-items: flex-start; flex-direction: column; gap: .5rem; }
     .public-output__supporting article { padding: 1.75rem 0; }
     .public-output__supporting h3 { font-size: 1.18rem; }
-    .trust-evidence__work-action { white-space: normal; }
-    .trust-evidence__profile-actions { grid-template-columns: 1fr; }
+    .trust-evidence__channels { grid-template-columns: 1fr; gap: 1rem; }
+    .trust-evidence__channels ul { grid-template-columns: 1fr; }
     .delivery-experience { margin-top: 4rem; padding-top: 3rem; }
     .delivery-experience__list article { grid-template-columns: 1fr; gap: .7rem; padding: 1.45rem 0; }
     .delivery-experience__kind { margin: 0; }

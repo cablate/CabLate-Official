@@ -8,13 +8,13 @@ baseline_audit: docs/design/audits/2026-07-14-remaining-primary-pages-plan/READM
 execution_mode: serial-small-slices
 ---
 
-# About、Work、Courses、Services 小步執行計畫
+# About、Courses、Services 小步執行計畫（Work 暫時封存）
 
 ## 0. 文件定位與目前判定
 
-這是 2026-07-14 四頁 Master Plan 的施工切片，不另行改寫產品方向、頁面角色或核准狀態。它把原本的 Phase 0–5 拆成可在一次短 session 內完成、驗證、停止與回退的小步驟。
+這是 2026-07-14 四頁 Master Plan 的施工切片。2026-07-15 使用者決定 Work 暫時封存，因此 Work 既有規劃保留為歷史與恢復依據，但不再是目前 production execution path。
 
-目前判定：**Pending User Review**。本文件可直接用於審閱與估工；只有父計畫與本切片獲核准後，才進入 `P1` 以後的程式實作。
+目前判定：**Incremental User Review**。About 與 Services 已有部分核准切片；Work archive 依 `docs/contracts/work-route-archive-2026-07-15.md` 執行，後續主線改為 Courses → Services → Cross-page。
 
 深層目標不是更快累積改動，而是縮短「做出變更 → 看見真實結果 → 修正判斷」的距離。每一步只承擔一種主要風險，避免文案、DOM、共用 CSS、Responsive 與跨頁 QA 同時變動，導致失敗時無法定位。
 
@@ -22,7 +22,7 @@ execution_mode: serial-small-slices
 
 ### 1.1 Goal model
 
-- **Primary goal G0：** About、Work、Courses、Services 各自完成一個清楚的訪客決策，且不讓已驗證的 Home、Expertise 退步。
+- **Primary goal G0：** About、Courses、Services 各自完成一個清楚的訪客決策；Work 在沒有獨占任務時不出現在公開路徑，且不讓已驗證的 Home、Expertise 退步。
 - **Supporting goals：** CTA 可辨識、順序與 DOM 一致、Mobile 可讀、證據靠近主張、真實資料不漂移、訪客有回復路徑。
 - **Soft goals：** 每次變更容易理解、容易驗證、容易回退；新 session 不必依賴聊天記憶。
 - **Domain invariants：** 沿用父計畫 1.4 全部規則；特別保護真實 Email、CabAI attribution、產品狀態、價格、日期、公開證據、Rail、Headbar、Footer、Home 與 Expertise。
@@ -33,8 +33,8 @@ execution_mode: serial-small-slices
 | Goal | Slice owner | Observable outcome | Evidence |
 | --- | --- | --- | --- |
 | G0 | `G1–G4` | 六個主要頁面同時維持正確角色與下一步 | 六頁 production captures、runtime facts、final diff |
-| G1 About 信任 | `A1–A4` | 首屏、CabAI 證據與頁尾都能自然導向 Work | About targeted／full-page evidence |
-| G2 Work 證據 | `W0a–W6` | Work 比 About 多提供真實決策深度，既有經驗不被抹除，案例可讀且合作入口清楚 | 跨頁 owner matrix、source-backed case matrix、DOM outline、computed type、focus name、Work captures |
+| G1 About 信任 | `A1–A4` | 首屏、公開輸出與頁尾能自然導向 Services、Courses、Expertise 或外部公開來源 | About targeted／full-page evidence |
+| G2 Work 封存 | `WA0` | 公開入口撤除、舊 URL 安全轉向 About 公開輸出、原始碼可恢復 | archive contract、CTA inventory、redirect／sitemap evidence |
 | G3 Courses 選擇 | `C1–C4` | 四條路不是必修漏斗，三條可走路線可明確啟動 | route facts、CTA states、Courses captures |
 | G4 Services 適配 | `S0–S6` | 服務、經驗、流程、邊界與聯絡各自完成單一任務，且不靠小字或過度主張維持完整感 | heading outline、type／CTA rect、mailto facts、Services captures |
 | S1／S3 共用互動 | `F1–F4` | 共用 CTA 狀態成立且 Home／Expertise 不回歸 | contract、state captures、regression captures |
@@ -162,11 +162,11 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 
 **Gate：** L1。**DoD：** 完整閱讀不再重複同一主張，source facts 不變。
 
-### A2：Hero 與 CabAI contextual actions
+### A2：Hero 與 CabAI contextual actions（WA0 後由同頁公開輸出承接）
 
 **Exact files：** `src/pages/about.astro`，必要時只消費 F2 已存在的 class。
 
-- 將 Hero Work 與 CabAI 入口升為父計畫指定的 bordered／contextual action，不碰頁尾 Primary。
+- Hero evidence action 在 WA0 後改為同頁 `#public-output-title`；CabAI 維持既有 contextual action，不碰頁尾 Primary。
 - 驗證 href、target、rel、accessible name 與 48px 行動高度。
 
 **Gate：** L1。**DoD：** 兩個行動可在五秒掃讀辨認，但不把 CabAI 變成商品 pitch。
@@ -176,19 +176,19 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 **Exact files：** `src/pages/about.astro`。
 
 - 只處理 320／360／390 heading、timeline rail、紙張安全內距與頁尾付費路徑分流。
-- 頁尾以 `/services/` 作為唯一 filled Primary，`/courses/` 作為 bordered Secondary，`/work/` 降為 utility evidence link。
+- 頁尾以 `/services/` 作為唯一 filled Primary，`/courses/` 作為 bordered Secondary；WA0 後移除 Work utility link。
 - 不新增未核准的「陪跑」服務承諾；不刪 timeline 或公開證據，不用 fixed height、overflow hidden、縮字解決長度。
 
-**Gate：** L1。**DoD：** Mobile DOM／視覺順序一致，頁尾 Services 是唯一 Primary，Courses／Work 路徑可辨識且目的地正確。
+**Gate：** L1。**DoD：** Mobile DOM／視覺順序一致，頁尾 Services 是唯一 Primary，Courses、Expertise 與外部 profile 路徑可辨識且目的地正確。
 
 ### A3b-1：公開輸出與交付經驗資料責任
 
 **Exact files：** `src/config/authority.ts`，以及本 execution plan、CTA contract 的 evidence／traceability 段落。
 
 - 將 About 的信任證據拆成兩個明確資料群：`publicOutputs`（GitHub、公開文章／研究、Threads 等可外部查驗輸出）與 `deliveryProofs`（課程、教學、內訓、產品交付、CabAI 內容交付）。
-- 每筆資料至少要有 `title`、`type`、`problem`、`insight`、`evidence`、`destination`；About 讀的是「問題／判斷／證據透露的能力」，Work 才保留完整案例、限制與外部檔案連結。
+- 每筆資料至少要有 `title`、`type`、`problem`、`insight`、`evidence`、`destination`；About 讀的是「問題／判斷／證據透露的能力」。Work 已封存，未來恢復時才另建完整案例與限制資料。
 - stars／forks 保留於 canonical data 供其他頁面或日後查核，但不在 About 顯示；課程人數與日期只能作次要 evidence，不新增未由 canonical source 支持的成果、客戶或能力宣稱。
-- `representativeWork` 與 `openSourceProofs` 目前重複維護部分 repo facts；A3b-1 不先刪任何資料。Work W0c 核准後，由 W1 把可共用的 artifact identity／href／proof 收斂成 canonical facts，About 與 Work 仍各自維護不同的 author-signal／decision-record narrative。
+- `representativeWork` 與 `openSourceProofs` 目前重複維護部分 repo facts；WA0 不順便清理資料。若 Work 未來恢復，再以新的 source matrix 收斂 canonical facts 與 page-specific narrative。
 
 **Gate：** L0。**DoD：** 建立 public output／delivery proof content matrix，所有 visible claim 都能回到 `authority.ts`、既有 Work story、公開文章或明確外部 URL；待使用者確認內容分組後才進版面施工。
 
@@ -199,12 +199,12 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 - `公開作品` 不再渲染成 repo name／stars／forks 清單；改成「公開輸出」敘事區，呈現 3–4 個可查驗輸出如何證明問題拆解、產品化、研究與持續交付能力。
 - 每項 repo 名稱只顯示一次；描述與來源動作不再重複 repo 名稱。交付成果保留成果數字，但移除畫面上的「截至」日期。
 - 在同一信任章節內建立獨立的「交付經驗」子區，明確標示課程、教學、內訓、產品交付與 CabAI 平台不是作品 repo，而是把方法交給別人使用的證據。
-- 公開輸出區保留一個 contextual bordered CTA `看完整作品與關鍵判斷`，導向 `/work/#selected-work`；不在每個項目重複放相同 Work CTA。
-- 同一 action area 增加 `GitHub 個人頁` 與 `Threads 帳號` profile links，分別使用 `siteConfig.githubUrl`、`siteConfig.threadsUrl`；兩者視覺層級低於 Work，不改變頁尾付費路徑分流。
+- WA0 後移除 `看完整作品與關鍵判斷`；公開輸出直接由各項來源 action 與 action area 的 GitHub／Threads profile links 承接。
+- `GitHub 個人頁` 與 `Threads 帳號` 分別使用 `siteConfig.githubUrl`、`siteConfig.threadsUrl`，兩者同層，不改變頁尾付費路徑分流。
 - Services／Courses 不在中段搶主導；About 頁尾仍由 Services filled Primary、Courses bordered Secondary 完成最後分流，避免信任區塊變成商品牆。
 - Desktop 採 editorial hierarchy（主敘事＋較短的 supporting entries），Mobile 依 DOM 順序單欄自然增高；禁止 fixed height、overflow hidden、縮字或把兩種證據重新混成一張等權重列表。
 
-**Gate：** L1。**DoD：** 390／1280 關鍵畫面能一眼分辨 public output 與 delivery proof；Work、GitHub profile、Threads profile actions 可辨識且至少 48px；About 不顯示 stars／forks；無水平溢位；CabAI capability row、timeline、頁尾 Services／Courses 意圖不退步。
+**Gate：** L1。**DoD：** 390／1280 關鍵畫面能一眼分辨 public output 與 delivery proof；GitHub／Threads profile actions 可辨識且至少 48px；About 不顯示 stars／forks；無水平溢位；CabAI capability row、timeline、頁尾 Services／Courses 意圖不退步。
 
 ### A4：About page gate
 
@@ -217,7 +217,20 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 
 **DoD：** 父計畫 4.9 全通過，建立 `fix: route about trust into learning and services` checkpoint。
 
-## 6. Work：W0a–W6 完成跨頁證據到合作路徑
+## 6. Work：暫時封存，保留歷史規劃
+
+### WA0：Work 公開路徑暫時下架（implemented／awaiting user review）
+
+**Exact files：** `astro.config.mjs`、`src/config/authority.ts`、`src/layouts/BaseLayout.astro`、`src/pages/about.astro`、`src/pages/work.astro` → `src/archive/work.astro`、archive contract 與 audit evidence。
+
+- Work 從桌機／手機主導覽、Footer 與 About 三個入口撤下。
+- About Hero 改為同頁公開輸出入口；公開輸出保留 GitHub／Threads；頁尾保留 Services／Courses／Expertise 與聯絡方式。
+- 舊 `/work/` 以 Astro static redirect 前往 `/about/#public-output-title`，並從 sitemap 排除。
+- 原 W0a–W6 與 W0d 黃色服務橋接保留為歷史與日後恢復依據；WA0 生效期間不得繼續 W0c、W1–W6 production implementation。
+
+**Gate：** L2＋user review。**DoD：** production source 無 `/work/` 可見入口、redirect 與 sitemap 成立、Desktop／Mobile 導覽及 About 畫面通過、封存檔不生成正式內容頁。
+
+**Current evidence：** automated gate、Desktop in-app browser 與 mobile navigation DOM 均已通過；只剩使用者畫面確認、390px final page gate 與 checkpoint。詳見 `docs/design/audits/2026-07-15-work-archive-yellow-paper-audit/README.md`。
 
 ### W0a：Work 視覺與互動規劃審核（verified）
 
@@ -240,7 +253,7 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 
 **Gate：** L0。**DoD：** 原 W1 execution-ready 判定撤回；重疊與早期專業經驗都有明確 owner，不以 UI 修補取代內容決策。
 
-### W0c：案例 source matrix 與名單核准（pending）
+### W0c：案例 source matrix 與名單核准（archived／deferred）
 
 **Exact files：** 更新 overlap audit README、父計畫與本文件；只讀 `src/config/authority.ts`、Home／About／Work／Courses／Services sources 與核准的第一方公開來源；零 production files。
 
@@ -330,38 +343,55 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 
 ## 7. Courses：四小步完成非必修選擇地圖
 
-### C1：選擇語意與資料責任
+### C0：Courses 嚴格內容重審（verified）
 
-**Exact files：** `src/config/authority.ts`、`src/pages/courses/index.astro`。
+**Exact files：** 父計畫、本文件、新增 `docs/design/audits/2026-07-15-courses-strict-content-reaudit/`；零 production files。
 
-- 明寫四條路依投入與深度排列、可獨立進入；去除 Hero 與 map header 的重述。
-- 保留四條 route、商品名、價格、免費試看、未開放狀態與 CabAI campaign。
+- 以 fresh 1280px captures、runtime DOM／CTA rect 與兩個第一方 CabAI 商品頁回查 Hero、四 route、商品 fit／名稱／價格／試看與 CabAI onboarding。
+- 確認已成立的 baseline：Hero 主張、四 route 骨架、免費診斷 destination、未開放狀態、兩個價格、external URL／campaign 與免登入免費試看承諾。
+- 鎖定待修 baseline：必修流程暗示、三個約 `23px` 的 route action、AgentSkill prerequisite 缺漏、手冊正式名稱不一致、免登入試看與 account CTA 的內容／視覺衝突。
+- Fresh Mobile capture 因 viewport override 無效與 screenshot timeout 未取得；不得把舊 Mobile 圖寫成本輪證據，留給 C3／C4 驗收。
 
-**Gate：** L1。**DoD：** 只看標題與狀態不會誤解為 01→04 必修漏斗。
+**Gate：** L0。**DoD：** 父計畫 6.0–6.9 與 C1–C4 能從 fresh session 直接執行，不把 planning evidence 寫成 implementation complete。
 
-### C2：三個可走 route CTA
+### C1：選擇語意與資料責任（verified, awaiting user review）
 
-**Exact files：** `src/pages/courses/index.astro`。
+**Exact files：** `src/config/authority.ts`、`src/pages/courses/index.astro`、`docs/contracts/courses-choice-semantics-c1-2026-07-15.md`、`docs/design/audits/2026-07-15-courses-c1/`。
 
+- 明寫四條路依投入與深度排列、可獨立進入；Map H2 去除「層」的必修暗示，並切開 Hero 與 map header 的內容責任。
+- AgentSkill situation 補上「已開始使用 Skill」的前提，outcome 改成可帶走的能力；手冊 route 對齊第一方商品名「Claude Code 深度工程手冊」與具體排錯範圍。
+- 保留四條 route、價格、destination、免登入免費試看、未開放狀態與 CabAI campaign；其他公開頁舊商品名只登記到 cross-page fact gate，不在本切片擴張修改。
+
+**Gate：** L1。**DoD：** 只看標題與狀態不會誤解為 01→04 必修漏斗；AgentSkill 不會被誤認為純新手課，手冊名稱與商品頁 H1 一致。
+
+**Evidence：** Hero／Map 責任已切開，Map 明寫「不用照編號走」，`START HERE` 改為 `CHOOSE ONE`，route container 為 `UL[role="list"]` 且仍有四項；AgentSkill prerequisite 與手冊正式名稱已對齊第一方商品頁。1280px fresh runtime `scrollWidth === clientWidth === 1265`；三個 href、兩個價格、兩個 CabAI campaign 與 unavailable state 未變。`check`、`validate:content`、`build`、`diff --check` 全通過，畫面見 `docs/design/audits/2026-07-15-courses-c1/`。
+
+### C2：黃色建議紙與三個可走 route CTA（verified, awaiting user review）
+
+**Exact files：** `src/pages/courses/index.astro`、`docs/contracts/courses-yellow-route-actions-c2-2026-07-15.md`、`docs/design/audits/2026-07-15-courses-c2/`。
+
+- 四條 route 都用既有黃色閱讀紙承接「建議從這裡開始」、名稱、結果、價格／狀態與 action；外層白紙繼續負責描述訪客狀況。
 - 將問題診斷、AgentSkill、工程手冊的 action 提升為 48px contextual／recovery actions。
 - 尚未開放項目維持無 href、無假按鈕、無 pointer cursor。
 
 **Gate：** L1。**DoD：** 三個可走入口可辨識；unavailable state 不被誤認為可點。
 
+**Evidence：** 1280px 三個 actions 均為 `48px` 高；390px action 留在黃色紙張安全區內；320px 長 action 只在 `max-width: 340px` 自然換行。1280px／390px 全頁與 320px learning map 均為 zero overflow。四個 solution computed background 均解析為 `paper-reading-card` image-set；pending route 為 `a === 0`、`button === 0`、cursor `auto`。320px 全頁仍有既有 Hero H1 phrase 造成的 `5px` document overflow，交由 C3 Mobile 句組處理。fresh browser 畫面、stale CSS 排除紀錄與 automated gate 見 `docs/design/audits/2026-07-15-courses-c2/`。
+
 ### C3：CabAI secondary 與 Mobile map
 
 **Exact files：** `src/pages/courses/index.astro`。
 
-- 降低抽象帳號 CTA 相對於具體路線的權重；調整 Mobile rail、句組與 `#learning-map` offset。
-- 不改 CabAI URL 產生方式、價格、試看或交付承諾。
+- CabAI onboarding 先說兩項內容皆可免登入免費試看，再說帳號負責已購內容與社群權限；降低抽象帳號 CTA 相對於具體路線的權重。
+- 調整 Mobile rail、句組與 `#learning-map` offset；不改 CabAI URL 產生方式、價格、destination 或試看承諾。
 
-**Gate：** L1。**DoD：** 訪客先選具體路線，再看 CabAI 帳號說明；320–390px 順序成立。
+**Gate：** L1。**DoD：** 訪客先選具體路線，再看 CabAI 帳號說明，且不會誤以為試看前必須註冊；320–390px 順序成立。
 
 ### C4：Courses page gate
 
 **Exact files：** 新增 `docs/design/audits/2026-07-14-courses-implementation/`。
 
-- 跑 L2；驗證 map ordering、三個 CTA、未開放 state、CabAI secondary、anchor offset、external URL facts。
+- 跑 L2；驗證 map ordering、三個 CTA、未開放 state、CabAI secondary、anchor offset、external URL facts、商品正式名稱、fit 與免登入試看事實。
 
 **DoD：** 父計畫 6.9 全通過，建立 `fix: make course choices explicit and non-sequential` checkpoint。
 
@@ -398,6 +428,17 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 - 不新增客戶、成果或服務承諾。
 
 **Gate：** L1。**DoD：** 三種服務仍足以自我篩選，visible UI 無 raw slug；Desktop list `>=15px`，Mobile list `>=16px`，不以縮字抵銷去重效果。
+
+### S2a：黃色紙張只用於既有服務摘要（pending user confirmation）
+
+**Exact files：** `src/pages/services.astro`；只讀 `src/archive/work.astro` 回查已核准素材語法。
+
+- 不新增第二排服務卡；只把三個既有 service option 的編號、中文標題與一句 outcome 做成黃色摘要面。
+- fit／deliverables 維持白底詳細內容；不新增客戶、公司、成效、服務承諾或每卡 CTA。
+- Desktop 維持三項垂直比較；Mobile 依 summary → fit → deliverables 單欄自然增高，不旋轉到造成裁切。
+- 頁級 CTA、合作流程、合作邊界與聯絡區不在此切片調整。
+
+**Gate：** L1＋user review。**DoD：** 黃色只代表「可採取的合作方向」，不被誤認為案例或商品牆；Desktop／390px 無 overflow，與 Services 既有資訊不重複。
 
 ### S3：合作經驗證據邊界與共通合作邊界
 
@@ -495,15 +536,18 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 | A4 | pending | 0 | About L2 | 是 |
 | W0a | verified | 0 | L0 | 是，visual planning evidence only |
 | W0b | verified | 0 | L0 | 是，cross-page owner evidence only |
-| W0c | pending | 0 | L0＋user review | 是，source matrix 與 roster 核准前阻塞 W1 |
+| WA0 | awaiting_user_review | 5＋route archive | user review＋390px final gate | 是，技術、Desktop 與 mobile DOM 已完成；確認後補 final gate 並 checkpoint |
+| W0c | archived | 0 | 不執行 | 是，Work 恢復前維持 deferred |
 | W0d | verified | 1 | L1＋user-selected visual | 是，使用者已確認 production 畫面；此切片不解除 W0c |
-| W1–W5 | pending | 1–2／slice | L1 | 否，需各自瀏覽器證據 |
-| W6 | pending | 0 | Work L2 | 是 |
-| C1–C3 | pending | 1–2／slice | 否 | 只限同頁施工中 |
+| W1–W5 | archived | 1–2／slice | 不執行 | 是，僅保留歷史恢復規劃 |
+| W6 | archived | 0 | 不執行 | 是 |
+| C1 | verified | 2 production＋contract／evidence | L1＋user review | 是，技術與 1280px visual 已完成；等待本段畫面回饋 |
+| C2 | verified | 1 production＋contract／evidence | L1＋user review | 是，黃色 recommendation surface 與三個 48px actions 已完成；等待本段畫面回饋 |
+| C3 | pending | 1／slice | 否 | 只限同頁施工中 |
 | C4 | pending | 0 | Courses L2 | 是 |
 | S0 | verified | 0 | L0 | 是，planning evidence only |
 | S1 | verified | 1 | L1 | 是，待使用者回饋後再進 S2 |
-| S2–S5 | pending | 1–2／slice | 否 | 只限同頁施工中 |
+| S2／S2a／S3–S5 | pending | 1–2／slice | 否 | S2a 需先取得黃色摘要面方向確認；其餘只限同頁施工中 |
 | S6 | pending | 0 | Services L2 | 是 |
 | G1–G4 | pending | 0，修正回 owner | Cross-page L3 | G4 後完成 |
 
@@ -511,7 +555,7 @@ L1 失敗時只回修當前 slice。L2 失敗時不能進下一頁。L3 只做�
 
 ### Core
 
-P0–G4 全部是本輪 Core。頁面順序採 `Foundation → About → Work → Courses → Services → Cross-page`，因為前一頁會提供下一頁可重用的驗證方法，但不提供可複製的 layout。
+目前 Core 順序採 `Foundation → About → WA0 → Courses → Services → Cross-page`。Work 恢復需先有新的 page-role 決策，不得直接從 W0c 接續施工。
 
 ### 可延後但必須明列
 
@@ -554,4 +598,4 @@ Previous gate／checkpoint：
 - Phase sizing：每個 production slice 只動 1–2 個主要檔案與一種風險；browser evidence 與 heavy gate 分層執行。
 - Contract：F1 指定正式 artifact，各 UI slice 有 narrow change record 與 acceptance evidence。
 - Serial coordination：`global.css`、頁面 implementation、final gate 均明確序列化，不允許跨 slice 混改。
-- Remaining blockers：P0 其餘整體規劃的逐段核准，以及 Work W0c 的 source-backed public decision matrix／roster。W0d 已完成 production、internal QA 與 user confirmation；W0c 完成前不能進 W1 或宣稱 Work 已完成。
+- Remaining blockers：P0 其餘整體規劃的逐段核准。Work W0c 與 W1–W6 已由 WA0 封存決策取代；未來若恢復 Work，必須先重新確認獨占任務、source-backed records 與跨頁 owner，再建立新的 execution slice。
