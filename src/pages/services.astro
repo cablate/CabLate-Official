@@ -30,7 +30,7 @@ const collaborationMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeU
       <header class="service-options__header">
         <div>
           <p class="section-label">你現在卡在哪裡</p>
-          <h2 class="display-heading" id="options-title"><span class="heading-phrase">你不需要先知道自己該買</span><span class="heading-phrase">顧問、內訓還是系統開發。</span></h2>
+          <h2 class="display-heading" id="options-title"><span class="heading-phrase">不確定該找顧問、內訓，</span><span class="heading-phrase">還是直接開發系統？</span></h2>
         </div>
         <p>只要你已經有真實任務、資料或使用者，卻持續重做、難以判斷結果，或不知道怎麼把方法交給團隊，就可以從下面最接近的情況開始。不確定時，通常先做工作流診斷。</p>
       </header>
@@ -62,7 +62,7 @@ const collaborationMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeU
 
     <section class="process page-paper paper-card paper-card--clip" aria-labelledby="process-title">
       <header class="process__header">
-        <div><p class="section-label">合作流程</p><h2 class="display-heading" id="process-title"><span class="heading-phrase">不會一開始就決定</span><span class="heading-phrase">要做 Agent。</span></h2></div>
+        <div><p class="section-label">合作流程</p><h2 class="display-heading" id="process-title"><span class="heading-phrase">不會一開始就決定</span><span class="heading-phrase">要做 Agent</span></h2></div>
         <span class="paper-label" aria-hidden="true">FROM BRIEF TO HANDOFF</span>
       </header>
       <ol>
@@ -71,7 +71,7 @@ const collaborationMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeU
     </section>
 
     <section class="service-boundaries page-paper paper-card" aria-labelledby="boundaries-title">
-      <div><p class="section-label">合作邊界</p><h2 class="display-heading" id="boundaries-title"><span class="heading-phrase">開始前，先把什麼會做、</span><span class="heading-phrase">什麼不會承諾說清楚。</span></h2></div>
+      <div><p class="section-label">合作邊界</p><h2 class="display-heading" id="boundaries-title"><span class="heading-phrase">開始合作前，</span><span class="heading-phrase">先把會做與不會做的事說清楚</span></h2></div>
       <ul>
         <li>不保證營收、流量或未被定義的商業結果。</li>
         <li>如果缺少必要資料、完成條件與內部負責人，不會承諾全面導入。</li>
@@ -80,8 +80,20 @@ const collaborationMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeU
       </ul>
     </section>
 
+    <section class="other-cooperation page-paper paper-card" aria-labelledby="coop-title">
+      <div>
+        <p class="section-label">其他合作</p>
+        <h2 class="display-heading" id="coop-title"><span class="heading-phrase">不只是企業合作，</span><span class="heading-phrase">講師、內容、產品，</span><span class="heading-phrase">都歡迎聊聊</span></h2>
+        <p>企業內訓與顧問之外，也接受講師邀約、內容互導與產品相關的合作。如果你有想法，直接寫信來，我會回覆適不適合、以及可能的合作方式。</p>
+      </div>
+      <div class="service-cta__actions">
+        <a href={collaborationMailto}>寫信聊聊合作 <ArrowRight size={18} aria-hidden="true" /></a>
+        <a class="text-link" href={siteConfig.threadsUrl} target="_blank" rel="noopener">或透過 Threads 聯絡 <ArrowRight size={15} aria-hidden="true" /></a>
+      </div>
+    </section>
+
     <section class="service-cta page-paper paper-card paper-card--clip" id="contact" aria-labelledby="cta-title">
-      <div><p class="section-label">提交合作情境</p><h2 class="display-heading" id="cta-title"><span class="heading-phrase">不用先寫一份完整需求書，</span><span class="heading-phrase">把你現在怎麼做、</span><span class="heading-phrase">卡在哪裡告訴我就好。</span></h2><p>請簡單說明你想完成什麼、誰會使用、目前怎麼處理、最常在哪裡卡住，以及你認為怎樣才算改善。我會先判斷是否適合合作；如果問題不需要做到系統導入，也會直接說明。</p></div>
+      <div><p class="section-label">提交合作情境</p><h2 class="display-heading" id="cta-title"><span class="heading-phrase">不用先寫一份完整需求書，</span><span class="heading-phrase">把你現在怎麼做、</span><span class="heading-phrase">卡在哪裡告訴我就好</span></h2><p>請簡單說明你想完成什麼、誰會使用、目前怎麼處理、最常在哪裡卡住，以及你認為怎樣才算改善。我會先判斷是否適合合作；如果問題不需要做到系統導入，也會直接說明。</p></div>
       <div class="service-cta__actions">
         <a href={collaborationMailto}>寄信說明你的情境 <ArrowRight size={18} aria-hidden="true" /></a>
         <a class="text-link" href={siteConfig.threadsUrl} target="_blank" rel="noopener">也可以透過 Threads 聯絡 <ArrowRight size={15} aria-hidden="true" /></a>
@@ -97,14 +109,14 @@ const collaborationMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeU
   .services-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-inline-size: 0; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
   .services-hero__topline .section-label { margin: 0; }
   .services-hero__topline > span { min-inline-size: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; text-align: end; text-wrap: pretty; }
-  .services-hero h1 { max-width: 17ch; margin: clamp(2.75rem, 5vw, 4.5rem) 0 0; font-size: clamp(3rem, 5.8vw, 5.6rem); }
+  .services-hero h1 { max-width: 17ch; margin: clamp(2.75rem, 5vw, 4.5rem) 0 0; font-size: clamp(2rem, 4vw, 3.25rem); }
   .services-hero > p:not(.eyebrow) { max-width: 48rem; margin: 2rem 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
   .services-hero > a, .service-cta__actions > a:first-child { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.25rem; padding: .8rem 1.2rem; background: var(--text-primary); color: var(--bg); font-weight: 700; }
   .services-hero > a:hover, .service-cta__actions > a:first-child:hover { background: var(--accent); }
   .services-hero > a:focus-visible, .service-cta__actions a:focus-visible, .services-page a:focus-visible { outline: 2px solid var(--accent); outline-offset: .3rem; }
 
   .service-options, .service-proof, .process, .service-boundaries, .service-cta { padding-block: clamp(3.5rem, 7vw, 6rem); }
-  .service-options h2, .process h2, .service-boundaries h2, .service-cta h2 { max-width: 17ch; margin: 0; font-size: clamp(2.3rem, 4.5vw, 4.2rem); letter-spacing: -.05em; line-height: 1.06; }
+  .service-options h2, .process h2, .service-boundaries h2, .service-cta h2 { max-width: 17ch; margin: 0; font-size: clamp(1.6rem, 2.8vw, 2.4rem); letter-spacing: -.05em; line-height: 1.3; }
   .service-title__meta span, .process li > span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
 
   .service-options__header, .process__header { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: end; min-inline-size: 0; margin-bottom: 4rem; }
@@ -139,12 +151,15 @@ const collaborationMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeU
   .service-boundaries { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); }
   .service-boundaries ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
   .service-boundaries li { padding: 1.2rem 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); line-height: 1.7; }
+  .other-cooperation { display: grid; grid-template-columns: 1.3fr .7fr; gap: 4rem; align-items: end; }
+  .other-cooperation h2 { max-width: 22ch; margin: 0; font-size: clamp(1.6rem, 2.8vw, 2.4rem); letter-spacing: -.05em; line-height: 1.3; }
+  .other-cooperation > div > p:last-child { max-width: 42rem; margin: 1.2rem 0 0; color: var(--text-secondary); line-height: 1.8; }
   .service-cta { display: grid; grid-template-columns: 1.3fr .7fr; gap: 4rem; align-items: end; }
   .service-cta p:last-child { max-width: 42rem; color: var(--text-secondary); line-height: 1.8; }
   .service-cta__actions { display: grid; justify-items: end; gap: .9rem; }
 
   @media (max-width: 800px) {
-    .service-proof, .service-options__header, .process__header, .service-list > article, .service-boundaries, .service-cta { grid-template-columns: 1fr; }
+    .service-proof, .service-options__header, .process__header, .service-list > article, .service-boundaries, .service-cta, .other-cooperation { grid-template-columns: 1fr; }
     .service-detail { gap: 1.5rem; }
     .process ol { grid-template-columns: 1fr 1fr; }
     .process ol::before { top: 2.7rem; right: 12%; left: 12%; }

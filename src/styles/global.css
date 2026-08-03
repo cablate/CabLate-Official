@@ -142,10 +142,10 @@
 
 .paper-page > header.page-paper h1 {
   max-width: 17ch !important;
-  font-family: var(--font-serif) !important;
+  font-family: var(--font-sans) !important;
   font-size: clamp(2.6rem, 4.4vw, 4.65rem) !important;
   letter-spacing: -0.045em !important;
-  line-height: 1.18 !important;
+  line-height: 1.3 !important;
 }
 
 .page-paper h1,
@@ -160,7 +160,7 @@
    allowing the phrases to reflow between desktop and mobile widths. */
 .display-heading {
   overflow-wrap: normal !important;
-  text-wrap: balance !important;
+  text-wrap: pretty !important;
 }
 
 .display-heading > .heading-phrase,
@@ -714,9 +714,9 @@ main .articles-page .articles-section > .container {
 
 main .articles-title,
 main .lp-title {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   letter-spacing: -0.045em;
-  line-height: 1.18;
+  line-height: 1.3;
 }
 
 main .articles-title {

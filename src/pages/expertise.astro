@@ -93,7 +93,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
       <header class="diagnosis__header">
         <div>
           <p class="expertise-kicker">先看症狀</p>
-          <h2 id="diagnosis-title" class="display-heading"><span class="heading-phrase">不用先背方法名稱，</span><span class="heading-phrase">看看哪個情況最像</span><span class="heading-phrase">你現在遇到的。</span></h2>
+          <h2 id="diagnosis-title" class="display-heading"><span class="heading-phrase">不用先背方法名稱，</span><span class="heading-phrase">看看哪個情況最像</span><span class="heading-phrase">你現在遇到的</span></h2>
         </div>
         <p>每一種失效都先做一個最小檢查。檢查能排除原因，再決定下一步，不用一開始就把整套流程推倒重來。</p>
       </header>
@@ -124,7 +124,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
       <header class="method-map__header">
         <div>
           <p class="expertise-kicker">怎樣才算有改善</p>
-          <h2 id="method-map-title" class="display-heading"><span class="heading-phrase">不是改完設定就算修好，</span><span class="heading-phrase">要看實際行為</span><span class="heading-phrase">有沒有改變。</span></h2>
+          <h2 id="method-map-title" class="display-heading"><span class="heading-phrase">不是改完設定就算修好，</span><span class="heading-phrase">要看實際行為</span><span class="heading-phrase">有沒有改變</span></h2>
         </div>
         <p>每一層都只需要回答兩個問題：修好後，你應該看到什麼？如果還沒好，下一個該查哪裡？</p>
       </header>
@@ -155,7 +155,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
       </div>
       <aside class="method-map__boundary" aria-labelledby="boundary-title">
         <div class="boundary-stamp" aria-hidden="true">BOUNDARY<br />NOTE</div>
-        <div><p class="expertise-kicker">邊界備註</p><h3 id="boundary-title">不是每個問題都值得做成 Agent。</h3><p>表單、試算表或一般自動化已經能穩定完成，就不需要硬加 Agent。只有現有方法真的處理不了判斷、變化或工具協作，才值得提高複雜度。</p></div>
+        <div><p class="expertise-kicker">邊界備註</p><h3 id="boundary-title">不是每個問題都值得做成 Agent</h3><p>表單、試算表或一般自動化已經能穩定完成，就不需要硬加 Agent。只有現有方法真的處理不了判斷、變化或工具協作，才值得提高複雜度。</p></div>
         <ol><li>這是不是規則明確、重複性高的工作？</li><li>輸入與結果是否固定，而且可以直接驗收？</li><li>現有工具是不是其實已經能穩定解決？</li></ol>
       </aside>
       {/* Articles inbound links paused: 文章導流恢復時再放回延伸閱讀。 */}
@@ -164,7 +164,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
     <section class="expertise-next page-paper paper-card paper-card--clip" id="next-step" aria-labelledby="expertise-next-title">
       <div>
         <p class="expertise-kicker">下一步</p>
-        <h2 id="expertise-next-title" class="display-heading"><span class="heading-phrase">知道問題在哪之後，</span><span class="heading-phrase">再選適合的</span><span class="heading-phrase">處理方式。</span></h2>
+        <h2 id="expertise-next-title" class="display-heading"><span class="heading-phrase">先找出問題，</span><span class="heading-phrase">再選適合的處理方式</span></h2>
       </div>
       <div class="expertise-next__decision">
         <p>想自己建立方法，可以看學習內容；問題已經影響實際工作，也可以直接把情境交給我一起拆。</p>
@@ -185,13 +185,13 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
   .expertise-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.35rem; border-bottom: 1px solid var(--border); }
   .expertise-hero__topline p { margin: 0; }
   .expertise-hero__topline > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
-  .expertise-hero h1 { max-width: none !important; margin: clamp(2.75rem, 6vw, 5.75rem) 0 0; font-family: var(--font-serif); font-size: clamp(3rem, 6.2vw, 6.1rem) !important; letter-spacing: -.075em !important; line-height: 1.02 !important; }
+  .expertise-hero h1 { max-width: none !important; margin: clamp(2.75rem, 6vw, 5.75rem) 0 0; font-family: var(--font-sans); font-size: clamp(2rem, 4vw, 3.25rem) !important; letter-spacing: -.075em !important; line-height: 1.3 !important; }
   .expertise-hero__footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; margin-top: 2.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
   .expertise-hero__footer p { max-width: 52rem; margin: 0; color: var(--text-secondary); font-size: 1rem; line-height: 1.85; }
   .expertise-hero__cta { min-inline-size: 14.5rem; white-space: nowrap; }
   .diagnosis { padding-block: clamp(3.5rem, 7vw, 6.5rem) !important; }
   .diagnosis__header, .method-map__header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .62fr); gap: 2rem; align-items: end; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
-  .diagnosis__header h2, .method-map__header h2 { max-width: 17ch; margin: 0; font-size: clamp(2.2rem, 4.6vw, 4.2rem); letter-spacing: -.055em; line-height: 1.06; }
+  .diagnosis__header h2, .method-map__header h2 { max-width: 17ch; margin: 0; font-size: clamp(1.6rem, 2.8vw, 2.4rem); letter-spacing: -.055em; line-height: 1.3; }
   .diagnosis__header h2 span, .method-map__header h2 span { display: block; }
   .diagnosis__header > p, .method-map__header > p { max-width: 23rem; margin: 0; color: var(--text-secondary); font-size: .86rem; line-height: 1.8; }
   .diagnosis-list { border: 1px solid var(--border-strong); }
@@ -245,7 +245,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
   .method-map__boundary p { margin: .55rem 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.75; }
   .method-map__boundary ol { margin: 0; padding-left: 1.2rem; color: var(--text-secondary); font-size: .8rem; line-height: 1.8; }
   .expertise-next { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(20rem, .85fr); gap: clamp(2rem, 5vw, 5rem); align-items: end; padding-block: clamp(3.5rem, 7vw, 6rem) !important; }
-  .expertise-next h2 { max-width: 14ch; margin: 0; font-size: clamp(2.2rem, 4.5vw, 4rem); letter-spacing: -.055em; line-height: 1.08; }
+  .expertise-next h2 { max-width: 14ch; margin: 0; font-size: clamp(1.6rem, 2.8vw, 2.4rem); letter-spacing: -.055em; line-height: 1.3; }
   .expertise-next h2 span { display: block; }
   .expertise-next__decision { padding-top: 1.25rem; border-top: 1px solid var(--border-strong); }
   .expertise-next__decision > p { max-width: 34rem; margin: 0; color: var(--text-secondary); line-height: 1.8; }
@@ -278,7 +278,7 @@ const methodGuidance: Record<string, { repaired: string; next: string }> = {
     .expertise-hero { padding-block: 2.4rem 3rem !important; }
     .expertise-hero__topline { padding-bottom: 1rem; }
     .expertise-hero__topline > span { font-size: .55rem; }
-    .expertise-hero h1 { margin-top: 2.15rem; font-size: clamp(1.84rem, 9.2vw, 2.55rem) !important; line-height: 1.12 !important; }
+    .expertise-hero h1 { margin-top: 2.15rem; font-size: clamp(1.7rem, 8vw, 2.3rem) !important; line-height: 1.3 !important; }
     .expertise-hero__footer { margin-top: 2rem; }
     .expertise-hero__footer p { font-size: .9rem; }
     .expertise-hero__cta { width: 100%; min-inline-size: 0; justify-self: stretch; }
