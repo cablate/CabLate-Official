@@ -1,6 +1,5 @@
 ---
 import { primaryNavigation } from '../config/authority';
-import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 import { Menu, X } from '@lucide/astro';
 
 const currentPath = Astro.url.pathname;
@@ -25,17 +24,10 @@ const isCurrent = (href: string) => href === '/'
         </a>
       ))}
     </nav>
-    <nav class="site-rail__social" aria-label="外部連結">
-      <a href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'site_navigation')} target="_blank" rel="noopener">CabAI 學習平台</a>
-      <a href={`mailto:${siteConfig.contactEmail}`}>Email</a>
-      <a href={siteConfig.threadsUrl} target="_blank" rel="noopener">Threads</a>
-      <a href="https://github.com/cablate" target="_blank" rel="noopener">GitHub</a>
-      {/* Articles inbound links paused: RSS endpoint 保留，入口暫停。 */}
-    </nav>
   </aside>
 
   <div class="site-mobile-header">
-    <a class="site-mobile-brand" href="/">
+    <a class="site-mobile-brand" href="/" aria-label="CabLate 首頁">
       <img src="/images/cablate-author-avatar.webp" alt="" width="256" height="256" aria-hidden="true" />
       <span><strong>CabLate</strong></span>
     </a>

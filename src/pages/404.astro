@@ -1,81 +1,59 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/siteConfig';
+
+const reportHref = `mailto:${siteConfig.contactEmail}?subject=${encodeURIComponent('CabLate 失效連結')}`;
 ---
 
-<BaseLayout title="找不到頁面" description="你要找的頁面不存在或已被移除。" noSEO={true}>
-    <title slot="head">找不到頁面 | CabLate</title>
-    <meta slot="head" name="robots" content="noindex, nofollow" />
-    <div class="not-found paper-page">
-        <section class="not-found-container page-paper paper-card paper-card--clip">
-            <p class="section-label">OPEN DESK / 404</p>
-            <h1>404</h1>
-            <p class="not-found-message">你要找的頁面不存在，或已經被移除了。</p>
-            <div class="not-found-links">
-                <a href="/" class="not-found-btn">回到首頁</a>
-                {/* Articles inbound links paused. */}
-            </div>
-        </section>
-    </div>
+<BaseLayout title="找不到頁面" description="這個頁面目前不存在。" noSEO={true}>
+  <title slot="head">找不到頁面 | CabLate</title>
+  <meta slot="head" name="robots" content="noindex, follow" />
+  <div class="not-found-page">
+    <section class="not-found-card paper-card paper-card--clip" aria-labelledby="not-found-title">
+      <div class="not-found-code" aria-hidden="true">404</div>
+      <div class="paper-card__inner">
+        <p class="section-label">PAGE NOT FOUND</p>
+        <h1 id="not-found-title">這個頁面目前不存在。</h1>
+        <p>如果你是從舊課程、商品或文章連結進來，可能是內容已移動或暫停公開。你可以先回到工作流健檢、學習內容，或聯絡我們回報這個連結。</p>
+        <a class="btn btn-primary" href="/expertise/">先做工作流健檢</a>
+        <nav aria-label="其他選擇">
+          <span>其他選擇：</span>
+          <a href="/courses/">查看學習內容</a>
+          <span aria-hidden="true">｜</span>
+          <a href={reportHref} data-broken-link-report>回報失效連結</a>
+        </nav>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
+<script>
+  const initializeBrokenLinkReport = () => {
+    const subject = encodeURIComponent('CabLate 失效連結');
+    const body = encodeURIComponent(window.location.pathname);
+    document.querySelectorAll<HTMLAnchorElement>('[data-broken-link-report]').forEach((link) => {
+      const email = link.href.split('?')[0];
+      link.href = `${email}?subject=${subject}&body=${body}`;
+    });
+  };
+  initializeBrokenLinkReport();
+  document.addEventListener('astro:page-load', initializeBrokenLinkReport);
+</script>
+
 <style>
-    .not-found {
-        width: min(100% - 2rem, 86rem);
-        margin-inline: auto;
-        padding-block: 1rem 1.5rem;
-    }
-
-    .not-found-container {
-        display: grid;
-        justify-items: center;
-        min-height: min(60vh, 34rem);
-        align-content: center;
-        text-align: center;
-    }
-
-    .not-found h1 {
-        font-family: 'Noto Serif TC', serif;
-        font-size: clamp(4.5rem, 12vw, 8rem);
-        font-weight: 700;
-        color: var(--accent);
-        line-height: 1;
-        margin: 0 0 1rem;
-    }
-
-    .not-found-message {
-        font-size: 1.15rem;
-        max-width: 30rem;
-        color: var(--text-secondary);
-        margin: 0 0 2rem;
-        line-height: 1.6;
-    }
-
-    .not-found-links {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .not-found-btn {
-        display: inline-block;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0;
-        font-weight: 500;
-        text-decoration: none;
-        transition: opacity 0.2s;
-        background: var(--text-primary);
-        color: var(--bg);
-    }
-
-    .not-found-btn.secondary {
-        background: transparent;
-        border: 1px solid var(--border, #e2e8f0);
-        color: var(--text-primary, #1e293b);
-    }
-
-    .not-found-btn:hover {
-        background: var(--accent);
-        opacity: 1;
-    }
+  .not-found-page { width: min(100%, 70rem); margin-inline: auto; padding-block: 1rem 2rem; }
+  .not-found-card { display: grid; grid-template-columns: minmax(8rem, .35fr) minmax(0, 1fr); min-height: min(68vh, 42rem); }
+  .not-found-code { display: grid; place-items: center; border-right: 1px solid var(--border); color: var(--accent); font-family: var(--font-serif); font-size: clamp(4rem, 10vw, 8rem); writing-mode: vertical-rl; }
+  .not-found-card .paper-card__inner { display: grid; align-content: center; justify-items: start; padding: clamp(2rem, 7vw, 5rem); }
+  .not-found-card h1 { max-width: 12ch; margin: 0; font-family: var(--font-serif); font-size: clamp(2.25rem, 5vw, 4.4rem); letter-spacing: -.045em; line-height: 1.2; }
+  .not-found-card p:not(.section-label) { max-width: 42rem; margin: 1.4rem 0; color: var(--text-secondary); line-height: 1.85; }
+  .not-found-card nav { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: 1.25rem; color: var(--text-muted); font-size: .82rem; }
+  .not-found-card nav a { color: var(--accent-text); text-decoration: underline; text-underline-offset: .2em; }
+  @media (max-width: 600px) {
+    .not-found-page { padding-block: 0; }
+    .not-found-card { grid-template-columns: 3rem minmax(0, 1fr); }
+    .not-found-code { font-size: 2rem; }
+    .not-found-card .paper-card__inner { padding: 2.5rem 1.25rem; }
+    .not-found-card .btn { width: 100%; }
+  }
 </style>
