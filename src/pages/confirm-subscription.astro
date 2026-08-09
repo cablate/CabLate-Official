@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const description = '完成 Kit 訂閱確認後的 CabLate 返回頁，提供首頁與最新文章入口。';
+---
+
+<BaseLayout title="訂閱確認完成" description={description} noSEO={true}>
+  <title slot="head">訂閱確認完成 | CabLate</title>
+  <meta slot="head" name="description" content={description} />
+  <meta slot="head" name="robots" content="noindex,follow" />
+  <link slot="head" rel="canonical" href="https://cablate.com/confirm-subscription/" />
+
+  <div class="confirmation-page paper-page">
+    <section class="confirmation-card page-paper paper-card paper-card--clip" aria-labelledby="confirmation-title">
+      <p class="section-label">EMAIL UPDATES</p>
+      <h1 id="confirmation-title">訂閱確認完成</h1>
+      <p class="confirmation-copy">
+        如果你是從 Kit 的確認信來到這裡，你的訂閱已完成。接下來只會收到新課程、手冊更新、公開活動與其他重要消息；不需要時可以隨時取消訂閱。
+      </p>
+      <nav class="confirmation-actions" aria-label="訂閱完成後的下一步">
+        <a class="confirmation-link confirmation-link--primary" href="/">回到首頁</a>
+        <a class="confirmation-link confirmation-link--secondary" href="/articles/">看看最新文章</a>
+      </nav>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .confirmation-page {
+    width: min(100% - 2rem, 70rem);
+    margin-inline: auto;
+    padding-block: clamp(1rem, 4vw, 3rem);
+  }
+
+  .confirmation-card {
+    display: grid;
+    min-height: min(68vh, 40rem);
+    align-content: center;
+    justify-items: start;
+    padding: clamp(2rem, 7vw, 5rem);
+  }
+
+  .confirmation-card h1 {
+    max-width: 12ch;
+    margin: 1rem 0 0;
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+
+  .confirmation-copy {
+    max-width: 42rem;
+    margin: clamp(1.5rem, 4vw, 2.25rem) 0 0;
+    color: var(--text-secondary);
+    font-size: clamp(1rem, 2vw, 1.14rem);
+    line-height: 1.9;
+  }
+
+  .confirmation-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+
+  .confirmation-link {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid var(--text-primary);
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+
+  .confirmation-link--primary {
+    background: var(--text-primary);
+    color: var(--bg-soft);
+  }
+
+  .confirmation-link--secondary {
+    background: transparent;
+    color: var(--text-primary);
+  }
+
+  .confirmation-link:hover {
+    border-color: var(--accent-hover);
+    background: var(--accent-hover);
+    color: #fff;
+  }
+
+  .confirmation-link:active {
+    transform: translateY(1px);
+  }
+
+  @media (max-width: 36rem) {
+    .confirmation-page {
+      width: min(100% - 1rem, 70rem);
+      padding-block: 0.5rem 1rem;
+    }
+
+    .confirmation-card {
+      min-height: min(72vh, 36rem);
+      padding: 1.75rem 1.25rem;
+    }
+
+    .confirmation-actions,
+    .confirmation-link {
+      width: 100%;
+    }
+  }
+</style>
