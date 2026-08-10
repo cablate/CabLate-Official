@@ -107,7 +107,7 @@ export const pageOgEntries: PageOgEntry[] = [
     accentSoft: '#6f57b6',
     visual: {
       type: 'photo',
-      src: 'public/images/photos/cablate-speaking-workshop-0627.webp',
+      src: 'public/images/photos/cablate-speaking-workshop-0627-refined-v1.webp',
       position: 'centre',
       note: '90 分鐘專案拆解',
     },
@@ -125,7 +125,7 @@ export const pageOgEntries: PageOgEntry[] = [
     accentSoft: '#d18b5d',
     visual: {
       type: 'photo',
-      src: 'public/images/photos/cablate-speaking-ai-meetup-april.webp',
+      src: 'public/images/photos/cablate-speaking-ai-meetup-april-refined-v1.webp',
       position: 'centre',
       note: '團隊現況先於工具',
     },
@@ -143,7 +143,7 @@ export const pageOgEntries: PageOgEntry[] = [
     accentSoft: '#6c58ad',
     visual: {
       type: 'photo',
-      src: 'public/images/photos/cablate-speaking-workshop-0627.webp',
+      src: 'public/images/photos/cablate-speaking-workshop-0627-refined-v1.webp',
       position: 'centre',
       note: '演講・工作坊・共創',
     },
