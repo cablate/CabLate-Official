@@ -20,8 +20,16 @@ const workLoop = [
   ['結案與交接', '留下產物位置、驗收紀錄、操作方式、已知限制與下一個決策點。'],
 ];
 
+const coachingOutputs = [
+  ['可重跑的工作流切片', '用你的真實輸入跑過，知道從哪裡開始、在哪裡檢查，以及失敗時怎麼處理。'],
+  ['可重用的工作資產', '依範圍留下 Prompt、Skill、模板、檢核表或操作說明，不把方法只留在會議裡。'],
+  ['看得懂的驗收紀錄', '保留測試案例、結果、限制與仍未解決的問題，之後不必靠印象判斷。'],
+  ['能接手的結案包', '寫清楚產物位置、操作方式、維護責任、回滾方式與下一個決策點。'],
+];
+
 const faq = [
   ['一定要先做卡關諮詢嗎？', '不一定。如果根因、目標、驗收方式與責任已經清楚，可以直接提交陪跑情境；資訊不足時，會建議先做一次諮詢。'],
+  ['這跟上一堂一對一課有什麼不同？', '課程的核心是教會一套知識；陪跑的核心是把你的真實工作改出一個可驗收成果。過程中會解釋做法，但不會照固定課綱走，也不以聽完多少內容作為完成。'],
   ['陪跑等於代開發嗎？', '不等於。Cab 會參與約定的判斷、拆解、審查、修正與驗收；實作由誰負責，會在合作前逐項確認。'],
   ['可以隨時丟新需求嗎？', '不會默認納入。新需求會先判斷是否取代原工作包、另開範圍，或留到下一期。'],
   ['費用、會議與回覆時間怎麼算？', '會依實際範圍一次寫進合作說明，包含會議、非同步回覆、修改、排除項目與停止條件；你確認前不會成立合作。'],
@@ -47,17 +55,70 @@ const faq = [
       </figure>
     </header>
 
+    <section class="service-shell service-section service-coaching-bridge page-paper paper-card" aria-labelledby="coaching-bridge-title">
+      <header class="service-section__intro">
+        <p class="section-label">為什麼上過課還是做不進工作</p>
+        <h2 id="coaching-bridge-title">你缺的可能不是更多 AI 知識，而是有人對著你的真實流程一起拆。</h2>
+        <p>陪跑時，你會開自己的工作畫面、使用自己的真實案例並親手操作。Cab 負責一起找斷點、拆工作包、做取捨與驗收；做完的流程與資產留在你的環境裡。</p>
+      </header>
+      <div class="service-comparison" aria-label="課程、代做與陪跑的差異">
+        <article>
+          <p>課程</p>
+          <h3>學一套共同內容</h3>
+          <p>適合需要建立知識地圖與基本方法的人，但不會逐一處理你的全部工作細節。</p>
+        </article>
+        <article>
+          <p>代做</p>
+          <h3>別人替你完成</h3>
+          <p>適合目標與規格都清楚、只缺執行的人；方法與判斷能力不一定會留在你手上。</p>
+        </article>
+        <article class="service-comparison__focus">
+          <p>有界陪跑</p>
+          <h3>拿你的工作一起完成</h3>
+          <p>你保留情境與最後決策，Cab 參與拆解、判斷、審查與驗收，直到約定成果能被接手。</p>
+        </article>
+      </div>
+    </section>
+
     <section class="service-shell service-section page-paper paper-card" aria-labelledby="coaching-result-title">
       <header class="service-section__intro">
-        <p class="section-label">這段合作要完成什麼</p>
-        <h2 id="coaching-result-title">不是「持續變好」，而是一個看得見、能檢查的完成狀態。</h2>
-        <p>例如：讓一個每次都要重做的內容流程，可以用同一組輸入重跑、留下失敗紀錄，並由指定的人完成驗收。實際成果會依你的情境重新定義。</p>
+        <p class="section-label">結束後真正留下什麼</p>
+        <h2 id="coaching-result-title">做完的東西直接留在你的工作裡，不是聽完就消失的筆記。</h2>
+        <p>實際產物會依合作範圍調整，但每一項都必須能回到你的真實案例、完成條件與接手方式。</p>
       </header>
+      <div class="service-deliverables service-deliverables--coaching">
+        {coachingOutputs.map(([title, body]) => <article><h3>{title}</h3><p>{body}</p></article>)}
+      </div>
       <div class="service-result-strip" aria-label="陪跑成果結構">
         <div><span>Before</span><strong>目前怎麼做、最常在哪裡失敗</strong></div>
         <div><span>Scope</span><strong>這次只處理哪一個成果</strong></div>
         <div><span>Evidence</span><strong>用什麼案例與證據驗收</strong></div>
         <div><span>Handoff</span><strong>最後由誰接手、如何維護</strong></div>
+      </div>
+    </section>
+
+    <section class="service-shell service-section service-collaboration page-paper paper-card" aria-labelledby="roles-title">
+      <header class="service-section__intro service-section__intro--compact">
+        <p class="section-label">我們各自負責什麼</p>
+        <h2 id="roles-title">你不是把工作丟出去，Cab 也不是站在旁邊只給建議。</h2>
+      </header>
+      <div class="service-role-column">
+        <h3>你負責</h3>
+        <ul>
+          <li>提供必要的真實情境、案例與限制。</li>
+          <li>操作自己的工作環境並完成約定工作包。</li>
+          <li>決定業務取捨、風險與最終接受標準。</li>
+          <li>在驗收後接手使用與後續維護。</li>
+        </ul>
+      </div>
+      <div class="service-role-column service-role-column--cab">
+        <h3>Cab 負責</h3>
+        <ul>
+          <li>找出目前斷點，協助縮成可完成範圍。</li>
+          <li>把工作拆成能逐項驗收的產物。</li>
+          <li>參與約定的判斷、審查、修正與驗收。</li>
+          <li>把決策、限制與交接方式整理清楚。</li>
+        </ul>
       </div>
     </section>
 

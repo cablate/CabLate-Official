@@ -371,6 +371,90 @@
   line-height: 1.75;
 }
 
+.service-deliverables--coaching {
+  margin-bottom: 2.5rem;
+}
+
+.service-comparison {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--border-strong);
+}
+
+.service-comparison article {
+  min-width: 0;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.service-comparison article:last-child {
+  border-right: 0;
+}
+
+.service-comparison__focus {
+  background: rgb(255 248 232 / 0.52);
+  box-shadow: inset 0 3px 0 var(--accent-text);
+}
+
+.service-comparison article > p:first-child {
+  margin: 0;
+  color: var(--accent-text);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.service-comparison h3 {
+  margin: 1rem 0 0;
+  font-size: 1.2rem;
+}
+
+.service-comparison article > p:last-child {
+  margin: 0.8rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+
+.service-collaboration {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 4rem;
+}
+
+.service-collaboration .service-section__intro {
+  grid-column: 1 / -1;
+}
+
+.service-role-column {
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--border-strong);
+}
+
+.service-role-column--cab {
+  border-top-color: var(--accent-text);
+}
+
+.service-role-column h3 {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+}
+
+.service-role-column ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.service-role-column li {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
 .service-fit-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -566,7 +650,9 @@
   .service-paths,
   .service-process ol,
   .service-deliverables,
+  .service-comparison,
   .service-fit-grid,
+  .service-collaboration,
   .service-result-strip,
   .service-boundary-table dl {
     grid-template-columns: 1fr;
@@ -590,6 +676,10 @@
   }
 
   .service-fit-grid {
+    gap: 2.5rem;
+  }
+
+  .service-collaboration {
     gap: 2.5rem;
   }
 
