@@ -1,14 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowRight, Check, MoveRight } from '@lucide/astro';
-import { siteConfig } from '../config/siteConfig';
 import '../styles/service-pages.css';
-
-const collaborationMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeURIComponent('其他合作情境')}&body=${encodeURIComponent(`合作形式：
-預期受眾：
-希望完成的結果：
-預計時程：
-預算範圍：`)}`;
 
 const paths = [
   {
@@ -37,6 +30,25 @@ const process = [
   ['確認範圍', '適合時才確認產物、責任、費用、時段與停止條件。'],
   ['留下成果', '用一開始定義的真實案例驗收，並記下限制與下一步。'],
 ];
+
+const organizationPaths = [
+  {
+    kind: '給團隊與組織',
+    title: '企業診斷、工作坊與導入',
+    description: '先確認共同問題、目標行為與驗收證據，再判斷需要的是診斷、工作坊，還是一個有界導入試點。',
+    detail: '不從「要上幾小時課」開始，也不在範圍未知時直接報一套固定方案。',
+    href: '/services/enterprise/',
+    action: '查看企業合作方式',
+  },
+  {
+    kind: '給主辦方、平台與品牌',
+    title: '講師、內容與產品合作',
+    description: '把受眾、形式、成果、時程、預算與使用範圍先說清楚，才能快速判斷彼此是否適合。',
+    detail: '演講、工作坊、內容共創與產品顧問各有不同交付，不再混在同一封「想合作」信裡。',
+    href: '/services/partnerships/',
+    action: '查看邀約合作方式',
+  },
+];
 ---
 
 <BaseLayout title="AI 專案諮詢與實作陪跑" description="先用一次 AI 專案卡關諮詢找出真正瓶頸；問題已經清楚時，再用有界實作陪跑完成一個可驗收、可交接的工作流成果。" analytics="disabled">
@@ -60,7 +72,6 @@ const process = [
 
     <section class="service-shell service-section page-paper paper-card" aria-labelledby="choose-title">
       <header class="service-section__intro">
-        <p class="section-label">先選現在需要的結果</p>
         <h2 id="choose-title">一次判斷，和一段共同實作，是兩種不同的合作。</h2>
         <p>諮詢先把問題縮小；陪跑只處理已經能說清楚的成果。這樣你不會為一個還沒看懂的問題，直接買下長期合作。</p>
       </header>
@@ -83,7 +94,6 @@ const process = [
 
     <section class="service-shell service-section service-process page-paper paper-card" aria-labelledby="process-title">
       <header class="service-section__intro service-section__intro--compact">
-        <p class="section-label">怎麼開始</p>
         <h2 id="process-title">不從套餐開始，先從你的真實情境開始。</h2>
       </header>
       <ol>
@@ -96,9 +106,27 @@ const process = [
       </ol>
     </section>
 
+    <section class="service-shell service-section service-organization page-paper paper-card" aria-labelledby="organization-title">
+      <header class="service-section__intro service-section__intro--stacked">
+        <p class="section-label">團隊與邀約合作</p>
+        <h2 id="organization-title">不是個人卡關或陪跑，也有各自清楚的入口。</h2>
+        <p>企業需要先釐清共同問題與導入條件；講師、內容與產品邀約則要先對齊受眾、形式與權利範圍。分開說，雙方才不必來回猜。</p>
+      </header>
+      <div class="service-organization__routes">
+        {organizationPaths.map((path) => (
+          <article>
+            <p>{path.kind}</p>
+            <h3>{path.title}</h3>
+            <p>{path.description}</p>
+            <strong>{path.detail}</strong>
+            <a class="service-route-link" href={path.href}>{path.action} <ArrowRight size={17} aria-hidden="true" /></a>
+          </article>
+        ))}
+      </div>
+    </section>
+
     <section class="service-shell service-section service-principle page-paper paper-card" aria-labelledby="principle-title">
       <div>
-        <p class="section-label">合作原則</p>
         <h2 id="principle-title">你買的不是「隨時找 Cab」，而是一個能被驗收的結果。</h2>
       </div>
       <ul>
@@ -111,11 +139,10 @@ const process = [
 
     <aside class="service-shell service-secondary page-paper paper-card" aria-labelledby="other-title">
       <div>
-        <p class="section-label">其他合作</p>
-        <h2 id="other-title">企業內訓、團隊導入、講師與內容合作</h2>
-        <p>請直接說明受眾、想完成的結果、預計時程與預算範圍。我會先回覆是否適合，以及下一步需要補哪些資訊。</p>
+        <h2 id="other-title">先看你現在要解決的是個人、團隊，還是一次合作邀約。</h2>
+        <p>四個入口都先說明適合、不適合、可能交付與需要提供的資訊。選錯也不會直接成交，但先讀對頁面會少很多來回。</p>
       </div>
-      <a class="btn btn-ghost" href={collaborationMailto}>說明其他合作情境 <ArrowRight size={17} aria-hidden="true" /></a>
+      <a class="btn btn-ghost" href="#choose-title">回到四種合作方式 <ArrowRight size={17} aria-hidden="true" /></a>
     </aside>
   </article>
 </BaseLayout>

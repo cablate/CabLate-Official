@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
+import { siteConfig } from '../../config/siteConfig';
+import '../../styles/service-pages.css';
+
+const partnershipMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeURIComponent('提交講師、內容或產品合作')}&body=${encodeURIComponent(`組織、平台或品牌：
+聯絡人與職稱：
+合作類型（演講／工作坊／內容／產品顧問／其他）：
+預期受眾與人數或觸及方式：
+希望完成的結果：
+形式、場地或發布管道：
+預計日期與工作時程：
+預算範圍與付款方式：
+錄影、重播、改作、廣告與其他使用範圍：
+需要 Cab 提供或審查的產物：
+可先看的公開連結（選填，請勿附密碼、Token 或機密原文）：`)}`;
+
+const partnershipTypes = [
+  {
+    className: 'service-partnership-type--featured',
+    kind: '講師與工作坊',
+    title: '把一場活動做成受眾真的能使用的內容',
+    body: '適合研討會、社群、企業活動或主題工作坊。先確認受眾、已知程度、場景與希望帶走的行動。',
+    output: '可能包含主題設計、講綱、案例、現場互動、實作任務與必要的課後材料。',
+  },
+  {
+    className: '',
+    kind: '內容合作',
+    title: '共同完成文章、影音或專題內容',
+    body: '適合已有清楚主題、媒介、讀者與編輯責任的平台或品牌。',
+    output: '可能包含訪談、撰稿、共創、審稿、技術示範或系列內容設計。',
+  },
+  {
+    className: '',
+    kind: '產品合作',
+    title: '針對 AI 產品、流程或內容做有界參與',
+    body: '適合已有產品脈絡、使用者、決策人與明確問題的團隊。',
+    output: '可能包含顧問討論、體驗審查、內容驗證、示範設計或限定範圍的共創。',
+  },
+];
+
+const partnershipProcess = [
+  ['提交合作摘要', '提供類型、受眾、成果、形式、時程、預算與使用範圍。'],
+  ['判斷適配', '確認主題、角色、資源與期待是否適合，不合適時直接說明。'],
+  ['對齊交付', '把內容、修改、時程、費用、署名、錄影與改作權利寫清楚。'],
+  ['確認後執行', '雙方同意範圍與條款後才開始，不把口頭邀約視為已排程。'],
+  ['交付與結案', '依約完成產物、驗收與後續使用，不默認延伸新的宣傳或工作。'],
+];
+
+const faq = [
+  ['可以先問檔期嗎？', '可以在摘要中提供日期，但檔期可行不等於合作成立。仍需要確認主題、形式、預算、交付與使用範圍。'],
+  ['可以錄影、重播或剪成廣告嗎？', '需要在合作前逐項確認。現場演出、內部重播、公開上架、剪輯、改作與廣告使用是不同權利，不會因為有錄影就自動包含。'],
+  ['可以用產品或曝光交換合作嗎？', '請直接寫明交換內容與可核對價值。是否適合會依投入、受眾、使用權與實際成果判斷，不把模糊曝光視為已確認報酬。'],
+  ['會接受沒有預算範圍的邀約嗎？', '可以先提交，但缺少預算會讓適配判斷變慢。即使仍在估算，也建議提供可接受區間或說明採購限制。'],
+];
+---
+
+<BaseLayout title="講師、內容與產品合作" description="提供講師、工作坊、內容共創與產品合作的清楚入口；先對齊受眾、成果、形式、時程、預算與使用範圍，再判斷是否合作。" analytics="disabled">
+  <article class="service-page paper-page">
+    <nav class="service-shell service-back" aria-label="服務導覽"><a href="/services/"><ArrowLeft size={16} aria-hidden="true" />回到合作方式</a></nav>
+
+    <header class="service-shell service-detail-hero service-partnership-hero page-paper paper-card">
+      <div class="service-detail-hero__copy">
+        <p class="section-label">講師、內容與產品合作</p>
+        <h1 class="display-heading">合作說清楚，<br /><span class="service-nowrap">才值得一起做。</span></h1>
+        <p class="service-lead">先對齊受眾、成果、形式、時程、預算與使用範圍，再談檔期與執行。</p>
+        <div class="service-actions">
+          <a class="btn btn-primary" href="#partnership-types">先看適合的合作類型 <ArrowRight size={18} aria-hidden="true" /></a>
+        </div>
+      </div>
+      <figure class="service-detail-hero__visual service-partnership-hero__visual">
+        <img src="/images/photos/cablate-speaking-workshop-0627.webp" alt="Cab 在工作坊現場與參與者交流" width="1536" height="2048" loading="eager" fetchpriority="high" />
+      </figure>
+    </header>
+
+    <section id="partnership-types" class="service-shell service-section service-partnership-types page-paper paper-card" aria-labelledby="partnership-types-title">
+      <header class="service-section__intro service-section__intro--stacked">
+        <h2 id="partnership-types-title">不同邀約，需要的資訊、交付與權利邊界不一樣。</h2>
+        <p>這不是固定菜單。先找到最接近的類型，再用你的實際情境確認範圍。</p>
+      </header>
+      <div class="service-partnership-types__grid">
+        {partnershipTypes.map((type) => (
+          <article class={type.className}>
+            <p>{type.kind}</p>
+            <h3>{type.title}</h3>
+            <p>{type.body}</p>
+            <strong>{type.output}</strong>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="service-shell service-section service-partnership-brief page-paper paper-card" aria-labelledby="partnership-brief-title">
+      <div>
+        <h2 id="partnership-brief-title">不用寫長企劃，但要讓人能做出合作判斷。</h2>
+        <p>資訊越完整，越能直接回覆是否適合、缺什麼，以及下一步怎麼走。</p>
+      </div>
+      <dl>
+        <div><dt>受眾與結果</dt><dd>誰會看到或參加，合作結束後希望他們知道、做到或帶走什麼。</dd></div>
+        <div><dt>形式與責任</dt><dd>現場、線上、文字、影音或產品；誰負責企劃、製作、審稿與發布。</dd></div>
+        <div><dt>時程與預算</dt><dd>活動日期、製作節點、採購方式與可接受預算區間。</dd></div>
+        <div><dt>使用與權利</dt><dd>署名、錄影、重播、上架、剪輯、改作、廣告與使用期間。</dd></div>
+      </dl>
+    </section>
+
+    <section class="service-shell service-section service-process service-process--five page-paper paper-card" aria-labelledby="partnership-process-title">
+      <header class="service-section__intro service-section__intro--stacked">
+        <h2 id="partnership-process-title">先把範圍與權利寫清楚，再把好點子做出來。</h2>
+      </header>
+      <ol>
+        {partnershipProcess.map(([title, body], index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{title}</h3><p>{body}</p></div></li>)}
+      </ol>
+    </section>
+
+    <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="partnership-fit-title">
+      <header class="service-section__intro service-section__intro--stacked">
+        <h2 id="partnership-fit-title">清楚的成果與彼此責任，比一封熱情邀約更重要。</h2>
+      </header>
+      <div class="service-fit-column">
+        <h3><Check size={19} aria-hidden="true" />適合提出邀約，如果</h3>
+        <ul>
+          <li>知道合作對象、受眾與希望完成的結果。</li>
+          <li>能提供時程、預算與主要決策人。</li>
+          <li>願意把製作、修改與發布責任說清楚。</li>
+          <li>尊重內容署名、錄影與後續使用範圍。</li>
+        </ul>
+      </div>
+      <div class="service-fit-column service-fit-column--muted">
+        <h3><X size={19} aria-hidden="true" />這可能不適合，如果</h3>
+        <ul>
+          <li>只說「想合作看看」，沒有受眾與結果。</li>
+          <li>要求先大量產出，再決定是否採用或付費。</li>
+          <li>把所有錄影、改作與廣告權視為自動包含。</li>
+          <li>希望用無法核對的曝光取代所有合作條件。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="service-shell service-section service-faq page-paper paper-card" aria-labelledby="partnership-faq-title">
+      <header class="service-section__intro service-section__intro--stacked">
+        <h2 id="partnership-faq-title">先把檔期、預算與使用權說清楚。</h2>
+      </header>
+      <div>{faq.map(([question, answer]) => <details><summary>{question}</summary><p>{answer}</p></details>)}</div>
+    </section>
+
+    <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="partnership-cta-title">
+      <div>
+        <p class="section-label">提出合作邀約</p>
+        <h2 id="partnership-cta-title">用一封摘要，讓我們直接判斷是否適合。</h2>
+        <p>請提供合作類型、受眾、成果、形式、時程、預算與使用範圍。提交不代表檔期保留或合作成立。</p>
+      </div>
+      <a class="btn btn-primary" href={partnershipMailto}>提交合作摘要 <ArrowRight size={18} aria-hidden="true" /></a>
+    </section>
+  </article>
+</BaseLayout>
