@@ -1,0 +1,326 @@
+---
+import { ArrowRight, Check, Clipboard, RotateCcw } from '@lucide/astro';
+import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagnostic';
+---
+
+<section class="workflow-check" id="workflow-check" aria-labelledby="workflow-check-title" data-workflow-diagnostic>
+  <header class="worksheet-heading">
+    <p class="section-label">01 / 準備一個真實任務</p>
+    <h2 id="workflow-check-title" tabindex="-1">先選一件事，不要檢查整個人生或整間公司。</h2>
+    <p>所有內容只留在這個瀏覽器分頁。重新整理或離開後不會保存，也不會送到任何伺服器。</p>
+  </header>
+
+  <div class="task-sheet" aria-label="任務現況">
+    <label>任務：我希望 AI 幫我完成＿＿＿＿。<textarea rows="2" data-field="task" autocomplete="off"></textarea></label>
+    <label>實際結果：它最後＿＿＿＿。<textarea rows="2" data-field="actual" autocomplete="off"></textarea></label>
+    <label>我為什麼不能直接使用：＿＿＿＿。<textarea rows="2" data-field="unusable" autocomplete="off"></textarea></label>
+  </div>
+
+  <div class="layer-stack" aria-label="五層檢查">
+    {diagnosticLayers.map((layer) => (
+      <fieldset class="layer-check" data-layer-check={layer.code}>
+        <legend><span>{layer.title}</span>{layer.question}</legend>
+        <div class="layer-check__layout">
+          <div class="layer-check__number" aria-hidden="true">{layer.number}</div>
+          <div class="layer-check__body">
+            <dl>
+              <div><dt>檢查</dt><dd>{layer.check}</dd></div>
+              <div><dt>常見症狀</dt><dd>{layer.symptom}</dd></div>
+              <div><dt>最小修正</dt><dd>{layer.correction}</dd></div>
+            </dl>
+            <div class="choice-row" aria-label={`${layer.title}目前狀態`}>
+              {diagnosticChoices.map((choice) => (
+                <label>
+                  <input type="radio" name={`check-${layer.code}`} value={choice.value} />
+                  <span>{choice.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    ))}
+  </div>
+
+  <section class="first-layer" aria-labelledby="first-layer-title">
+    <div>
+      <p class="section-label">02 / 決定第一步</p>
+      <h2 id="first-layer-title">哪一層最值得先修？</h2>
+      <p>這不是自動判分。回看你標成「不確定」或「尚未做到」的地方，選一個最有直接證據、也最可能阻礙交付的層次。一次先修一層。</p>
+    </div>
+    <fieldset class="layer-selector">
+      <legend class="visually-hidden">選擇最值得先修的層次</legend>
+      {diagnosticLayers.map((layer) => (
+        <label>
+          <input type="radio" name="result-layer" value={layer.code} />
+          <span><small>{layer.number}</small>{layer.title}</span>
+        </label>
+      ))}
+    </fieldset>
+  </section>
+
+  <section class="result-builder" aria-labelledby="result-builder-title">
+    <header>
+      <p class="section-label">03 / 留下一個可執行修正</p>
+      <h2 id="result-builder-title">把判斷寫成下一次也能使用的結果。</h2>
+    </header>
+    <div class="result-fields">
+      <label>我看見的證據<textarea rows="3" data-field="evidence" autocomplete="off"></textarea></label>
+      <label>我先做的一個修正<textarea rows="3" data-field="correction" autocomplete="off"></textarea></label>
+      <label>修正後要看到的行為<textarea rows="3" data-field="expected" autocomplete="off"></textarea></label>
+      <label>如果沒有改善，下一層要檢查<textarea rows="3" data-field="next" autocomplete="off"></textarea></label>
+    </div>
+    <p class="validation-message" data-validation-message role="alert" hidden></p>
+    <button class="btn btn-primary generate-result" type="button" data-generate-result>
+      產生健檢結果 <ArrowRight size={18} aria-hidden="true" />
+    </button>
+  </section>
+
+  <section class="result-panel" aria-labelledby="result-title" data-result-panel hidden>
+    <div class="result-panel__paper">
+      <p class="section-label">你的本機結果</p>
+      <h2 id="result-title">我的 AI 工作流健檢結果</h2>
+      <pre tabindex="0" data-result-text></pre>
+      <div class="result-actions">
+        <button class="btn btn-primary" type="button" data-copy-result><Clipboard size={17} aria-hidden="true" />複製健檢結果</button>
+        <button class="btn btn-ghost" type="button" data-reset-result><RotateCcw size={17} aria-hidden="true" />重新檢查</button>
+      </div>
+      <p class="copy-status" data-copy-status aria-live="polite"></p>
+    </div>
+    <aside class="result-next" aria-labelledby="result-next-title">
+      <Check size={24} aria-hidden="true" />
+      <div>
+        <h3 id="result-next-title" data-result-layer-title></h3>
+        <p data-result-explanation></p>
+        <a class="btn btn-primary" data-result-cta target="_blank" rel="noopener"></a>
+        <a class="result-service-link" href="/services/#contact">問題已經影響工作？提交你的卡關情境</a>
+      </div>
+    </aside>
+  </section>
+
+  <noscript>
+    <section class="noscript-result" aria-labelledby="noscript-result-title">
+      <p>瀏覽器未執行 JavaScript，請依序填寫並手動複製下方結果格式。</p>
+      <h2 id="noscript-result-title">我的 AI 工作流健檢結果</h2>
+      <pre>任務：＿＿＿＿
+最主要失效層：題目／Context 與資料／工具與權限／Memory 與狀態／驗收與復原
+我看見的證據：＿＿＿＿
+我先做的一個修正：＿＿＿＿
+修正後要看到的行為：＿＿＿＿
+如果沒有改善，下一層要檢查：＿＿＿＿</pre>
+    </section>
+  </noscript>
+</section>
+
+<script>
+  import { diagnosticLayers, type DiagnosticLayerCode } from '../../config/workflowDiagnostic';
+  import { emitEntrySurfaceEvent } from '../../lib/entry-surface-events';
+
+  const initializeDiagnostic = () => {
+    document.querySelectorAll<HTMLElement>('[data-workflow-diagnostic]').forEach((root) => {
+      if (root.dataset.ready === 'true') return;
+      root.dataset.ready = 'true';
+
+      const fields = Array.from(root.querySelectorAll<HTMLTextAreaElement>('[data-field]'));
+      const resultPanel = root.querySelector<HTMLElement>('[data-result-panel]');
+      const resultText = root.querySelector<HTMLElement>('[data-result-text]');
+      const validation = root.querySelector<HTMLElement>('[data-validation-message]');
+      const copyStatus = root.querySelector<HTMLElement>('[data-copy-status]');
+      const cta = root.querySelector<HTMLAnchorElement>('[data-result-cta]');
+      const resultLayerTitle = root.querySelector<HTMLElement>('[data-result-layer-title]');
+      const resultExplanation = root.querySelector<HTMLElement>('[data-result-explanation]');
+      let startEmitted = false;
+
+      const emitStart = (placement: 'hero' | 'worksheet') => {
+        if (startEmitted) return;
+        startEmitted = true;
+        emitEntrySurfaceEvent({ name: 'diagnostic_start', properties: { page: '/expertise/', version: 'b20-v1', placement } });
+      };
+
+      root.addEventListener('focusin', () => emitStart('worksheet'), { once: true });
+      document.querySelectorAll<HTMLAnchorElement>('[data-diagnostic-start]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          emitStart('hero');
+          const heading = root.querySelector<HTMLElement>('#workflow-check-title');
+          window.history.pushState(null, '', '#workflow-check');
+          heading?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+          heading?.focus({ preventScroll: true });
+        });
+      });
+
+      const value = (key: string) => root.querySelector<HTMLTextAreaElement>(`[data-field="${key}"]`)?.value.trim() ?? '';
+      const selectedLayerCode = () => root.querySelector<HTMLInputElement>('input[name="result-layer"]:checked')?.value as DiagnosticLayerCode | undefined;
+      const showValidation = (message: string, target?: HTMLElement | null) => {
+        if (!validation) return;
+        validation.textContent = message;
+        validation.hidden = false;
+        target?.focus();
+      };
+      const clearValidation = () => {
+        if (!validation) return;
+        validation.hidden = true;
+        validation.textContent = '';
+      };
+
+      root.addEventListener('input', clearValidation);
+      root.addEventListener('change', clearValidation);
+
+      root.querySelector<HTMLButtonElement>('[data-generate-result]')?.addEventListener('click', () => {
+        const layerCode = selectedLayerCode();
+        if (!layerCode) {
+          showValidation('目前還沒有足夠證據選出一層。回到五項檢查，各補一個實際例子後再選。', root.querySelector<HTMLElement>('input[name="result-layer"]'));
+          return;
+        }
+
+        const required = [
+          ['task', '請先寫下這次要檢查的任務。'],
+          ['evidence', '請補上一個你實際看見的證據。'],
+          ['correction', '請寫下這次只先做哪一個修正。'],
+          ['expected', '請寫下修正後要看見的行為。'],
+          ['next', '請決定沒有改善時，下一層要檢查什麼。'],
+        ] as const;
+        for (const [key, message] of required) {
+          if (!value(key)) {
+            showValidation(message, root.querySelector<HTMLElement>(`[data-field="${key}"]`));
+            return;
+          }
+        }
+
+        const layer = diagnosticLayers.find((item) => item.code === layerCode);
+        if (!layer || !resultPanel || !resultText || !cta || !resultLayerTitle || !resultExplanation) return;
+
+        resultText.textContent = [
+          '我的 AI 工作流健檢結果',
+          '',
+          `任務：${value('task')}`,
+          `最主要失效層：${layer.title}`,
+          `我看見的證據：${value('evidence')}`,
+          `我先做的一個修正：${value('correction')}`,
+          `修正後要看到的行為：${value('expected')}`,
+          `如果沒有改善，下一層要檢查：${value('next')}`,
+        ].join('\n');
+        resultLayerTitle.textContent = layer.title;
+        resultExplanation.textContent = layer.result;
+        cta.textContent = layer.cta;
+        cta.href = layer.destination;
+        cta.dataset.layer = layer.code;
+        cta.dataset.destination = layer.destinationCategory;
+        resultPanel.hidden = false;
+        clearValidation();
+        emitEntrySurfaceEvent({ name: 'diagnostic_complete', properties: { page: '/expertise/', version: 'b20-v1' } });
+        emitEntrySurfaceEvent({ name: 'diagnostic_result_layer', properties: { layer: layer.code } });
+        resultPanel.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      });
+
+      cta?.addEventListener('click', () => {
+        const layer = cta.dataset.layer as DiagnosticLayerCode | undefined;
+        const destination = cta.dataset.destination as 'agentskill' | 'handbook' | undefined;
+        if (!layer || !destination) return;
+        emitEntrySurfaceEvent({ name: 'primary_cta_click', properties: { layer, placement: 'diagnostic_result', destination } });
+      });
+
+      root.querySelector<HTMLButtonElement>('[data-copy-result]')?.addEventListener('click', async () => {
+        if (!resultText || !copyStatus) return;
+        try {
+          await navigator.clipboard.writeText(resultText.textContent ?? '');
+          copyStatus.textContent = '已複製健檢結果。';
+        } catch {
+          const selection = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(resultText);
+          selection?.removeAllRanges();
+          selection?.addRange(range);
+          copyStatus.textContent = '無法自動複製，請手動選取結果。';
+        }
+      });
+
+      root.querySelector<HTMLButtonElement>('[data-reset-result]')?.addEventListener('click', () => {
+        const hasValue = fields.some((field) => field.value.trim()) || Boolean(root.querySelector('input:checked'));
+        if (hasValue && !window.confirm('要清除這次健檢的所有本機內容嗎？')) return;
+        fields.forEach((field) => { field.value = ''; });
+        root.querySelectorAll<HTMLInputElement>('input:checked').forEach((input) => { input.checked = false; });
+        if (resultText) resultText.textContent = '';
+        if (resultPanel) resultPanel.hidden = true;
+        if (copyStatus) copyStatus.textContent = '';
+        clearValidation();
+        root.querySelector<HTMLElement>('#workflow-check-title')?.focus();
+      });
+    });
+  };
+
+  initializeDiagnostic();
+  document.addEventListener('astro:page-load', initializeDiagnostic);
+</script>
+
+<style>
+  .workflow-check { display: grid; gap: 1rem; scroll-margin-top: 6rem; }
+  .worksheet-heading, .task-sheet, .first-layer, .result-builder, .result-panel, .noscript-result { padding: clamp(1.5rem, 4vw, 3rem); border: 1px solid var(--border); background: var(--bg-soft); }
+  .worksheet-heading { display: grid; grid-template-columns: minmax(0, .85fr) minmax(18rem, .55fr); gap: 1.5rem 3rem; align-items: end; }
+  .worksheet-heading .section-label { grid-column: 1 / -1; }
+  .worksheet-heading h2, .first-layer h2, .result-builder h2, .result-panel h2 { margin: 0; font-size: clamp(1.55rem, 3vw, 2.45rem); letter-spacing: -.035em; }
+  .worksheet-heading > p:last-child, .first-layer > div > p:last-child { margin: 0; color: var(--text-secondary); }
+  .task-sheet, .result-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .task-sheet label, .result-fields label { color: var(--text-primary); font-size: .82rem; font-weight: 700; }
+  textarea { width: 100%; min-height: 5.5rem; margin-top: .5rem; padding: .85rem; resize: vertical; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: #fff; color: var(--text-primary); font-size: 1rem; font-weight: 400; line-height: 1.6; }
+  textarea:focus-visible { border-color: var(--accent); outline: 3px solid rgb(128 100 234 / .24); outline-offset: 1px; }
+  .layer-stack { display: grid; gap: .75rem; }
+  .layer-check { margin: 0; padding: 1.4rem 0 0; border: 1px solid var(--border-strong); background: rgb(255 253 248 / .9); }
+  .layer-check__layout { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); }
+  .layer-check__number { display: grid; place-items: start center; padding-top: 1.65rem; border-right: 1px solid var(--border); color: var(--accent); font-family: var(--font-mono); font-weight: 700; }
+  .layer-check__body { min-width: 0; padding: 0 1.45rem 1.45rem; }
+  .layer-check legend { width: calc(100% - 4.5rem); margin-left: 4.5rem; padding: 0 1.45rem; color: var(--text-primary); font-size: clamp(1.1rem, 2vw, 1.35rem); font-weight: 700; }
+  .layer-check legend span { display: block; margin-bottom: .25rem; color: var(--accent-text); font-size: .72rem; letter-spacing: .04em; }
+  .layer-check dl { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 1.25rem; margin: 1.1rem 0 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .layer-check dt { color: var(--accent-text); font-size: .7rem; font-weight: 700; }
+  .layer-check dd { margin: .35rem 0 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.7; }
+  .choice-row { display: flex; flex-wrap: wrap; gap: .55rem; }
+  .choice-row label, .layer-selector label { position: relative; cursor: pointer; }
+  .choice-row input, .layer-selector input { position: absolute; inline-size: 1px; block-size: 1px; opacity: 0; }
+  .choice-row span, .layer-selector span { min-height: 2.75rem; display: inline-flex; align-items: center; gap: .5rem; padding: .55rem .85rem; border: 1px solid var(--border); background: #fff; color: var(--text-secondary); font-size: .78rem; font-weight: 700; transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast); }
+  .choice-row input:hover + span, .layer-selector input:hover + span { border-color: var(--accent); }
+  .choice-row input:focus-visible + span, .layer-selector input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .choice-row input:checked + span, .layer-selector input:checked + span { border-color: var(--accent-text); background: var(--accent-subtle); color: var(--accent-text); box-shadow: inset .2rem 0 var(--accent); }
+  .first-layer { display: grid; grid-template-columns: minmax(0, .8fr) minmax(22rem, 1.2fr); gap: 2rem; }
+  .layer-selector { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; margin: 0; padding: 0; border: 0; }
+  .layer-selector span { width: 100%; }
+  .layer-selector small { color: var(--accent); font-family: var(--font-mono); }
+  .result-builder header { max-width: 46rem; margin-bottom: 1.5rem; }
+  .result-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .validation-message { margin: 1rem 0 0; padding: .8rem 1rem; border-left: .2rem solid var(--status-error); background: var(--status-error-bg); color: var(--status-error); }
+  .generate-result { margin-top: 1.25rem; }
+  .result-panel { grid-template-columns: minmax(0, 1.2fr) minmax(18rem, .8fr); gap: 2rem; scroll-margin-top: 5rem; }
+  .result-panel:not([hidden]) { display: grid; }
+  .result-panel__paper { min-width: 0; }
+  .result-panel pre, .noscript-result pre { overflow: auto; margin: 1.25rem 0 0; padding: 1.25rem; border: 1px dashed var(--border-strong); background: #fff; color: var(--text-primary); font-family: var(--font-sans); font-size: .9rem; line-height: 1.9; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .result-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1rem; }
+  .copy-status { min-height: 1.5rem; margin: .65rem 0 0; color: var(--accent-text); font-size: .8rem; }
+  .result-next { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; align-content: start; padding: 1.25rem; border-left: .25rem solid var(--accent); background: var(--accent-subtle); }
+  .result-next > svg { color: var(--accent-text); }
+  .result-next h3 { margin: 0; font-size: 1.2rem; }
+  .result-next p { color: var(--text-secondary); }
+  .result-next .btn { width: 100%; }
+  .result-service-link { display: inline-block; margin-top: 1rem; color: var(--accent-text); font-size: .78rem; text-decoration: underline; text-underline-offset: .2em; }
+  .noscript-result p { margin-top: 0; color: var(--status-warning); font-weight: 700; }
+  @media (max-width: 800px) {
+    .worksheet-heading, .first-layer, .result-panel { grid-template-columns: 1fr; }
+    .task-sheet, .layer-check dl { grid-template-columns: 1fr; }
+    .task-sheet label { min-width: 0; }
+  }
+  @media (max-width: 600px) {
+    .workflow-check { gap: .65rem; }
+    .worksheet-heading, .task-sheet, .first-layer, .result-builder, .result-panel, .noscript-result { padding: 1.25rem; }
+    .layer-check { padding-top: 1.2rem; }
+    .layer-check__layout { grid-template-columns: 2.6rem minmax(0, 1fr); }
+    .layer-check legend { width: calc(100% - 2.6rem); margin-left: 2.6rem; padding-inline: .9rem; }
+    .layer-check__number { padding-top: 1.4rem; font-size: .72rem; }
+    .layer-check__body { padding: 1.2rem .9rem; }
+    .choice-row { display: grid; }
+    .choice-row label, .choice-row span, .layer-selector label, .layer-selector span { width: 100%; }
+    .layer-selector, .result-fields { grid-template-columns: 1fr; }
+    .generate-result, .result-actions, .result-actions .btn { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .choice-row span, .layer-selector span { transition: none; }
+  }
+</style>

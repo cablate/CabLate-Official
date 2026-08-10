@@ -5,6 +5,7 @@ interface Props {
   noSEO?: boolean;
   noindex?: boolean;
   shell?: 'desk' | 'bare';
+  analytics?: 'default' | 'disabled';
 }
 
 import { ViewTransitions } from 'astro:transitions';
@@ -17,7 +18,7 @@ import '@fontsource/noto-sans-tc/700.css';
 import '@fontsource/noto-serif-tc/400.css';
 import '@fontsource/noto-serif-tc/700.css';
 
-const { title, description = '關於 AI 工作流程、產品實作與交付判斷的研究與紀錄。', noSEO = false, noindex = false, shell = 'desk' } = Astro.props;
+const { title, description = '關於 AI 工作流程、產品實作與交付判斷的研究與紀錄。', noSEO = false, noindex = false, shell = 'desk', analytics = 'default' } = Astro.props;
 const seoTitle = title.includes('CabLate') ? title : `${title} | CabLate`;
 const currentYear = new Date().getFullYear();
 ---
@@ -40,17 +41,17 @@ const currentYear = new Date().getFullYear();
     <!-- Google Search Console 驗證 -->
     <meta name="google-site-verification" content={siteConfig.gscVerification} />
 
-    <!-- GA4 追蹤碼 -->
-    <script async src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.ga4Id}`}></script>
-    <script define:vars={{ ga4Id: siteConfig.ga4Id }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', ga4Id);
-    </script>
-
-    <!-- GA4 滾動深度追蹤 -->
-    <script is:inline>
+    {analytics === 'default' && (
+      <>
+        <!-- Existing deployed GA4 behavior. Batch 20 disables it only on the local-only diagnostic route. -->
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.ga4Id}`}></script>
+        <script define:vars={{ ga4Id: siteConfig.ga4Id }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', ga4Id);
+        </script>
+        <script is:inline>
       (function() {
         // 只在文章頁面初始化
         if (!document.querySelector('.article-content')) {
@@ -107,7 +108,9 @@ const currentYear = new Date().getFullYear();
           }
         }, { passive: true });
       })();
-    </script>
+        </script>
+      </>
+    )}
 
 </head>
 <body class:list={[`site-shell-${shell}`]}>
@@ -133,7 +136,7 @@ const currentYear = new Date().getFullYear();
             </nav>
             <nav aria-label="外部連結">
               <strong>連結</strong>
-              <a href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'site_navigation')} target="_blank" rel="noopener">CabAI 學習平台</a><a href={`mailto:${siteConfig.contactEmail}`}>Email</a><a href={siteConfig.threadsUrl} target="_blank" rel="noopener">Threads</a><a href="https://github.com/cablate" target="_blank" rel="noopener">GitHub</a>{/* Articles inbound links paused: RSS 入口暫停。 */}
+              <a href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'site_navigation')} target="_blank" rel="noopener">CabAI 學習平台</a><a href={`mailto:${siteConfig.contactEmail}`}>Email</a><a href={siteConfig.threadsUrl} target="_blank" rel="noopener">Threads</a><a href={siteConfig.githubUrl} target="_blank" rel="noopener">GitHub</a>{/* Articles inbound links paused: RSS 入口暫停。 */}
             </nav>
           </div>
           <div class="footer-meta"><p>&copy; {currentYear} CabLate</p><a href="/privacy/">隱私權政策</a></div>

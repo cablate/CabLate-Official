@@ -16,6 +16,8 @@ change_context:
 
 # CabLate Contact And CabAI Conversion Integration Contract
 
+> 2026-08-10 起，Services 的 Primary conversion 已由 `service-application-and-lead-ledger-v1.md` 接管；本文件的直接 mailto 規則只保留給 footer 與一般 Email 聯絡。
+
 ## Behavior Boundary
 
 ### In scope
@@ -48,7 +50,7 @@ change_context:
 
 ## Outputs And Side Effects
 
-- Email CTA 只產生 `mailto:cablate@cablate.com`，不在網站儲存合作資料。
+- 一般 Email CTA 只產生 `mailto:cablate@cablate.com`；Services 的 Primary conversion 先進入 `/services/apply/`，再由使用者的 Email 應用程式寄出，網站仍不儲存合作資料。
 - CabAI CTA 會離開 `cablate.com`，並使用明確目的文字與 UTM query。
 - Kit 表單仍只送至既有 Kit subscription endpoint。
 - 本輪不會自動建立 CabAI 帳號、加入 Discord、寄信或建立訂單。

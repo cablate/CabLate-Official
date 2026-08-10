@@ -179,11 +179,29 @@ export const serviceTracks = [
   },
 ] as const;
 
-export const primaryNavigation = [
-  // Articles inbound links paused: 恢復全站文章導流時再放回主要導覽。
-  // { label: '方法與文章', mobileLabel: '文章', railLabel: '文章索引', href: '/articles/' },
-  { label: '專業方法', mobileLabel: '方法', railLabel: '診斷 AI 工作流程', href: '/expertise/' },
-  { label: '學習', mobileLabel: '學習', railLabel: '課程與手冊', href: '/courses/' },
-  { label: '合作', mobileLabel: '合作', railLabel: '顧問、內訓與導入', href: '/services/' },
-  { label: '關於', mobileLabel: '關於', railLabel: '經歷與公開作品', href: '/about/' },
+export const primaryNavigationGroups = [
+  {
+    label: '探索',
+    items: [
+      // Articles inbound links paused: 恢復全站文章導流時再放回主要導覽。
+      { label: '專業方法', railLabel: '找出 AI 工作卡點', href: '/expertise/' },
+      { label: '課程與手冊', railLabel: '自己學、自己查', href: '/courses/' },
+    ],
+  },
+  {
+    label: '合作方式',
+    overviewHref: '/services/',
+    items: [
+      { label: '專案諮詢', railLabel: '先判斷問題與下一步', href: '/services/consulting/' },
+      { label: '實作陪跑', railLabel: '依你的工作客製進行', href: '/services/coaching/' },
+      { label: '企業合作', railLabel: '診斷、工作坊與導入', href: '/services/enterprise/' },
+      { label: '講師與內容', railLabel: '演講、共創與產品合作', href: '/services/partnerships/' },
+    ],
+  },
+  {
+    label: '關於',
+    items: [
+      { label: '關於 Cab', railLabel: '經歷與公開作品', href: '/about/' },
+    ],
+  },
 ] as const;

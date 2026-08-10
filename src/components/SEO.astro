@@ -22,6 +22,9 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   type?: 'website' | 'article' | 'course';
   noindex?: boolean;
   publishDate?: Date;
@@ -41,6 +44,9 @@ const {
   title,
   description,
   image = '/images/og-default.png',
+  imageAlt = title,
+  imageWidth,
+  imageHeight,
   type = 'website',
   noindex = false,
   publishDate,
@@ -196,6 +202,9 @@ const ogType = type === 'article' || type === 'course' ? 'article' : 'website';
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={fullImageUrl} />
+<meta property="og:image:alt" content={imageAlt} />
+{imageWidth && <meta property="og:image:width" content={String(imageWidth)} />}
+{imageHeight && <meta property="og:image:height" content={String(imageHeight)} />}
 <meta property="og:site_name" content="CabLate" />
 <meta property="og:locale" content="zh_TW" />
 
@@ -205,6 +214,7 @@ const ogType = type === 'article' || type === 'course' ? 'article' : 'website';
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={fullImageUrl} />
+<meta property="twitter:image:alt" content={imageAlt} />
 
 <!-- Canonical Link -->
 <link rel="canonical" href={fullUrl.href} />
