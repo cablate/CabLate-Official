@@ -18,21 +18,21 @@ const possibleOutputs = [
 const publicProofs = [
   {
     metric: openSourceProofs[0].metric,
-    title: '公開工具有人實際使用與追蹤',
+    title: '做過真的有人使用的工具',
     body: `mcp-google-map 的程式碼、安裝方式與使用紀錄都可以公開查驗；數字截至 ${openSourceProofs[0].asOf}。`,
     href: openSourceProofs[0].href,
     linkLabel: openSourceProofs[0].sourceLabel,
   },
   {
     metric: deliveryExperienceProofs[0].proof,
-    title: '帶學員走完實際收款流程',
+    title: '帶學員走過完整交付與收款',
     body: '從 API、訂單狀態、Webhook、權限到錯誤處理，不只停在工具示範。',
     href: '/courses/',
     linkLabel: '查看課程整理',
   },
   {
     metric: deliveryExperienceProofs[1].proof,
-    title: '把長期實作整理成可查的工程手冊',
+    title: '把複雜實作整理成可查的方法',
     body: '內容涵蓋 Skill、Memory、Hook、Context 與 Harness，讓問題可以被追查，不必每次重新猜。',
     href: '/about/#public-output-title',
     linkLabel: '查看經歷與公開作品',
@@ -161,23 +161,24 @@ const breadcrumbJsonLd = {
       <ol>
         {workLoop.map(([title, body]) => <li><div><h3>{title}</h3><p>{body}</p></div></li>)}
       </ol>
-    </section>
 
-    <section class="service-shell service-section service-coaching-proof page-paper paper-card" aria-labelledby="coaching-proof-title">
-      <header class="service-section__intro">
-        <h2 id="coaching-proof-title">先看我實際做過什麼。</h2>
-        <p>這些公開紀錄不能保證你的結果，但能先確認我確實做過工具、產品與實作型教學。</p>
-      </header>
-      <div class="service-coaching-proof__grid">
-        {publicProofs.map((proof) => (
-          <article>
-            <strong>{proof.metric}</strong>
-            <h3>{proof.title}</h3>
-            <p>{proof.body}</p>
-            <a href={proof.href}>{proof.linkLabel} <ArrowRight size={15} aria-hidden="true" /></a>
-          </article>
-        ))}
-      </div>
+      <aside class="service-coaching-proof" aria-labelledby="coaching-proof-title">
+        <header class="service-coaching-proof__intro">
+          <h3 id="coaching-proof-title">合作前，你可以先看這些紀錄。</h3>
+          <p>我實際做過公開工具、真實收款流程，也長期維護工程手冊。看過再決定要不要一起做。</p>
+        </header>
+        <div class="service-coaching-proof__list" role="list" tabindex="0" aria-label="公開實作紀錄，可左右滑動查看">
+          {publicProofs.map((proof) => (
+            <article role="listitem">
+              <strong>{proof.metric}</strong>
+              <h4>{proof.title}</h4>
+              <p>{proof.body}</p>
+              <a href={proof.href}>{proof.linkLabel} <ArrowRight size={15} aria-hidden="true" /></a>
+            </article>
+          ))}
+        </div>
+        <p class="service-coaching-proof__note">這些紀錄用來說明我的實作範圍，不代表每個人都會得到相同成果。</p>
+      </aside>
     </section>
 
     <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="coaching-fit-title">
