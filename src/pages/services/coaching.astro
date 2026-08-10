@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
+import { siteConfig } from '../../config/siteConfig';
+import '../../styles/service-pages.css';
+
+const coachingMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeURIComponent('申請 AI 工作流實作陪跑')}&body=${encodeURIComponent(`你的姓名：
+這次只想完成哪一個成果：
+目前進度與已知根因：
+怎樣算完成：
+你希望 Cab 參與哪些判斷或驗收：
+你或團隊能負責哪些部分：
+已知限制與希望完成的時程：
+可先看的畫面、文件或連結（選填，請勿附密碼、Token 或機密原文）：`)}`;
+
+const workLoop = [
+  ['定義一個成果', '把這一期只要完成的結果、真實案例、驗收方式與停止條件寫清楚。'],
+  ['拆成可驗收工作包', '每一包都有輸入、產物、負責人與檢查方法，不用「持續優化」掩蓋未知範圍。'],
+  ['一起判斷與修正', '在實作過程檢查證據、做取捨、處理阻礙，必要時縮小範圍。'],
+  ['結案與交接', '留下產物位置、驗收紀錄、操作方式、已知限制與下一個決策點。'],
+];
+
+const faq = [
+  ['一定要先做卡關諮詢嗎？', '不一定。如果根因、目標、驗收方式與責任已經清楚，可以直接提交陪跑情境；資訊不足時，會建議先做一次諮詢。'],
+  ['陪跑等於代開發嗎？', '不等於。Cab 會參與約定的判斷、拆解、審查、修正與驗收；實作由誰負責，會在合作前逐項確認。'],
+  ['可以隨時丟新需求嗎？', '不會默認納入。新需求會先判斷是否取代原工作包、另開範圍，或留到下一期。'],
+  ['費用、會議與回覆時間怎麼算？', '會依實際範圍一次寫進合作說明，包含會議、非同步回覆、修改、排除項目與停止條件；你確認前不會成立合作。'],
+];
+---
+
+<BaseLayout title="AI 工作流實作陪跑" description="針對一個根因與成果已經清楚的 AI 工作流，拆成可驗收工作包，一起完成取捨、修正、驗收與交接。" analytics="disabled">
+  <article class="service-page paper-page">
+    <nav class="service-shell service-back" aria-label="服務導覽"><a href="/services/"><ArrowLeft size={16} aria-hidden="true" />回到合作方式</a></nav>
+
+    <header class="service-shell service-detail-hero page-paper paper-card">
+      <div class="service-detail-hero__copy">
+        <p class="section-label">有界實作陪跑</p>
+        <h1 class="display-heading">把一個卡住的 AI 工作流，一起改到能驗收、能交接。</h1>
+        <p class="service-lead">陪跑不是買一段無限時間，也不是隨時把任何工作丟給 Cab。開始前會先定義一個成果，再拆成可單獨驗收的工作包，一起處理過程中的判斷與修正。</p>
+        <div class="service-actions">
+          <a class="btn btn-primary" href={coachingMailto}>提交你的陪跑情境 <ArrowRight size={18} aria-hidden="true" /></a>
+          <span>確認成果與邊界後，再提供費用、節奏與合作條款。</span>
+        </div>
+      </div>
+      <figure class="service-detail-hero__visual service-detail-hero__visual--wide">
+        <img src="/images/photos/cablate-speaking-ai-meetup-april.webp" alt="Cab 在 AI 實作聚會中拆解問題" width="1920" height="1080" loading="eager" fetchpriority="high" />
+      </figure>
+    </header>
+
+    <section class="service-shell service-section page-paper paper-card" aria-labelledby="coaching-result-title">
+      <header class="service-section__intro">
+        <p class="section-label">這段合作要完成什麼</p>
+        <h2 id="coaching-result-title">不是「持續變好」，而是一個看得見、能檢查的完成狀態。</h2>
+        <p>例如：讓一個每次都要重做的內容流程，可以用同一組輸入重跑、留下失敗紀錄，並由指定的人完成驗收。實際成果會依你的情境重新定義。</p>
+      </header>
+      <div class="service-result-strip" aria-label="陪跑成果結構">
+        <div><span>Before</span><strong>目前怎麼做、最常在哪裡失敗</strong></div>
+        <div><span>Scope</span><strong>這次只處理哪一個成果</strong></div>
+        <div><span>Evidence</span><strong>用什麼案例與證據驗收</strong></div>
+        <div><span>Handoff</span><strong>最後由誰接手、如何維護</strong></div>
+      </div>
+    </section>
+
+    <section class="service-shell service-section service-process page-paper paper-card" aria-labelledby="coaching-loop-title">
+      <header class="service-section__intro service-section__intro--compact">
+        <p class="section-label">合作迴圈</p>
+        <h2 id="coaching-loop-title">每一步都有產物，做完才進下一步。</h2>
+      </header>
+      <ol>
+        {workLoop.map(([title, body], index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{title}</h3><p>{body}</p></div></li>)}
+      </ol>
+    </section>
+
+    <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="coaching-fit-title">
+      <header class="service-section__intro service-section__intro--compact">
+        <p class="section-label">先確認是否適合</p>
+        <h2 id="coaching-fit-title">陪跑只接根因與完成條件能逐步說清楚的工作。</h2>
+      </header>
+      <div class="service-fit-column">
+        <h3><Check size={19} aria-hidden="true" />適合你，如果</h3>
+        <ul>
+          <li>你已經有一個真實工作流與負責人。</li>
+          <li>問題大致清楚，需要共同拆解、取捨與驗收。</li>
+          <li>你願意提供必要資料、執行自己的工作包。</li>
+          <li>你接受用範圍與完成條件管理新需求。</li>
+        </ul>
+      </div>
+      <div class="service-fit-column service-fit-column--muted">
+        <h3><X size={19} aria-hidden="true" />這可能不適合你，如果</h3>
+        <ul>
+          <li>你還不知道要解決哪個問題。</li>
+          <li>你要的是無限次修改或隨叫隨到。</li>
+          <li>你希望把所有決策與執行責任都交出去。</li>
+          <li>你需要保證營收、流量或未定義的結果。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="service-shell service-section service-boundary-table page-paper paper-card" aria-labelledby="boundary-title">
+      <header class="service-section__intro service-section__intro--compact">
+        <p class="section-label">合作前一定寫清楚</p>
+        <h2 id="boundary-title">避免陪跑最後變成沒有終點的待辦清單。</h2>
+      </header>
+      <dl>
+        <div><dt>同時處理幾件事</dt><dd>用工作包數量與優先順序管理，不同時攤開所有問題。</dd></div>
+        <div><dt>怎麼回覆與開會</dt><dd>會議節奏、非同步管道與回覆邊界會寫進合作說明。</dd></div>
+        <div><dt>哪些事不包含</dt><dd>代營運、無限修改、24 小時維運與未列出的開發不會默認包含。</dd></div>
+        <div><dt>何時停止或續接</dt><dd>完成驗收即結案；新成果需要重新確認範圍，不自動續約。</dd></div>
+      </dl>
+    </section>
+
+    <section class="service-shell service-section service-faq page-paper paper-card" aria-labelledby="coaching-faq-title">
+      <header class="service-section__intro service-section__intro--compact">
+        <p class="section-label">常見問題</p>
+        <h2 id="coaching-faq-title">先確認你買到的是什麼。</h2>
+      </header>
+      <div>{faq.map(([question, answer]) => <details><summary>{question}</summary><p>{answer}</p></details>)}</div>
+    </section>
+
+    <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="coaching-cta-title">
+      <div><p class="section-label">下一步</p><h2 id="coaching-cta-title">先說這次只想完成哪一個成果。</h2><p>如果根因還不清楚，我會建議先做卡關諮詢；如果範圍已經清楚，再一起確認工作包、責任與驗收方式。</p></div>
+      <a class="btn btn-primary" href={coachingMailto}>提交你的陪跑情境 <ArrowRight size={18} aria-hidden="true" /></a>
+    </section>
+  </article>
+</BaseLayout>
