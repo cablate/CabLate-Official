@@ -2,6 +2,10 @@
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   noSEO?: boolean;
   noindex?: boolean;
   shell?: 'desk' | 'bare';
@@ -18,7 +22,18 @@ import '@fontsource/noto-sans-tc/700.css';
 import '@fontsource/noto-serif-tc/400.css';
 import '@fontsource/noto-serif-tc/700.css';
 
-const { title, description = '關於 AI 工作流程、產品實作與交付判斷的研究與紀錄。', noSEO = false, noindex = false, shell = 'desk', analytics = 'default' } = Astro.props;
+const {
+  title,
+  description = '關於 AI 工作流程、產品實作與交付判斷的研究與紀錄。',
+  image,
+  imageAlt,
+  imageWidth,
+  imageHeight,
+  noSEO = false,
+  noindex = false,
+  shell = 'desk',
+  analytics = 'default',
+} = Astro.props;
 const seoTitle = title.includes('CabLate') ? title : `${title} | CabLate`;
 const currentYear = new Date().getFullYear();
 ---
@@ -29,7 +44,15 @@ const currentYear = new Date().getFullYear();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {!noSEO && (
-      <SEO title={seoTitle} description={description} noindex={noindex} />
+      <SEO
+        title={seoTitle}
+        description={description}
+        image={image}
+        imageAlt={imageAlt}
+        imageWidth={imageWidth}
+        imageHeight={imageHeight}
+        noindex={noindex}
+      />
     )}
     {/* noSEO 模式：title 由子 layout 透過 slot="head" 的 SEO 元件提供 */}
     <slot name="head" />
