@@ -8,11 +8,11 @@ import '../../styles/service-pages.css';
 
 const coachingApplicationHref = getServiceApplicationHref('coaching', 'coaching_page');
 
-const possibleOutputs = [
-  ['內容與研究反覆重做', '把蒐集、起草、修改與審查攤開，找出 AI 該幫哪一段，以及品質怎麼檢查。'],
-  ['專案做到一半開始失控', '拆需求、排順序、補測試與交接，讓成果不只偶爾能跑。'],
-  ['自動化或 Agent 時好時壞', '從資料、工具、權限、錯誤與復原方式，找出真正不穩定的那一層。'],
-  ['工具很多，工作還是接不起來', '釐清工具、責任與驗收方式，把有效做法留下來。'],
+const stuckSituations = [
+  ['想做的很多，不知道先做哪一個', '把目標、限制與已有材料攤開，找出現在最值得用 AI 驗證的一小步。'],
+  ['工具越研究越多，反而更難決定', '先確認問題需要的是資料、規則、流程還是工具，再決定要不要做 Agent、自動化或工作流。'],
+  ['做到一半反覆卡住，不知道該不該繼續', '找出卡點來自方法、資料、權限或外部依賴，決定繼續、縮小、換路或先停。'],
+  ['有經驗和想法，卻整理不成能開始的做法', '把散落的知識、判斷標準與真實材料，整理成 AI 能協助、你也能檢查的形式。'],
 ];
 
 const publicProofs = [
@@ -40,28 +40,28 @@ const publicProofs = [
 ];
 
 const workLoop = [
-  ['先把這一期要處理的事說清楚', '第一次會議會盤點現況、目標、優先順序、雙方責任，以及我們要用什麼跡象看進度。'],
-  ['每週拿真實工作一起處理', '不照固定課綱走。每次都回到你當下的案例，拆問題、做判斷、看實作，再決定下一步。'],
-  ['卡住時直接提問', '合作期間可以隨時把問題留在約定管道；Cab 會在工作日回覆，原則上一個工作天內回應。'],
-  ['整理已完成、未完成與下一步', '最後一次會議回顧這一期的變化、留下的工作資產、仍有的限制，以及之後該怎麼繼續。'],
+  ['先看清楚真正卡點', '第一次會議會盤點現況、目標、限制與已經試過的方法，不先把問題當成工具不夠。'],
+  ['判斷 AI 該介入哪裡', '一起判斷 AI 適合協助資料、規則、流程、內容還是決策；如果瓶頸不在 AI，也會先處理前面的問題。'],
+  ['拿真實材料動手驗證', '每次都回到你當下的案例，直接拆解、實作與檢查，不靠空談或固定課綱推進。'],
+  ['依結果決定下一步', '整理有效做法、未解限制與重要判斷，再決定繼續、縮小、換路或結束這一期。'],
 ];
 
 const faq = [
-  ['填寫之後就要付款嗎？', '不用。先把你的工作、卡點與希望看到的改變告訴我；我會先判斷陪跑是否適合，再回覆合作範圍、條款與排程。填寫不會自動付款，也不會自動保留名額。'],
-  ['一定要先做專案諮詢嗎？', '不一定。如果你已經能說清楚現況、想改善的工作與主要限制，可以直接申請陪跑；若問題仍很模糊，我會建議先做 90 分鐘專案諮詢。'],
-  ['最後一定會做出一套 AI 工作流嗎？', '不一定。陪跑是高度客製化，成果可能是流程、Skill、Prompt、內容系統、產品原型、文件模板、工具選擇或決策方法。過程會直接處理你的工作，不以教完固定課綱或交出同一套成果為進度。'],
+  ['填寫之後就要付款嗎？', '不用。先把你想推進的事情、卡點與希望看到的改變告訴我；我會先判斷陪跑是否適合，再回覆合作範圍、條款與排程。填寫不會自動付款，也不會自動保留名額。'],
+  ['一定要先做專案諮詢嗎？', '不一定。如果你已經能說清楚現況、想推進的事情與主要限制，可以直接申請陪跑；若問題仍很模糊，我會建議先做 90 分鐘專案諮詢。'],
+  ['最後一定會做 Agent、工作流或自動化嗎？', '不一定。還沒理解問題前，我不會先假設你需要哪一種工具。成果可能是流程、Skill、Prompt、知識整理、內容系統、產品原型、文件模板、工具選擇或決策方法。'],
   ['平時提問和改期怎麼處理？', '合作期間可以隨時留言，工作日原則上一個工作天內回應。提前至少 24 小時通知，可免費改期一次；其他情況依合作前提供的條款處理。'],
 ];
 
-const seoTitle = 'AI 實作陪跑｜五週一對一客製合作｜CabLate';
-const seoDescription = '五週一對一 AI 實作陪跑，直接拿你現在卡住的工作一起判斷、實作與調整。沒有固定課綱；先確認適合，再談付款與排程。';
+const seoTitle = 'AI 應用陪跑｜五週一對一客製合作｜CabLate';
+const seoDescription = '五週一對一 AI 應用陪跑，從工作、事業、產品或內容的真實卡點出發，先理解問題，再判斷 AI 該介入哪裡並動手實作。';
 const seoImage = '/og/services/coaching.png';
 const seoFaq = faq.map(([question, answer]) => ({ question, answer }));
 const serviceJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'AI 實作陪跑',
-  serviceType: '一對一 AI 實作陪跑',
+  name: 'AI 應用陪跑',
+  serviceType: '一對一 AI 應用陪跑',
   description: seoDescription,
   url: 'https://cablate.com/services/coaching/',
   image: `https://cablate.com${seoImage}`,
@@ -88,18 +88,18 @@ const breadcrumbJsonLd = {
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://cablate.com/' },
     { '@type': 'ListItem', position: 2, name: '合作方式', item: 'https://cablate.com/services/' },
-    { '@type': 'ListItem', position: 3, name: 'AI 實作陪跑', item: 'https://cablate.com/services/coaching/' },
+    { '@type': 'ListItem', position: 3, name: 'AI 應用陪跑', item: 'https://cablate.com/services/coaching/' },
   ],
 };
 ---
 
-<BaseLayout title="AI 實作陪跑" noSEO={true} analytics="disabled">
+<BaseLayout title="AI 應用陪跑" noSEO={true} analytics="disabled">
   <SEO
     slot="head"
     title={seoTitle}
     description={seoDescription}
     image={seoImage}
-    imageAlt="CabLate 五週一對一 AI 實作陪跑"
+    imageAlt="CabLate 五週一對一 AI 應用陪跑"
     imageWidth={1200}
     imageHeight={630}
     faq={seoFaq}
@@ -111,9 +111,9 @@ const breadcrumbJsonLd = {
 
     <header class="service-shell service-detail-hero page-paper paper-card">
       <div class="service-detail-hero__copy">
-        <p class="section-label">1 對 1 客製實作陪跑</p>
-        <h1 class="display-heading">把 AI 真正用進你的工作。</h1>
-        <p class="service-lead">五週一對一，直接拿你卡住的工作來。我們一起找問題、動手調整，做出能繼續用的成果。</p>
+        <p class="section-label">1 對 1 AI 應用陪跑</p>
+        <h1 class="display-heading">用 AI，把卡住的事情往前推。</h1>
+        <p class="service-lead">把工作、事業、產品或內容帶來。我們先理解問題，再一起選方法、動手做。</p>
         <div class="service-actions">
           <a class="btn btn-primary" href={coachingApplicationHref}>先聊聊你的狀況 <ArrowRight size={18} aria-hidden="true" /></a>
           <dl class="service-hero-facts" aria-label="陪跑方案摘要">
@@ -122,7 +122,7 @@ const breadcrumbJsonLd = {
             <div><dt>費用</dt><dd>NT$49,800</dd></div>
           </dl>
         </div>
-        <p class="service-conversation-note"><strong>不用先付款。</strong>先說明你的工作與卡點。我會先判斷是否適合，確認後才談排程。同時最多服務三位。</p>
+        <p class="service-conversation-note"><strong>不用先付款，也不用先決定要做 Agent、工作流或自動化。</strong>先說明現況，我會先理解問題，再判斷 AI 能幫到哪裡。確認適合後才談排程，同時最多服務三位。</p>
       </div>
       <figure class="service-detail-hero__visual service-detail-hero__visual--wide">
         <img src="/images/photos/cablate-speaking-ai-meetup-april.webp" alt="Cab 在 AI 實作聚會中拆解問題" width="1920" height="1080" loading="eager" fetchpriority="high" />
@@ -131,19 +131,19 @@ const breadcrumbJsonLd = {
 
     <section class="service-shell service-section page-paper paper-card" aria-labelledby="coaching-result-title">
       <header class="service-section__intro">
-        <h2 id="coaching-result-title">哪些工作適合拿來一起改？</h2>
-        <p>不用先知道答案，只要有一段真的卡住的工作。以下是常見情況，不是固定交付清單。</p>
+        <h2 id="coaching-result-title">你現在卡在哪裡？</h2>
+        <p>只要你正在嘗試用 AI 推進一件真實的事，卻不知道問題在哪裡，就可以從這些狀況開始。</p>
       </header>
       <div class="service-deliverables service-deliverables--coaching">
-        {possibleOutputs.map(([title, body]) => <article><h3>{title}</h3><p>{body}</p></article>)}
+        {stuckSituations.map(([title, body]) => <article><h3>{title}</h3><p>{body}</p></article>)}
       </div>
     </section>
 
     <section class="service-shell service-section service-process service-coaching-plan page-paper paper-card" aria-labelledby="coaching-loop-title">
       <header class="service-section__intro">
         <p class="section-label">合作方式</p>
-        <h2 id="coaching-loop-title">怎麼進行？</h2>
-        <p>五週內開五次會議，排程需要時可在六週內完成。你提供案例、限制與最後決定；我參與拆解、判斷、實作、審查與調整。</p>
+        <h2 id="coaching-loop-title">先理解問題，再決定 AI 要做什麼。</h2>
+        <p>五週內開五次會議，排程需要時可在六週內完成。你提供情境、材料與最後決定；我參與診斷、判斷、實作、審查與調整。</p>
       </header>
       <div class="service-offer">
         <div class="service-offer__price">
@@ -188,9 +188,9 @@ const breadcrumbJsonLd = {
       <div class="service-fit-column">
         <h3><Check size={19} aria-hidden="true" />適合你，如果</h3>
         <ul>
-          <li>你有真實工作、專案或產品想改善。</li>
+          <li>你有工作、事業、產品或內容想用 AI 往前推。</li>
           <li>你想要有人一起判斷、實作與修正，不只聽建議。</li>
-          <li>你願意提供必要資訊，也能完成自己負責的部分。</li>
+          <li>你願意提供必要情境與材料，也接受真正卡點可能不在工具。</li>
           <li>你接受先排優先順序，不可能五週處理所有事情。</li>
         </ul>
       </div>
@@ -199,11 +199,11 @@ const breadcrumbJsonLd = {
         <ul>
           <li>你只想聽一套固定課程。</li>
           <li>你要的是 24 小時隨叫隨到或無限修改。</li>
-          <li>你想把所有決定與執行責任都交出去。</li>
+          <li>你只想拿到工具推薦，或把所有決定與執行責任交出去。</li>
           <li>你需要保證營收、流量或特定幅度的效率提升。</li>
         </ul>
       </div>
-      <p class="service-fit-note"><strong>開始前會寫清楚：</strong>這一期先處理什麼、誰負責哪一段、哪些事不包含。合作中出現新目標時，先重新排順序，不會自動全部加入。</p>
+      <p class="service-fit-note"><strong>開始前會寫清楚：</strong>這一期要推進什麼、AI 預計介入哪裡、誰負責哪一段、哪些事不包含。合作中出現新目標時，先重新排順序，不會自動全部加入。</p>
     </section>
 
     <section class="service-shell service-section service-faq page-paper paper-card" aria-labelledby="coaching-faq-title">
@@ -214,13 +214,13 @@ const breadcrumbJsonLd = {
     </section>
 
     <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="coaching-cta-title">
-      <div><p class="section-label">下一步</p><h2 id="coaching-cta-title">先把狀況說清楚，再決定要不要合作。</h2><p>告訴我你目前怎麼做、最常卡在哪裡、希望看到什麼改變。我會先判斷陪跑是否適合；不適合也會直接說明。</p></div>
+      <div><p class="section-label">下一步</p><h2 id="coaching-cta-title">先把卡點說清楚，再決定 AI 要做什麼。</h2><p>告訴我你想推進什麼、試過什麼、最常卡在哪裡。我會先判斷陪跑是否適合；不適合也會直接說明。</p></div>
       <a class="btn btn-primary" href={coachingApplicationHref}>先聊聊你的狀況 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
 
-    <aside class="service-coaching-sticky" aria-label="AI 實作陪跑下一步">
+    <aside class="service-coaching-sticky" aria-label="AI 應用陪跑下一步">
       <div>
-        <strong>五週一對一陪跑</strong>
+        <strong>五週一對一 AI 陪跑</strong>
         <span>NT$49,800，同時最多三位</span>
       </div>
       <a class="btn btn-primary" href={coachingApplicationHref}>先聊聊你的狀況 <ArrowRight size={17} aria-hidden="true" /></a>

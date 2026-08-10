@@ -40,7 +40,7 @@ export const GET: APIRoute = async () => {
                   type: 'div',
                   props: {
                     style: { display: 'flex', alignItems: 'center', color: '#6c4ccf', fontSize: '24px' },
-                    children: 'CabLate · 1 對 1 客製實作陪跑',
+                    children: 'CabLate · 1 對 1 AI 應用陪跑',
                   },
                 },
                 {
@@ -52,14 +52,14 @@ export const GET: APIRoute = async () => {
                         type: 'div',
                         props: {
                           style: { fontSize: '65px', lineHeight: 1.18, letterSpacing: '-3px' },
-                          children: '把 AI 真正用進你的工作。',
+                          children: '用 AI，把卡住的事情往前推。',
                         },
                       },
                       {
                         type: 'div',
                         props: {
                           style: { marginTop: '26px', color: '#596174', fontSize: '25px', lineHeight: 1.5 },
-                          children: '五週一對一，從真實工作出發，每週一起判斷、實作與調整。',
+                          children: '先理解問題，再判斷 AI 該介入哪裡，陪你實作與調整。',
                         },
                       },
                     ],

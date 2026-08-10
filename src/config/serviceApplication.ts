@@ -9,9 +9,9 @@ export const serviceApplicationOptions = [
   },
   {
     id: 'coaching',
-    label: 'AI 實作陪跑',
-    shortLabel: '實作陪跑',
-    summary: '五週一對一客製合作，拿真實工作一起判斷、實作與調整。',
+    label: 'AI 應用陪跑',
+    shortLabel: 'AI 陪跑',
+    summary: '五週一對一客製合作，先理解問題，再判斷 AI 該介入哪裡並動手實作。',
   },
   {
     id: 'enterprise',

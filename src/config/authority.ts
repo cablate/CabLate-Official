@@ -193,7 +193,7 @@ export const primaryNavigationGroups = [
     overviewHref: '/services/',
     items: [
       { label: '專案諮詢', railLabel: '先判斷問題與下一步', href: '/services/consulting/' },
-      { label: '實作陪跑', railLabel: '依你的工作客製進行', href: '/services/coaching/' },
+      { label: 'AI 應用陪跑', railLabel: '先理解卡點，再決定 AI 怎麼幫', href: '/services/coaching/' },
       { label: '企業合作', railLabel: '診斷、工作坊與導入', href: '/services/enterprise/' },
       { label: '講師與內容', railLabel: '演講、共創與產品合作', href: '/services/partnerships/' },
     ],

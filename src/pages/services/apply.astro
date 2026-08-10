@@ -10,7 +10,7 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
 
 <BaseLayout
   title="提出服務申請"
-  description="用一份申請資料說清楚目前工作、主要卡點與希望得到的協助，再由 Cab 判斷專案諮詢、實作陪跑、企業合作或講師與內容合作是否適合。"
+  description="用一份申請資料說清楚目前想推進的事、主要卡點與希望得到的協助，再由 Cab 判斷專案諮詢、AI 應用陪跑、企業合作或講師與內容合作是否適合。"
   noindex={true}
   analytics="disabled"
 >
@@ -98,15 +98,15 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
         <fieldset>
           <legend>目前情況</legend>
           <div class="application-field">
-            <label for="current-work">你現在正在做什麼？ <span>必填</span></label>
+            <label for="current-work">你現在想推進什麼？ <span>必填</span></label>
             <textarea id="current-work" name="current_work" rows="5" minlength="20" maxlength="1600" required aria-describedby="current-work-help current-work-error"></textarea>
-            <p id="current-work-help" class="application-help">請說明工作、專案或活動，以及目前怎麼進行。</p>
+            <p id="current-work-help" class="application-help">請說明工作、事業、產品、內容、專案或活動，以及目前怎麼進行。</p>
             <p id="current-work-error" class="application-error"><span aria-hidden="true">!</span>請至少用 20 個字說明目前情況。</p>
           </div>
           <div class="application-field">
             <label for="main-blocker">目前最卡的是什麼？ <span>必填</span></label>
             <textarea id="main-blocker" name="main_blocker" rows="4" minlength="12" maxlength="1200" required aria-describedby="main-blocker-help main-blocker-error"></textarea>
-            <p id="main-blocker-help" class="application-help">可以寫反覆重做、品質不穩、選不出工具、流程接不起來，或團隊遇到的具體問題。</p>
+            <p id="main-blocker-help" class="application-help">可以寫方向太多、做不下去、反覆重做、選不出方法，或不知道 AI 該用在哪裡。</p>
             <p id="main-blocker-error" class="application-error"><span aria-hidden="true">!</span>請至少用 12 個字說明主要卡點。</p>
           </div>
           <div class="application-field" data-coaching-optional>
@@ -221,10 +221,10 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
         if (element) element.textContent = value;
       };
 
-      setText('[data-application-heading]', '先聊聊你的工作，不用先決定要不要買。');
-      setText('[data-application-intro]', '只要說明你正在做什麼、卡在哪裡、希望怎麼變。頁面會整理成 Email 草稿；請確認寄出。這不會自動付款，也不會自動保留名額。');
+      setText('[data-application-heading]', '先聊聊你想推進的事，不用先決定要不要買。');
+      setText('[data-application-intro]', '只要說明你想推進什麼、卡在哪裡、希望怎麼變。頁面會整理成 Email 草稿；請確認寄出。這不會自動付款，也不會自動保留名額。');
       setText('[data-application-response]', '工作日原則一個工作天內回覆；確認適合後，才談條款與可選時間。');
-      setText('[data-application-form-title]', '先回答三件事：你在做什麼、卡在哪裡、希望怎麼變。');
+      setText('[data-application-form-title]', '先回答三件事：想推進什麼、卡在哪裡、希望怎麼變。');
       setText('[data-outcome-legend]', '你希望看到的改變');
       setText('[data-submit-label]', '整理內容，寄給 Cab');
 
@@ -309,7 +309,7 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
         `Email：${fieldValue(data, 'email')}`,
         `公司或團隊：${fieldValue(data, 'organization') || '未提供'}`,
         '',
-        '【目前正在做什麼】',
+        '【目前想推進什麼】',
         fieldValue(data, 'current_work'),
         '',
         '【目前最卡的地方】',
