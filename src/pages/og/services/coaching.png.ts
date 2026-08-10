@@ -39,9 +39,8 @@ export const GET: APIRoute = async () => {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 padding: '38px 42px 34px 44px',
-                border: '1px solid rgba(108, 76, 207, 0.24)',
                 borderRadius: '30px',
-                background: 'rgba(250, 247, 240, 0.7)',
+                background: 'transparent',
               },
               children: [
                 {
@@ -80,11 +79,6 @@ export const GET: APIRoute = async () => {
                     style: {
                       display: 'flex',
                       flexDirection: 'column',
-                      marginLeft: '-14px',
-                      padding: '14px 22px 17px 14px',
-                      borderRadius: '20px',
-                      background:
-                        'linear-gradient(90deg, rgba(250, 247, 240, 0.5) 0%, rgba(250, 247, 240, 0.26) 72%, rgba(250, 247, 240, 0) 100%)',
                     },
                     children: [
                       {
@@ -185,8 +179,36 @@ export const GET: APIRoute = async () => {
     }
   );
 
+  const backgroundAccents = Buffer.from(
+    '<svg width="1200" height="630"><defs><radialGradient id="violet"><stop offset="0" stop-color="#8d72df" stop-opacity="0.32"/><stop offset="1" stop-color="#8d72df" stop-opacity="0"/></radialGradient><radialGradient id="apricot"><stop offset="0" stop-color="#e6a56f" stop-opacity="0.22"/><stop offset="1" stop-color="#e6a56f" stop-opacity="0"/></radialGradient></defs><ellipse cx="210" cy="520" rx="310" ry="220" fill="url(#violet)"/><ellipse cx="700" cy="155" rx="270" ry="210" fill="url(#violet)" opacity="0.7"/><ellipse cx="555" cy="620" rx="250" ry="170" fill="url(#apricot)"/></svg>'
+  );
   const background = await sharp(backgroundData)
     .resize(1200, 630, { fit: 'cover', position: 'centre' })
+    .composite([{ input: backgroundAccents }])
+    .png()
+    .toBuffer();
+  const glassMask = Buffer.from(
+    '<svg width="740" height="554"><rect width="740" height="554" rx="30" ry="30" fill="white"/></svg>'
+  );
+  const glassTint = Buffer.from(
+    '<svg width="740" height="554"><rect x="1" y="1" width="738" height="552" rx="29" ry="29" fill="#fbf7ef" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.88" stroke-width="2"/><path d="M32 2 H708" stroke="#ffffff" stroke-opacity="0.82" stroke-width="2" stroke-linecap="round"/></svg>'
+  );
+  const glassPanel = await sharp(background)
+    .extract({ left: 40, top: 38, width: 740, height: 554 })
+    .blur(6)
+    .modulate({ brightness: 1.02, saturation: 0.84 })
+    .composite([
+      { input: glassTint },
+      { input: glassMask, blend: 'dest-in' },
+    ])
+    .png()
+    .toBuffer();
+  const glassShadow = await sharp(
+    Buffer.from(
+      '<svg width="764" height="578"><rect x="12" y="12" width="740" height="554" rx="30" ry="30" fill="#3d3164" fill-opacity="0.18"/></svg>'
+    )
+  )
+    .blur(12)
     .png()
     .toBuffer();
   const portraitMask = Buffer.from(
@@ -210,6 +232,8 @@ export const GET: APIRoute = async () => {
   })
     .composite([
       { input: background, left: 0, top: 0 },
+      { input: glassShadow, left: 28, top: 26 },
+      { input: glassPanel, left: 40, top: 38 },
       { input: Buffer.from(svg), left: 0, top: 0 },
       { input: photo, left: 790, top: 40 },
       { input: portraitBorder, left: 788, top: 38 },
