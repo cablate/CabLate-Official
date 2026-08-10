@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SEO from '../../components/SEO.astro';
 import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
 import { getServiceApplicationHref } from '../../config/serviceApplication';
 import '../../styles/service-pages.css';
@@ -28,20 +29,75 @@ const faq = [
   ['可以隨時問問題嗎？', '可以在合作期間隨時留言。Cab 會在工作日回覆，原則上一個工作天內回應；若問題已經是新的大型任務，會排進會議或另外確認範圍。'],
   ['臨時需要改期怎麼辦？', '提前至少 24 小時通知，可免費改期一次。其他改期與取消情況會依合作前提供的條款處理。'],
 ];
+
+const seoTitle = 'AI 實作陪跑｜五週一對一客製合作｜CabLate';
+const seoDescription = '五週一對一 AI 實作陪跑，直接從你的真實工作出發，一起判斷、實作與調整。沒有固定課綱，適合已有專案或流程、希望把 AI 真正用進工作的人。';
+const seoImage = '/og/services/coaching.png';
+const seoFaq = faq.map(([question, answer]) => ({ question, answer }));
+const serviceJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'AI 實作陪跑',
+  serviceType: '一對一 AI 實作陪跑',
+  description: seoDescription,
+  url: 'https://cablate.com/services/coaching/',
+  image: `https://cablate.com${seoImage}`,
+  provider: {
+    '@type': 'Person',
+    name: 'Cab',
+    url: 'https://cablate.com/about/',
+  },
+  areaServed: {
+    '@type': 'Country',
+    name: '台灣',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: 49800,
+    priceCurrency: 'TWD',
+    url: 'https://cablate.com/services/coaching/',
+  },
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://cablate.com/' },
+    { '@type': 'ListItem', position: 2, name: '合作方式', item: 'https://cablate.com/services/' },
+    { '@type': 'ListItem', position: 3, name: 'AI 實作陪跑', item: 'https://cablate.com/services/coaching/' },
+  ],
+};
 ---
 
-<BaseLayout title="AI 實作陪跑" description="五週一對一客製實作陪跑，直接拿你的真實工作一起拆問題、做判斷、調整做法；沒有固定課綱，也不預設每個人都要做出同一種成果。" analytics="disabled">
+<BaseLayout title="AI 實作陪跑" noSEO={true} analytics="disabled">
+  <SEO
+    slot="head"
+    title={seoTitle}
+    description={seoDescription}
+    image={seoImage}
+    imageAlt="CabLate 五週一對一 AI 實作陪跑"
+    imageWidth={1200}
+    imageHeight={630}
+    faq={seoFaq}
+  />
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(serviceJsonLd)} />
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
   <article class="service-page paper-page">
     <nav class="service-shell service-back" aria-label="服務導覽"><a href="/services/"><ArrowLeft size={16} aria-hidden="true" />回到合作方式</a></nav>
 
     <header class="service-shell service-detail-hero page-paper paper-card">
       <div class="service-detail-hero__copy">
         <p class="section-label">1 對 1 客製實作陪跑</p>
-        <h1 class="display-heading">不用硬套別人的 AI 流程。直接拿你的工作，一起找出真正該改的地方。</h1>
-        <p class="service-lead">這是一段五週的一對一合作。沒有固定課綱，也不預設你一定要做出哪一種成果。我們會先看你現在怎麼工作、最想改善什麼，再依每週遇到的真實問題一起判斷、實作與調整。</p>
+        <h1 class="display-heading">把 AI 真正用進你的工作。</h1>
+        <p class="service-lead">五週一對一，直接從你的真實工作出發。每週一起判斷、實作與調整，不套固定課綱。</p>
         <div class="service-actions">
           <a class="btn btn-primary" href={coachingApplicationHref}>申請實作陪跑 <ArrowRight size={18} aria-hidden="true" /></a>
-          <span>標準方案 NT$49,800，同時最多服務三位。</span>
+          <dl class="service-hero-facts" aria-label="陪跑方案摘要">
+            <div><dt>期間</dt><dd>五週</dd></div>
+            <div><dt>會議</dt><dd>五次</dd></div>
+            <div><dt>費用</dt><dd>NT$49,800</dd></div>
+          </dl>
         </div>
       </div>
       <figure class="service-detail-hero__visual service-detail-hero__visual--wide">
