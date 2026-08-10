@@ -111,6 +111,10 @@
   max-width: 58rem;
 }
 
+#service-application-form :is(fieldset, .application-field, .application-field-grid)[hidden] {
+  display: none;
+}
+
 #service-application-form fieldset {
   min-width: 0;
   margin: 0;

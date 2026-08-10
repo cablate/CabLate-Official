@@ -22,14 +22,14 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
     <header class="application-shell application-hero page-paper paper-card">
       <div>
         <p class="section-label">服務申請</p>
-        <h1 class="display-heading">先把你現在的情況說清楚，不用先寫成完整企劃。</h1>
-        <p>填寫大約需要 5 分鐘。送出前，頁面會把內容整理成一封 Email；請在你的 Email 應用程式裡確認寄出。這個動作不會自動付款，也不代表時段或合作已成立。</p>
+        <h1 class="display-heading" data-application-heading>先把你現在的情況說清楚，不用先寫成完整企劃。</h1>
+        <p data-application-intro>填寫大約需要 5 分鐘。送出前，頁面會把內容整理成一封 Email；請在你的 Email 應用程式裡確認寄出。這個動作不會自動付款，也不代表時段或合作已成立。</p>
       </div>
       <aside aria-labelledby="application-next-title">
         <h2 id="application-next-title">寄出之後會發生什麼？</h2>
         <ol>
           <li><span>01</span>Cab 先看目前情況與希望得到的協助。</li>
-          <li><span>02</span>確認適合時，再回覆下一步、條款與可選時間。</li>
+          <li><span>02</span><div data-application-response>確認適合時，再回覆下一步、條款與可選時間。</div></li>
           <li><span>03</span>需要補資料或不適合，也會直接說明。</li>
         </ol>
       </aside>
@@ -38,7 +38,7 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
     <section class="application-shell application-form-card page-paper paper-card" aria-labelledby="application-form-title">
       <header>
         <p class="section-label">填寫申請</p>
-        <h2 id="application-form-title">有標示「必填」的欄位才一定要填。</h2>
+        <h2 id="application-form-title" data-application-form-title>有標示「必填」的欄位才一定要填。</h2>
         <p>請勿填入密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
       </header>
 
@@ -60,7 +60,7 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
         <input type="hidden" name="utm_campaign" value="" />
         <input type="hidden" name="utm_content" value="" />
 
-        <fieldset class="application-choice">
+        <fieldset class="application-choice" data-service-choice>
           <legend>你想申請哪一種合作？ <span>必填</span></legend>
           <p id="service-choice-help">不確定時，先選最接近的項目；Cab 會再判斷是否需要換一種方式。</p>
           <div class="application-choice__grid">
@@ -89,7 +89,7 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
               <p id="applicant-email-error" class="application-error"><span aria-hidden="true">!</span>請填寫可正常收信的 Email。</p>
             </div>
           </div>
-          <div class="application-field">
+          <div class="application-field" data-coaching-optional>
             <label for="applicant-organization">公司或團隊名稱 <span>選填</span></label>
             <input id="applicant-organization" name="organization" type="text" autocomplete="organization" maxlength="120" />
           </div>
@@ -109,21 +109,21 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
             <p id="main-blocker-help" class="application-help">可以寫反覆重做、品質不穩、選不出工具、流程接不起來，或團隊遇到的具體問題。</p>
             <p id="main-blocker-error" class="application-error"><span aria-hidden="true">!</span>請至少用 12 個字說明主要卡點。</p>
           </div>
-          <div class="application-field">
+          <div class="application-field" data-coaching-optional>
             <label for="attempted-work">你已經試過什麼？ <span>選填</span></label>
             <textarea id="attempted-work" name="attempted_work" rows="3" maxlength="1000"></textarea>
           </div>
         </fieldset>
 
         <fieldset>
-          <legend>希望怎麼合作</legend>
+          <legend data-outcome-legend>希望怎麼合作</legend>
           <div class="application-field">
             <label for="desired-change">合作後，你希望看到什麼改變？ <span>必填</span></label>
             <textarea id="desired-change" name="desired_change" rows="4" minlength="12" maxlength="1200" required aria-describedby="desired-change-help desired-change-error"></textarea>
             <p id="desired-change-help" class="application-help">不用承諾數字，但請說明什麼變化會讓你覺得這次合作值得。</p>
             <p id="desired-change-error" class="application-error"><span aria-hidden="true">!</span>請至少用 12 個字說明希望看到的改變。</p>
           </div>
-          <div class="application-field-grid">
+          <div class="application-field-grid" data-coaching-optional>
             <div class="application-field">
               <label for="cab-help">你希望 Cab 主要協助什麼？ <span>必填</span></label>
               <textarea id="cab-help" name="cab_help" rows="4" minlength="8" maxlength="800" required aria-describedby="cab-help-error"></textarea>
@@ -134,7 +134,7 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
               <input id="preferred-timing" name="preferred_timing" type="text" maxlength="120" placeholder="例如：九月、活動前兩週、時間可討論" />
             </div>
           </div>
-          <div class="application-field">
+          <div class="application-field" data-coaching-optional>
             <label for="reference-links">可以先看的公開連結 <span>選填</span></label>
             <textarea id="reference-links" name="reference_links" rows="3" maxlength="1000" aria-describedby="reference-links-help"></textarea>
             <p id="reference-links-help" class="application-help">一行一個連結。請勿附密碼、Token、內網網址或機密原文。</p>
@@ -161,7 +161,7 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
         </noscript>
 
         <div class="application-submit">
-          <button class="btn btn-primary" type="submit">整理申請內容並開啟 Email <Mail size={18} aria-hidden="true" /></button>
+          <button class="btn btn-primary" type="submit"><span data-submit-label>整理申請內容並開啟 Email</span> <Mail size={18} aria-hidden="true" /></button>
           <p>請記得在 Email 應用程式裡按下寄出。開啟草稿不代表 Cab 已收到。</p>
         </div>
       </form>
@@ -213,6 +213,32 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
     const selectedService = safeAttribution(params.get('service'));
     const selectedRadio = form.querySelector<HTMLInputElement>(`input[name="service"][value="${selectedService}"]`);
     if (selectedRadio) selectedRadio.checked = true;
+    const isCoachingEntry = selectedService === 'coaching' && Boolean(selectedRadio);
+
+    if (isCoachingEntry) {
+      const setText = (selector: string, value: string) => {
+        const element = document.querySelector<HTMLElement>(selector);
+        if (element) element.textContent = value;
+      };
+
+      setText('[data-application-heading]', '先聊聊你的工作，不用先決定要不要買。');
+      setText('[data-application-intro]', '只要說明你正在做什麼、卡在哪裡、希望怎麼變。頁面會整理成 Email 草稿；請確認寄出。這不會自動付款，也不會自動保留名額。');
+      setText('[data-application-response]', '工作日原則一個工作天內回覆；確認適合後，才談條款與可選時間。');
+      setText('[data-application-form-title]', '先回答三件事：你在做什麼、卡在哪裡、希望怎麼變。');
+      setText('[data-outcome-legend]', '你希望看到的改變');
+      setText('[data-submit-label]', '整理內容，寄給 Cab');
+
+      const serviceChoice = form.querySelector<HTMLElement>('[data-service-choice]');
+      if (serviceChoice) serviceChoice.hidden = true;
+
+      form.querySelectorAll<HTMLElement>('[data-coaching-optional]').forEach((section) => {
+        section.hidden = true;
+        section.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input, textarea, select').forEach((control) => {
+          control.required = false;
+          control.removeAttribute('aria-invalid');
+        });
+      });
+    }
 
     const setHiddenValue = (name: string, value: string) => {
       const input = form.elements.namedItem(name);
@@ -296,7 +322,7 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
         fieldValue(data, 'desired_change'),
         '',
         '【希望 Cab 主要協助什麼】',
-        fieldValue(data, 'cab_help'),
+        fieldValue(data, 'cab_help') || '未提供',
         '',
         `希望開始時間：${fieldValue(data, 'preferred_timing') || '未提供'}`,
         '公開參考連結：',
@@ -314,7 +340,9 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
       ];
 
       preparedBody = lines.join('\n');
-      const subject = `CabLate 服務申請｜${serviceLabel}｜${leadId}`;
+      const subject = isCoachingEntry
+        ? `CabLate 陪跑先聊聊｜${fieldValue(data, 'name')}｜${leadId}`
+        : `CabLate 服務申請｜${serviceLabel}｜${leadId}`;
       const mailto = `mailto:${form.dataset.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(preparedBody)}`;
 
       if (emailDraft) emailDraft.href = mailto;
