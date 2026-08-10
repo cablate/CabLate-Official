@@ -45,8 +45,8 @@ const routes = [
       <div class="home-hero__copy paper-card">
         <div class="paper-card__inner">
           <p class="section-label">AI 協作・工作流程設計</p>
-          <h1 id="home-title"><span>AI 做得很快，</span><span>但你需要的是做完。</span></h1>
-          <p>你已經用 AI 開始做了，卻仍常遇到背景接不起來、產出不能直接用，或一步出錯整段重來。問題不一定是 Prompt，也可能在資料、工具、狀態或驗收。先找出真正失效的那一層，再決定要自己修，還是找人一起處理。</p>
+          <h1 id="home-title"><span>AI 已經做得很快了，</span><span>難的是把事情真的做完。</span></h1>
+          <p>你可能已經用 AI 做了不少事，但背景常接不上、結果還要自己重修，出錯時又不知道從哪裡查。這些問題不一定靠改 Prompt 能解決。我通常會把工作拆開，看問題到底出在資料、工具、流程還是驗收。</p>
           <a class="btn btn-primary hero-action" href="/expertise/" aria-label="開始 AI 工作流健檢">先做 AI 工作流健檢 <ArrowRight size={18} aria-hidden="true" /></a>
         </div>
       </div>
@@ -58,7 +58,7 @@ const routes = [
         <header>
           <p class="section-label">你可能也遇過</p>
           <h2 id="symptom-title">AI 偶爾成功，不等於能拿來工作。</h2>
-          <p>真正的問題通常不是「AI 不夠聰明」，而是它不知道現在該看什麼、怎麼做，以及做到哪裡才算結束。</p>
+          <p>如果每次都要重新交代、重新檢查，甚至自己重做，那就不是「這次有沒有成功」的問題，而是這套做法還不能穩定工作。</p>
           <a class="text-action" href="/expertise/#workflow-check">從症狀開始檢查 <ArrowRight size={16} aria-hidden="true" /></a>
         </header>
         <ol class="symptom-list">
@@ -82,13 +82,13 @@ const routes = [
           </article>
         ))}
       </div>
-      <p class="method-note">三層都不靠猜；每一層都要用真實任務檢查。</p>
+      <p class="method-note">我不會一開始就猜是哪一層。拿你手上的工作案例跑一次，通常比繼續猜有效。</p>
     </section>
 
     <section class="fit-section paper-card" aria-label="適合與不適合的使用情境" data-content-state="testing">
       <div class="paper-card__inner fit-grid">
         <div class="fit-column fit-column--yes">
-          <h2>這裡適合你，如果</h2>
+          <h2>如果你手上已經有一件真的工作，而且同一個問題一直重來，可以先從這裡開始。</h2>
           <ul>
             <li>你已經用 AI 處理真實工作，但同一件事仍常常要重做</li>
             <li>你想先找出問題在題目、資料、工具、狀態還是驗收</li>
@@ -108,7 +108,7 @@ const routes = [
 
     <section class="route-section paper-card" aria-labelledby="route-title">
       <div class="paper-card__inner">
-        <header class="route-heading"><p class="section-label">從你的問題開始</p><h2 id="route-title">你現在最需要的是哪一種協助？</h2></header>
+        <header class="route-heading"><p class="section-label">從你的問題開始</p><h2 id="route-title">你可以自己查、自己學，也可以直接找我一起看。</h2></header>
         <div class="route-list">
           {routes.map((route) => (
             <article class:list={['route-item', route.primary && 'route-item--primary']}>
@@ -142,7 +142,7 @@ const routes = [
 </BaseLayout>
 
 <style>
-  .home-page { width: min(100%, 86rem); display: grid; gap: 1rem; margin-inline: auto; padding-block: 1rem 2rem; }
+  .home-page { width: min(calc(100% - 2rem), 86rem); display: grid; gap: 1rem; margin-inline: auto; padding-block: 1rem 2rem; }
   .home-page h1, .home-page h2, .home-page h3 { text-wrap: balance; }
   .home-page p, .home-page li { text-wrap: pretty; }
   .home-hero { display: grid; grid-template-columns: minmax(0, .84fr) minmax(0, 1.16fr); align-items: center; gap: 1.35rem; }
@@ -204,6 +204,7 @@ const routes = [
     .home-hero, .section-grid, .fit-grid { grid-template-columns: 1fr; }
     .home-hero__copy { margin-right: 0; }
     .home-hero h1 { font-size: clamp(1.72rem, 8.4vw, 3rem); }
+    .home-hero h1 span { white-space: normal; }
     .hero-action { width: 100%; white-space: normal; }
     .method-path article > div:last-child { grid-template-columns: 1fr; gap: .3rem; }
     .fit-column + .fit-column { border-top: 1px solid var(--border); border-left: 0; }

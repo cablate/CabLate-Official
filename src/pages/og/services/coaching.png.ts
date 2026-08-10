@@ -40,7 +40,7 @@ export const GET: APIRoute = async () => {
                   type: 'div',
                   props: {
                     style: { display: 'flex', alignItems: 'center', color: '#6c4ccf', fontSize: '24px' },
-                    children: 'CabLate · 1 對 1 AI 應用陪跑',
+                    children: 'CabLate · 五週 1 對 1 AI 應用陪跑',
                   },
                 },
                 {
@@ -51,15 +51,15 @@ export const GET: APIRoute = async () => {
                       {
                         type: 'div',
                         props: {
-                          style: { fontSize: '65px', lineHeight: 1.18, letterSpacing: '-3px' },
-                          children: '用 AI，把卡住的事情往前推。',
+                          style: { fontSize: '52px', lineHeight: 1.24, letterSpacing: '-2px' },
+                          children: '別再研究更多 AI 了，先把手上那件事做下去。',
                         },
                       },
                       {
                         type: 'div',
                         props: {
                           style: { marginTop: '26px', color: '#596174', fontSize: '25px', lineHeight: 1.5 },
-                          children: '先理解問題，再判斷 AI 該介入哪裡，陪你實作與調整。',
+                          children: '先看你到底卡在哪，再決定要用 AI、改流程，還是先處理別的問題。',
                         },
                       },
                     ],
@@ -70,7 +70,7 @@ export const GET: APIRoute = async () => {
                   props: {
                     style: { display: 'flex', justifyContent: 'space-between', color: '#6d6a66', fontSize: '20px' },
                     children: [
-                      { type: 'div', props: { children: '五週客製 · 五次會議' } },
+                      { type: 'div', props: { children: '五週陪跑 · 五次會議' } },
                       { type: 'div', props: { children: 'cablate.com' } },
                     ],
                   },

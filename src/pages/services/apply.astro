@@ -10,7 +10,7 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
 
 <BaseLayout
   title="提出服務申請"
-  description="用一份申請資料說清楚目前想推進的事、主要卡點與希望得到的協助，再由 Cab 判斷專案諮詢、AI 應用陪跑、企業合作或講師與內容合作是否適合。"
+  description="用一份申請資料告訴我你現在想做什麼、卡在哪裡、希望得到什麼協助。我會再判斷比較適合專案諮詢、AI 應用陪跑、企業合作，還是講師與內容合作。"
   noindex={true}
   analytics="disabled"
 >
@@ -22,15 +22,15 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
     <header class="application-shell application-hero page-paper paper-card">
       <div>
         <p class="section-label">服務申請</p>
-        <h1 class="display-heading" data-application-heading>先把你現在的情況說清楚，不用先寫成完整企劃。</h1>
-        <p data-application-intro>填寫大約需要 5 分鐘。送出前，頁面會把內容整理成一封 Email；請在你的 Email 應用程式裡確認寄出。這個動作不會自動付款，也不代表時段或合作已成立。</p>
+        <h1 class="display-heading" data-application-heading>先說你現在遇到什麼，不用整理成企劃書。</h1>
+        <p data-application-intro>大約 5 分鐘。填完後，頁面會幫你整理成一封 Email 草稿，你還需要在自己的 Email 應用程式確認並按下寄出。這裡不會自動付款，也不代表時段或合作已經成立。</p>
       </div>
       <aside aria-labelledby="application-next-title">
-        <h2 id="application-next-title">寄出之後會發生什麼？</h2>
+        <h2 id="application-next-title">寄出後呢？</h2>
         <ol>
-          <li><span>01</span>Cab 先看目前情況與希望得到的協助。</li>
-          <li><span>02</span><div data-application-response>確認適合時，再回覆下一步、條款與可選時間。</div></li>
-          <li><span>03</span>需要補資料或不適合，也會直接說明。</li>
+          <li><span>01</span>我會先看你的狀況，確認這件事是不是我適合幫忙的範圍。</li>
+          <li><span>02</span><div data-application-response>適合的話，我再回覆下一步、合作條款和可以約的時間。</div></li>
+          <li><span>03</span>如果還缺資料，或我判斷不適合，也會直接告訴你。</li>
         </ol>
       </aside>
     </header>
@@ -38,8 +38,8 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
     <section class="application-shell application-form-card page-paper paper-card" aria-labelledby="application-form-title">
       <header>
         <p class="section-label">填寫申請</p>
-        <h2 id="application-form-title" data-application-form-title>有標示「必填」的欄位才一定要填。</h2>
-        <p>請勿填入密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
+        <h2 id="application-form-title" data-application-form-title>只有標示「必填」的欄位一定要填，其他有就寫。</h2>
+        <p>不要貼密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
       </header>
 
       <form
@@ -62,7 +62,7 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
 
         <fieldset class="application-choice" data-service-choice>
           <legend>你想申請哪一種合作？ <span>必填</span></legend>
-          <p id="service-choice-help">不確定時，先選最接近的項目；Cab 會再判斷是否需要換一種方式。</p>
+          <p id="service-choice-help">不知道選哪個沒關係，挑最接近的就好，我會再看需不需要換一種方式。</p>
           <div class="application-choice__grid">
             {serviceApplicationOptions.map((option) => (
               <label>
@@ -71,7 +71,7 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
               </label>
             ))}
           </div>
-          <p id="service-choice-error" class="application-error"><span aria-hidden="true">!</span>請選一種最接近的合作方式。</p>
+          <p id="service-choice-error" class="application-error"><span aria-hidden="true">!</span>請先選一個最接近你需求的合作方式。</p>
         </fieldset>
 
         <fieldset>
@@ -98,19 +98,19 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
         <fieldset>
           <legend>目前情況</legend>
           <div class="application-field">
-            <label for="current-work">你現在想推進什麼？ <span>必填</span></label>
+            <label for="current-work">你現在最想把什麼做下去？ <span>必填</span></label>
             <textarea id="current-work" name="current_work" rows="5" minlength="20" maxlength="1600" required aria-describedby="current-work-help current-work-error"></textarea>
-            <p id="current-work-help" class="application-help">請說明工作、事業、產品、內容、專案或活動，以及目前怎麼進行。</p>
+            <p id="current-work-help" class="application-help">工作、事業、產品、內容、專案或活動都可以。簡單說明你在做什麼，以及現在大概怎麼進行。</p>
             <p id="current-work-error" class="application-error"><span aria-hidden="true">!</span>請至少用 20 個字說明目前情況。</p>
           </div>
           <div class="application-field">
-            <label for="main-blocker">目前最卡的是什麼？ <span>必填</span></label>
+            <label for="main-blocker">現在最卡你的地方是什麼？ <span>必填</span></label>
             <textarea id="main-blocker" name="main_blocker" rows="4" minlength="12" maxlength="1200" required aria-describedby="main-blocker-help main-blocker-error"></textarea>
-            <p id="main-blocker-help" class="application-help">可以寫方向太多、做不下去、反覆重做、選不出方法，或不知道 AI 該用在哪裡。</p>
+            <p id="main-blocker-help" class="application-help">例如事情太多不知道先做哪個、一直重做、方法一直換，或根本不知道 AI 該幫哪一段。</p>
             <p id="main-blocker-error" class="application-error"><span aria-hidden="true">!</span>請至少用 12 個字說明主要卡點。</p>
           </div>
           <div class="application-field" data-coaching-optional>
-            <label for="attempted-work">你已經試過什麼？ <span>選填</span></label>
+            <label for="attempted-work">你之前已經試過哪些做法？ <span>選填</span></label>
             <textarea id="attempted-work" name="attempted_work" rows="3" maxlength="1000"></textarea>
           </div>
         </fieldset>
@@ -118,63 +118,63 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
         <fieldset>
           <legend data-outcome-legend>希望怎麼合作</legend>
           <div class="application-field">
-            <label for="desired-change">合作後，你希望看到什麼改變？ <span>必填</span></label>
+            <label for="desired-change"><span data-desired-change-copy>合作後，你希望看到什麼改變？</span> <span>必填</span></label>
             <textarea id="desired-change" name="desired_change" rows="4" minlength="12" maxlength="1200" required aria-describedby="desired-change-help desired-change-error"></textarea>
-            <p id="desired-change-help" class="application-help">不用承諾數字，但請說明什麼變化會讓你覺得這次合作值得。</p>
+            <p id="desired-change-help" class="application-help">不用硬填數字。告訴我什麼改變會讓你覺得這次合作是值得的就好。</p>
             <p id="desired-change-error" class="application-error"><span aria-hidden="true">!</span>請至少用 12 個字說明希望看到的改變。</p>
           </div>
           <div class="application-field-grid" data-coaching-optional>
             <div class="application-field">
-              <label for="cab-help">你希望 Cab 主要協助什麼？ <span>必填</span></label>
+              <label for="cab-help">你希望我主要陪你處理哪一段？ <span>必填</span></label>
               <textarea id="cab-help" name="cab_help" rows="4" minlength="8" maxlength="800" required aria-describedby="cab-help-error"></textarea>
-              <p id="cab-help-error" class="application-error"><span aria-hidden="true">!</span>請簡單說明希望得到的協助。</p>
+              <p id="cab-help-error" class="application-error"><span aria-hidden="true">!</span>簡單說一下你希望我幫忙的部分。</p>
             </div>
             <div class="application-field">
-              <label for="preferred-timing">希望何時開始？ <span>選填</span></label>
-              <input id="preferred-timing" name="preferred_timing" type="text" maxlength="120" placeholder="例如：九月、活動前兩週、時間可討論" />
+              <label for="preferred-timing">你希望什麼時候開始？ <span>選填</span></label>
+              <input id="preferred-timing" name="preferred_timing" type="text" maxlength="120" placeholder="例如：九月、活動前兩週、時間都可以討論" />
             </div>
           </div>
           <div class="application-field" data-coaching-optional>
-            <label for="reference-links">可以先看的公開連結 <span>選填</span></label>
+            <label for="reference-links">有沒有我可以先看的公開連結？ <span>選填</span></label>
             <textarea id="reference-links" name="reference_links" rows="3" maxlength="1000" aria-describedby="reference-links-help"></textarea>
-            <p id="reference-links-help" class="application-help">一行一個連結。請勿附密碼、Token、內網網址或機密原文。</p>
+            <p id="reference-links-help" class="application-help">一行一個。不要貼密碼、Token、內網網址或公司機密原文。</p>
           </div>
         </fieldset>
 
         <fieldset class="application-consent">
-          <legend>寄出前確認</legend>
+          <legend>寄出前確認一下</legend>
           <label>
             <input type="checkbox" name="consent" value="agreed" required aria-describedby="consent-help consent-error" />
             <span>我同意 CabLate 為了判斷是否適合合作、回覆申請與後續服務聯絡而處理以上資料。未經另外同意，不會把內容公開成案例。 <strong>必填</strong></span>
           </label>
-          <p id="consent-help">目前頁面不會把表單內容上傳到 CabLate；按下按鈕後，請在你的 Email 應用程式確認收件人與內容並寄出。詳情請見<a href="/privacy/">隱私權政策</a>。</p>
-          <p id="consent-error" class="application-error"><span aria-hidden="true">!</span>請先確認資料使用方式。</p>
+          <p id="consent-help">這個頁面不會直接把表單內容傳給 CabLate。按下按鈕後，只會開啟你的 Email 應用程式並整理好草稿；請確認收件人和內容後自行寄出。詳細資料使用方式請見<a href="/privacy/">隱私權政策</a>。</p>
+          <p id="consent-error" class="application-error"><span aria-hidden="true">!</span>請先勾選並確認資料使用方式。</p>
         </fieldset>
 
         <div id="application-error-summary" class="application-error-summary" role="alert" tabindex="-1" hidden>
-          <strong>還有欄位需要確認。</strong>
-          <p>請回到第一個標示錯誤的欄位。</p>
+          <strong>還有幾個地方沒填好。</strong>
+          <p>請回到第一個標示錯誤的欄位修改。</p>
         </div>
 
         <noscript>
-          <p class="application-noscript">你的瀏覽器目前沒有執行 JavaScript。仍可填寫並按下按鈕，Email 應用程式通常會開啟，但主旨與排版可能較簡單；若沒有開啟，請直接寄到 {siteConfig.contactEmail}。</p>
+          <p class="application-noscript">你的瀏覽器目前沒有執行 JavaScript。你還是可以填寫並按下按鈕，通常會開啟 Email 應用程式，只是主旨和排版會比較簡單；如果沒有開啟，請直接寄到 {siteConfig.contactEmail}。</p>
         </noscript>
 
         <div class="application-submit">
-          <button class="btn btn-primary" type="submit"><span data-submit-label>整理申請內容並開啟 Email</span> <Mail size={18} aria-hidden="true" /></button>
-          <p>請記得在 Email 應用程式裡按下寄出。開啟草稿不代表 Cab 已收到。</p>
+          <button class="btn btn-primary" type="submit"><span data-submit-label>整理成 Email 草稿</span> <Mail size={18} aria-hidden="true" /></button>
+          <p>草稿開啟後，還要記得在 Email 應用程式裡按「寄出」。開啟草稿不代表我已經收到。</p>
         </div>
       </form>
 
       <section id="application-ready" class="application-ready" aria-labelledby="application-ready-title" aria-live="polite" hidden>
         <div>
-          <p class="section-label">Email 草稿已整理</p>
-          <h2 id="application-ready-title">請確認內容並在 Email 應用程式裡寄出。</h2>
-          <p data-ready-message>如果 Email 沒有自動開啟，可以再次開啟，或複製申請內容後自行寄到 {siteConfig.contactEmail}。</p>
+          <p class="section-label">Email 草稿整理好了</p>
+          <h2 id="application-ready-title">確認內容沒問題後，請在 Email 應用程式裡寄出。</h2>
+          <p data-ready-message>如果 Email 沒有自動開啟，可以再試一次，或複製申請內容後自行寄到 {siteConfig.contactEmail}。</p>
           <p class="application-ready__id">申請編號：<strong data-lead-id></strong></p>
         </div>
         <div class="application-ready__actions">
-          <a class="btn btn-primary" data-email-draft href={`mailto:${siteConfig.contactEmail}`}>再次開啟 Email <ArrowRight size={17} aria-hidden="true" /></a>
+          <a class="btn btn-primary" data-email-draft href={`mailto:${siteConfig.contactEmail}`}>再次開啟 Email 草稿 <ArrowRight size={17} aria-hidden="true" /></a>
           <button class="btn btn-ghost" type="button" data-copy-application><ClipboardCopy size={17} aria-hidden="true" />複製申請內容</button>
           <p data-copy-status role="status"></p>
         </div>
@@ -183,13 +183,13 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
 
     <aside class="application-shell application-boundary page-paper paper-card" aria-labelledby="application-boundary-title">
       <div>
-        <p class="section-label">申請不等於成交</p>
-        <h2 id="application-boundary-title">先確認是否適合，再談付款與排程。</h2>
+        <p class="section-label">填表還不代表合作成立</p>
+        <h2 id="application-boundary-title">我會先確認適不適合，再談付款與可選時間。</h2>
       </div>
       <ul>
-        <li><Check size={17} aria-hidden="true" />不會因為填表就自動扣款。</li>
-        <li><Check size={17} aria-hidden="true" />不會因為填表就保留時段或檔期。</li>
-        <li><Check size={17} aria-hidden="true" />不適合時會直接說明，不會硬推其他方案。</li>
+        <li><Check size={17} aria-hidden="true" />填表不會自動扣款。</li>
+        <li><Check size={17} aria-hidden="true" />填表也不會先幫你保留時段或檔期。</li>
+        <li><Check size={17} aria-hidden="true" />如果不適合，我會直接說，不會為了成交硬把你轉去別的方案。</li>
       </ul>
     </aside>
   </article>
@@ -221,12 +221,13 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
         if (element) element.textContent = value;
       };
 
-      setText('[data-application-heading]', '先聊聊你想推進的事，不用先決定要不要買。');
-      setText('[data-application-intro]', '只要說明你想推進什麼、卡在哪裡、希望怎麼變。頁面會整理成 Email 草稿；請確認寄出。這不會自動付款，也不會自動保留名額。');
-      setText('[data-application-response]', '工作日原則一個工作天內回覆；確認適合後，才談條款與可選時間。');
-      setText('[data-application-form-title]', '先回答三件事：想推進什麼、卡在哪裡、希望怎麼變。');
-      setText('[data-outcome-legend]', '你希望看到的改變');
-      setText('[data-submit-label]', '整理內容，寄給 Cab');
+      setText('[data-application-heading]', '先跟我說你手上那件事卡在哪。');
+      setText('[data-application-intro]', '只要回答三件事：你想做什麼、現在卡在哪、希望最後有什麼不一樣。填完後會整理成 Email 草稿，你確認內容後再寄出。這裡不會付款，也不會先幫你保留名額。');
+      setText('[data-application-response]', '工作日原則一個工作天內回覆。確認適合後，我們才會談條款和可以約的時間。');
+      setText('[data-application-form-title]', '先回答三件事：你想做什麼、卡在哪、希望最後有什麼不一樣。');
+      setText('[data-outcome-legend]', '如果這次有幫上忙');
+      setText('[data-desired-change-copy]', '五週後，你希望哪裡變得不一樣？');
+      setText('[data-submit-label]', '整理成 Email 草稿');
 
       const serviceChoice = form.querySelector<HTMLElement>('[data-service-choice]');
       if (serviceChoice) serviceChoice.hidden = true;
@@ -309,23 +310,23 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
         `Email：${fieldValue(data, 'email')}`,
         `公司或團隊：${fieldValue(data, 'organization') || '未提供'}`,
         '',
-        '【目前想推進什麼】',
+        '【你現在最想把什麼做下去】',
         fieldValue(data, 'current_work'),
         '',
-        '【目前最卡的地方】',
+        '【現在最卡你的地方】',
         fieldValue(data, 'main_blocker'),
         '',
-        '【已經試過什麼】',
+        '【之前試過哪些做法】',
         fieldValue(data, 'attempted_work') || '未提供',
         '',
-        '【希望看到的改變】',
+        isCoachingEntry ? '【五週後希望哪裡不一樣】' : '【希望看到的改變】',
         fieldValue(data, 'desired_change'),
         '',
-        '【希望 Cab 主要協助什麼】',
+        '【希望 Cab 主要協助哪一段】',
         fieldValue(data, 'cab_help') || '未提供',
         '',
         `希望開始時間：${fieldValue(data, 'preferred_timing') || '未提供'}`,
-        '公開參考連結：',
+        '可以先看的公開連結：',
         fieldValue(data, 'reference_links') || '未提供',
         '',
         '【來源與同意紀錄】',
@@ -341,8 +342,8 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
 
       preparedBody = lines.join('\n');
       const subject = isCoachingEntry
-        ? `CabLate 陪跑先聊聊｜${fieldValue(data, 'name')}｜${leadId}`
-        : `CabLate 服務申請｜${serviceLabel}｜${leadId}`;
+        ? `CabLate｜AI 陪跑申請｜${fieldValue(data, 'name')}｜${leadId}`
+        : `CabLate｜${serviceLabel}申請｜${leadId}`;
       const mailto = `mailto:${form.dataset.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(preparedBody)}`;
 
       if (emailDraft) emailDraft.href = mailto;
@@ -352,10 +353,10 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
         readyPanel.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
       }
       if (mailto.length <= 8000) {
-        if (readyMessage) readyMessage.textContent = `如果 Email 沒有自動開啟，可以再次開啟，或複製申請內容後自行寄到 ${form.dataset.contactEmail}。`;
+        if (readyMessage) readyMessage.textContent = `如果 Email 沒有自動開啟，可以再試一次，或複製申請內容後自行寄到 ${form.dataset.contactEmail}。`;
         window.location.href = mailto;
       } else if (readyMessage) {
-        readyMessage.textContent = `你的申請內容較長，為避免 Email 草稿被截斷，頁面沒有自動開啟。請複製申請內容後自行寄到 ${form.dataset.contactEmail}。`;
+        readyMessage.textContent = `你的申請內容比較長，為了避免 Email 草稿被截斷，頁面沒有自動開啟。請先複製內容，再自行寄到 ${form.dataset.contactEmail}。`;
       }
     });
 
@@ -363,9 +364,9 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
       if (!preparedBody || !copyStatus) return;
       try {
         await navigator.clipboard.writeText(preparedBody);
-        copyStatus.textContent = '已複製申請內容。';
+        copyStatus.textContent = '申請內容已複製。';
       } catch {
-        copyStatus.textContent = '瀏覽器沒有允許複製。請使用上方按鈕再次開啟 Email。';
+        copyStatus.textContent = '瀏覽器沒有允許複製。你可以用上方按鈕再次開啟 Email 草稿。';
       }
     });
 

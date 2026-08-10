@@ -10,7 +10,7 @@ const partnershipTypes = [
   {
     className: 'service-partnership-type--featured',
     kind: '講師與工作坊',
-    title: '把一場活動做成受眾真的能使用的內容',
+    title: '我不會只把投影片講完，會先看聽眾最後要帶走什麼。',
     body: '適合研討會、社群、企業活動或主題工作坊。先確認受眾、已知程度、場景與希望帶走的行動。',
     output: '可能包含主題設計、講綱、案例、現場互動、實作任務與必要的課後材料。',
   },
@@ -66,7 +66,7 @@ const faq = [
 
     <section id="partnership-types" class="service-shell service-section service-partnership-types page-paper paper-card" aria-labelledby="partnership-types-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="partnership-types-title">三種常見合作，需要先談清楚的事情不一樣。</h2>
+        <h2 id="partnership-types-title">演講、內容合作、產品合作，我需要先知道的事情不太一樣。</h2>
         <p>先找最接近的類型，再用你的實際情況確認內容。這裡列的是方向，不是固定菜單。</p>
       </header>
       <div class="service-partnership-types__grid">
@@ -83,7 +83,7 @@ const faq = [
 
     <section class="service-shell service-section service-partnership-brief page-paper paper-card" aria-labelledby="partnership-brief-title">
       <div>
-        <h2 id="partnership-brief-title">不用寫長企劃，但要讓人能做出合作判斷。</h2>
+        <h2 id="partnership-brief-title">不用寫企劃書，讓我看得懂這次要做什麼就夠了。</h2>
         <p>資訊越完整，我越能直接回覆是否適合、還缺什麼，以及下一步怎麼走。</p>
       </div>
       <dl>
@@ -96,7 +96,7 @@ const faq = [
 
     <section class="service-shell service-section service-process service-process--five page-paper paper-card" aria-labelledby="partnership-process-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="partnership-process-title">先把工作與使用方式寫清楚，再開始做。</h2>
+        <h2 id="partnership-process-title">開始前，我會把「這次做什麼」和「內容之後怎麼用」都談清楚。</h2>
       </header>
       <ol>
         {partnershipProcess.map(([title, body], index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{title}</h3><p>{body}</p></div></li>)}
@@ -105,7 +105,7 @@ const faq = [
 
     <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="partnership-fit-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="partnership-fit-title">有受眾、預算與負責人，才有辦法認真評估邀約。</h2>
+        <h2 id="partnership-fit-title">如果受眾、預算和負責人都還沒確定，我很難認真評估這個邀約。</h2>
       </header>
       <div class="service-fit-column">
         <h3><Check size={19} aria-hidden="true" />適合提出邀約，如果</h3>
@@ -129,7 +129,7 @@ const faq = [
 
     <section class="service-shell service-section service-faq page-paper paper-card" aria-labelledby="partnership-faq-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="partnership-faq-title">先把檔期、預算與使用權說清楚。</h2>
+        <h2 id="partnership-faq-title">第一封信最常被問到的幾件事。</h2>
       </header>
       <div>{faq.map(([question, answer]) => <details><summary>{question}</summary><p>{answer}</p></details>)}</div>
     </section>

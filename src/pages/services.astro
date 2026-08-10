@@ -5,75 +5,75 @@ import '../styles/service-pages.css';
 
 const paths = [
   {
-    kind: '先把卡點看清楚',
+    kind: '先把問題看清楚',
     title: 'AI 專案卡關諮詢',
-    description: '適合已經投入時間，卻還是不知道哪裡出問題的人。用 90 分鐘把真正卡點、取捨與下一步找出來。',
-    outcomes: ['一句核心判斷', '目前最主要的卡點', '優先三步與先不做什麼', '一頁行動卡與後續檢查點'],
+    description: '適合已經花了不少時間，卻還是說不清楚到底卡在哪的人。90 分鐘內一起把問題、取捨和接下來先做什麼理清楚。',
+    outcomes: ['這次最核心的判斷', '目前最需要處理的問題', '接下來先做的三件事，以及先不要做什麼', '一頁行動卡，方便你之後繼續執行'],
     href: '/services/consulting/',
     action: '查看諮詢方式',
     primary: true,
   },
   {
-    kind: '把卡住的事情往前推',
+    kind: '手上有件事，想真的把它做下去',
     title: 'AI 應用陪跑',
-    description: '適合有件事想用 AI 往前推，卻不知道真正卡在哪裡的人。五週一對一，先理解問題，再判斷、實作與調整。',
-    outcomes: ['找出真正卡點與優先順序', '判斷 AI 應該介入哪裡', '拿真實材料一起實作與驗證', '依結果決定繼續、縮小或換路'],
+    description: '適合手上已經有工作、產品、內容或專案，想用 AI 做下去，卻一直卡住的人。五週一對一，我會跟你一起拆問題、實作、檢查，再決定下一步。',
+    outcomes: ['先找出現在最值得處理的問題', '看 AI 到底能幫哪一段，不適合就不用硬上', '直接拿你手上的東西一起做、一起測', '做完一輪後，知道接下來該繼續、縮小還是換方法'],
     href: '/services/coaching/',
-    action: '查看陪跑方式',
+    action: '看五週陪跑怎麼進行',
     primary: false,
   },
 ];
 
 const process = [
-  ['先看情境', '先理解你想完成什麼、目前怎麼做，以及哪裡最常失敗。'],
-  ['選對合作方式', '確認需要一次諮詢、五週客製陪跑、企業合作，或目前其實不需要合作。'],
-  ['把條件說清楚', '適合時才確認這次要處理的重點、雙方責任、費用、時段與合作邊界。'],
-  ['開始合作', '每一步都回到真實工作與目前進度，不用固定套餐硬套。'],
+  ['先看你現在怎麼做', '你想完成什麼？手上有哪些東西？最常在哪裡卡住？先把這些講清楚。'],
+  ['再決定適合哪一種', '有時候需要一次諮詢，有時候適合五週陪跑、企業合作，也有可能現在根本不需要花錢合作。'],
+  ['適合再把條件談清楚', '要處理什麼、誰負責什麼、費用、時間和哪些事不包含，都在開始前說明。'],
+  ['然後才開始做', '後面就跟著你手上的進度走，不拿一套固定流程硬套所有人。'],
 ];
 
 const organizationPaths = [
   {
     kind: '給團隊與組織',
     title: '企業診斷、工作坊與導入',
-    description: '先看團隊的真實工作與重複問題，再判斷需要的是現況診斷、工作坊，還是小規模導入。',
-    detail: '不會先拿固定課程時數套用；先知道哪些人、哪一段工作需要改。',
+    description: '先看團隊現在到底怎麼工作、哪裡一直重複出問題，再決定要做診斷、工作坊，還是先跑一個小規模導入。',
+    detail: '我不會先拿一套固定課程時數套上去，會先知道是哪些人、哪一段工作真的需要改。',
     href: '/services/enterprise/',
     action: '查看企業合作方式',
   },
   {
     kind: '給主辦方、平台與品牌',
     title: '講師、內容與產品合作',
-    description: '演講、工作坊、內容共創與產品合作都可以提出。先提供受眾、形式、時程、預算與使用方式。',
-    detail: '不同合作需要的準備、修改與使用權都不同，開始前會逐一說清楚。',
+    description: '演講、工作坊、內容共創或產品合作都可以談。先給我受眾、形式、時程、預算和預計怎麼使用，我會比較快判斷合作方式。',
+    detail: '不同合作牽涉的準備、修改和使用權都不一樣，開始前會先說清楚。',
     href: '/services/partnerships/',
     action: '查看邀約合作方式',
   },
 ];
 ---
 
-<BaseLayout title="專案諮詢、AI 應用陪跑與企業合作" description="依你的情況選擇 90 分鐘 AI 專案卡關諮詢、五週一對一 AI 應用陪跑、企業合作，或講師與內容合作。" analytics="disabled">
+<BaseLayout title="專案諮詢、AI 應用陪跑與企業合作" description="90 分鐘專案諮詢、五週一對一 AI 應用陪跑、企業合作，或講師與內容合作。先看你現在遇到什麼問題，再決定適合哪一種。" analytics="disabled">
   <article class="service-page paper-page">
     <header class="service-shell service-hero page-paper paper-card">
       <div class="service-hero__copy">
         <p class="section-label">合作方式</p>
-        <h1 class="display-heading">你現在卡在哪裡，決定我們該怎麼合作。</h1>
-        <p class="service-lead">想先找出問題，可以約一次專案諮詢；想拿自己的工作一起改，可以申請五週陪跑。團隊導入、演講、工作坊與內容合作，也都有各自的入口。</p>
+        <h1 class="display-heading">先別急著選服務，從你現在卡住的事情開始。</h1>
+        <p class="service-lead">如果你只是想先弄清楚問題，可以約一次 90 分鐘諮詢；如果你手上已經有一件事想繼續做，我們可以用五週一起拆、一起做。團隊導入、演講、工作坊和內容合作，也都有各自的入口。</p>
         <div class="service-actions">
           <a class="btn btn-primary" href="/services/consulting/">先看卡關諮詢 <ArrowRight size={18} aria-hidden="true" /></a>
-          <a class="service-text-link" href="/services/coaching/">想一起做？看 AI 陪跑 <MoveRight size={17} aria-hidden="true" /></a>
+          <a class="service-text-link" href="/services/coaching/">想一起做五週？看陪跑 <MoveRight size={17} aria-hidden="true" /></a>
         </div>
-        <p class="service-fine-print">不確定可以先從最接近的頁面開始。提交資料不代表合作成立；不適合時會直接說明。</p>
+        <p class="service-fine-print">不知道該選哪個沒關係，先看最接近你現在狀況的就好。填資料不代表成交，不適合我也會直接說。</p>
       </div>
       <figure class="service-hero__visual">
         <img src="/images/photos/cablate-speaking-ai-meetup-april.webp" alt="Cab 在 AI 聚會中說明實作方法" width="1920" height="1080" loading="eager" fetchpriority="high" />
-        <figcaption>先看真實工作與限制，再決定該用什麼方法。</figcaption>
+        <figcaption>先看你現在怎麼做、哪裡卡住，再決定要不要用 AI。</figcaption>
       </figure>
     </header>
 
     <section class="service-shell service-section page-paper paper-card" aria-labelledby="choose-title">
       <header class="service-section__intro">
-        <h2 id="choose-title">想先找答案，和想一起做，適合的方式不一樣。</h2>
-        <p>專案諮詢用 90 分鐘把問題與下一步找出來。AI 應用陪跑則是五週客製合作，先理解問題，再判斷 AI 該介入哪裡。</p>
+        <h2 id="choose-title">想先把問題弄清楚，和想找人一起做，是兩種不同的合作。</h2>
+        <p>專案諮詢是用 90 分鐘把問題看清楚，知道下一步先做什麼。AI 應用陪跑則是五週一起做：從你手上的事情出發，邊拆問題、邊實作、邊調整。</p>
       </header>
 
       <div class="service-paths">
@@ -94,7 +94,7 @@ const organizationPaths = [
 
     <section class="service-shell service-section service-process page-paper paper-card" aria-labelledby="process-title">
       <header class="service-section__intro service-section__intro--compact">
-        <h2 id="process-title">先看你的情況，再談方案。</h2>
+        <h2 id="process-title">先把你的狀況弄清楚，再決定要不要合作。</h2>
       </header>
       <ol>
         {process.map(([title, body], index) => (
@@ -109,8 +109,8 @@ const organizationPaths = [
     <section class="service-shell service-section service-organization page-paper paper-card" aria-labelledby="organization-title">
       <header class="service-section__intro service-section__intro--stacked">
         <p class="section-label">團隊與邀約合作</p>
-        <h2 id="organization-title">團隊導入與合作邀約，也可以直接從這裡開始。</h2>
-        <p>企業先說明哪些人、哪一段工作遇到問題；主辦方、平台與品牌則提供受眾、形式、時程、預算與使用方式。資訊越清楚，越快知道下一步。</p>
+        <h2 id="organization-title">如果你是團隊、主辦方或品牌，也不用繞個人服務這一圈。</h2>
+        <p>企業合作先告訴我：哪些人、哪一段工作最想改善。演講、工作坊或內容合作則把受眾、形式、時程、預算和使用方式說清楚，通常就能很快判斷怎麼往下談。</p>
       </header>
       <div class="service-organization__routes">
         {organizationPaths.map((path) => (
@@ -127,13 +127,13 @@ const organizationPaths = [
 
     <section class="service-shell service-section service-principle page-paper paper-card" aria-labelledby="principle-title">
       <div>
-        <h2 id="principle-title">客製合作，也要把責任與邊界說清楚。</h2>
+        <h2 id="principle-title">可以很客製，但不是什麼都包。</h2>
       </div>
       <ul>
-        <li><strong>開始前先對齊。</strong>確認這次的目標、優先順序、雙方責任，以及怎麼看進度。</li>
-        <li><strong>重要判斷要留得下來。</strong>關鍵取捨、限制與下一步不只停在會議裡。</li>
-        <li><strong>方法跟著問題走。</strong>不需要 Agent、自動化或新工具時，會直接說明。</li>
-        <li><strong>新需求要重新排順序。</strong>客製不代表所有事情都能無限加入同一段合作。</li>
+        <li><strong>開始前先講清楚。</strong>這次最重要的是什麼、誰負責哪一段、怎麼看進度，都先對齊。</li>
+        <li><strong>重要的東西不要只留在會議裡。</strong>做過哪些判斷、有哪些限制、下一步是什麼，都會留下來。</li>
+        <li><strong>不為了用 AI 而用 AI。</strong>Agent、自動化、新工具不是答案時，我會直接說。</li>
+        <li><strong>中途冒出新需求沒問題，但要重新排順序。</strong>不會默默把所有事情都塞進同一期。</li>
       </ul>
     </section>
 
