@@ -9,10 +9,10 @@ import '../../styles/service-pages.css';
 const coachingApplicationHref = getServiceApplicationHref('coaching', 'coaching_page');
 
 const possibleOutputs = [
-  ['內容與研究一直重做', '把蒐集資料、起草、修改與審查攤開來看，找出 AI 應該幫哪一段，以及品質要怎麼檢查。'],
-  ['產品或專案做到一半失控', '一起拆需求、排優先順序、補測試與交接方式，減少「偶爾能跑、實際卻交付不了」的情況。'],
-  ['自動化或 Agent 偶爾才成功', '從資料、工具、權限、錯誤與復原方式找出不穩定的那一層，再決定要修哪裡。'],
-  ['工具很多，團隊還是接不起來', '釐清工具怎麼選、誰負責什麼、成果怎麼驗收，並把有效做法整理成能繼續使用的模板或流程。'],
+  ['內容與研究反覆重做', '把蒐集、起草、修改與審查攤開，找出 AI 該幫哪一段，以及品質怎麼檢查。'],
+  ['專案做到一半開始失控', '拆需求、排順序、補測試與交接，讓成果不只偶爾能跑。'],
+  ['自動化或 Agent 時好時壞', '從資料、工具、權限、錯誤與復原方式，找出真正不穩定的那一層。'],
+  ['工具很多，工作還是接不起來', '釐清工具、責任與驗收方式，把有效做法留下來。'],
 ];
 
 const publicProofs = [
@@ -49,11 +49,8 @@ const workLoop = [
 const faq = [
   ['填寫之後就要付款嗎？', '不用。先把你的工作、卡點與希望看到的改變告訴我；我會先判斷陪跑是否適合，再回覆合作範圍、條款與排程。填寫不會自動付款，也不會自動保留名額。'],
   ['一定要先做專案諮詢嗎？', '不一定。如果你已經能說清楚現況、想改善的工作與主要限制，可以直接申請陪跑；若問題仍很模糊，我會建議先做 90 分鐘專案諮詢。'],
-  ['每個人都會做出一套 AI 工作流嗎？', '不會。陪跑是高度客製化，成果可能是流程、Skill、Prompt、內容系統、產品原型、文件模板、工具選擇或決策方法，也可能是其中幾項。合作前會先確認這一期最值得處理的目標，但不硬塞同一份交付清單。'],
-  ['這跟一對一課有什麼不同？', '課程有共同課綱；陪跑直接處理你的真實工作。過程中會解釋方法，但不以教完多少內容作為進度。'],
-  ['陪跑等於代開發或代營運嗎？', '不等於。Cab 會參與約定的判斷、拆解、實作、審查與修正；哪些工作由誰完成，會在開始前寫清楚。'],
-  ['可以隨時問問題嗎？', '可以在合作期間隨時留言。Cab 會在工作日回覆，原則上一個工作天內回應；若問題已經是新的大型任務，會排進會議或另外確認範圍。'],
-  ['臨時需要改期怎麼辦？', '提前至少 24 小時通知，可免費改期一次。其他改期與取消情況會依合作前提供的條款處理。'],
+  ['最後一定會做出一套 AI 工作流嗎？', '不一定。陪跑是高度客製化，成果可能是流程、Skill、Prompt、內容系統、產品原型、文件模板、工具選擇或決策方法。過程會直接處理你的工作，不以教完固定課綱或交出同一套成果為進度。'],
+  ['平時提問和改期怎麼處理？', '合作期間可以隨時留言，工作日原則上一個工作天內回應。提前至少 24 小時通知，可免費改期一次；其他情況依合作前提供的條款處理。'],
 ];
 
 const seoTitle = 'AI 實作陪跑｜五週一對一客製合作｜CabLate';
@@ -116,7 +113,7 @@ const breadcrumbJsonLd = {
       <div class="service-detail-hero__copy">
         <p class="section-label">1 對 1 客製實作陪跑</p>
         <h1 class="display-heading">把 AI 真正用進你的工作。</h1>
-        <p class="service-lead">五週一對一，直接拿你現在卡住的工作來。一起找問題、動手調整，留下你之後能繼續使用的做法。</p>
+        <p class="service-lead">五週一對一，直接拿你卡住的工作來。我們一起找問題、動手調整，做出能繼續用的成果。</p>
         <div class="service-actions">
           <a class="btn btn-primary" href={coachingApplicationHref}>先聊聊你的狀況 <ArrowRight size={18} aria-hidden="true" /></a>
           <dl class="service-hero-facts" aria-label="陪跑方案摘要">
@@ -125,75 +122,51 @@ const breadcrumbJsonLd = {
             <div><dt>費用</dt><dd>NT$49,800</dd></div>
           </dl>
         </div>
-        <p class="service-conversation-note"><strong>不用先付款。</strong>先說明你的工作與卡點；工作日原則一個工作天內回覆，確認適合後才談排程。同時最多服務三位。</p>
+        <p class="service-conversation-note"><strong>不用先付款。</strong>先說明你的工作與卡點。我會先判斷是否適合，確認後才談排程。同時最多服務三位。</p>
       </div>
       <figure class="service-detail-hero__visual service-detail-hero__visual--wide">
         <img src="/images/photos/cablate-speaking-ai-meetup-april.webp" alt="Cab 在 AI 實作聚會中拆解問題" width="1920" height="1080" loading="eager" fetchpriority="high" />
       </figure>
     </header>
 
-    <section class="service-shell service-section service-coaching-bridge page-paper paper-card" aria-labelledby="coaching-bridge-title">
-      <header class="service-section__intro">
-        <p class="section-label">你缺的可能不是另一堂課</p>
-        <h2 id="coaching-bridge-title">知道很多 AI 方法，回到自己的工作還是接不起來。</h2>
-        <p>你的資料、工具、客戶、限制與決策方式都跟別人不同。陪跑直接看你的工作畫面與真實案例，當場找問題、做調整。哪些方法有用就留下，哪些不適合就拿掉。</p>
-      </header>
-      <div class="service-comparison" aria-label="課程、代做與陪跑的差異">
-        <article>
-          <p>課程</p>
-          <h3>跟著共同課綱學</h3>
-          <p>適合建立知識與方法，但不會逐一處理你的全部工作細節。</p>
-        </article>
-        <article>
-          <p>代做</p>
-          <h3>把明確任務交出去</h3>
-          <p>適合規格已經很清楚、只缺執行的工作，但做法與判斷不一定會留在你手上。</p>
-        </article>
-        <article class="service-comparison__focus">
-          <p>實作陪跑</p>
-          <h3>拿你的工作一起改</h3>
-          <p>你保留情境與最後決定，Cab 參與拆解、判斷、實作與審查，內容會跟著你的需求調整。</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="service-shell service-section page-paper paper-card" aria-labelledby="coaching-offer-title">
-      <header class="service-section__intro">
-        <p class="section-label">合作內容</p>
-        <h2 id="coaching-offer-title">五週一起做，排程需要時可延長到六週。</h2>
-        <p>第一次會議先完整盤點，之後每週回到實際進度。合作期間遇到問題可以直接留言，不必等到下一次開會。</p>
-      </header>
-      <div class="service-offer">
-        <div class="service-offer__price">
-          <span>標準方案</span>
-          <strong>NT$49,800</strong>
-          <p>若你在完成 NT$5,000 專案諮詢後 14 天內加入陪跑，諮詢費可全額折抵，剩餘 NT$44,800。</p>
-        </div>
-        <dl>
-          <div><dt>合作期間</dt><dd>標準五週，因排程調整時可在六週內完成。</dd></div>
-          <div><dt>五次會議</dt><dd>第一次 90 分鐘，之後每週 60 分鐘，共五次。</dd></div>
-          <div><dt>平時提問</dt><dd>合作期間可隨時留言，工作日原則上一個工作天內回覆。</dd></div>
-          <div><dt>彈性改期</dt><dd>提前至少 24 小時通知，可免費改期一次。</dd></div>
-        </dl>
-      </div>
-    </section>
-
     <section class="service-shell service-section page-paper paper-card" aria-labelledby="coaching-result-title">
       <header class="service-section__intro">
-        <p class="section-label">你可以帶這些工作來</p>
-        <h2 id="coaching-result-title">不用先知道答案，只要有一段真的卡住的工作。</h2>
-        <p>下面是常見情況，不是固定交付清單。實際處理什麼，會依你的目標、現況、能力與合作期間共同決定。</p>
+        <h2 id="coaching-result-title">哪些工作適合拿來一起改？</h2>
+        <p>不用先知道答案，只要有一段真的卡住的工作。以下是常見情況，不是固定交付清單。</p>
       </header>
       <div class="service-deliverables service-deliverables--coaching">
         {possibleOutputs.map(([title, body]) => <article><h3>{title}</h3><p>{body}</p></article>)}
       </div>
     </section>
 
+    <section class="service-shell service-section service-process service-coaching-plan page-paper paper-card" aria-labelledby="coaching-loop-title">
+      <header class="service-section__intro">
+        <p class="section-label">合作方式</p>
+        <h2 id="coaching-loop-title">怎麼進行？</h2>
+        <p>五週內開五次會議，排程需要時可在六週內完成。你提供案例、限制與最後決定；我參與拆解、判斷、實作、審查與調整。</p>
+      </header>
+      <div class="service-offer">
+        <div class="service-offer__price">
+          <span>標準方案</span>
+          <strong>NT$49,800</strong>
+          <p>完成 NT$5,000 專案諮詢後 14 天內加入，諮詢費可全額折抵，剩餘 NT$44,800。</p>
+        </div>
+        <dl>
+          <div><dt>合作期間</dt><dd>標準五週，必要時可在六週內完成。</dd></div>
+          <div><dt>五次會議</dt><dd>第一次 90 分鐘，之後每週 60 分鐘。</dd></div>
+          <div><dt>平時提問</dt><dd>可隨時留言，工作日原則一個工作天內回覆。</dd></div>
+          <div><dt>彈性改期</dt><dd>提前至少 24 小時，可免費改期一次。</dd></div>
+        </dl>
+      </div>
+      <ol>
+        {workLoop.map(([title, body]) => <li><div><h3>{title}</h3><p>{body}</p></div></li>)}
+      </ol>
+    </section>
+
     <section class="service-shell service-section service-coaching-proof page-paper paper-card" aria-labelledby="coaching-proof-title">
       <header class="service-section__intro">
-        <p class="section-label">先查證，再決定要不要聊</p>
-        <h2 id="coaching-proof-title">先看我是不是只會講，再決定要不要合作。</h2>
-        <p>這些不是陪跑成效保證，也不是每位客戶都會得到的固定結果；它們只是讓你先確認，我是否真的做過工具、產品與實作型教學。</p>
+        <h2 id="coaching-proof-title">先看我實際做過什麼。</h2>
+        <p>這些公開紀錄不能保證你的結果，但能先確認我確實做過工具、產品與實作型教學。</p>
       </header>
       <div class="service-coaching-proof__grid">
         {publicProofs.map((proof) => (
@@ -207,45 +180,9 @@ const breadcrumbJsonLd = {
       </div>
     </section>
 
-    <section class="service-shell service-section service-collaboration page-paper paper-card" aria-labelledby="roles-title">
-      <header class="service-section__intro service-section__intro--compact">
-        <p class="section-label">我們各自負責什麼</p>
-        <h2 id="roles-title">你帶真實工作與最後決定，我參與中間最難的判斷與調整。</h2>
-      </header>
-      <div class="service-role-column">
-        <h3>你負責</h3>
-        <ul>
-          <li>提供必要的工作情境、案例與限制。</li>
-          <li>使用自己的工具與環境，完成雙方約定的部分。</li>
-          <li>決定業務取捨、可接受風險與最後是否採用。</li>
-          <li>遇到問題時及早提出，不等到最後一次會議。</li>
-        </ul>
-      </div>
-      <div class="service-role-column service-role-column--cab">
-        <h3>Cab 負責</h3>
-        <ul>
-          <li>看懂現況，協助排出這一期最值得處理的順序。</li>
-          <li>參與約定的拆解、判斷、實作、審查與修正。</li>
-          <li>指出不必要的工作、風險與仍缺少的資訊。</li>
-          <li>每週依真實進度調整，不拿固定教材硬套。</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="service-shell service-section service-process page-paper paper-card" aria-labelledby="coaching-loop-title">
-      <header class="service-section__intro service-section__intro--compact">
-        <p class="section-label">進行方式</p>
-        <h2 id="coaching-loop-title">方向先說清楚，內容依你的進度調整。</h2>
-      </header>
-      <ol>
-        {workLoop.map(([title, body], index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{title}</h3><p>{body}</p></div></li>)}
-      </ol>
-    </section>
-
     <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="coaching-fit-title">
       <header class="service-section__intro service-section__intro--compact">
-        <p class="section-label">先確認是否適合</p>
-        <h2 id="coaching-fit-title">適合願意一起做、也願意面對真實限制的人。</h2>
+        <h2 id="coaching-fit-title">這種合作適合你嗎？</h2>
       </header>
       <div class="service-fit-column">
         <h3><Check size={19} aria-hidden="true" />適合你，如果</h3>
@@ -265,38 +202,25 @@ const breadcrumbJsonLd = {
           <li>你需要保證營收、流量或特定幅度的效率提升。</li>
         </ul>
       </div>
-    </section>
-
-    <section class="service-shell service-section service-boundary-table page-paper paper-card" aria-labelledby="boundary-title">
-      <header class="service-section__intro service-section__intro--compact">
-        <p class="section-label">客製不等於沒有邊界</p>
-        <h2 id="boundary-title">開始前，先把這一期怎麼合作寫清楚。</h2>
-      </header>
-      <dl>
-        <div><dt>這一期先處理什麼</dt><dd>依影響與可行性排出優先順序，不同時攤開所有問題。</dd></div>
-        <div><dt>誰負責哪一部分</dt><dd>會議、實作、資料提供、最後決定與後續使用，都會先確認責任。</dd></div>
-        <div><dt>哪些事不包含</dt><dd>代營運、24 小時維運、無限修改與未確認的開發工作不會自動包含。</dd></div>
-        <div><dt>出現新目標怎麼辦</dt><dd>先判斷要取代原優先項目、排到後面，或另開新的合作，不會自動全部加入。</dd></div>
-      </dl>
+      <p class="service-fit-note"><strong>開始前會寫清楚：</strong>這一期先處理什麼、誰負責哪一段、哪些事不包含。合作中出現新目標時，先重新排順序，不會自動全部加入。</p>
     </section>
 
     <section class="service-shell service-section service-faq page-paper paper-card" aria-labelledby="coaching-faq-title">
       <header class="service-section__intro service-section__intro--compact">
-        <p class="section-label">常見問題</p>
-        <h2 id="coaching-faq-title">申請前可以先確認這些事。</h2>
+        <h2 id="coaching-faq-title">申請前，先確認這四件事。</h2>
       </header>
       <div>{faq.map(([question, answer]) => <details><summary>{question}</summary><p>{answer}</p></details>)}</div>
     </section>
 
     <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="coaching-cta-title">
-      <div><p class="section-label">下一步</p><h2 id="coaching-cta-title">先聊聊，不用現在決定要不要加入。</h2><p>把目前怎麼做、最常卡在哪裡、希望看到什麼改變寫給我。我會先判斷陪跑是否適合；不適合也會直接說明。</p></div>
+      <div><p class="section-label">下一步</p><h2 id="coaching-cta-title">先把狀況說清楚，再決定要不要合作。</h2><p>告訴我你目前怎麼做、最常卡在哪裡、希望看到什麼改變。我會先判斷陪跑是否適合；不適合也會直接說明。</p></div>
       <a class="btn btn-primary" href={coachingApplicationHref}>先聊聊你的狀況 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
 
     <aside class="service-coaching-sticky" aria-label="AI 實作陪跑下一步">
       <div>
-        <strong>五週一對一客製陪跑</strong>
-        <span>NT$49,800 · 同時最多三位 · 先確認適合再付款</span>
+        <strong>五週一對一陪跑</strong>
+        <span>NT$49,800，同時最多三位</span>
       </div>
       <a class="btn btn-primary" href={coachingApplicationHref}>先聊聊你的狀況 <ArrowRight size={17} aria-hidden="true" /></a>
     </aside>
