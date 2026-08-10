@@ -1,17 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
-import { siteConfig } from '../../config/siteConfig';
+import { getServiceApplicationHref } from '../../config/serviceApplication';
 import '../../styles/service-pages.css';
 
-const coachingMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeURIComponent('申請 AI 實作陪跑')}&body=${encodeURIComponent(`你的姓名：
-這次最想改善的工作或問題：
-目前怎麼做，以及最常卡住的地方：
-合作結束時，希望看到什麼改變：
-你希望 Cab 參與哪些判斷、實作或審查：
-你或團隊能負責哪些部分：
-已知限制與希望開始的時間：
-可先看的畫面、文件或連結（選填，請勿附密碼、Token 或機密原文）：`)}`;
+const coachingApplicationHref = getServiceApplicationHref('coaching', 'coaching_page');
 
 const possibleOutputs = [
   ['工作流程與自動化', '重新安排步驟、工具、資料與檢查方式，或把重複工作做成更省力的流程。'],
@@ -47,7 +40,7 @@ const faq = [
         <h1 class="display-heading">不用硬套別人的 AI 流程。直接拿你的工作，一起找出真正該改的地方。</h1>
         <p class="service-lead">這是一段五週的一對一合作。沒有固定課綱，也不預設你一定要做出哪一種成果。我們會先看你現在怎麼工作、最想改善什麼，再依每週遇到的真實問題一起判斷、實作與調整。</p>
         <div class="service-actions">
-          <a class="btn btn-primary" href={coachingMailto}>申請實作陪跑 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="btn btn-primary" href={coachingApplicationHref}>申請實作陪跑 <ArrowRight size={18} aria-hidden="true" /></a>
           <span>標準方案 NT$49,800，同時最多服務三位。</span>
         </div>
       </div>
@@ -196,7 +189,7 @@ const faq = [
 
     <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="coaching-cta-title">
       <div><p class="section-label">下一步</p><h2 id="coaching-cta-title">先告訴我，你現在最想改善哪一段工作。</h2><p>不用先寫成完整企劃。把目前怎麼做、最常卡在哪裡、希望看到什麼改變寫給我，我會先判斷這種合作是否適合。</p></div>
-      <a class="btn btn-primary" href={coachingMailto}>申請實作陪跑 <ArrowRight size={18} aria-hidden="true" /></a>
+      <a class="btn btn-primary" href={coachingApplicationHref}>申請實作陪跑 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
   </article>
 </BaseLayout>

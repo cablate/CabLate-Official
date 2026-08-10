@@ -1,20 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
-import { siteConfig } from '../../config/siteConfig';
+import { getServiceApplicationHref } from '../../config/serviceApplication';
 import '../../styles/service-pages.css';
 
-const enterpriseMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeURIComponent('提交企業 AI 合作情境')}&body=${encodeURIComponent(`公司或團隊：
-聯絡人與職稱：
-哪一群人正在完成什麼工作：
-目前最常出現的重做、等待、錯誤或風險：
-已使用的工具、政策與資料來源：
-希望改變的知識、行為、流程或系統：
-完成後要看到什麼證據：
-決策人、使用者、驗收人與內部負責人：
-不能進入外部工具或討論的資料：
-已知時程、採購與預算限制：
-可先看的公開連結（選填，請勿附密碼、Token 或機密原文）：`)}`;
+const enterpriseApplicationHref = getServiceApplicationHref('enterprise', 'enterprise_page');
 
 const problemSignals = [
   ['工具很多，做法不一致', '每個人用不同方式完成同一種工作，結果無法接手，也不知道出錯要查哪裡。'],
@@ -160,7 +150,7 @@ const faq = [
         <h2 id="enterprise-cta-title">先說哪些人、哪一段工作出了什麼問題。</h2>
         <p>不必先整理成完整標案。請勿附密碼、Token 或機密原文；確認適合後，才會進一步討論工作內容、費用與條款。</p>
       </div>
-      <a class="btn btn-primary" href={enterpriseMailto}>提交企業合作情境 <ArrowRight size={18} aria-hidden="true" /></a>
+      <a class="btn btn-primary" href={enterpriseApplicationHref}>提交企業合作情境 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
   </article>
 </BaseLayout>

@@ -1,20 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
-import { siteConfig } from '../../config/siteConfig';
+import { getServiceApplicationHref } from '../../config/serviceApplication';
 import '../../styles/service-pages.css';
 
-const partnershipMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeURIComponent('提交講師、內容或產品合作')}&body=${encodeURIComponent(`組織、平台或品牌：
-聯絡人與職稱：
-合作類型（演講／工作坊／內容／產品顧問／其他）：
-預期受眾與人數或觸及方式：
-希望完成的結果：
-形式、場地或發布管道：
-預計日期與工作時程：
-預算範圍與付款方式：
-錄影、重播、改作、廣告與其他使用範圍：
-需要 Cab 提供或審查的內容：
-可先看的公開連結（選填，請勿附密碼、Token 或機密原文）：`)}`;
+const partnershipApplicationHref = getServiceApplicationHref('partnerships', 'partnerships_page');
 
 const partnershipTypes = [
   {
@@ -150,7 +140,7 @@ const faq = [
         <h2 id="partnership-cta-title">把邀約重點放進一封信就好。</h2>
         <p>請提供合作類型、受眾、成果、形式、時程、預算與使用範圍。提交不代表檔期保留或合作成立。</p>
       </div>
-      <a class="btn btn-primary" href={partnershipMailto}>提交合作摘要 <ArrowRight size={18} aria-hidden="true" /></a>
+      <a class="btn btn-primary" href={partnershipApplicationHref}>提交合作摘要 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
   </article>
 </BaseLayout>

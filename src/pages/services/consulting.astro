@@ -1,17 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
-import { siteConfig } from '../../config/siteConfig';
+import { getServiceApplicationHref } from '../../config/serviceApplication';
 import '../../styles/service-pages.css';
 
-const consultingMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeURIComponent('申請 AI 專案卡關諮詢')}&body=${encodeURIComponent(`你的姓名：
-你現在想完成什麼：
-目前已做到哪裡：
-已經試過哪些方法或工具：
-目前最大的阻礙：
-這個問題已經造成什麼影響：
-這次最希望釐清哪件事：
-可先看的畫面、文件或連結（選填，請勿附密碼、Token 或機密原文）：`)}`;
+const consultingApplicationHref = getServiceApplicationHref('consulting', 'consulting_page');
 
 const deliverables = [
   ['一句核心判斷', '把現在最可能的問題寫成一句能直接拿來做決定的話。'],
@@ -38,7 +31,7 @@ const faq = [
         <h1 class="display-heading">已經做了一段時間，還是不知道到底哪裡有問題？</h1>
         <p class="service-lead">帶一個真實專案進來。我們用 90 分鐘一起看你想做什麼、現在怎麼做、試過哪些方法，找出最主要的卡點，排出接下來該做與先不做的事。</p>
         <div class="service-actions">
-          <a class="btn btn-primary" href={consultingMailto}>提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="btn btn-primary" href={consultingApplicationHref}>提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
           <span>90 分鐘線上諮詢，NT$5,000。確認適合並完成付款後保留時段。</span>
         </div>
       </div>
@@ -108,7 +101,7 @@ const faq = [
 
     <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="consulting-cta-title">
       <div><p class="section-label">下一步</p><h2 id="consulting-cta-title">不用先寫完整需求書。</h2><p>告訴我你想完成什麼、目前做到哪裡、試過什麼與最大阻礙。請勿附上密碼、Token 或機密原文。</p></div>
-      <a class="btn btn-primary" href={consultingMailto}>提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
+      <a class="btn btn-primary" href={consultingApplicationHref}>提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
   </article>
 </BaseLayout>
