@@ -39,9 +39,9 @@ export const GET: APIRoute = async () => {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 padding: '38px 42px 34px 44px',
-                border: '1px solid rgba(108, 76, 207, 0.18)',
+                border: '1px solid rgba(108, 76, 207, 0.24)',
                 borderRadius: '30px',
-                background: 'rgba(250, 247, 240, 0.94)',
+                background: 'rgba(250, 247, 240, 0.82)',
               },
               children: [
                 {
