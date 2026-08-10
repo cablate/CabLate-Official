@@ -41,7 +41,7 @@ export const GET: APIRoute = async () => {
                 padding: '38px 42px 34px 44px',
                 border: '1px solid rgba(108, 76, 207, 0.24)',
                 borderRadius: '30px',
-                background: 'rgba(250, 247, 240, 0.82)',
+                background: 'rgba(250, 247, 240, 0.7)',
               },
               children: [
                 {
@@ -77,7 +77,15 @@ export const GET: APIRoute = async () => {
                 {
                   type: 'div',
                   props: {
-                    style: { display: 'flex', flexDirection: 'column' },
+                    style: {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      marginLeft: '-14px',
+                      padding: '14px 22px 17px 14px',
+                      borderRadius: '20px',
+                      background:
+                        'linear-gradient(90deg, rgba(250, 247, 240, 0.5) 0%, rgba(250, 247, 240, 0.26) 72%, rgba(250, 247, 240, 0) 100%)',
+                    },
                     children: [
                       {
                         type: 'div',
