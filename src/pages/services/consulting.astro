@@ -5,26 +5,26 @@ import { siteConfig } from '../../config/siteConfig';
 import '../../styles/service-pages.css';
 
 const consultingMailto = `mailto:${siteConfig.contactEmail}?subject=${encodeURIComponent('申請 AI 專案卡關諮詢')}&body=${encodeURIComponent(`你的姓名：
-你想完成什麼可觀察的結果：
+你現在想完成什麼：
 目前已做到哪裡：
 已經試過哪些方法或工具：
 目前最大的阻礙：
-如果不處理，會造成什麼影響：
-希望這次先做出哪個判斷：
+這個問題已經造成什麼影響：
+這次最希望釐清哪件事：
 可先看的畫面、文件或連結（選填，請勿附密碼、Token 或機密原文）：`)}`;
 
 const deliverables = [
-  ['核心診斷', '把目前最可能的瓶頸寫成一句能用來做決策的判斷。'],
-  ['卡點地圖', '整理目標、現況、資料、工具、狀態與驗收之間的主要斷點。'],
-  ['取捨建議', '判斷應該繼續、縮小、換路，或暫時不要做成 Agent。'],
-  ['行動卡', '留下優先三步、不做清單、需要補的證據與回顧節點。'],
+  ['一句核心判斷', '把現在最可能的問題寫成一句能直接拿來做決定的話。'],
+  ['主要卡點', '整理目標、現況、資料、工具與檢查方式之間，真正沒有接上的地方。'],
+  ['該做與先不做', '判斷要繼續、縮小、換一條路，或暫時不要做成 Agent。'],
+  ['一頁行動卡', '留下優先三步、先不做什麼、還缺哪些資訊，以及何時回頭檢查。'],
 ];
 
 const faq = [
-  ['會不會只得到很大的方向？', '不會只留一句抽象建議。若資訊足夠，會留下核心瓶頸、取捨判斷、優先三步與不做清單；資訊不足時，也會把未解事項寫清楚。'],
+  ['會不會只得到很大的方向？', '不會只留一句抽象建議。資訊足夠時，會留下主要卡點、取捨、優先三步與先不做什麼；資訊不足時，也會把還缺什麼寫清楚。'],
   ['不是工程師也適合嗎？', '可以。重點是你有一個真實任務與可描述的結果，不是你會不會寫程式。'],
-  ['諮詢會直接幫我開發嗎？', '不包含代開發。這一步先決定該不該做、先做哪個切片，以及怎樣算完成。需要共同實作時，再另外確認陪跑範圍。'],
-  ['費用與時段怎麼確認？', '我會先看你提交的情境。確認適合後，再一次說明費用、可選時段與合作條款；你確認前不會產生付款義務。'],
+  ['諮詢會直接幫我開發嗎？', '不包含代開發。這 90 分鐘先找出真正問題、該不該做與先做什麼。需要一起實作時，再另外確認陪跑是否適合。'],
+  ['費用與時段怎麼確認？', '費用是 NT$5,000。先提交情境，確認這種方式適合後，我會提供可選時段與完整條款；完成付款才保留時段。'],
 ];
 ---
 
@@ -35,11 +35,11 @@ const faq = [
     <header class="service-shell service-detail-hero page-paper paper-card">
       <div class="service-detail-hero__copy">
         <p class="section-label">AI 專案卡關諮詢</p>
-        <h1 class="display-heading">先把真正卡點判斷清楚，再決定下一步要不要做。</h1>
-        <p class="service-lead">這不是泛聊 AI，也不是直接推一套工具。你帶一個真實專案進來，我們一起看目標、現況、資料、工具、狀態與驗收，找出現在最該處理的斷點。</p>
+        <h1 class="display-heading">已經做了一段時間，還是不知道到底哪裡有問題？</h1>
+        <p class="service-lead">帶一個真實專案進來。我們用 90 分鐘一起看你想做什麼、現在怎麼做、試過哪些方法，找出最主要的卡點，排出接下來該做與先不做的事。</p>
         <div class="service-actions">
           <a class="btn btn-primary" href={consultingMailto}>提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
-          <span>先判斷適配，再確認費用與 90 分鐘線上時段。</span>
+          <span>90 分鐘線上諮詢，NT$5,000。確認適合並完成付款後保留時段。</span>
         </div>
       </div>
       <figure class="service-detail-hero__visual">
@@ -50,8 +50,8 @@ const faq = [
     <section class="service-shell service-section page-paper paper-card" aria-labelledby="outcomes-title">
       <header class="service-section__intro">
         <p class="section-label">你會帶走</p>
-        <h2 id="outcomes-title">不是多一場會議，而是原本做不出的判斷。</h2>
-        <p>每一項產物都要能回到你的真實案例，不用漂亮術語替代還沒確認的事情。</p>
+        <h2 id="outcomes-title">談完之後，你要知道下一步到底做什麼。</h2>
+        <p>所有判斷都會回到你提供的真實案例。沒有足夠資訊的地方會直接標出來，不會用漂亮術語帶過。</p>
       </header>
       <div class="service-deliverables">
         {deliverables.map(([title, body]) => <article><h3>{title}</h3><p>{body}</p></article>)}
@@ -61,7 +61,7 @@ const faq = [
     <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="fit-title">
       <header class="service-section__intro service-section__intro--compact">
         <p class="section-label">先確認是否適合</p>
-        <h2 id="fit-title">有真實題目，才有值得做的診斷。</h2>
+        <h2 id="fit-title">你手上要有一個真的正在卡住的題目。</h2>
       </header>
       <div class="service-fit-column">
         <h3><Check size={19} aria-hidden="true" />適合你，如果</h3>
@@ -69,7 +69,7 @@ const faq = [
           <li>你正在做一個真實 AI 專案、工作流或產品。</li>
           <li>你已經試過一些方法，卻還不知道真正瓶頸。</li>
           <li>問題已經造成重做、延誤、成本或決策壓力。</li>
-          <li>你願意提供必要資料，並親自做最後決定。</li>
+          <li>你願意提供必要資訊，並親自做最後決定。</li>
         </ul>
       </div>
       <div class="service-fit-column service-fit-column--muted">
@@ -86,20 +86,20 @@ const faq = [
     <section class="service-shell service-section service-process page-paper paper-card" aria-labelledby="consulting-process-title">
       <header class="service-section__intro service-section__intro--compact">
         <p class="section-label">進行方式</p>
-        <h2 id="consulting-process-title">先看情境，適合才排入諮詢。</h2>
+        <h2 id="consulting-process-title">先讓我看問題，適合才安排時間。</h2>
       </header>
       <ol>
         <li><span>01</span><div><h3>提交情境</h3><p>說清楚想完成什麼、目前做到哪、試過什麼與最大阻礙。</p></div></li>
-        <li><span>02</span><div><h3>適配判斷</h3><p>先確認這是不是一次診斷能處理的問題；不適合時直接說明。</p></div></li>
-        <li><span>03</span><div><h3>確認費用與時段</h3><p>適合時才提供完整條款與可選時段，你確認後才成立合作。</p></div></li>
-        <li><span>04</span><div><h3>進行並留下行動卡</h3><p>用真實現況找核心瓶頸，將取捨、行動與未解事項整理成可回顧成果。</p></div></li>
+        <li><span>02</span><div><h3>確認是否適合</h3><p>先看這是不是 90 分鐘能處理的問題；不適合時會直接說明。</p></div></li>
+        <li><span>03</span><div><h3>付款並選時段</h3><p>確認適合後，提供完整條款與可選時段；完成 NT$5,000 付款後保留時間。</p></div></li>
+        <li><span>04</span><div><h3>進行諮詢</h3><p>找出主要卡點、該做與先不做的事，最後整理成一頁行動卡。</p></div></li>
       </ol>
     </section>
 
     <section class="service-shell service-section service-faq page-paper paper-card" aria-labelledby="consulting-faq-title">
       <header class="service-section__intro service-section__intro--compact">
         <p class="section-label">常見問題</p>
-        <h2 id="consulting-faq-title">先把合作邊界說清楚。</h2>
+        <h2 id="consulting-faq-title">預約前常被問的事。</h2>
       </header>
       <div>
         {faq.map(([question, answer]) => <details><summary>{question}</summary><p>{answer}</p></details>)}
@@ -107,7 +107,7 @@ const faq = [
     </section>
 
     <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="consulting-cta-title">
-      <div><p class="section-label">下一步</p><h2 id="consulting-cta-title">不用先整理成完整需求書。</h2><p>把你想完成什麼、目前做到哪裡、試過什麼與最大阻礙寫給我。請勿附上密碼、Token 或機密原文。</p></div>
+      <div><p class="section-label">下一步</p><h2 id="consulting-cta-title">不用先寫完整需求書。</h2><p>告訴我你想完成什麼、目前做到哪裡、試過什麼與最大阻礙。請勿附上密碼、Token 或機密原文。</p></div>
       <a class="btn btn-primary" href={consultingMailto}>提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
   </article>

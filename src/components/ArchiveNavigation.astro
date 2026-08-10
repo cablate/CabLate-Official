@@ -1,11 +1,9 @@
 ---
-import { primaryNavigation } from '../config/authority';
+import { primaryNavigationGroups } from '../config/authority';
 import { Menu, X } from '@lucide/astro';
 
 const currentPath = Astro.url.pathname;
-const isCurrent = (href: string) => href === '/'
-  ? currentPath === '/'
-  : currentPath === href || currentPath.startsWith(href);
+const isCurrent = (href: string) => currentPath === href;
 ---
 
 <header class="site-header">
@@ -17,11 +15,25 @@ const isCurrent = (href: string) => href === '/'
       </span>
     </a>
     <nav class="site-rail__nav" aria-label="主要導覽">
-      {primaryNavigation.map((item) => (
-        <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
-          <span>{item.label}</span>
-          <small>{item.railLabel}</small>
-        </a>
+      {primaryNavigationGroups.map((group, groupIndex) => (
+        <div class="site-nav-group">
+          <div class="site-nav-group__header">
+            <p id={`rail-nav-group-${groupIndex}`}>{group.label}</p>
+            {'overviewHref' in group && (
+              <a class="site-nav-group__overview" href={group.overviewHref} aria-current={isCurrent(group.overviewHref) ? 'page' : undefined}>總覽</a>
+            )}
+          </div>
+          <ul class="site-nav-list" aria-labelledby={`rail-nav-group-${groupIndex}`}>
+            {group.items.map((item) => (
+              <li>
+                <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                  <span>{item.label}</span>
+                  <small>{item.railLabel}</small>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
     </nav>
   </aside>
@@ -38,10 +50,24 @@ const isCurrent = (href: string) => href === '/'
         <span>選單</span>
       </summary>
       <nav id="mobile-navigation" aria-label="手機主要導覽">
-        {primaryNavigation.map((item) => (
-          <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
-            <span>{item.label}</span><small>{item.railLabel}</small>
-          </a>
+        {primaryNavigationGroups.map((group, groupIndex) => (
+          <div class="site-nav-group">
+            <div class="site-nav-group__header">
+              <p id={`mobile-nav-group-${groupIndex}`}>{group.label}</p>
+              {'overviewHref' in group && (
+                <a class="site-nav-group__overview" href={group.overviewHref} aria-current={isCurrent(group.overviewHref) ? 'page' : undefined}>總覽</a>
+              )}
+            </div>
+            <ul class="site-nav-list" aria-labelledby={`mobile-nav-group-${groupIndex}`}>
+              {group.items.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                    <span>{item.label}</span><small>{item.railLabel}</small>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
       </nav>
     </details>
