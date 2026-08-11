@@ -15,17 +15,17 @@ const problemSignals = [
 const cooperationOptions = [
   {
     title: '團隊現況診斷',
-    fit: '還不知道問題主要來自能力、流程、資料、工具或治理。',
+    fit: '還不知道問題在哪，就先把工作、角色與限制看清楚，最後整理出真正要處理的問題與建議順序。',
     output: '需求摘要、主要問題、希望改變的行為、判斷依據與後續建議。',
   },
   {
     title: '真實工作情境工作坊',
-    fit: '共同問題已經清楚，需要讓一群人用同一套方式練習與驗收。',
+    fit: '問題已經明確，需要一群人一起練、一起做，再用同一套方式檢查成果。',
     output: '客製案例、實作任務、共用做法、練習成果與課後行動。',
   },
   {
     title: '小規模導入試點',
-    fit: '已有明確使用者、工作流程、內部負責人與可安全使用的資料。',
+    fit: '已經有明確場景與內部負責人，就挑一小段實際跑一次，確認能不能安全接進工作。',
     output: '一段可測試的流程、操作與檢查方式、交接文件和停止條件。',
   },
 ];
@@ -46,7 +46,7 @@ const faq = [
 ];
 ---
 
-<BaseLayout title="企業 AI 現況診斷、工作坊與導入" description="從團隊真實工作與重複發生的問題出發，先判斷能力、流程、資料、工具或管理問題，再設計現況診斷、工作坊或小規模導入。" analytics="disabled">
+<BaseLayout title="企業 AI 現況診斷、工作坊與導入" description="從團隊真實工作與重複發生的問題出發，先判斷能力、流程、資料、工具或管理問題，再設計現況診斷、工作坊或小規模導入。" image="/og/pages/enterprise.png" imageAlt="企業與團隊合作：一堂 AI 課，不會讓團隊把工作做穩。" imageWidth={1200} imageHeight={630} analytics="disabled">
   <article class="service-page paper-page">
     <nav class="service-shell service-back" aria-label="服務導覽"><a href="/services/"><ArrowLeft size={16} aria-hidden="true" />回到合作方式</a></nav>
 
@@ -54,7 +54,7 @@ const faq = [
       <div class="service-detail-hero__copy">
         <p class="section-label">企業與團隊合作</p>
         <h1 class="display-heading">一堂 AI 課，不會讓團隊把工作做穩。</h1>
-        <p class="service-lead">先找出團隊反覆卡住的地方，再決定需要現況診斷、工作坊，還是小規模導入。</p>
+        <p class="service-lead">如果大家上完課還是各做各的、無法交接，或試點只能靠少數人撐，問題通常不只是「還不會用 AI」。我會先看是哪一段工作出了問題，再決定適合上課、改流程，還是做一個小型試點。</p>
         <div class="service-actions">
           <a class="btn btn-primary" href="#enterprise-fit">先確認企業合作條件 <ArrowRight size={18} aria-hidden="true" /></a>
         </div>
@@ -66,8 +66,8 @@ const faq = [
 
     <section class="service-shell service-section service-enterprise-signals page-paper paper-card" aria-labelledby="enterprise-signals-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="enterprise-signals-title">團隊卡住，通常不只是大家還不會用某個工具。</h2>
-        <p>先找出實際發生的問題，才知道要改知識、行為、流程、權限、資料，還是管理方式。</p>
+        <h2 id="enterprise-signals-title">如果上過課，工作方式還是沒變，通常不是再補一堂課就會好。</h2>
+        <p>有時是大家不知道怎麼用，有時是資料拿不到、流程接不起來，也可能根本沒有人負責檢查。這些狀況需要的做法不同。</p>
       </header>
       <dl>
         {problemSignals.map(([title, body]) => <div><dt>{title}</dt><dd>{body}</dd></div>)}
@@ -77,7 +77,7 @@ const faq = [
     <section class="service-shell service-section service-enterprise-options page-paper paper-card" aria-labelledby="enterprise-options-title">
       <header class="service-section__intro service-section__intro--stacked">
         <p class="section-label">可能的合作方式</p>
-        <h2 id="enterprise-options-title">不先套套餐，依團隊問題選擇剛好需要的做法。</h2>
+        <h2 id="enterprise-options-title">我不會先拿一張課程菜單請你選。</h2>
         <p>這三種方式可以單獨進行，也可能分階段安排。實際內容會在需求確認後提出。</p>
       </header>
       <ol>
@@ -93,20 +93,23 @@ const faq = [
 
     <section class="service-shell service-section service-enterprise-evidence page-paper paper-card" aria-labelledby="enterprise-evidence-title">
       <div>
-        <h2 id="enterprise-evidence-title">交付的不只是教材，也要留下團隊之後能使用的東西。</h2>
+        <h2 id="enterprise-evidence-title">如果合作結束後只剩一份投影片，通常沒有太大意義。</h2>
       </div>
-      <ul>
-        <li><strong>共同問題。</strong>一份包含角色、工作、重複問題與限制的現況摘要。</li>
-        <li><strong>真實作品。</strong>由參與者用實際情境完成的流程、規格或測試結果。</li>
-        <li><strong>共用規則。</strong>可重複使用的 Skill、Context、檢核表或驗收方式。</li>
-        <li><strong>主管證據。</strong>能觀察行為是否改變，以及還缺哪些條件的紀錄。</li>
-        <li><strong>交接決定。</strong>誰維護、何時重查、遇到什麼條件要停止或升級。</li>
-      </ul>
+      <div>
+        <p>合作結束前，至少要留下：</p>
+        <ul>
+          <li>團隊共同看見的問題。</li>
+          <li>現場做出的成果。</li>
+          <li>可以沿用的規則或檢查方式。</li>
+          <li>主管看得到的變化與未解問題。</li>
+          <li>接下來由誰接手。</li>
+        </ul>
+      </div>
     </section>
 
     <section id="enterprise-fit" class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="enterprise-fit-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="enterprise-fit-title">有真實工作、內部負責人與驗收證據，才值得開始。</h2>
+        <h2 id="enterprise-fit-title">企業合作要做得下去，至少要有人知道：誰在做、哪裡出問題、最後由誰決定。</h2>
       </header>
       <div class="service-fit-column">
         <h3><Check size={19} aria-hidden="true" />適合提出需求，如果</h3>
@@ -130,7 +133,7 @@ const faq = [
 
     <section class="service-shell service-section service-process service-process--five page-paper paper-card" aria-labelledby="enterprise-process-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="enterprise-process-title">每一步都要讓下一個決定更清楚。</h2>
+        <h2 id="enterprise-process-title">先把問題看清楚，我才會提方案。</h2>
       </header>
       <ol>
         {enterpriseProcess.map(([title, body], index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{title}</h3><p>{body}</p></div></li>)}
@@ -147,7 +150,7 @@ const faq = [
     <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="enterprise-cta-title">
       <div>
         <p class="section-label">提出企業需求</p>
-        <h2 id="enterprise-cta-title">先說哪些人、哪一段工作出了什麼問題。</h2>
+        <h2 id="enterprise-cta-title">不用先做完整標案。告訴我哪一群人正在做什麼、現在最麻煩的是哪一段就可以。</h2>
         <p>不必先整理成完整標案。請勿附密碼、Token 或機密原文；確認適合後，才會進一步討論工作內容、費用與條款。</p>
       </div>
       <a class="btn btn-primary" href={enterpriseApplicationHref}>提交企業合作情境 <ArrowRight size={18} aria-hidden="true" /></a>

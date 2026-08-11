@@ -31,7 +31,7 @@ const timeline = [
 const [featuredOutput, ...supportingOutputs] = openSourceProofs;
 ---
 
-<BaseLayout title="關於 CabLate｜從全端工程到 AI 工作流程" description="CabLate 從全端工程與系統設計出發，持續研究 AI 應用、Claude Code、Agent 工作流程與數位產品落地，並透過課程、開源工具、公開研究與顧問合作分享實作方法。">
+<BaseLayout title="關於 CabLate｜從全端工程到 AI 工作流程" description="CabLate 從全端工程與系統設計出發，持續研究 AI 應用、Claude Code、Agent 工作流程與數位產品落地，並透過課程、開源工具、公開研究與顧問合作分享實作方法。" image="/og/pages/about.png" imageAlt="關於 CabLate：AI 成功做過一次，不等於真正完成。" imageWidth={1200} imageHeight={630}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
 
   <article class="about-page paper-page">
@@ -42,7 +42,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
       </div>
       <div class="about-hero__grid">
         <div class="about-hero__headline">
-          <h1 class="display-heading"><span class="heading-phrase">我從工程出發，</span><span class="heading-phrase">也因此很難把</span><span class="heading-phrase">「AI 成功做過一次」</span><span class="heading-phrase">當成真正完成</span></h1>
+          <h1 class="display-heading"><span class="heading-phrase">我從工程出發，</span><span class="heading-phrase">也因此很難把</span><span class="heading-phrase">「AI 成功做過一次」</span><span class="heading-phrase">當成真正完成。</span></h1>
         </div>
         <div class="about-hero__aside">
           <p class="about-hero__lead">我是 CabLate，做過全端工程、系統設計與產品實作，現在把這些經驗用在 AI 教學、Agent 工作流程與數位產品上。</p>
@@ -76,9 +76,8 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
       <header class="turning-points__header">
         <div class="section-heading">
           <p class="about-kicker">關鍵轉折</p>
-          <h2 id="timeline-title">四段經歷，慢慢形成現在的工作方式</h2>
+          <h2 id="timeline-title">這些判斷不是我一開始就會的。</h2>
         </div>
-        <p class="turning-points__note">從非本科轉職、工程實務，到把重心轉向 AI 應用，這些經歷共同塑造了我現在看問題的方法。</p>
       </header>
       <ol class="timeline">
         {timeline.map((item, index) => (
@@ -148,7 +147,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
       <section class="delivery-experience" aria-labelledby="delivery-experience-title">
         <header class="delivery-experience__header section-heading">
           <p class="about-kicker">課程與內容</p>
-          <h2 id="delivery-experience-title">除了做工具，<br />我也把方法整理成別人可以學會的內容</h2>
+          <h2 id="delivery-experience-title">除了做工具，<br />我也把方法整理成別人可以學會的內容。</h2>
           <p>課程、教材與內容平台是另一種成果。重點不只是講懂概念，而是讓學員知道下一步怎麼做，以及出錯時可以回到哪裡查。</p>
         </header>
         <div class="delivery-experience__body">
@@ -180,12 +179,12 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
       <div class="principles__grid">
         <div class="principles__intro section-heading">
           <p class="about-kicker">工作原則</p>
-          <h2 id="principles-title">工具會一直換，但這四件事不會</h2>
+          <h2 id="principles-title">這幾年工具一直換，但我做事有幾個習慣沒什麼變。</h2>
         <p class="principles__note">不論做研究、教學、產品或合作，我都會用下面四個原則確認自己沒有被熱門名詞帶著走。</p>
         </div>
         <div class="principles__list">
           <article><span>01</span><h3>沒有做過的，不假裝熟悉</h3><p>我會區分實際經驗、研究判斷與仍待驗證的想法，也會說清楚方法適用到哪裡。</p></article>
-          <article><span>02</span><h3>先做出能被真實使用的版本</h3><p>讓使用者、限制與錯誤提早出現，再根據實際證據修正。</p></article>
+          <article><span>02</span><h3>先讓東西被人用一次。</h3><p>讓使用者、限制與錯誤提早出現，再根據實際證據修正。</p></article>
           <article><span>03</span><h3>先看問題，再決定要不要用 AI</h3><p>簡單方法已經能穩定解決，就不為了 Agent、MCP 或自動化硬加複雜度。</p></article>
           <article><span>04</span><h3>做對一次，就把真正有效的原因留下來</h3><p>不只保存最後的 Prompt，也保存判斷、順序、例外與檢查方式。</p></article>
         </div>
@@ -195,8 +194,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
     <section class="about-next page-paper paper-card paper-card--clip" id="next" aria-labelledby="next-title">
       <div>
         <p class="about-kicker">下一步</p>
-          <h2 id="next-title">先從最接近你目前問題的<br />地方開始</h2>
-        <p class="about-next__intro">想自己學，可以看課程與手冊；手上的問題已經影響工作，也可以直接把情境交給我一起釐清。</p>
+          <h2 id="next-title">想自己研究，可以從課程、手冊或公開內容開始；如果問題已經影響工作，也可以直接拿來跟我一起看。</h2>
       </div>
       <div class="about-next__links">
         <a class="btn btn-primary about-next__primary" href="/services/">了解服務與合作方式 <ArrowRight size={18} aria-hidden="true" /></a>

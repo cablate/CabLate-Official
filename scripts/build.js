@@ -2,23 +2,28 @@ import { execSync } from 'child_process';
 import { readdirSync, statSync } from 'fs';
 import { join } from 'path';
 
+const isCI = Boolean(process.env.CF_PAGES || process.env.CI);
+
 // 0. Content validation — fail fast before building
 execSync('node scripts/validate-content.js', { stdio: 'inherit' });
 
 // 1. Astro build
 execSync('npx astro build', { stdio: 'inherit' });
 
-// 2. Sitemap ping
-try {
-  await fetch('https://www.google.com/ping?sitemap=https://cablate.com/sitemap.xml');
-  console.log('[postbuild] Sitemap ping sent');
-} catch {
-  console.log('[postbuild] Sitemap ping failed (network)');
+// 2. Sitemap ping — only notify search engines after a CI build.
+if (isCI) {
+  try {
+    await fetch('https://www.google.com/ping?sitemap=https://cablate.com/sitemap.xml');
+    console.log('[postbuild] Sitemap ping sent');
+  } catch {
+    console.log('[postbuild] Sitemap ping failed (network)');
+  }
+} else {
+  console.log('[postbuild] Sitemap ping skipped — not in CI environment');
 }
 
 // 3. IndexNow — only runs in CI (Cloudflare Pages or generic CI)
 async function submitIndexNow() {
-  const isCI = process.env.CF_PAGES || process.env.CI;
   if (!isCI) {
     console.log('[indexnow] Skipping — not in CI environment');
     return;

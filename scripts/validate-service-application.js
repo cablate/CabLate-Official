@@ -19,7 +19,7 @@ expectText(application, 'noindex={true}', 'application privacy');
 expectText(application, 'analytics="disabled"', 'application privacy');
 expectText(application, 'method="post"', 'form fallback');
 expectText(application, 'enctype="text/plain"', 'form fallback');
-expectText(application, '開啟草稿不代表 Cab 已收到', 'truthful receipt state');
+expectText(application, '開啟草稿不代表我已經收到', 'truthful receipt state');
 expectText(application, 'consent" value="agreed" required', 'consent');
 expectText(application, 'mailto.length <= 8000', 'mailto length guard');
 expectText(application, 'CAB-${date}-', 'lead ID');

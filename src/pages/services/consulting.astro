@@ -7,21 +7,21 @@ import '../../styles/service-pages.css';
 const consultingApplicationHref = getServiceApplicationHref('consulting', 'consulting_page');
 
 const deliverables = [
-  ['一句核心判斷', '把現在最可能的問題寫成一句能直接拿來做決定的話。'],
-  ['主要卡點', '整理目標、現況、資料、工具與檢查方式之間，真正沒有接上的地方。'],
+  ['一句核心判斷', '先把問題講成一句能做決定的話。'],
+  ['主要卡點', '找出現在到底是哪一段沒有接上。'],
   ['該做與先不做', '判斷要繼續、縮小、換一條路，或暫時不要做成 Agent。'],
   ['一頁行動卡', '留下優先三步、先不做什麼、還缺哪些資訊，以及何時回頭檢查。'],
 ];
 
 const faq = [
-  ['會不會只得到很大的方向？', '不會只留一句抽象建議。資訊足夠時，會留下主要卡點、取捨、優先三步與先不做什麼；資訊不足時，也會把還缺什麼寫清楚。'],
+  ['會不會只得到很大的方向？', '不會只丟一句「建議你再想清楚」。資訊夠，我會排出接下來先做什麼；資訊不夠，我也會明確告訴你還缺哪一塊。'],
   ['不是工程師也適合嗎？', '可以。重點是你有一個真實任務與可描述的結果，不是你會不會寫程式。'],
-  ['諮詢會直接幫我開發嗎？', '不包含代開發。這 90 分鐘先找出真正問題、該不該做與先做什麼。需要一起實作時，再另外確認陪跑是否適合。'],
+  ['諮詢會直接幫我開發嗎？', '不包含代開發。這 60 分鐘先找出真正問題、該不該做與先做什麼。需要一起實作時，再另外確認陪跑是否適合。'],
   ['費用與時段怎麼確認？', '費用是 NT$5,000。先提交情境，確認這種方式適合後，我會提供可選時段與完整條款；完成付款才保留時段。'],
 ];
 ---
 
-<BaseLayout title="AI 專案卡關諮詢" description="針對一個已經投入時間、卻反覆重做或不知道該先改哪裡的 AI 專案，做出核心診斷、取捨判斷與下一步行動卡。" analytics="disabled">
+<BaseLayout title="AI 專案卡關諮詢" description="針對一個已經投入時間、卻反覆重做或不知道該先改哪裡的 AI 專案，做出核心診斷、取捨判斷與下一步行動卡。" image="/og/pages/consulting.png" imageAlt="AI 專案卡關諮詢：已經做了一段時間，還是不知道問題在哪？" imageWidth={1200} imageHeight={630} analytics="disabled">
   <article class="service-page paper-page">
     <nav class="service-shell service-back" aria-label="服務導覽"><a href="/services/"><ArrowLeft size={16} aria-hidden="true" />回到合作方式</a></nav>
 
@@ -29,10 +29,10 @@ const faq = [
       <div class="service-detail-hero__copy">
         <p class="section-label">AI 專案卡關諮詢</p>
         <h1 class="display-heading">已經做了一段時間，還是不知道到底哪裡有問題？</h1>
-        <p class="service-lead">帶一個真實專案進來。我們用 90 分鐘一起看你想做什麼、現在怎麼做、試過哪些方法，找出最主要的卡點，排出接下來該做與先不做的事。</p>
+        <p class="service-lead">帶一個你已經做過、但不知道接下來該往哪走的專案來。60 分鐘內，我們會把做過什麼、哪裡反覆出問題、還缺什麼攤開，最後排出先做什麼、哪些先不要做。</p>
         <div class="service-actions">
           <a class="btn btn-primary" href={consultingApplicationHref}>提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
-          <span>90 分鐘線上諮詢，NT$5,000。確認適合並完成付款後保留時段。</span>
+          <span>60 分鐘線上諮詢，NT$5,000。確認適合並完成付款後保留時段。</span>
         </div>
       </div>
       <figure class="service-detail-hero__visual">
@@ -44,7 +44,7 @@ const faq = [
       <header class="service-section__intro">
         <p class="section-label">你會帶走</p>
         <h2 id="outcomes-title">談完之後，你要知道下一步到底做什麼。</h2>
-        <p>所有判斷都會回到你提供的真實案例。沒有足夠資訊的地方會直接標出來，不會用漂亮術語帶過。</p>
+        <p>有資料就用資料判斷；看不出來的地方我會直接說還缺什麼，不會硬湊一個漂亮答案。</p>
       </header>
       <div class="service-deliverables">
         {deliverables.map(([title, body]) => <article><h3>{title}</h3><p>{body}</p></article>)}
@@ -54,7 +54,7 @@ const faq = [
     <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="fit-title">
       <header class="service-section__intro service-section__intro--compact">
         <p class="section-label">先確認是否適合</p>
-        <h2 id="fit-title">你手上要有一個真的正在卡住的題目。</h2>
+        <h2 id="fit-title">這種諮詢有一個前提：你手上要有東西可以看。</h2>
       </header>
       <div class="service-fit-column">
         <h3><Check size={19} aria-hidden="true" />適合你，如果</h3>
@@ -83,7 +83,7 @@ const faq = [
       </header>
       <ol>
         <li><span>01</span><div><h3>提交情境</h3><p>說清楚想完成什麼、目前做到哪、試過什麼與最大阻礙。</p></div></li>
-        <li><span>02</span><div><h3>確認是否適合</h3><p>先看這是不是 90 分鐘能處理的問題；不適合時會直接說明。</p></div></li>
+        <li><span>02</span><div><h3>確認是否適合</h3><p>先看這是不是 60 分鐘能處理的問題；不適合時會直接說明。</p></div></li>
         <li><span>03</span><div><h3>付款並選時段</h3><p>確認適合後，提供完整條款與可選時段；完成 NT$5,000 付款後保留時間。</p></div></li>
         <li><span>04</span><div><h3>進行諮詢</h3><p>找出主要卡點、該做與先不做的事，最後整理成一頁行動卡。</p></div></li>
       </ol>
