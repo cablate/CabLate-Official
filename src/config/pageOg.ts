@@ -84,7 +84,7 @@ export const pageOgEntries: PageOgEntry[] = [
   {
     slug: 'consulting',
     label: 'AI 專案卡關諮詢',
-    badge: '一次 90 分鐘',
+    badge: '一次 60 分鐘',
     eyebrow: '帶一個真的專案來',
     headline: ['已經做了一段時間，', '還是不知道問題在哪？'],
     description: '把做過什麼與反覆出錯的地方攤開，排出真正的下一步。',

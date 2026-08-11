@@ -192,7 +192,7 @@ export const primaryNavigationGroups = [
     label: '合作方式',
     overviewHref: '/services/',
     items: [
-      { label: '專案諮詢', railLabel: '90 分鐘先把問題看清楚', href: '/services/consulting/' },
+      { label: '專案諮詢', railLabel: '60 分鐘先把問題看清楚', href: '/services/consulting/' },
       { label: 'AI 應用陪跑', railLabel: '先別急著換工具，先看問題到底卡在哪', href: '/services/coaching/' },
       { label: '企業合作', railLabel: '診斷、工作坊與導入', href: '/services/enterprise/' },
       { label: '講師與內容', railLabel: '演講、共創與產品合作', href: '/services/partnerships/' },

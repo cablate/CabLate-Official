@@ -5,7 +5,7 @@ export const serviceApplicationOptions = [
     id: 'consulting',
     label: 'AI 專案卡關諮詢',
     shortLabel: '專案諮詢',
-    summary: '90 分鐘先把問題和下一步看清楚。',
+    summary: '60 分鐘先把問題和下一步看清楚。',
   },
   {
     id: 'coaching',
