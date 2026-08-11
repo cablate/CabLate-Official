@@ -1,5 +1,8 @@
 export type PageOgVisual =
   | {
+      type: 'none';
+    }
+  | {
       type: 'photo';
       src: string;
       position?: string;
@@ -36,11 +39,7 @@ export const pageOgEntries: PageOgEntry[] = [
     footer: '方法・課程・合作',
     accent: '#6c4ccf',
     accentSoft: '#e6a56f',
-    visual: {
-      type: 'index',
-      mark: '03',
-      lines: ['專業方法', '學習內容', '合作方式'],
-    },
+    visual: { type: 'none' },
     imageAlt: 'CabLate：AI 已經做得很快了，難的是把事情真的做完。',
   },
   {
@@ -53,11 +52,7 @@ export const pageOgEntries: PageOgEntry[] = [
     footer: '五層診斷・一個下一步',
     accent: '#466a62',
     accentSoft: '#d49a67',
-    visual: {
-      type: 'index',
-      mark: '05',
-      lines: ['題目', '資料', '工具', '狀態', '驗收'],
-    },
+    visual: { type: 'none' },
     imageAlt: 'AI 工作流健檢：AI 一直鬼打牆，先找出最值得修的一層。',
   },
   {
@@ -67,14 +62,10 @@ export const pageOgEntries: PageOgEntry[] = [
     eyebrow: '不用照順序學',
     headline: ['先補你現在', '真正缺的那一塊。'],
     description: '免費診斷、講座、課程與工程手冊，缺哪一塊就先補哪一塊。',
-    footer: 'LEARNING MAP / 04',
+    footer: '先找到真正缺的那一塊',
     accent: '#7653bd',
     accentSoft: '#d39162',
-    visual: {
-      type: 'index',
-      mark: '04',
-      lines: ['免費診斷', '單次講座', '系統課程', '工程手冊'],
-    },
+    visual: { type: 'none' },
     imageAlt: 'CabLate 學習內容與課程：先補你現在真正缺的那一塊。',
   },
   {
@@ -87,11 +78,7 @@ export const pageOgEntries: PageOgEntry[] = [
     footer: '四種入口・各有適用情境',
     accent: '#6c4ccf',
     accentSoft: '#d28b63',
-    visual: {
-      type: 'index',
-      mark: '04',
-      lines: ['卡關諮詢', 'AI 應用陪跑', '企業合作', '內容邀約'],
-    },
+    visual: { type: 'none' },
     imageAlt: 'CabLate 合作方式：從你現在卡住的事情，決定適合的合作方式。',
   },
   {
@@ -104,11 +91,7 @@ export const pageOgEntries: PageOgEntry[] = [
     footer: '核心診斷・取捨判斷・行動卡',
     accent: '#b36d45',
     accentSoft: '#6f57b6',
-    visual: {
-      type: 'index',
-      mark: '90',
-      lines: ['核心診斷', '取捨判斷', '下一步行動卡'],
-    },
+    visual: { type: 'none' },
     imageAlt: 'AI 專案卡關諮詢：已經做了一段時間，還是不知道問題在哪？',
   },
   {
@@ -121,11 +104,7 @@ export const pageOgEntries: PageOgEntry[] = [
     footer: '從真實工作與團隊現況出發',
     accent: '#456861',
     accentSoft: '#d18b5d',
-    visual: {
-      type: 'index',
-      mark: '03',
-      lines: ['現況診斷', '真實情境工作坊', '小規模導入'],
-    },
+    visual: { type: 'none' },
     imageAlt: '企業與團隊合作：一堂 AI 課，不會讓團隊把工作做穩。',
   },
   {
@@ -138,11 +117,7 @@ export const pageOgEntries: PageOgEntry[] = [
     footer: '適合才往下談',
     accent: '#8b5b43',
     accentSoft: '#6c58ad',
-    visual: {
-      type: 'index',
-      mark: '03',
-      lines: ['演講邀約', '工作坊', '內容與產品共創'],
-    },
+    visual: { type: 'none' },
     imageAlt: '講師、內容與產品合作：想邀演講、辦工作坊，或一起做內容？',
   },
   {
@@ -155,11 +130,7 @@ export const pageOgEntries: PageOgEntry[] = [
     footer: 'CabLate / Work notes',
     accent: '#5f4da1',
     accentSoft: '#c98258',
-    visual: {
-      type: 'index',
-      mark: '03',
-      lines: ['全端工程', 'AI 教學', '數位產品'],
-    },
+    visual: { type: 'none' },
     imageAlt: '關於 CabLate：AI 成功做過一次，不等於真正完成。',
   },
 ];

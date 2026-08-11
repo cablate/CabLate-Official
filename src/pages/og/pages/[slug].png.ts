@@ -15,8 +15,10 @@ const backgroundData = fs.readFileSync(
 export const getStaticPaths: GetStaticPaths = () =>
   pageOgEntries.map((entry) => ({ params: { slug: entry.slug } }));
 
-const makeTextLayer = async (entry: PageOgEntry) =>
-  satori(
+const makeTextLayer = async (entry: PageOgEntry) => {
+  const fullWidth = entry.visual.type === 'none';
+
+  return satori(
     {
       type: 'div',
       props: {
@@ -34,12 +36,12 @@ const makeTextLayer = async (entry: PageOgEntry) =>
             type: 'div',
             props: {
               style: {
-                width: '740px',
+                width: fullWidth ? '1120px' : '740px',
                 height: '554px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                padding: '38px 42px 34px 44px',
+                padding: fullWidth ? '42px 54px 36px' : '38px 42px 34px 44px',
                 borderRadius: '30px',
               },
               children: [
@@ -48,16 +50,16 @@ const makeTextLayer = async (entry: PageOgEntry) =>
                   props: {
                     style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
                     children: [
-                      { type: 'div', props: { style: { color: entry.accent, fontSize: '23px' }, children: entry.label } },
+                      { type: 'div', props: { style: { color: entry.accent, fontSize: fullWidth ? '28px' : '23px' }, children: entry.label } },
                       {
                         type: 'div',
                         props: {
                           style: {
-                            padding: '8px 15px 9px',
+                            padding: fullWidth ? '9px 17px 10px' : '8px 15px 9px',
                             borderRadius: '999px',
                             background: `${entry.accent}18`,
                             color: entry.accent,
-                            fontSize: '17px',
+                            fontSize: fullWidth ? '21px' : '17px',
                           },
                           children: entry.badge,
                         },
@@ -73,7 +75,7 @@ const makeTextLayer = async (entry: PageOgEntry) =>
                       {
                         type: 'div',
                         props: {
-                          style: { color: entry.accent, fontSize: '18px', letterSpacing: '1px' },
+                          style: { color: entry.accent, fontSize: fullWidth ? '24px' : '18px', letterSpacing: '1px' },
                           children: entry.eyebrow,
                         },
                       },
@@ -84,14 +86,14 @@ const makeTextLayer = async (entry: PageOgEntry) =>
                             display: 'flex',
                             flexDirection: 'column',
                             marginTop: '15px',
-                            fontSize: '47px',
-                            lineHeight: 1.2,
-                            letterSpacing: '-1.8px',
+                            fontSize: fullWidth ? '70px' : '47px',
+                            lineHeight: fullWidth ? 1.13 : 1.2,
+                            letterSpacing: fullWidth ? '-2.6px' : '-1.8px',
                           },
                           children: entry.headline.map((line, index) => ({
                             type: 'div',
                             props: {
-                              style: { display: 'flex', marginTop: index === 0 ? '0' : '5px' },
+                              style: { display: 'flex', marginTop: index === 0 ? '0' : fullWidth ? '8px' : '5px' },
                               children: line,
                             },
                           })),
@@ -101,11 +103,11 @@ const makeTextLayer = async (entry: PageOgEntry) =>
                         type: 'div',
                         props: {
                           style: {
-                            width: '620px',
-                            marginTop: '22px',
+                            width: fullWidth ? '940px' : '620px',
+                            marginTop: fullWidth ? '25px' : '22px',
                             color: '#596174',
-                            fontSize: '21px',
-                            lineHeight: 1.5,
+                            fontSize: fullWidth ? '28px' : '21px',
+                            lineHeight: fullWidth ? 1.4 : 1.5,
                           },
                           children: entry.description,
                         },
@@ -121,7 +123,7 @@ const makeTextLayer = async (entry: PageOgEntry) =>
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       color: '#6d6a66',
-                      fontSize: '17px',
+                      fontSize: fullWidth ? '21px' : '17px',
                     },
                     children: [
                       {
@@ -161,6 +163,7 @@ const makeTextLayer = async (entry: PageOgEntry) =>
       fonts: [{ name: 'Noto Sans TC', data: fontData.buffer as ArrayBuffer, weight: 700, style: 'normal' }],
     }
   );
+};
 
 const makeIndexVisual = async (entry: PageOgEntry) => {
   if (entry.visual.type !== 'index') return null;
@@ -232,6 +235,8 @@ const makeIndexVisual = async (entry: PageOgEntry) => {
 export const GET: APIRoute = async ({ params }) => {
   const entry = pageOgBySlug[params.slug ?? ''];
   if (!entry) return new Response('Not found', { status: 404 });
+  const fullWidth = entry.visual.type === 'none';
+  const panelWidth = fullWidth ? 1120 : 740;
 
   const backgroundAccents = Buffer.from(
     `<svg width="1200" height="630"><defs><radialGradient id="primary"><stop offset="0" stop-color="${entry.accent}" stop-opacity="0.28"/><stop offset="1" stop-color="${entry.accent}" stop-opacity="0"/></radialGradient><radialGradient id="secondary"><stop offset="0" stop-color="${entry.accentSoft}" stop-opacity="0.22"/><stop offset="1" stop-color="${entry.accentSoft}" stop-opacity="0"/></radialGradient></defs><ellipse cx="210" cy="520" rx="310" ry="220" fill="url(#primary)"/><ellipse cx="700" cy="155" rx="270" ry="210" fill="url(#primary)" opacity="0.72"/><ellipse cx="555" cy="620" rx="250" ry="170" fill="url(#secondary)"/></svg>`
@@ -241,26 +246,26 @@ export const GET: APIRoute = async ({ params }) => {
     .composite([{ input: backgroundAccents }])
     .png()
     .toBuffer();
-  const glassMask = Buffer.from('<svg width="740" height="554"><rect width="740" height="554" rx="30" fill="white"/></svg>');
+  const glassMask = Buffer.from(`<svg width="${panelWidth}" height="554"><rect width="${panelWidth}" height="554" rx="30" fill="white"/></svg>`);
   const glassTint = Buffer.from(
-    '<svg width="740" height="554"><rect x="1" y="1" width="738" height="552" rx="29" fill="#fbf7ef" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.88" stroke-width="2"/><path d="M32 2 H708" stroke="#ffffff" stroke-opacity="0.82" stroke-width="2" stroke-linecap="round"/></svg>'
+    `<svg width="${panelWidth}" height="554"><rect x="1" y="1" width="${panelWidth - 2}" height="552" rx="29" fill="#fbf7ef" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.88" stroke-width="2"/><path d="M32 2 H${panelWidth - 32}" stroke="#ffffff" stroke-opacity="0.82" stroke-width="2" stroke-linecap="round"/></svg>`
   );
   const glassPanel = await sharp(background)
-    .extract({ left: 40, top: 38, width: 740, height: 554 })
+    .extract({ left: 40, top: 38, width: panelWidth, height: 554 })
     .blur(6)
     .modulate({ brightness: 1.02, saturation: 0.84 })
     .composite([{ input: glassTint }, { input: glassMask, blend: 'dest-in' }])
     .png()
     .toBuffer();
   const glassShadow = await sharp(
-    Buffer.from('<svg width="764" height="578"><rect x="12" y="12" width="740" height="554" rx="30" fill="#3d3164" fill-opacity="0.18"/></svg>')
+    Buffer.from(`<svg width="${panelWidth + 24}" height="578"><rect x="12" y="12" width="${panelWidth}" height="554" rx="30" fill="#3d3164" fill-opacity="0.18"/></svg>`)
   )
     .blur(12)
     .png()
     .toBuffer();
   const visualMask = Buffer.from('<svg width="382" height="550"><rect width="382" height="550" rx="28" fill="white"/></svg>');
   const textSvg = await makeTextLayer(entry);
-  let visual: Buffer;
+  let visual: Buffer | null = null;
 
   if (entry.visual.type === 'photo') {
     const photoData = fs.readFileSync(path.join(process.cwd(), entry.visual.src));
@@ -305,7 +310,7 @@ export const GET: APIRoute = async ({ params }) => {
       }
     );
     visual = await sharp(photo).composite([{ input: Buffer.from(note) }]).png().toBuffer();
-  } else {
+  } else if (entry.visual.type === 'index') {
     visual = (await makeIndexVisual(entry)) as Buffer;
   }
 
@@ -320,8 +325,12 @@ export const GET: APIRoute = async ({ params }) => {
       { input: glassShadow, left: 28, top: 26 },
       { input: glassPanel, left: 40, top: 38 },
       { input: Buffer.from(textSvg), left: 0, top: 0 },
-      { input: visual, left: 790, top: 40 },
-      { input: visualBorder, left: 788, top: 38 },
+      ...(visual
+        ? [
+            { input: visual, left: 790, top: 40 },
+            { input: visualBorder, left: 788, top: 38 },
+          ]
+        : []),
     ])
     .png({ compressionLevel: 9 })
     .toBuffer();
