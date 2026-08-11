@@ -187,9 +187,8 @@ const makeIndexVisual = async (entry: PageOgEntry) => {
           {
             type: 'div',
             props: {
-              style: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' },
+              style: { display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end' },
               children: [
-                { type: 'div', props: { style: { color: entry.accent, fontSize: '18px' }, children: 'INDEX' } },
                 { type: 'div', props: { style: { color: entry.accent, fontSize: '82px', lineHeight: 0.9 }, children: visual.mark } },
               ],
             },
