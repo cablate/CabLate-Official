@@ -62,6 +62,8 @@ change_context:
 7. Resend 使用 `submission_id` 作為 24 小時 idempotency key，避免重試造成重複信件。
 8. 不要求密碼、Token、未遮蔽客戶資料或公司機密原文。
 9. 申請頁維持 `noindex` 並停用 GA4；不得把個資放進分析事件。
+10. 收件通知同時提供純文字與 HTML 版本；HTML 只改善掃讀，不改變欄位契約，所有使用者輸入在插入 HTML 前必須 escape。
+11. 收件信第一屏先顯示服務路線、姓名、回覆方式、想處理的事與路線專屬答案；來源與 UTM 降為次要資訊，不得蓋過服務判斷。
 
 ## 可接受的狀態名稱
 
@@ -141,6 +143,11 @@ Scenario: provider delivery fails
   Then the page keeps the form data on screen
   And states that the application was not delivered
   And offers the CabLate contact email as recovery
+
+Scenario: server rejects one or more fields
+  When the Function returns field-level errors
+  Then the page marks the matching controls without clearing the visitor's answers
+  And the error summary offers direct focus targets for each field
 ```
 
 ## 自動檢查

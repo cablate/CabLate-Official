@@ -3,7 +3,7 @@
 }
 
 .application-shell {
-  width: min(100% - 3rem, 72rem);
+  width: min(100% - 3rem, 78rem);
   margin-inline: auto;
 }
 
@@ -20,20 +20,26 @@
   font-weight: 700;
 }
 
-.application-hero {
+.application-stage {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: end;
-  padding-block: clamp(2.25rem, 5vw, 4rem);
+  grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1.28fr);
+  gap: 1rem;
+  align-items: start;
+  padding-block: 0.75rem 2rem;
+}
+
+.application-hero {
+  position: sticky;
+  top: 1rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .application-hero h1 {
-  max-width: 18ch;
+  max-width: 13ch;
   margin: 1rem 0 0;
-  font-size: clamp(2.2rem, 4.2vw, 3.75rem);
-  line-height: 1.14;
-  letter-spacing: -0.06em;
+  font-size: clamp(2rem, 3.4vw, 3.15rem);
+  line-height: 1.16;
+  letter-spacing: -0.05em;
   text-wrap: balance;
 }
 
@@ -46,7 +52,8 @@
 }
 
 .application-hero aside {
-  padding-block-start: 1.25rem;
+  margin-block-start: 2rem;
+  padding-block-start: 1rem;
   border-top: 2px solid var(--accent-text);
 }
 
@@ -55,32 +62,34 @@
   font-size: 1rem;
 }
 
-.application-hero aside ol {
+.application-hero aside ul {
   margin: 1rem 0 0;
   padding: 0;
   list-style: none;
 }
 
 .application-hero aside li {
-  display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
-  gap: 0.75rem;
-  padding-block: 0.85rem;
+  position: relative;
+  padding: 0.75rem 0 0.75rem 1.15rem;
   border-bottom: 1px solid var(--border);
   color: var(--text-secondary);
   line-height: 1.65;
 }
 
-.application-hero aside li span {
-  color: var(--accent-text);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 700;
+.application-hero aside li::before {
+  position: absolute;
+  top: 1.35rem;
+  left: 0;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--accent-text);
+  content: '';
 }
 
 .application-form-card {
-  padding-block: clamp(2.25rem, 4.5vw, 3.75rem);
-  border-top: 1px solid var(--border);
+  min-width: 0;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .application-form-card > header {
@@ -111,8 +120,8 @@
 
 #service-application-form {
   display: grid;
-  gap: 2rem;
-  max-width: 58rem;
+  gap: 1.5rem;
+  max-width: 100%;
 }
 
 #service-application-form[hidden] {
@@ -126,7 +135,7 @@
 #service-application-form fieldset {
   min-width: 0;
   margin: 0;
-  padding: 0 0 2rem;
+  padding: 0 0 1.5rem;
   border: 0;
   border-bottom: 1px solid var(--border-strong);
 }
@@ -176,8 +185,8 @@
   grid-template-columns: 1.25rem minmax(0, 1fr);
   gap: 0.8rem;
   align-items: start;
-  min-block-size: 7rem;
-  padding: 1.2rem;
+  min-block-size: 6rem;
+  padding: 1rem;
   border: 1px solid var(--border-strong);
   background: rgb(255 255 255 / 0.28);
   cursor: pointer;
@@ -234,7 +243,7 @@
 }
 
 .application-single-field {
-  padding-block-end: 2rem;
+  padding-block-end: 1.5rem;
   border-bottom: 1px solid var(--border-strong);
 }
 
@@ -356,7 +365,7 @@
 
 .application-selected-service {
   display: grid;
-  padding: 0.85rem 0.9rem 0.9rem;
+  padding: 0.75rem 0.85rem 0.85rem;
   border: 1px solid var(--border-strong);
   background: rgb(255 248 232 / 0.62);
 }
@@ -400,12 +409,14 @@
 
 .application-optional {
   max-width: 58rem;
-  padding-block-end: 2rem;
+  padding-block-end: 1.5rem;
   border-bottom: 1px solid var(--border-strong);
 }
 
 .application-optional summary {
-  min-block-size: 3rem;
+  display: flex;
+  align-items: center;
+  min-block-size: 3.25rem;
   color: var(--accent-text);
   font-weight: 700;
   cursor: pointer;
@@ -471,6 +482,40 @@
   line-height: 1.6;
 }
 
+.application-error-summary ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.application-error-summary ul:empty {
+  display: none;
+}
+
+.application-error-summary button {
+  min-block-size: 2.5rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.application-error-summary button:hover,
+.application-error-summary button:focus-visible {
+  background: rgb(255 255 255 / 0.52);
+}
+
+.application-error-summary button:active {
+  transform: translateY(1px);
+}
+
 .application-submit {
   display: flex;
   flex-wrap: wrap;
@@ -515,6 +560,10 @@
   font-size: 0.78rem;
 }
 
+.application-ready__email {
+  margin-block-end: 0.25rem;
+}
+
 .application-boundary {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr);
@@ -556,7 +605,6 @@
     width: min(100% - 2rem, 72rem);
   }
 
-  .application-hero,
   .application-boundary,
   .application-ready,
   .application-field-grid,
@@ -566,7 +614,49 @@
   }
 
   .application-hero h1 {
-    font-size: clamp(2rem, 9.5vw, 2.85rem);
+    max-width: 16ch;
+    margin-top: 0.65rem;
+    font-size: clamp(1.8rem, 8vw, 2.35rem);
+  }
+
+  .application-hero {
+    padding: 1.35rem;
+  }
+
+  .application-hero > div > p:last-child {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .application-hero aside {
+    margin-top: 1.25rem;
+    padding-top: 0.75rem;
+  }
+
+  .application-hero aside ul {
+    margin-top: 0.5rem;
+  }
+
+  .application-hero aside li {
+    padding-block: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .application-hero aside li::before {
+    top: 1.05rem;
+  }
+
+  .application-form-card {
+    padding: 1.35rem;
+  }
+
+  .application-form-card > header {
+    margin-bottom: 1.35rem;
+  }
+
+  .application-form-card > header h2 {
+    font-size: 1.6rem;
   }
 
   .application-choice__grid label {
@@ -588,6 +678,16 @@
 
   .application-ready__actions {
     justify-items: stretch;
+  }
+}
+
+@media (max-width: 960px) {
+  .application-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .application-hero {
+    position: static;
   }
 }
 

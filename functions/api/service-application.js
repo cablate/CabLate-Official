@@ -7,6 +7,7 @@ const APPLICATION_ACTION = 'service_application';
 const services = {
   consulting: {
     label: 'AI 專案卡關諮詢',
+    focusQuestion: '這 60 分鐘，你最需要帶走什麼？',
     focus: {
       find_root_cause: '找出真正卡點',
       compare_options: '比較方向、做取捨',
@@ -16,6 +17,7 @@ const services = {
   },
   coaching: {
     label: '30 分鐘免費陪跑訪談',
+    focusQuestion: '下面哪一句最像你現在的狀況？',
     focus: {
       unsure_where_to_start: '事情很多，最後沒有一個真的做下去',
       using_but_reworking: '已經在用 AI，卻還是一直重做',
@@ -25,6 +27,7 @@ const services = {
   },
   enterprise: {
     label: '企業合作',
+    focusQuestion: '這次最想先談哪一類合作？',
     focus: {
       team_diagnosis: '團隊使用診斷',
       training_workshop: '內訓或工作坊',
@@ -34,6 +37,7 @@ const services = {
   },
   partnerships: {
     label: '講師與內容合作',
+    focusQuestion: '這次合作比較接近哪一種？',
     focus: {
       speaking: '演講或分享',
       workshop: '工作坊',
@@ -175,16 +179,18 @@ export const buildEmailText = (data, leadId) => {
   const focusLabel = data.serviceConfig.focus[data.focus];
   const optional = (value) => value || '未提供';
   return [
+    `新服務申請｜${data.serviceConfig.label}`,
+    '直接回覆這封信即可聯絡申請人。',
+    '',
     `申請編號：${leadId}`,
-    `申請路線：${data.serviceConfig.label}`,
     `姓名：${data.name}`,
     `Email：${data.email}`,
     `公司／團隊：${optional(data.organization)}`,
     '',
-    '【想推進的事與目前卡點】',
+    '【這次想處理的事】',
     data.situation,
     '',
-    '【這次最需要的方向／目前階段】',
+    `【${data.serviceConfig.focusQuestion}】`,
     focusLabel,
     '',
     `希望時間：${optional(data.preferredTiming)}`,
@@ -201,6 +207,76 @@ export const buildEmailText = (data, leadId) => {
     `utm_content：${data.attribution.utm_content || 'none'}`,
     'consent：agreed',
   ].join('\n');
+};
+
+const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (character) => ({
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  "'": '&#39;',
+  '"': '&quot;',
+}[character]));
+
+const htmlText = (value) => escapeHtml(value).replace(/\r?\n/g, '<br>');
+
+export const buildEmailHtml = (data, leadId) => {
+  const focusLabel = data.serviceConfig.focus[data.focus];
+  const optional = (value) => value || '未提供';
+  const source = data.attribution.source_key || 'direct';
+  return `<!doctype html>
+<html lang="zh-Hant">
+  <body style="margin:0;background:#f4f0e8;color:#25324a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif;">
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(data.name)} 提交了 ${escapeHtml(data.serviceConfig.label)} 申請。</div>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f4f0e8;padding:28px 12px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:680px;background:#fffdf8;border:1px solid #d8d1c5;">
+            <tr>
+              <td style="padding:30px 32px 24px;border-top:5px solid #6f5bd3;">
+                <p style="margin:0 0 12px;color:#6f5bd3;font-size:13px;font-weight:700;letter-spacing:.06em;">${escapeHtml(data.serviceConfig.label)}</p>
+                <h1 style="margin:0;color:#25324a;font-size:28px;line-height:1.35;letter-spacing:-.02em;">${escapeHtml(data.name)} 提交了新申請</h1>
+                <p style="margin:12px 0 0;color:#5f6674;font-size:15px;line-height:1.7;">直接回覆這封信，就會寄到 ${escapeHtml(data.email)}。</p>
+                <p style="margin:20px 0 0;">
+                  <a href="mailto:${escapeHtml(data.email)}" style="display:inline-block;background:#25324a;color:#fffdf8;text-decoration:none;padding:12px 18px;font-size:15px;font-weight:700;">回覆申請人</a>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 28px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+                  <tr>
+                    <td style="width:96px;padding:10px 0;border-top:1px solid #e3ddd2;color:#7a7f89;font-size:13px;vertical-align:top;">申請編號</td>
+                    <td style="padding:10px 0;border-top:1px solid #e3ddd2;color:#25324a;font-size:14px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;">${escapeHtml(leadId)}</td>
+                  </tr>
+                  <tr>
+                    <td style="width:96px;padding:10px 0;border-top:1px solid #e3ddd2;color:#7a7f89;font-size:13px;vertical-align:top;">聯絡方式</td>
+                    <td style="padding:10px 0;border-top:1px solid #e3ddd2;color:#25324a;font-size:14px;line-height:1.7;">${escapeHtml(data.email)}<br>${escapeHtml(optional(data.organization))}</td>
+                  </tr>
+                </table>
+
+                <h2 style="margin:28px 0 10px;color:#25324a;font-size:17px;line-height:1.5;">這次想處理的事</h2>
+                <div style="padding:16px 18px;background:#f7f3eb;border-left:4px solid #6f5bd3;color:#343d50;font-size:15px;line-height:1.8;">${htmlText(data.situation)}</div>
+
+                <h2 style="margin:28px 0 8px;color:#25324a;font-size:17px;line-height:1.5;">${escapeHtml(data.serviceConfig.focusQuestion)}</h2>
+                <p style="margin:0;color:#343d50;font-size:15px;line-height:1.8;">${escapeHtml(focusLabel)}</p>
+
+                <h2 style="margin:28px 0 8px;color:#25324a;font-size:17px;line-height:1.5;">其他線索</h2>
+                <p style="margin:0;color:#343d50;font-size:14px;line-height:1.8;"><strong>希望時間：</strong>${escapeHtml(optional(data.preferredTiming))}<br><strong>公開參考連結：</strong><br>${htmlText(optional(data.referenceLinks))}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px 32px;background:#eee8dd;color:#737985;font-size:12px;line-height:1.75;">
+                來源：${escapeHtml(source)} ／ ${escapeHtml(data.sourcePath || 'unknown')}<br>
+                UTM：${escapeHtml(data.attribution.utm_source || 'none')} ／ ${escapeHtml(data.attribution.utm_medium || 'none')} ／ ${escapeHtml(data.attribution.utm_campaign || 'none')} ／ ${escapeHtml(data.attribution.utm_content || 'none')}<br>
+                表單版本：${escapeHtml(data.applicationVersion || 'unknown')} ／ consent：agreed
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
 };
 
 const sendApplicationEmail = async ({ env, data, leadId }) => {
@@ -222,8 +298,9 @@ const sendApplicationEmail = async ({ env, data, leadId }) => {
       from: env.SERVICE_APPLICATION_FROM,
       to: [env.SERVICE_APPLICATION_TO],
       reply_to: data.email,
-      subject: `CabLate｜${data.serviceConfig.label}｜${data.name}｜${leadId}`,
+      subject: `【新申請｜${data.serviceConfig.label}】${data.name}｜${leadId}`,
       text: buildEmailText(data, leadId),
+      html: buildEmailHtml(data, leadId),
       tags: [
         { name: 'service', value: data.service },
         { name: 'source', value: data.attribution.source_key || 'direct' },
