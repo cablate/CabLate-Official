@@ -3,7 +3,7 @@ export const serviceApplicationVersion = 'service-application-v2';
 export const serviceApplicationOptions = [
   {
     id: 'consulting',
-    label: 'AI 專案卡關諮詢',
+    label: '專案卡關諮詢',
     shortLabel: '60 分鐘付費諮詢',
     summary: '手上已有具體問題，需要一起診斷、取捨並決定下一步。',
     offerNote: '如果這次諮詢後確認適合陪跑，14 天內加入，NT$5,000 諮詢費可以全額折抵。',

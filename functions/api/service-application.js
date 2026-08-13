@@ -6,7 +6,7 @@ const APPLICATION_ACTION = 'service_application';
 
 const services = {
   consulting: {
-    label: 'AI 專案卡關諮詢',
+    label: '專案卡關諮詢',
     focusQuestion: '這 60 分鐘，你最需要帶走什麼？',
     focus: {
       find_root_cause: '找出真正卡點',

@@ -4,6 +4,7 @@ const read = (path) => fs.readFileSync(path, 'utf8');
 const application = read('src/pages/services/apply.astro');
 const endpoint = read('functions/api/service-application.js');
 const config = read('src/config/serviceApplication.ts');
+const consultingPage = read('src/pages/services/consulting.astro');
 const styles = read('src/styles/service-application.css');
 const privacy = read('src/pages/privacy.astro');
 const contract = read('docs/contracts/service-application-and-lead-ledger-v1.md');
@@ -77,6 +78,10 @@ for (const service of ['consulting', 'coaching', 'enterprise', 'partnerships']) 
 }
 
 expectText(config, 'service-application-v2', 'application schema version');
+expectText(config, "label: '專案卡關諮詢'", 'broad consulting route');
+expectText(consultingPage, '工作、事業、產品、內容或流程都可以', 'consulting scope');
+rejectText(config, 'AI 專案卡關諮詢', 'consulting is not AI-only');
+rejectText(consultingPage, 'AI 專案卡關諮詢', 'consulting page is not AI-only');
 expectText(config, '30 分鐘免費陪跑訪談', 'coaching interview route');
 expectText(config, '60 分鐘付費諮詢', 'paid consulting route');
 expectText(privacy, '<h2>服務申請與 Email</h2>', 'privacy disclosure');

@@ -83,7 +83,7 @@ export const pageOgEntries: PageOgEntry[] = [
   },
   {
     slug: 'consulting',
-    label: 'AI 專案卡關諮詢',
+    label: '專案卡關諮詢',
     badge: '一次 60 分鐘',
     eyebrow: '帶一個真的專案來',
     headline: ['已經做了一段時間，', '還是不知道問題在哪？'],
@@ -92,7 +92,7 @@ export const pageOgEntries: PageOgEntry[] = [
     accent: '#b36d45',
     accentSoft: '#6f57b6',
     visual: { type: 'none' },
-    imageAlt: 'AI 專案卡關諮詢：已經做了一段時間，還是不知道問題在哪？',
+    imageAlt: '專案卡關諮詢：已經做了一段時間，還是不知道問題在哪？',
   },
   {
     slug: 'enterprise',
