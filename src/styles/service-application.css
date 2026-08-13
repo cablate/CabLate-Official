@@ -111,6 +111,10 @@
   max-width: 58rem;
 }
 
+#service-application-form[hidden] {
+  display: none;
+}
+
 #service-application-form :is(fieldset, .application-field, .application-field-grid)[hidden] {
   display: none;
 }
@@ -146,13 +150,15 @@
   line-height: 1.65;
 }
 
-.application-choice__grid {
+.application-choice__grid,
+.application-focus__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
-.application-choice__grid label {
+.application-choice__grid label,
+.application-focus__grid label {
   position: relative;
   display: grid;
   grid-template-columns: 1.25rem minmax(0, 1fr);
@@ -165,13 +171,15 @@
   cursor: pointer;
 }
 
-.application-choice__grid label:has(input:checked) {
+.application-choice__grid label:has(input:checked),
+.application-focus__grid label:has(input:checked) {
   border-color: var(--accent-text);
   background: rgb(255 248 232 / 0.62);
   box-shadow: inset 0.2rem 0 var(--accent-text);
 }
 
 .application-choice__grid input,
+.application-focus__grid input,
 .application-consent input {
   width: 1.15rem;
   height: 1.15rem;
@@ -179,16 +187,19 @@
   accent-color: var(--accent-text);
 }
 
-.application-choice__grid span {
+.application-choice__grid span,
+.application-focus__grid span {
   display: grid;
   gap: 0.45rem;
 }
 
-.application-choice__grid strong {
+.application-choice__grid strong,
+.application-focus__grid strong {
   font-size: 1rem;
 }
 
-.application-choice__grid small {
+.application-choice__grid small,
+.application-focus__grid small {
   color: var(--text-secondary);
   font-size: 0.82rem;
   line-height: 1.65;
@@ -238,6 +249,7 @@
 
 .application-field :is(input, textarea):focus-visible,
 .application-choice__grid input:focus-visible,
+.application-focus__grid input:focus-visible,
 .application-consent input:focus-visible {
   outline: 3px solid var(--accent-text);
   outline-offset: 3px;
@@ -281,6 +293,8 @@
 .application-field :is(input, textarea)[aria-invalid='true'] ~ .application-error,
 .application-choice:has(input:user-invalid) > .application-error,
 .application-choice:has(input[aria-invalid='true']) > .application-error,
+.application-focus:has(input:user-invalid) > .application-error,
+.application-focus:has(input[aria-invalid='true']) > .application-error,
 .application-consent:has(input:user-invalid) > .application-error,
 .application-consent:has(input[aria-invalid='true']) > .application-error {
   display: flex;
@@ -318,6 +332,100 @@
   font-weight: 700;
 }
 
+.application-selected-service {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--border-strong);
+  background: rgb(255 248 232 / 0.62);
+}
+
+.application-selected-service[hidden] {
+  display: none;
+}
+
+.application-selected-service div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.application-selected-service span {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.application-selected-service button {
+  min-block-size: 2.75rem;
+  padding-inline: 0.85rem;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--accent-text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.application-optional {
+  max-width: 58rem;
+  padding-block-end: 2.75rem;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.application-optional summary {
+  min-block-size: 3rem;
+  color: var(--accent-text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.application-optional__body {
+  max-width: 48rem;
+  padding-block-start: 1.5rem;
+}
+
+.application-honeypot {
+  position: absolute;
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.application-verification {
+  display: grid;
+  gap: 0.65rem;
+  max-width: 52rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--border);
+  background: rgb(255 255 255 / 0.32);
+}
+
+.application-verification > div:first-child {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.application-verification > div:first-child svg {
+  color: var(--accent-text);
+}
+
+.application-verification > p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.application-verification a {
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
 .application-error-summary,
 .application-noscript {
   max-width: 52rem;
@@ -344,6 +452,11 @@
   min-block-size: 3.25rem;
 }
 
+.application-submit button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
 .application-submit p {
   max-width: 28rem;
   margin: 0;
@@ -354,7 +467,7 @@
 
 .application-ready {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) max-content;
   gap: 2rem 4rem;
   align-items: end;
   margin-top: 4rem;
@@ -369,23 +482,6 @@
 
 .application-ready__id {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-}
-
-.application-ready__actions {
-  display: grid;
-  gap: 0.75rem;
-  justify-items: stretch;
-}
-
-.application-ready__actions .btn {
-  justify-content: center;
-}
-
-.application-ready__actions > p {
-  min-height: 1.2rem;
-  margin: 0;
-  color: var(--text-secondary);
   font-size: 0.78rem;
 }
 
@@ -426,7 +522,8 @@
   .application-boundary,
   .application-ready,
   .application-field-grid,
-  .application-choice__grid {
+  .application-choice__grid,
+  .application-focus__grid {
     grid-template-columns: 1fr;
   }
 
@@ -435,6 +532,10 @@
   }
 
   .application-choice__grid label {
+    min-block-size: auto;
+  }
+
+  .application-focus__grid label {
     min-block-size: auto;
   }
 

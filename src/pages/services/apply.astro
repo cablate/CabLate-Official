@@ -1,16 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { ArrowLeft, ArrowRight, Check, ClipboardCopy, Mail } from '@lucide/astro';
+import { ArrowLeft, Check, Send, ShieldCheck } from '@lucide/astro';
 import { siteConfig } from '../../config/siteConfig';
 import { serviceApplicationOptions, serviceApplicationVersion } from '../../config/serviceApplication';
 import '../../styles/service-application.css';
 
 const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) => [option.id, option.label]));
+const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) => [option.id, {
+  situationLabel: option.situationLabel,
+  situationHelp: option.situationHelp,
+  responseNote: option.responseNote,
+}]));
 ---
 
 <BaseLayout
   title="提出服務申請"
-  description="用一份申請資料告訴我你現在想做什麼、卡在哪裡、希望得到什麼協助。我會再判斷比較適合專案諮詢、AI 應用陪跑、企業合作，還是講師與內容合作。"
+  description="簡短告訴我你想推進什麼、目前卡在哪裡。我會依照你的需求，回覆 60 分鐘付費諮詢、30 分鐘免費陪跑訪談或其他合作的下一步。"
   noindex={true}
   analytics="disabled"
 >
@@ -21,48 +26,57 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
 
     <header class="application-shell application-hero page-paper paper-card">
       <div>
-        <p class="section-label">服務申請</p>
-        <h1 class="display-heading" data-application-heading>先說你現在遇到什麼，不用整理成企劃書。</h1>
-        <p data-application-intro>大約 5 分鐘。填完後，頁面會幫你整理成一封 Email 草稿，你還需要在自己的 Email 應用程式確認並按下寄出。這裡不會自動付款，也不代表時段或合作已經成立。</p>
+        <p class="section-label">先確認怎麼聊</p>
+        <h1 class="display-heading">用幾個關鍵資訊，讓我先看懂你要處理的事。</h1>
+        <p>不用寫企劃書，也不用先猜自己需要 Agent、自動化或工作流。告訴我你想推進什麼、卡在哪裡，我會依照你選的方式準備下一步。</p>
       </div>
       <aside aria-labelledby="application-next-title">
-        <h2 id="application-next-title">寄出後呢？</h2>
+        <h2 id="application-next-title">送出後會發生什麼？</h2>
         <ol>
-          <li><span>01</span>我會先看你的狀況，確認這件事是不是我適合幫忙的範圍。</li>
-          <li><span>02</span><div data-application-response>適合的話，我再回覆下一步、合作條款和可以約的時間。</div></li>
-          <li><span>03</span>如果還缺資料，或我判斷不適合，也會直接告訴你。</li>
+          <li><span>01</span>我先看問題與服務是否適合。</li>
+          <li><span>02</span><div data-application-response>適合的話，我會回覆下一步與可選時間。</div></li>
+          <li><span>03</span>不適合或還缺資料，我也會直接說明。</li>
         </ol>
       </aside>
     </header>
 
     <section class="application-shell application-form-card page-paper paper-card" aria-labelledby="application-form-title">
       <header>
-        <p class="section-label">填寫申請</p>
-        <h2 id="application-form-title" data-application-form-title>只有標示「必填」的欄位一定要填，其他有就寫。</h2>
-        <p>不要貼密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
+        <p class="section-label">簡短申請</p>
+        <h2 id="application-form-title">只問會影響分流與會前準備的資訊。</h2>
+        <p>只需要回答幾個關鍵問題；其他資料有的話再補充。不要貼密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
       </header>
 
       <form
         id="service-application-form"
-        action={`mailto:${siteConfig.contactEmail}`}
+        action="/api/service-application"
         method="post"
-        enctype="text/plain"
         data-application-version={serviceApplicationVersion}
         data-contact-email={siteConfig.contactEmail}
         data-service-labels={JSON.stringify(serviceLabels)}
+        data-service-copy={JSON.stringify(serviceCopy)}
       >
         <input type="hidden" name="application_version" value={serviceApplicationVersion} />
-        <input type="hidden" name="lead_id" value="由頁面產生" />
+        <input type="hidden" name="submission_id" value="" />
         <input type="hidden" name="source_path" value="/services/apply/" />
         <input type="hidden" name="source_key" value="direct" />
         <input type="hidden" name="utm_source" value="" />
         <input type="hidden" name="utm_medium" value="" />
         <input type="hidden" name="utm_campaign" value="" />
         <input type="hidden" name="utm_content" value="" />
+        <div class="application-honeypot" aria-hidden="true">
+          <label for="applicant-website">網站</label>
+          <input id="applicant-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="application-selected-service" data-selected-service hidden>
+          <div><span>這次要談</span><strong data-selected-service-label></strong></div>
+          <button type="button" data-change-service>改選其他方式</button>
+        </div>
 
         <fieldset class="application-choice" data-service-choice>
-          <legend>你想申請哪一種合作？ <span>必填</span></legend>
-          <p id="service-choice-help">不知道選哪個沒關係，挑最接近的就好，我會再看需不需要換一種方式。</p>
+          <legend>這次比較接近哪一種需求？ <span>必填</span></legend>
+          <p id="service-choice-help">不知道也沒關係，選最接近的就好；我看完後仍會幫你判斷。</p>
           <div class="application-choice__grid">
             {serviceApplicationOptions.map((option) => (
               <label>
@@ -71,190 +85,249 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
               </label>
             ))}
           </div>
-          <p id="service-choice-error" class="application-error"><span aria-hidden="true">!</span>請先選一個最接近你需求的合作方式。</p>
+          <p id="service-choice-error" class="application-error"><span aria-hidden="true">!</span>請先選一個最接近的方式。</p>
         </fieldset>
 
         <fieldset>
-          <legend>聯絡資料</legend>
+          <legend>怎麼聯絡你？</legend>
           <div class="application-field-grid">
             <div class="application-field">
               <label for="applicant-name">你的姓名 <span>必填</span></label>
-              <input id="applicant-name" name="name" type="text" autocomplete="name" maxlength="80" required aria-describedby="applicant-name-error" />
+              <input id="applicant-name" name="name" type="text" autocomplete="name" maxlength="80" enterkeyhint="next" required aria-describedby="applicant-name-error" />
               <p id="applicant-name-error" class="application-error"><span aria-hidden="true">!</span>請填寫姓名。</p>
             </div>
             <div class="application-field">
               <label for="applicant-email">聯絡 Email <span>必填</span></label>
-              <input id="applicant-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" required aria-describedby="applicant-email-help applicant-email-error" />
+              <input id="applicant-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" enterkeyhint="next" required aria-describedby="applicant-email-help applicant-email-error" />
               <p id="applicant-email-help" class="application-help">只用於回覆這次申請，不會自動加入電子報。</p>
               <p id="applicant-email-error" class="application-error"><span aria-hidden="true">!</span>請填寫可正常收信的 Email。</p>
             </div>
           </div>
-          <div class="application-field" data-coaching-optional>
-            <label for="applicant-organization">公司或團隊名稱 <span>選填</span></label>
-            <input id="applicant-organization" name="organization" type="text" autocomplete="organization" maxlength="120" />
-          </div>
         </fieldset>
 
         <fieldset>
-          <legend>目前情況</legend>
+          <legend>你現在遇到什麼？</legend>
           <div class="application-field">
-            <label for="current-work">你現在最想把什麼做下去？ <span>必填</span></label>
-            <textarea id="current-work" name="current_work" rows="5" minlength="20" maxlength="1600" required aria-describedby="current-work-help current-work-error"></textarea>
-            <p id="current-work-help" class="application-help">工作、事業、產品、內容、專案或活動都可以。簡單說明你在做什麼，以及現在大概怎麼進行。</p>
-            <p id="current-work-error" class="application-error"><span aria-hidden="true">!</span>請至少用 20 個字說明目前情況。</p>
-          </div>
-          <div class="application-field">
-            <label for="main-blocker">現在最卡你的地方是什麼？ <span>必填</span></label>
-            <textarea id="main-blocker" name="main_blocker" rows="4" minlength="12" maxlength="1200" required aria-describedby="main-blocker-help main-blocker-error"></textarea>
-            <p id="main-blocker-help" class="application-help">例如事情太多不知道先做哪個、一直重做、方法一直換，或根本不知道 AI 該幫哪一段。</p>
-            <p id="main-blocker-error" class="application-error"><span aria-hidden="true">!</span>請至少用 12 個字說明主要卡點。</p>
-          </div>
-          <div class="application-field" data-coaching-optional>
-            <label for="attempted-work">你之前已經試過哪些做法？ <span>選填</span></label>
-            <textarea id="attempted-work" name="attempted_work" rows="3" maxlength="1000"></textarea>
+            <label for="applicant-situation"><span data-situation-label>你現在最想推進哪件事？目前卡在哪裡？</span> <span>必填</span></label>
+            <textarea id="applicant-situation" name="situation" rows="5" minlength="20" maxlength="1600" required aria-describedby="situation-help situation-error" placeholder="例如：我正在做……，現在反覆卡在……"></textarea>
+            <p id="situation-help" class="application-help" data-situation-help>簡單交代情境和卡點即可，不需要先整理成完整企劃書。</p>
+            <p id="situation-error" class="application-error"><span aria-hidden="true">!</span>請至少用 20 個字說明目前情況與卡點。</p>
           </div>
         </fieldset>
 
-        <fieldset>
-          <legend data-outcome-legend>希望怎麼合作</legend>
-          <div class="application-field">
-            <label for="desired-change"><span data-desired-change-copy>合作後，你希望看到什麼改變？</span> <span>必填</span></label>
-            <textarea id="desired-change" name="desired_change" rows="4" minlength="12" maxlength="1200" required aria-describedby="desired-change-help desired-change-error"></textarea>
-            <p id="desired-change-help" class="application-help">不用硬填數字。告訴我什麼改變會讓你覺得這次合作是值得的就好。</p>
-            <p id="desired-change-error" class="application-error"><span aria-hidden="true">!</span>請至少用 12 個字說明希望看到的改變。</p>
-          </div>
-          <div class="application-field-grid" data-coaching-optional>
+        {serviceApplicationOptions.map((option) => (
+          <fieldset class="application-focus" data-focus-group={option.id} hidden>
+            <legend>{option.focusQuestion} <span>必填</span></legend>
+            <div class="application-focus__grid">
+              {option.focusOptions.map((focus) => (
+                <label>
+                  <input type="radio" name="focus" value={focus.id} disabled aria-describedby={`focus-${option.id}-error`} />
+                  <span><strong>{focus.label}</strong><small>{focus.summary}</small></span>
+                </label>
+              ))}
+            </div>
+            <p id={`focus-${option.id}-error`} class="application-error"><span aria-hidden="true">!</span>請選擇一個最接近的狀況。</p>
+          </fieldset>
+        ))}
+
+        <details class="application-optional">
+          <summary>有其他資料的話，再補充</summary>
+          <div class="application-optional__body">
             <div class="application-field">
-              <label for="cab-help">你希望我主要陪你處理哪一段？ <span>必填</span></label>
-              <textarea id="cab-help" name="cab_help" rows="4" minlength="8" maxlength="800" required aria-describedby="cab-help-error"></textarea>
-              <p id="cab-help-error" class="application-error"><span aria-hidden="true">!</span>簡單說一下你希望我幫忙的部分。</p>
+              <label for="applicant-organization">公司或團隊名稱 <span>選填</span></label>
+              <input id="applicant-organization" name="organization" type="text" autocomplete="organization" maxlength="120" />
             </div>
             <div class="application-field">
-              <label for="preferred-timing">你希望什麼時候開始？ <span>選填</span></label>
+              <label for="preferred-timing">希望什麼時候開始或進行？ <span>選填</span></label>
               <input id="preferred-timing" name="preferred_timing" type="text" maxlength="120" placeholder="例如：九月、活動前兩週、時間都可以討論" />
             </div>
+            <div class="application-field">
+              <label for="reference-links">有沒有我可以先看的公開連結？ <span>選填</span></label>
+              <textarea id="reference-links" name="reference_links" rows="3" maxlength="1000" aria-describedby="reference-links-help"></textarea>
+              <p id="reference-links-help" class="application-help">一行一個。不要貼內網網址或任何敏感資料。</p>
+            </div>
           </div>
-          <div class="application-field" data-coaching-optional>
-            <label for="reference-links">有沒有我可以先看的公開連結？ <span>選填</span></label>
-            <textarea id="reference-links" name="reference_links" rows="3" maxlength="1000" aria-describedby="reference-links-help"></textarea>
-            <p id="reference-links-help" class="application-help">一行一個。不要貼密碼、Token、內網網址或公司機密原文。</p>
-          </div>
-        </fieldset>
+        </details>
 
         <fieldset class="application-consent">
-          <legend>寄出前確認一下</legend>
+          <legend>送出前確認一下</legend>
           <label>
             <input type="checkbox" name="consent" value="agreed" required aria-describedby="consent-help consent-error" />
             <span>我同意 CabLate 為了判斷是否適合合作、回覆申請與後續服務聯絡而處理以上資料。未經另外同意，不會把內容公開成案例。 <strong>必填</strong></span>
           </label>
-          <p id="consent-help">這個頁面不會直接把表單內容傳給 CabLate。按下按鈕後，只會開啟你的 Email 應用程式並整理好草稿；請確認收件人和內容後自行寄出。詳細資料使用方式請見<a href="/privacy/">隱私權政策</a>。</p>
+          <p id="consent-help">送出後，資料會經由 Cloudflare 驗證並透過 Resend 寄到 CabLate 信箱，不會自動加入電子報。詳細方式請見<a href="/privacy/">隱私權政策</a>。</p>
           <p id="consent-error" class="application-error"><span aria-hidden="true">!</span>請先勾選並確認資料使用方式。</p>
         </fieldset>
 
+        <div class="application-verification" aria-labelledby="verification-title">
+          <div><ShieldCheck size={20} aria-hidden="true" /><strong id="verification-title">送出前會自動完成人機驗證</strong></div>
+          <div data-turnstile-container></div>
+          <p data-turnstile-status role="status">正在準備安全驗證……</p>
+        </div>
+
         <div id="application-error-summary" class="application-error-summary" role="alert" tabindex="-1" hidden>
-          <strong>還有幾個地方沒填好。</strong>
-          <p>請回到第一個標示錯誤的欄位修改。</p>
+          <strong>還有幾個地方需要確認。</strong>
+          <p data-error-summary-message>請回到第一個標示錯誤的欄位修改。</p>
         </div>
 
         <noscript>
-          <p class="application-noscript">你的瀏覽器目前沒有執行 JavaScript。你還是可以填寫並按下按鈕，通常會開啟 Email 應用程式，只是主旨和排版會比較簡單；如果沒有開啟，請直接寄到 {siteConfig.contactEmail}。</p>
+          <p class="application-noscript">這份表單需要 JavaScript 才能完成安全驗證。你也可以直接寄信到 <a href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>，簡單說明想處理的事與目前卡點。</p>
         </noscript>
 
         <div class="application-submit">
-          <button class="btn btn-primary" type="submit"><span data-submit-label>整理成 Email 草稿</span> <Mail size={18} aria-hidden="true" /></button>
-          <p>草稿開啟後，還要記得在 Email 應用程式裡按「寄出」。開啟草稿不代表我已經收到。</p>
+          <button class="btn btn-primary" type="submit"><span data-submit-label>送出申請</span> <Send size={18} aria-hidden="true" /></button>
+          <p>送出不會自動扣款或保留時段。我確認適合後，才會回覆付款或訪談安排。</p>
         </div>
       </form>
 
       <section id="application-ready" class="application-ready" aria-labelledby="application-ready-title" aria-live="polite" hidden>
-        <div>
-          <p class="section-label">Email 草稿整理好了</p>
-          <h2 id="application-ready-title">確認內容沒問題後，請在 Email 應用程式裡寄出。</h2>
-          <p data-ready-message>如果 Email 沒有自動開啟，可以再試一次，或複製申請內容後自行寄到 {siteConfig.contactEmail}。</p>
+        <div tabindex="-1" data-ready-focus>
+          <p class="section-label">申請已送達</p>
+          <h2 id="application-ready-title">我收到你的資料了。</h2>
+          <p data-ready-message>我會先看問題與服務是否適合，再用你留下的 Email 回覆下一步。</p>
           <p class="application-ready__id">申請編號：<strong data-lead-id></strong></p>
         </div>
-        <div class="application-ready__actions">
-          <a class="btn btn-primary" data-email-draft href={`mailto:${siteConfig.contactEmail}`}>再次開啟 Email 草稿 <ArrowRight size={17} aria-hidden="true" /></a>
-          <button class="btn btn-ghost" type="button" data-copy-application><ClipboardCopy size={17} aria-hidden="true" />複製申請內容</button>
-          <p data-copy-status role="status"></p>
-        </div>
+        <a class="btn btn-ghost" href="/services/">回到合作方式</a>
       </section>
     </section>
 
     <aside class="application-shell application-boundary page-paper paper-card" aria-labelledby="application-boundary-title">
       <div>
-        <p class="section-label">填表還不代表合作成立</p>
-        <h2 id="application-boundary-title">我會先確認適不適合，再談付款與可選時間。</h2>
+        <p class="section-label">兩條路的差別</p>
+        <h2 id="application-boundary-title">免費訪談不是縮短版的付費諮詢。</h2>
       </div>
       <ul>
-        <li><Check size={17} aria-hidden="true" />填表不會自動扣款。</li>
-        <li><Check size={17} aria-hidden="true" />填表也不會先幫你保留時段或檔期。</li>
-        <li><Check size={17} aria-hidden="true" />如果不適合，我會直接說，不會為了成交硬把你轉去別的方案。</li>
+        <li><Check size={17} aria-hidden="true" /><strong>60 分鐘付費諮詢：</strong>針對一個具體問題做診斷、取捨並整理下一步。</li>
+        <li><Check size={17} aria-hidden="true" /><strong>30 分鐘免費陪跑訪談：</strong>理解你的情境，確認五週陪跑是否適合，不承諾當場解完問題。</li>
+        <li><Check size={17} aria-hidden="true" />如果選錯也沒關係，我看完後會直接建議比較適合的方式。</li>
       </ul>
     </aside>
   </article>
 </BaseLayout>
 
 <script>
+  declare global {
+    interface Window {
+      turnstile?: {
+        render: (container: HTMLElement, options: Record<string, unknown>) => string;
+        reset: (widgetId?: string) => void;
+      };
+    }
+  }
+
+  const loadTurnstile = () => new Promise<void>((resolve, reject) => {
+    if (window.turnstile) {
+      resolve();
+      return;
+    }
+
+    const existing = document.querySelector<HTMLScriptElement>('script[data-cablate-turnstile]');
+    if (existing) {
+      existing.addEventListener('load', () => resolve(), { once: true });
+      existing.addEventListener('error', () => reject(new Error('turnstile-load-failed')), { once: true });
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.defer = true;
+    script.dataset.cablateTurnstile = 'true';
+    script.addEventListener('load', () => resolve(), { once: true });
+    script.addEventListener('error', () => reject(new Error('turnstile-load-failed')), { once: true });
+    document.head.append(script);
+  });
+
   const initializeServiceApplication = () => {
     const form = document.querySelector<HTMLFormElement>('#service-application-form');
     if (!form || form.dataset.ready === 'true') return;
 
     const readyPanel = document.querySelector<HTMLElement>('#application-ready');
+    const readyFocus = document.querySelector<HTMLElement>('[data-ready-focus]');
     const errorSummary = document.querySelector<HTMLElement>('#application-error-summary');
-    const emailDraft = document.querySelector<HTMLAnchorElement>('[data-email-draft]');
-    const copyButton = document.querySelector<HTMLButtonElement>('[data-copy-application]');
-    const copyStatus = document.querySelector<HTMLElement>('[data-copy-status]');
+    const errorSummaryMessage = document.querySelector<HTMLElement>('[data-error-summary-message]');
     const leadIdOutput = document.querySelector<HTMLElement>('[data-lead-id]');
     const readyMessage = document.querySelector<HTMLElement>('[data-ready-message]');
+    const responseNote = document.querySelector<HTMLElement>('[data-application-response]');
+    const situationLabel = document.querySelector<HTMLElement>('[data-situation-label]');
+    const situationHelp = document.querySelector<HTMLElement>('[data-situation-help]');
+    const selectedServicePanel = document.querySelector<HTMLElement>('[data-selected-service]');
+    const selectedServiceLabel = document.querySelector<HTMLElement>('[data-selected-service-label]');
+    const serviceChoice = document.querySelector<HTMLElement>('[data-service-choice]');
+    const changeServiceButton = document.querySelector<HTMLButtonElement>('[data-change-service]');
+    const turnstileContainer = document.querySelector<HTMLElement>('[data-turnstile-container]');
+    const turnstileStatus = document.querySelector<HTMLElement>('[data-turnstile-status]');
+    const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]');
     const serviceLabels = JSON.parse(form.dataset.serviceLabels ?? '{}') as Record<string, string>;
+    const serviceCopy = JSON.parse(form.dataset.serviceCopy ?? '{}') as Record<string, { situationLabel: string; situationHelp: string; responseNote: string }>;
     const params = new URLSearchParams(window.location.search);
     const safeAttribution = (value: string | null, fallback = '') => value && /^[A-Za-z0-9._~-]{1,100}$/.test(value) ? value : fallback;
-    const selectedService = safeAttribution(params.get('service'));
-    const selectedRadio = form.querySelector<HTMLInputElement>(`input[name="service"][value="${selectedService}"]`);
-    if (selectedRadio) selectedRadio.checked = true;
-    const isCoachingEntry = selectedService === 'coaching' && Boolean(selectedRadio);
-
-    if (isCoachingEntry) {
-      const setText = (selector: string, value: string) => {
-        const element = document.querySelector<HTMLElement>(selector);
-        if (element) element.textContent = value;
-      };
-
-      setText('[data-application-heading]', '先跟我說你手上那件事卡在哪。');
-      setText('[data-application-intro]', '只要回答三件事：你想做什麼、現在卡在哪、希望最後有什麼不一樣。填完後會整理成 Email 草稿，你確認內容後再寄出。這裡不會付款，也不會先幫你保留名額。');
-      setText('[data-application-response]', '工作日原則一個工作天內回覆。確認適合後，我們才會談條款和可以約的時間。');
-      setText('[data-application-form-title]', '先回答三件事：你想做什麼、卡在哪、希望最後有什麼不一樣。');
-      setText('[data-outcome-legend]', '如果這次有幫上忙');
-      setText('[data-desired-change-copy]', '五週後，你希望哪裡變得不一樣？');
-      setText('[data-submit-label]', '整理成 Email 草稿');
-
-      const serviceChoice = form.querySelector<HTMLElement>('[data-service-choice]');
-      if (serviceChoice) serviceChoice.hidden = true;
-
-      form.querySelectorAll<HTMLElement>('[data-coaching-optional]').forEach((section) => {
-        section.hidden = true;
-        section.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input, textarea, select').forEach((control) => {
-          control.required = false;
-          control.removeAttribute('aria-invalid');
-        });
-      });
-    }
+    let turnstileWidgetId = '';
+    let turnstileToken = '';
+    let turnstileReady = false;
 
     const setHiddenValue = (name: string, value: string) => {
       const input = form.elements.namedItem(name);
       if (input instanceof HTMLInputElement) input.value = value;
     };
 
+    setHiddenValue('submission_id', crypto.randomUUID());
     setHiddenValue('source_path', window.location.pathname);
     setHiddenValue('source_key', safeAttribution(params.get('source'), 'direct'));
     for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content']) {
       setHiddenValue(key, safeAttribution(params.get(key)));
     }
 
+    const updateService = (serviceId: string, collapseChoice = false) => {
+      form.querySelectorAll<HTMLElement>('[data-focus-group]').forEach((group) => {
+        const active = group.dataset.focusGroup === serviceId;
+        group.hidden = !active;
+        group.querySelectorAll<HTMLInputElement>('input[name="focus"]').forEach((input) => {
+          input.disabled = !active;
+          input.required = active;
+          if (!active) {
+            input.checked = false;
+            input.removeAttribute('aria-invalid');
+          }
+        });
+      });
+
+      const copy = serviceCopy[serviceId];
+      if (copy) {
+        if (situationLabel) situationLabel.textContent = copy.situationLabel;
+        if (situationHelp) situationHelp.textContent = copy.situationHelp;
+        if (responseNote) responseNote.textContent = copy.responseNote;
+      }
+
+      if (collapseChoice && serviceChoice && selectedServicePanel && selectedServiceLabel) {
+        serviceChoice.hidden = true;
+        selectedServicePanel.hidden = false;
+        selectedServiceLabel.textContent = serviceLabels[serviceId] ?? serviceId;
+      }
+    };
+
+    const selectedService = safeAttribution(params.get('service'));
+    const selectedRadio = form.querySelector<HTMLInputElement>(`input[name="service"][value="${selectedService}"]`);
+    if (selectedRadio) {
+      selectedRadio.checked = true;
+      updateService(selectedService, true);
+    }
+
+    form.querySelectorAll<HTMLInputElement>('input[name="service"]').forEach((radio) => {
+      radio.addEventListener('change', () => updateService(radio.value));
+    });
+
+    changeServiceButton?.addEventListener('click', () => {
+      if (serviceChoice) serviceChoice.hidden = false;
+      if (selectedServicePanel) selectedServicePanel.hidden = true;
+      serviceChoice?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      form.querySelector<HTMLInputElement>('input[name="service"]:checked')?.focus();
+    });
+
     const controls = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input, textarea, select'));
     const syncAriaInvalid = (control: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
-      if (control.matches(':user-invalid')) control.setAttribute('aria-invalid', 'true');
+      if (!control.validity.valid) control.setAttribute('aria-invalid', 'true');
       else control.removeAttribute('aria-invalid');
     };
 
@@ -274,99 +347,110 @@ const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) 
       if (errorSummary) errorSummary.hidden = false;
     }, true);
 
-    const makeLeadId = () => {
-      const date = new Date().toISOString().slice(0, 10).replaceAll('-', '');
-      const bytes = new Uint32Array(1);
-      crypto.getRandomValues(bytes);
-      return `CAB-${date}-${bytes[0].toString(36).toUpperCase().padStart(7, '0').slice(0, 7)}`;
+    const resetTurnstile = () => {
+      turnstileToken = '';
+      if (turnstileWidgetId && window.turnstile) window.turnstile.reset(turnstileWidgetId);
     };
 
-    const fieldValue = (data: FormData, name: string) => String(data.get(name) ?? '').trim();
-    let preparedBody = '';
+    const prepareTurnstile = async () => {
+      if (!turnstileContainer || !turnstileStatus) return;
+      try {
+        const configResponse = await fetch('/api/service-application', { headers: { accept: 'application/json' } });
+        const config = await configResponse.json() as { ok?: boolean; turnstileSiteKey?: string; action?: string; message?: string };
+        if (!configResponse.ok || !config.turnstileSiteKey) throw new Error(config.message || 'turnstile-config-failed');
+        await loadTurnstile();
+        if (!window.turnstile) throw new Error('turnstile-unavailable');
+        turnstileWidgetId = window.turnstile.render(turnstileContainer, {
+          sitekey: config.turnstileSiteKey,
+          action: config.action || 'service_application',
+          appearance: 'interaction-only',
+          theme: 'light',
+          callback: (token: string) => {
+            turnstileToken = token;
+            turnstileReady = true;
+            turnstileStatus.textContent = '安全驗證已就緒。';
+          },
+          'expired-callback': () => {
+            turnstileToken = '';
+            turnstileStatus.textContent = '安全驗證已過期，請重新驗證。';
+          },
+          'error-callback': () => {
+            turnstileToken = '';
+            turnstileStatus.textContent = '安全驗證暫時無法完成，請重新整理後再試。';
+          },
+        });
+        turnstileReady = true;
+        turnstileStatus.textContent = '安全驗證會在送出時自動完成。';
+      } catch {
+        turnstileReady = false;
+        turnstileStatus.innerHTML = `表單驗證暫時無法載入。請稍後再試，或直接寄信到 <a href="mailto:${form.dataset.contactEmail}">${form.dataset.contactEmail}</a>。`;
+      }
+    };
 
-    form.addEventListener('submit', (event) => {
+    void prepareTurnstile();
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
       if (!form.checkValidity()) {
-        controls.forEach(syncAriaInvalid);
+        controls.forEach((control) => {
+          if (!control.disabled) syncAriaInvalid(control);
+        });
         if (errorSummary) {
           errorSummary.hidden = false;
+          if (errorSummaryMessage) errorSummaryMessage.textContent = '請回到第一個標示錯誤的欄位修改。';
           errorSummary.focus();
         }
         return;
       }
 
-      event.preventDefault();
+      if (!turnstileReady || !turnstileToken) {
+        if (errorSummary) {
+          errorSummary.hidden = false;
+          if (errorSummaryMessage) errorSummaryMessage.textContent = '安全驗證尚未完成，請稍等一下再送出。';
+          errorSummary.focus();
+        }
+        return;
+      }
+
       if (errorSummary) errorSummary.hidden = true;
+      if (submitButton) submitButton.disabled = true;
+      if (submitLabel) submitLabel.textContent = '正在送出……';
 
       const data = new FormData(form);
-      const leadId = makeLeadId();
-      const serviceId = fieldValue(data, 'service');
-      const serviceLabel = serviceLabels[serviceId] ?? serviceId;
-      setHiddenValue('lead_id', leadId);
+      const payload = Object.fromEntries(data.entries()) as Record<string, unknown>;
+      payload.consent = data.get('consent') === 'agreed';
+      payload.cf_turnstile_response = turnstileToken;
 
-      const lines = [
-        `申請編號：${leadId}`,
-        `申請服務：${serviceLabel}`,
-        `姓名：${fieldValue(data, 'name')}`,
-        `Email：${fieldValue(data, 'email')}`,
-        `公司或團隊：${fieldValue(data, 'organization') || '未提供'}`,
-        '',
-        '【你現在最想把什麼做下去】',
-        fieldValue(data, 'current_work'),
-        '',
-        '【現在最卡你的地方】',
-        fieldValue(data, 'main_blocker'),
-        '',
-        '【之前試過哪些做法】',
-        fieldValue(data, 'attempted_work') || '未提供',
-        '',
-        isCoachingEntry ? '【五週後希望哪裡不一樣】' : '【希望看到的改變】',
-        fieldValue(data, 'desired_change'),
-        '',
-        '【希望 Cab 主要協助哪一段】',
-        fieldValue(data, 'cab_help') || '未提供',
-        '',
-        `希望開始時間：${fieldValue(data, 'preferred_timing') || '未提供'}`,
-        '可以先看的公開連結：',
-        fieldValue(data, 'reference_links') || '未提供',
-        '',
-        '【來源與同意紀錄】',
-        `application_version：${form.dataset.applicationVersion}`,
-        `source_path：${fieldValue(data, 'source_path')}`,
-        `source_key：${fieldValue(data, 'source_key')}`,
-        `utm_source：${fieldValue(data, 'utm_source') || 'none'}`,
-        `utm_medium：${fieldValue(data, 'utm_medium') || 'none'}`,
-        `utm_campaign：${fieldValue(data, 'utm_campaign') || 'none'}`,
-        `utm_content：${fieldValue(data, 'utm_content') || 'none'}`,
-        'consent：agreed',
-      ];
-
-      preparedBody = lines.join('\n');
-      const subject = isCoachingEntry
-        ? `CabLate｜AI 陪跑申請｜${fieldValue(data, 'name')}｜${leadId}`
-        : `CabLate｜${serviceLabel}申請｜${leadId}`;
-      const mailto = `mailto:${form.dataset.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(preparedBody)}`;
-
-      if (emailDraft) emailDraft.href = mailto;
-      if (leadIdOutput) leadIdOutput.textContent = leadId;
-      if (readyPanel) {
-        readyPanel.hidden = false;
-        readyPanel.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
-      }
-      if (mailto.length <= 8000) {
-        if (readyMessage) readyMessage.textContent = `如果 Email 沒有自動開啟，可以再試一次，或複製申請內容後自行寄到 ${form.dataset.contactEmail}。`;
-        window.location.href = mailto;
-      } else if (readyMessage) {
-        readyMessage.textContent = `你的申請內容比較長，為了避免 Email 草稿被截斷，頁面沒有自動開啟。請先複製內容，再自行寄到 ${form.dataset.contactEmail}。`;
-      }
-    });
-
-    copyButton?.addEventListener('click', async () => {
-      if (!preparedBody || !copyStatus) return;
       try {
-        await navigator.clipboard.writeText(preparedBody);
-        copyStatus.textContent = '申請內容已複製。';
-      } catch {
-        copyStatus.textContent = '瀏覽器沒有允許複製。你可以用上方按鈕再次開啟 Email 草稿。';
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json() as { ok?: boolean; leadId?: string; message?: string; fields?: Record<string, string> };
+        if (!response.ok || !result.ok || !result.leadId) {
+          throw Object.assign(new Error(result.message || 'submit-failed'), { result });
+        }
+
+        if (leadIdOutput) leadIdOutput.textContent = result.leadId;
+        if (readyMessage) readyMessage.textContent = result.message || '我會先看問題與服務是否適合，再用你留下的 Email 回覆下一步。';
+        form.hidden = true;
+        if (readyPanel) {
+          readyPanel.hidden = false;
+          readyPanel.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+          readyFocus?.focus({ preventScroll: true });
+        }
+      } catch (error) {
+        resetTurnstile();
+        const result = error && typeof error === 'object' && 'result' in error ? (error as { result?: { message?: string; fields?: Record<string, string> } }).result : undefined;
+        if (errorSummary) {
+          errorSummary.hidden = false;
+          if (errorSummaryMessage) errorSummaryMessage.textContent = result?.message || `申請目前沒有成功送達。請稍後再試，或直接寄信到 ${form.dataset.contactEmail}。`;
+          errorSummary.focus();
+        }
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+        if (submitLabel) submitLabel.textContent = '送出申請';
       }
     });
 
