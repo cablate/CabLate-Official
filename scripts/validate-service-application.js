@@ -30,8 +30,14 @@ expectText(application, 'cf_turnstile_response', 'turnstile token submission');
 expectText(application, '申請已送出', 'truthful submission state');
 expectText(application, 'data-error-list', 'actionable error summary');
 expectText(application, 'data-ready-email', 'submission email confirmation');
+expectText(application, 'data-route-summary', 'nearby service-change feedback');
+expectText(application, 'aria-live="polite"', 'service-change announcement');
 expectText(config, '送出免費訪談申請', 'coaching message match');
 expectText(config, '下面哪一句最像你現在的狀況？', 'voice-of-customer coaching focus');
+expectText(config, '14 天內加入陪跑，諮詢費可以全額折抵，陪跑剩餘 NT$44,800', 'coaching consultation credit');
+if (application.indexOf('data-selected-service') > application.indexOf('data-hero-title')) {
+  failures.push('mobile service selector: preselected service control must appear before dynamic hero copy');
+}
 expectText(application, '免費訪談不是縮短版的付費諮詢', 'free and paid boundary');
 expectText(application, '^[A-Za-z0-9._~-]{1,100}$', 'attribution allowlist');
 rejectText(application, 'current_work', 'removed duplicate question');

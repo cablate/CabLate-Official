@@ -34,6 +34,10 @@
   padding: clamp(1.5rem, 3vw, 2.5rem);
 }
 
+.application-hero .application-selected-service {
+  margin-block-end: 1.5rem;
+}
+
 .application-hero h1 {
   max-width: 13ch;
   margin: 1rem 0 0;
@@ -407,6 +411,61 @@
   outline-offset: 2px;
 }
 
+.application-route-feedback {
+  display: grid;
+  gap: 0.55rem;
+  margin-block-start: 0.85rem;
+  padding-block-start: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.application-route-feedback[hidden] {
+  display: none;
+}
+
+.application-route-feedback > :is(p, strong) {
+  margin: 0;
+}
+
+.application-route-feedback > strong {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.application-route-feedback > p:not(.application-route-offer) {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.application-route-feedback--choice {
+  margin-block-start: 1rem;
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--border-strong);
+  background: rgb(255 248 232 / 0.5);
+}
+
+.application-route-offer {
+  display: grid;
+  gap: 0.25rem;
+  margin-block-start: 0.25rem !important;
+  padding: 0.75rem 0.85rem;
+  border-inline-start: 3px solid var(--accent-text);
+  background: rgb(255 255 255 / 0.48);
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+.application-route-offer[hidden] {
+  display: none;
+}
+
+.application-route-offer strong {
+  color: var(--text-primary);
+  font-size: 0.76rem;
+}
+
 .application-optional {
   max-width: 58rem;
   padding-block-end: 1.5rem;
@@ -621,6 +680,10 @@
 
   .application-hero {
     padding: 1.35rem;
+  }
+
+  .application-hero .application-selected-service {
+    margin-block-end: 1.15rem;
   }
 
   .application-hero > div > p:last-child {

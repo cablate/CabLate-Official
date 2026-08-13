@@ -80,6 +80,8 @@ change_context:
 
 陪跑入口必須維持同一套心理語境：上一頁的「先聊聊你的狀況」，在申請頁承接成「你現在最想把什麼做下去」與可直接辨認的實際症狀。前台不要求訪客先用「診斷、取捨、介入、分流」等提供者語言替自己分類；需要負責的判斷使用「我會看、我會回覆、我會直接說」讓 Cab 本人出現。
 
+從服務頁帶入預選路線時，服務選擇器必須出現在會隨選擇變動的 Hero 文案之前。切換後，服務摘要與任何適用的費用條件要在控制項旁立即更新，不以自動捲動要求手機使用者回頭尋找變化。陪跑與諮詢的折抵條件沿用公開方案：先做 NT$5,000 專案諮詢者，14 天內加入陪跑可全額折抵，陪跑剩餘 NT$44,800；不得省略 14 天條件或改寫成所有人皆有的折扣。
+
 ## 唯一 Lead Ledger
 
 唯一 owning authority 是：
@@ -130,6 +132,13 @@ Scenario: visitor enters from coaching page
   Given the URL contains service=coaching
   Then the page explains the 30-minute interview boundary
   And the visitor is not promised a free diagnosis
+  And the service selector appears before the changing hero copy
+  And the 14-day consultation credit is visible next to the selected route
+
+Scenario: visitor changes a service on a narrow screen
+  When the visitor chooses a different service
+  Then the matching summary is updated next to the control
+  And the change is announced politely without forcing a scroll
 
 Scenario: valid application is delivered
   Given all required fields, consent, and Turnstile are valid

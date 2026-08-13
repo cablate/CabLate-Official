@@ -6,6 +6,9 @@ import { serviceApplicationOptions, serviceApplicationVersion } from '../../conf
 import '../../styles/service-application.css';
 
 const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) => [option.id, {
+  label: option.label,
+  summary: option.summary,
+  offerNote: option.offerNote,
   situationLabel: option.situationLabel,
   situationHelp: option.situationHelp,
   responseNote: option.responseNote,
@@ -26,6 +29,21 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
     <div class="application-shell application-stage">
       <header class="application-hero page-paper paper-card">
+        <div class="application-selected-service" data-selected-service hidden>
+          <label for="selected-service-control">
+            <span>選擇你想申請的服務</span>
+            <select id="selected-service-control" data-service-select>
+              {serviceApplicationOptions.map((option) => (
+                <option value={option.id}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+          <div class="application-route-feedback" aria-live="polite" aria-atomic="true">
+            <p data-route-summary></p>
+            <p class="application-route-offer" data-route-offer hidden><strong>費用折抵</strong><span data-route-offer-text></span></p>
+          </div>
+        </div>
+
         <div>
           <p class="section-label" data-hero-label>先確認怎麼聊</p>
           <h1 class="display-heading" data-hero-title>先讓我看懂，你現在要處理什麼。</h1>
@@ -70,17 +88,6 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           <input id="applicant-website" name="website" type="text" tabindex="-1" autocomplete="off" />
         </div>
 
-        <div class="application-selected-service" data-selected-service hidden>
-          <label for="selected-service-control">
-            <span>你現在選的是</span>
-            <select id="selected-service-control" data-service-select>
-              {serviceApplicationOptions.map((option) => (
-                <option value={option.id}>{option.label}</option>
-              ))}
-            </select>
-          </label>
-        </div>
-
         <fieldset class="application-choice" data-service-choice>
           <legend>這次比較接近哪一種需求？ <span class="application-required">必填</span></legend>
           <p id="service-choice-help">不知道也沒關係，選最接近的就好；我看完後仍會幫你判斷。</p>
@@ -91,6 +98,11 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
                 <span><strong>{option.shortLabel}</strong><small>{option.summary}</small></span>
               </label>
             ))}
+          </div>
+          <div class="application-route-feedback application-route-feedback--choice" data-service-choice-feedback hidden aria-live="polite" aria-atomic="true">
+            <strong data-route-label></strong>
+            <p data-route-summary></p>
+            <p class="application-route-offer" data-route-offer hidden><strong>費用折抵</strong><span data-route-offer-text></span></p>
           </div>
           <p id="service-choice-error" class="application-error"><span aria-hidden="true">!</span>請先選一個最接近的方式。</p>
         </fieldset>
@@ -278,6 +290,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     const selectedServicePanel = document.querySelector<HTMLElement>('[data-selected-service]');
     const serviceSelect = document.querySelector<HTMLSelectElement>('[data-service-select]');
     const serviceChoice = document.querySelector<HTMLElement>('[data-service-choice]');
+    const serviceChoiceFeedback = document.querySelector<HTMLElement>('[data-service-choice-feedback]');
     const applicationBoundary = document.querySelector<HTMLElement>('[data-application-boundary]');
     const turnstileContainer = document.querySelector<HTMLElement>('[data-turnstile-container]');
     const turnstileStatus = document.querySelector<HTMLElement>('[data-turnstile-status]');
@@ -296,6 +309,9 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       submitNote: string;
     };
     const serviceCopy = JSON.parse(form.dataset.serviceCopy ?? '{}') as Record<string, {
+      label: string;
+      summary: string;
+      offerNote: string;
       situationLabel: string;
       situationHelp: string;
       responseNote: string;
@@ -364,6 +380,18 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
       const copy = serviceCopy[serviceId];
       if (copy) {
+        document.querySelectorAll<HTMLElement>('[data-route-label]').forEach((element) => {
+          element.textContent = copy.label;
+        });
+        document.querySelectorAll<HTMLElement>('[data-route-summary]').forEach((element) => {
+          element.textContent = copy.summary;
+        });
+        document.querySelectorAll<HTMLElement>('[data-route-offer]').forEach((element) => {
+          element.hidden = !copy.offerNote;
+        });
+        document.querySelectorAll<HTMLElement>('[data-route-offer-text]').forEach((element) => {
+          element.textContent = copy.offerNote;
+        });
         if (situationLabel) situationLabel.textContent = copy.situationLabel;
         if (situationHelp) situationHelp.textContent = copy.situationHelp;
         if (responseNote) responseNote.textContent = copy.responseNote;
@@ -379,6 +407,8 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       if (collapseChoice && serviceChoice && selectedServicePanel) {
         serviceChoice.hidden = true;
         selectedServicePanel.hidden = false;
+      } else if (serviceChoiceFeedback) {
+        serviceChoiceFeedback.hidden = false;
       }
     };
 
