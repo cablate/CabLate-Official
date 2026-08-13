@@ -23,7 +23,7 @@ const validPayload = {
 const valid = validatePayload(validPayload);
 assert.deepEqual(valid.errors, {});
 assert.equal(valid.data.serviceConfig.label, '30 分鐘免費陪跑訪談');
-assert.match(buildEmailText(valid.data, 'CAB-20260813-0F16646'), /已經在用，但一直重做/);
+assert.match(buildEmailText(valid.data, 'CAB-20260813-0F16646'), /已經在用 AI，卻還是一直重做/);
 
 const invalid = validatePayload({ ...validPayload, email: 'bad', situation: '太短', focus: 'unknown', consent: false });
 assert.deepEqual(Object.keys(invalid.errors).sort(), ['consent', 'email', 'focus', 'situation']);
@@ -50,6 +50,7 @@ assert.equal(successResponse.status, 201);
 const successBody = await successResponse.json();
 assert.equal(successBody.ok, true);
 assert.match(successBody.leadId, /^CAB-\d{8}-0F16646$/);
+assert.equal(successBody.message, '我會用你留下的 Email 回覆陪跑是否適合，以及接下來怎麼進行。');
 
 const crossOriginRequest = new Request('http://127.0.0.1:8788/api/service-application', {
   method: 'POST',

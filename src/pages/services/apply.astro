@@ -10,6 +10,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
   situationLabel: option.situationLabel,
   situationHelp: option.situationHelp,
   responseNote: option.responseNote,
+  applicationCopy: 'applicationCopy' in option ? option.applicationCopy : null,
 }]));
 ---
 
@@ -26,14 +27,14 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
     <header class="application-shell application-hero page-paper paper-card">
       <div>
-        <p class="section-label">先確認怎麼聊</p>
-        <h1 class="display-heading">用幾個關鍵資訊，讓我先看懂你要處理的事。</h1>
-        <p>不用寫企劃書，也不用先猜自己需要 Agent、自動化或工作流。告訴我你想推進什麼、卡在哪裡，我會依照你選的方式準備下一步。</p>
+        <p class="section-label" data-hero-label>先確認怎麼聊</p>
+        <h1 class="display-heading" data-hero-title>用幾個關鍵資訊，讓我先看懂你要處理的事。</h1>
+        <p data-hero-description>不用寫企劃書，也不用先猜自己需要 Agent、自動化或工作流。告訴我你想推進什麼、卡在哪裡，我會依照你選的方式準備下一步。</p>
       </div>
       <aside aria-labelledby="application-next-title">
-        <h2 id="application-next-title">送出後會發生什麼？</h2>
+        <h2 id="application-next-title" data-next-title>送出後會發生什麼？</h2>
         <ol>
-          <li><span>01</span>我先看問題與服務是否適合。</li>
+          <li><span>01</span><div data-next-first-step>我先看問題與服務是否適合。</div></li>
           <li><span>02</span><div data-application-response>適合的話，我會回覆下一步與可選時間。</div></li>
           <li><span>03</span>不適合或還缺資料，我也會直接說明。</li>
         </ol>
@@ -42,9 +43,9 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
     <section class="application-shell application-form-card page-paper paper-card" aria-labelledby="application-form-title">
       <header>
-        <p class="section-label">簡短申請</p>
-        <h2 id="application-form-title">只問會影響分流與會前準備的資訊。</h2>
-        <p>只需要回答幾個關鍵問題；其他資料有的話再補充。不要貼密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
+        <p class="section-label" data-form-label>簡短申請</p>
+        <h2 id="application-form-title" data-form-title>只問會影響分流與會前準備的資訊。</h2>
+        <p data-form-description>只需要回答幾個關鍵問題；其他資料有的話再補充。不要貼密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
       </header>
 
       <form
@@ -106,12 +107,12 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         </fieldset>
 
         <fieldset>
-          <legend>你現在遇到什麼？</legend>
+          <legend>先說說你正在做的事</legend>
           <div class="application-field">
             <label for="applicant-situation"><span data-situation-label>你現在最想推進哪件事？目前卡在哪裡？</span> <span>必填</span></label>
-            <textarea id="applicant-situation" name="situation" rows="5" minlength="20" maxlength="1600" required aria-describedby="situation-help situation-error" placeholder="例如：我正在做……，現在反覆卡在……"></textarea>
+            <textarea id="applicant-situation" name="situation" rows="5" minlength="20" maxlength="1600" required aria-describedby="situation-help situation-error" placeholder="例如：我想做……，目前做到……，接下來不知道怎麼繼續。"></textarea>
             <p id="situation-help" class="application-help" data-situation-help>簡單交代情境和卡點即可，不需要先整理成完整企劃書。</p>
-            <p id="situation-error" class="application-error"><span aria-hidden="true">!</span>請至少用 20 個字說明目前情況與卡點。</p>
+            <p id="situation-error" class="application-error"><span aria-hidden="true">!</span>請再多說一點，至少 20 個字，讓我看得懂你正在做什麼、卡在哪裡。</p>
           </div>
         </fieldset>
 
@@ -153,16 +154,16 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           <legend>送出前確認一下</legend>
           <label>
             <input type="checkbox" name="consent" value="agreed" required aria-describedby="consent-help consent-error" />
-            <span>我同意 CabLate 為了判斷是否適合合作、回覆申請與後續服務聯絡而處理以上資料。未經另外同意，不會把內容公開成案例。 <strong>必填</strong></span>
+            <span>我同意 CabLate 使用以上資料，判斷是否適合合作、回覆這次申請，以及處理後續聯絡。未經我另外同意，內容不會公開成案例。 <strong>必填</strong></span>
           </label>
-          <p id="consent-help">送出後，資料會經由 Cloudflare 驗證並透過 Resend 寄到 CabLate 信箱，不會自動加入電子報。詳細方式請見<a href="/privacy/">隱私權政策</a>。</p>
+          <p id="consent-help">資料只用於這次申請與後續聯絡，不會自動加入電子報。詳細處理方式請見<a href="/privacy/">隱私權政策</a>。</p>
           <p id="consent-error" class="application-error"><span aria-hidden="true">!</span>請先勾選並確認資料使用方式。</p>
         </fieldset>
 
         <div class="application-verification" aria-labelledby="verification-title">
-          <div><ShieldCheck size={20} aria-hidden="true" /><strong id="verification-title">送出前會自動完成人機驗證</strong></div>
+          <div><ShieldCheck size={20} aria-hidden="true" /><strong id="verification-title">送出前會自動完成安全檢查</strong></div>
           <div data-turnstile-container></div>
-          <p data-turnstile-status role="status">正在準備安全驗證……</p>
+          <p data-turnstile-status role="status">正在準備安全檢查……</p>
         </div>
 
         <div id="application-error-summary" class="application-error-summary" role="alert" tabindex="-1" hidden>
@@ -176,15 +177,15 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
         <div class="application-submit">
           <button class="btn btn-primary" type="submit"><span data-submit-label>送出申請</span> <Send size={18} aria-hidden="true" /></button>
-          <p>送出不會自動扣款或保留時段。我確認適合後，才會回覆付款或訪談安排。</p>
+          <p data-submit-note>送出不會自動扣款或保留時段。我確認適合後，才會回覆付款或訪談安排。</p>
         </div>
       </form>
 
       <section id="application-ready" class="application-ready" aria-labelledby="application-ready-title" aria-live="polite" hidden>
         <div tabindex="-1" data-ready-focus>
-          <p class="section-label">申請已送達</p>
-          <h2 id="application-ready-title">我收到你的資料了。</h2>
-          <p data-ready-message>我會先看問題與服務是否適合，再用你留下的 Email 回覆下一步。</p>
+          <p class="section-label">資料已送出</p>
+          <h2 id="application-ready-title">接下來我會先看過你的情況。</h2>
+          <p data-ready-message>我會用你留下的 Email 回覆陪跑是否適合，以及接下來怎麼進行。</p>
           <p class="application-ready__id">申請編號：<strong data-lead-id></strong></p>
         </div>
         <a class="btn btn-ghost" href="/services/">回到合作方式</a>
@@ -197,8 +198,8 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         <h2 id="application-boundary-title">免費訪談不是縮短版的付費諮詢。</h2>
       </div>
       <ul>
-        <li><Check size={17} aria-hidden="true" /><strong>60 分鐘付費諮詢：</strong>針對一個具體問題做診斷、取捨並整理下一步。</li>
-        <li><Check size={17} aria-hidden="true" /><strong>30 分鐘免費陪跑訪談：</strong>理解你的情境，確認五週陪跑是否適合，不承諾當場解完問題。</li>
+        <li><Check size={17} aria-hidden="true" /><strong>60 分鐘付費諮詢：</strong>帶一個具體問題來，我們會一起找出卡點、比較做法，排出下一步。</li>
+        <li><Check size={17} aria-hidden="true" /><strong>30 分鐘免費陪跑訪談：</strong>先聊你想做的事和目前卡點，確認五週陪跑是否適合；這 30 分鐘不做完整診斷。</li>
         <li><Check size={17} aria-hidden="true" />如果選錯也沒關係，我看完後會直接建議比較適合的方式。</li>
       </ul>
     </aside>
@@ -251,6 +252,15 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     const responseNote = document.querySelector<HTMLElement>('[data-application-response]');
     const situationLabel = document.querySelector<HTMLElement>('[data-situation-label]');
     const situationHelp = document.querySelector<HTMLElement>('[data-situation-help]');
+    const heroLabel = document.querySelector<HTMLElement>('[data-hero-label]');
+    const heroTitle = document.querySelector<HTMLElement>('[data-hero-title]');
+    const heroDescription = document.querySelector<HTMLElement>('[data-hero-description]');
+    const nextTitle = document.querySelector<HTMLElement>('[data-next-title]');
+    const nextFirstStep = document.querySelector<HTMLElement>('[data-next-first-step]');
+    const formLabel = document.querySelector<HTMLElement>('[data-form-label]');
+    const formTitle = document.querySelector<HTMLElement>('[data-form-title]');
+    const formDescription = document.querySelector<HTMLElement>('[data-form-description]');
+    const submitNote = document.querySelector<HTMLElement>('[data-submit-note]');
     const selectedServicePanel = document.querySelector<HTMLElement>('[data-selected-service]');
     const selectedServiceLabel = document.querySelector<HTMLElement>('[data-selected-service-label]');
     const serviceChoice = document.querySelector<HTMLElement>('[data-service-choice]');
@@ -260,12 +270,30 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
     const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]');
     const serviceLabels = JSON.parse(form.dataset.serviceLabels ?? '{}') as Record<string, string>;
-    const serviceCopy = JSON.parse(form.dataset.serviceCopy ?? '{}') as Record<string, { situationLabel: string; situationHelp: string; responseNote: string }>;
+    type ApplicationCopy = {
+      heroLabel: string;
+      heroTitle: string;
+      heroDescription: string;
+      nextTitle: string;
+      nextFirstStep: string;
+      formLabel: string;
+      formTitle: string;
+      formDescription: string;
+      submitLabel: string;
+      submitNote: string;
+    };
+    const serviceCopy = JSON.parse(form.dataset.serviceCopy ?? '{}') as Record<string, {
+      situationLabel: string;
+      situationHelp: string;
+      responseNote: string;
+      applicationCopy: ApplicationCopy | null;
+    }>;
     const params = new URLSearchParams(window.location.search);
     const safeAttribution = (value: string | null, fallback = '') => value && /^[A-Za-z0-9._~-]{1,100}$/.test(value) ? value : fallback;
     let turnstileWidgetId = '';
     let turnstileToken = '';
     let turnstileReady = false;
+    let currentSubmitLabel = '送出申請';
 
     const setHiddenValue = (name: string, value: string) => {
       const input = form.elements.namedItem(name);
@@ -298,6 +326,19 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         if (situationLabel) situationLabel.textContent = copy.situationLabel;
         if (situationHelp) situationHelp.textContent = copy.situationHelp;
         if (responseNote) responseNote.textContent = copy.responseNote;
+        if (copy.applicationCopy) {
+          if (heroLabel) heroLabel.textContent = copy.applicationCopy.heroLabel;
+          if (heroTitle) heroTitle.textContent = copy.applicationCopy.heroTitle;
+          if (heroDescription) heroDescription.textContent = copy.applicationCopy.heroDescription;
+          if (nextTitle) nextTitle.textContent = copy.applicationCopy.nextTitle;
+          if (nextFirstStep) nextFirstStep.textContent = copy.applicationCopy.nextFirstStep;
+          if (formLabel) formLabel.textContent = copy.applicationCopy.formLabel;
+          if (formTitle) formTitle.textContent = copy.applicationCopy.formTitle;
+          if (formDescription) formDescription.textContent = copy.applicationCopy.formDescription;
+          if (submitNote) submitNote.textContent = copy.applicationCopy.submitNote;
+          currentSubmitLabel = copy.applicationCopy.submitLabel;
+          if (submitLabel) submitLabel.textContent = currentSubmitLabel;
+        }
       }
 
       if (collapseChoice && serviceChoice && selectedServicePanel && selectedServiceLabel) {
@@ -368,19 +409,19 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           callback: (token: string) => {
             turnstileToken = token;
             turnstileReady = true;
-            turnstileStatus.textContent = '安全驗證已就緒。';
+            turnstileStatus.textContent = '可以送出了。';
           },
           'expired-callback': () => {
             turnstileToken = '';
-            turnstileStatus.textContent = '安全驗證已過期，請重新驗證。';
+            turnstileStatus.textContent = '安全檢查已過期，請再試一次。';
           },
           'error-callback': () => {
             turnstileToken = '';
-            turnstileStatus.textContent = '安全驗證暫時無法完成，請重新整理後再試。';
+            turnstileStatus.textContent = '安全檢查暫時無法完成，請重新整理後再試。';
           },
         });
         turnstileReady = true;
-        turnstileStatus.textContent = '安全驗證會在送出時自動完成。';
+        turnstileStatus.textContent = '安全檢查會在送出時自動完成。';
       } catch {
         turnstileReady = false;
         turnstileStatus.innerHTML = `表單驗證暫時無法載入。請稍後再試，或直接寄信到 <a href="mailto:${form.dataset.contactEmail}">${form.dataset.contactEmail}</a>。`;
@@ -406,7 +447,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       if (!turnstileReady || !turnstileToken) {
         if (errorSummary) {
           errorSummary.hidden = false;
-          if (errorSummaryMessage) errorSummaryMessage.textContent = '安全驗證尚未完成，請稍等一下再送出。';
+          if (errorSummaryMessage) errorSummaryMessage.textContent = '安全檢查尚未完成，請稍等一下再送出。';
           errorSummary.focus();
         }
         return;
@@ -433,7 +474,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         }
 
         if (leadIdOutput) leadIdOutput.textContent = result.leadId;
-        if (readyMessage) readyMessage.textContent = result.message || '我會先看問題與服務是否適合，再用你留下的 Email 回覆下一步。';
+        if (readyMessage) readyMessage.textContent = result.message || '我會用你留下的 Email 回覆陪跑是否適合，以及接下來怎麼進行。';
         form.hidden = true;
         if (readyPanel) {
           readyPanel.hidden = false;
@@ -445,12 +486,12 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         const result = error && typeof error === 'object' && 'result' in error ? (error as { result?: { message?: string; fields?: Record<string, string> } }).result : undefined;
         if (errorSummary) {
           errorSummary.hidden = false;
-          if (errorSummaryMessage) errorSummaryMessage.textContent = result?.message || `申請目前沒有成功送達。請稍後再試，或直接寄信到 ${form.dataset.contactEmail}。`;
+          if (errorSummaryMessage) errorSummaryMessage.textContent = result?.message || `資料還沒有送出。請稍後再試，或直接寄到 ${form.dataset.contactEmail}。`;
           errorSummary.focus();
         }
       } finally {
         if (submitButton) submitButton.disabled = false;
-        if (submitLabel) submitLabel.textContent = '送出申請';
+        if (submitLabel) submitLabel.textContent = currentSubmitLabel;
       }
     });
 

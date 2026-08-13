@@ -17,10 +17,10 @@ const services = {
   coaching: {
     label: '30 分鐘免費陪跑訪談',
     focus: {
-      unsure_where_to_start: '想做，但不知道從哪裡開始',
-      using_but_reworking: '已經在用，但一直重做',
-      prototype_stuck: '已有做法或原型，但推不下去',
-      unsure_if_ai_problem: '還不確定問題是不是 AI',
+      unsure_where_to_start: '事情很多，最後沒有一個真的做下去',
+      using_but_reworking: '已經在用 AI，卻還是一直重做',
+      prototype_stuck: '已經做了一版，卻不知道怎麼繼續',
+      unsure_if_ai_problem: '還不確定是不是 AI 的問題',
     },
   },
   enterprise: {
@@ -107,11 +107,11 @@ export const validatePayload = (payload) => {
   if (!serviceConfig) errors.service = '請選擇一種合作方式。';
   if (name.length < 1) errors.name = '請填寫姓名。';
   if (!emailPattern.test(email)) errors.email = '請填寫可正常收信的 Email。';
-  if (situation.length < 20) errors.situation = '請至少用 20 個字說明目前情況與卡點。';
+  if (situation.length < 20) errors.situation = '請再多說一點，至少 20 個字，讓我看得懂你正在做什麼、卡在哪裡。';
   if (!serviceConfig?.focus[focus]) errors.focus = '請選擇一個最接近的狀況。';
   if (payload.consent !== true) errors.consent = '請先確認資料使用方式。';
-  if (!submissionPattern.test(submissionId)) errors.submission_id = '申請識別碼無效，請重新整理後再試。';
-  if (!turnstileToken) errors.turnstile = '請完成人機驗證。';
+  if (!submissionPattern.test(submissionId)) errors.submission_id = '這次申請無法辨識，請重新整理後再試。';
+  if (!turnstileToken) errors.turnstile = '請完成安全檢查。';
 
   const attribution = {};
   for (const key of ['source_key', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content']) {
@@ -240,7 +240,7 @@ export const onRequestPost = async ({ request, env }) => {
   if (!sameOrigin(request)) return json({ ok: false, message: '無法確認申請來源，請重新整理後再試。' }, 403);
 
   const contentType = request.headers.get('content-type') || '';
-  if (!contentType.includes('application/json')) return json({ ok: false, message: '申請格式不正確。' }, 415);
+  if (!contentType.includes('application/json')) return json({ ok: false, message: '資料沒有正確送出，請重新整理後再試。' }, 415);
 
   const contentLength = Number(request.headers.get('content-length') || 0);
   if (contentLength > 20_000) return json({ ok: false, message: '申請內容過長，請精簡後再試。' }, 413);
@@ -249,11 +249,11 @@ export const onRequestPost = async ({ request, env }) => {
   try {
     payload = await request.json();
   } catch {
-    return json({ ok: false, message: '申請格式不正確。' }, 400);
+    return json({ ok: false, message: '資料沒有正確送出，請重新整理後再試。' }, 400);
   }
 
   if (trimText(payload.website, 200)) {
-    return json({ ok: true, leadId: 'CAB-RECEIVED', message: '已收到你的資料。' }, 201);
+    return json({ ok: true, leadId: 'CAB-RECEIVED', message: '資料已送出。' }, 201);
   }
 
   const { errors, data } = validatePayload(payload);
@@ -268,23 +268,25 @@ export const onRequestPost = async ({ request, env }) => {
   try {
     turnstile = await verifyTurnstile({ token: data.turnstileToken, secret, request, production: isProduction(env) });
   } catch {
-    return json({ ok: false, message: '人機驗證暫時無法完成，請稍後再試。', code: 'turnstile_unavailable' }, 503);
+    return json({ ok: false, message: '安全檢查暫時無法完成，請稍後再試。', code: 'turnstile_unavailable' }, 503);
   }
   if (!turnstile.success) {
-    return json({ ok: false, message: '人機驗證已失效，請重新驗證後再送出。', code: 'turnstile_invalid' }, 422);
+    return json({ ok: false, message: '安全檢查已失效，請再試一次。', code: 'turnstile_invalid' }, 422);
   }
 
   const leadId = makeLeadId(data.submissionId);
   try {
     await sendApplicationEmail({ env, data, leadId });
   } catch {
-    return json({ ok: false, message: '申請目前沒有成功送達。請稍後再試，或直接寄 Email 聯絡。', code: 'delivery_failed' }, 502);
+    return json({ ok: false, message: '資料還沒有送出。請稍後再試，或直接寄到 cablate@cablate.com。', code: 'delivery_failed' }, 502);
   }
 
   return json({
     ok: true,
     leadId,
     service: data.service,
-    message: '申請已送達，我會依照你選擇的方式回覆下一步。',
+    message: data.service === 'coaching'
+      ? '我會用你留下的 Email 回覆陪跑是否適合，以及接下來怎麼進行。'
+      : '我會用你留下的 Email 回覆是否適合合作，以及接下來怎麼進行。',
   }, 201);
 };
