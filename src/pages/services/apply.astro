@@ -187,8 +187,8 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
       <section id="application-ready" class="application-ready" aria-labelledby="application-ready-title" aria-live="polite" hidden>
         <div tabindex="-1" data-ready-focus>
-          <p class="section-label">資料已送出</p>
-          <h2 id="application-ready-title">接下來我會先看過你的情況。</h2>
+          <p class="section-label" data-ready-label>資料已送出</p>
+          <h2 id="application-ready-title" data-ready-title>接下來我會先看過你的情況。</h2>
           <p data-ready-message>我會用你留下的 Email 回覆陪跑是否適合，以及接下來怎麼進行。</p>
           <p class="application-ready__id">申請編號：<strong data-lead-id></strong></p>
         </div>
@@ -253,6 +253,8 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     const errorSummaryMessage = document.querySelector<HTMLElement>('[data-error-summary-message]');
     const leadIdOutput = document.querySelector<HTMLElement>('[data-lead-id]');
     const readyMessage = document.querySelector<HTMLElement>('[data-ready-message]');
+    const readyLabel = document.querySelector<HTMLElement>('[data-ready-label]');
+    const readyTitle = document.querySelector<HTMLElement>('[data-ready-title]');
     const responseNote = document.querySelector<HTMLElement>('[data-application-response]');
     const situationLabel = document.querySelector<HTMLElement>('[data-situation-label]');
     const situationHelp = document.querySelector<HTMLElement>('[data-situation-help]');
@@ -490,13 +492,17 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           headers: { 'content-type': 'application/json', accept: 'application/json' },
           body: JSON.stringify(payload),
         });
-        const result = await response.json() as { ok?: boolean; leadId?: string; message?: string; fields?: Record<string, string> };
+        const result = await response.json() as { ok?: boolean; leadId?: string; delivery?: 'dry_run' | 'email_sent'; message?: string; fields?: Record<string, string> };
         if (!response.ok || !result.ok || !result.leadId) {
           throw Object.assign(new Error(result.message || 'submit-failed'), { result });
         }
 
         if (leadIdOutput) leadIdOutput.textContent = result.leadId;
         if (readyMessage) readyMessage.textContent = result.message || '我會用你留下的 Email 回覆陪跑是否適合，以及接下來怎麼進行。';
+        if (result.delivery === 'dry_run') {
+          if (readyLabel) readyLabel.textContent = '測試資料已接受';
+          if (readyTitle) readyTitle.textContent = '這次沒有寄出 Email。';
+        }
         form.hidden = true;
         if (readyPanel) {
           readyPanel.hidden = false;

@@ -85,8 +85,14 @@ const isProductionRequest = (request) => {
   return hostname === 'cablate.com' || hostname === 'www.cablate.com';
 };
 
-const makeLeadId = (submissionId) => {
-  const date = new Date().toISOString().slice(0, 10).replaceAll('-', '');
+export const makeLeadId = (submissionId, now = new Date()) => {
+  const dateParts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Taipei',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(now).map(({ type, value }) => [type, value]));
+  const date = `${dateParts.year}${dateParts.month}${dateParts.day}`;
   return `CAB-${date}-${submissionId.replaceAll('-', '').slice(0, 7).toUpperCase()}`;
 };
 
@@ -275,8 +281,9 @@ export const onRequestPost = async ({ request, env }) => {
   }
 
   const leadId = makeLeadId(data.submissionId);
+  let delivery;
   try {
-    await sendApplicationEmail({ env, data, leadId });
+    delivery = await sendApplicationEmail({ env, data, leadId });
   } catch {
     return json({ ok: false, message: '資料還沒有送出。請稍後再試，或直接寄到 cablate@cablate.com。', code: 'delivery_failed' }, 502);
   }
@@ -285,8 +292,11 @@ export const onRequestPost = async ({ request, env }) => {
     ok: true,
     leadId,
     service: data.service,
-    message: data.service === 'coaching'
-      ? '我會用你留下的 Email 回覆陪跑是否適合，以及接下來怎麼進行。'
-      : '我會用你留下的 Email 回覆是否適合合作，以及接下來怎麼進行。',
+    delivery: delivery.id?.startsWith('dry-run-') ? 'dry_run' : 'email_sent',
+    message: delivery.id?.startsWith('dry-run-')
+      ? '本地測試完成，沒有寄出 Email。'
+      : data.service === 'coaching'
+        ? '我會用你留下的 Email 回覆陪跑是否適合，以及接下來怎麼進行。'
+        : '我會用你留下的 Email 回覆是否適合合作，以及接下來怎麼進行。',
   }, 201);
 };

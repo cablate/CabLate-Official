@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { buildEmailText, onRequestGet, onRequestPost, validatePayload } from '../functions/api/service-application.js';
+import { buildEmailText, makeLeadId, onRequestGet, onRequestPost, validatePayload } from '../functions/api/service-application.js';
 
 const validPayload = {
   application_version: 'service-application-v2',
@@ -24,6 +24,7 @@ const valid = validatePayload(validPayload);
 assert.deepEqual(valid.errors, {});
 assert.equal(valid.data.serviceConfig.label, '30 分鐘免費陪跑訪談');
 assert.match(buildEmailText(valid.data, 'CAB-20260813-0F16646'), /已經在用 AI，卻還是一直重做/);
+assert.equal(makeLeadId(validPayload.submission_id, new Date('2026-08-13T16:01:00.000Z')), 'CAB-20260814-0F16646');
 
 const invalid = validatePayload({ ...validPayload, email: 'bad', situation: '太短', focus: 'unknown', consent: false });
 assert.deepEqual(Object.keys(invalid.errors).sort(), ['consent', 'email', 'focus', 'situation']);
@@ -50,7 +51,8 @@ assert.equal(successResponse.status, 201);
 const successBody = await successResponse.json();
 assert.equal(successBody.ok, true);
 assert.match(successBody.leadId, /^CAB-\d{8}-0F16646$/);
-assert.equal(successBody.message, '我會用你留下的 Email 回覆陪跑是否適合，以及接下來怎麼進行。');
+assert.equal(successBody.delivery, 'dry_run');
+assert.equal(successBody.message, '本地測試完成，沒有寄出 Email。');
 
 const crossOriginRequest = new Request('http://127.0.0.1:8788/api/service-application', {
   method: 'POST',
