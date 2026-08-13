@@ -5,7 +5,6 @@ import { siteConfig } from '../../config/siteConfig';
 import { serviceApplicationOptions, serviceApplicationVersion } from '../../config/serviceApplication';
 import '../../styles/service-application.css';
 
-const serviceLabels = Object.fromEntries(serviceApplicationOptions.map((option) => [option.id, option.label]));
 const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) => [option.id, {
   situationLabel: option.situationLabel,
   situationHelp: option.situationHelp,
@@ -54,7 +53,6 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         method="post"
         data-application-version={serviceApplicationVersion}
         data-contact-email={siteConfig.contactEmail}
-        data-service-labels={JSON.stringify(serviceLabels)}
         data-service-copy={JSON.stringify(serviceCopy)}
       >
         <input type="hidden" name="application_version" value={serviceApplicationVersion} />
@@ -71,12 +69,18 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         </div>
 
         <div class="application-selected-service" data-selected-service hidden>
-          <div><span>這次要談</span><strong data-selected-service-label></strong></div>
-          <button type="button" data-change-service>改選其他方式</button>
+          <label for="selected-service-control">
+            <span>這次想談哪一種？</span>
+            <select id="selected-service-control" data-service-select>
+              {serviceApplicationOptions.map((option) => (
+                <option value={option.id}>{option.label}</option>
+              ))}
+            </select>
+          </label>
         </div>
 
         <fieldset class="application-choice" data-service-choice>
-          <legend>這次比較接近哪一種需求？ <span>必填</span></legend>
+          <legend>這次比較接近哪一種需求？ <span class="application-required">必填</span></legend>
           <p id="service-choice-help">不知道也沒關係，選最接近的就好；我看完後仍會幫你判斷。</p>
           <div class="application-choice__grid">
             {serviceApplicationOptions.map((option) => (
@@ -93,12 +97,12 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           <legend>怎麼聯絡你？</legend>
           <div class="application-field-grid">
             <div class="application-field">
-              <label for="applicant-name">你的姓名 <span>必填</span></label>
+              <label for="applicant-name">你的姓名 <span class="application-required">必填</span></label>
               <input id="applicant-name" name="name" type="text" autocomplete="name" maxlength="80" enterkeyhint="next" required aria-describedby="applicant-name-error" />
               <p id="applicant-name-error" class="application-error"><span aria-hidden="true">!</span>請填寫姓名。</p>
             </div>
             <div class="application-field">
-              <label for="applicant-email">聯絡 Email <span>必填</span></label>
+              <label for="applicant-email">聯絡 Email <span class="application-required">必填</span></label>
               <input id="applicant-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" enterkeyhint="next" required aria-describedby="applicant-email-help applicant-email-error" />
               <p id="applicant-email-help" class="application-help">只用於回覆這次申請，不會自動加入電子報。</p>
               <p id="applicant-email-error" class="application-error"><span aria-hidden="true">!</span>請填寫可正常收信的 Email。</p>
@@ -108,7 +112,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
         <div class="application-single-field">
           <div class="application-field">
-            <label for="applicant-situation"><span data-situation-label>你現在最想推進哪件事？目前卡在哪裡？</span> <span>必填</span></label>
+            <label for="applicant-situation"><span data-situation-label>你現在最想推進哪件事？目前卡在哪裡？</span> <span class="application-required">必填</span></label>
             <textarea id="applicant-situation" name="situation" rows="5" minlength="20" maxlength="1600" required aria-describedby="situation-help situation-sensitive-note situation-error" placeholder="例如：我想做……，目前做到……，接下來不知道怎麼繼續。"></textarea>
             <p id="situation-help" class="application-help" data-situation-help>簡單交代情境和卡點即可，不需要先整理成完整企劃書。</p>
             <p id="situation-sensitive-note" class="application-help application-sensitive-note">請不要貼密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
@@ -118,7 +122,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
         {serviceApplicationOptions.map((option) => (
           <fieldset class="application-focus" data-focus-group={option.id} hidden>
-            <legend>{option.focusQuestion} <span>必填</span></legend>
+            <legend>{option.focusQuestion} <span class="application-required">必填</span></legend>
             <div class="application-focus__grid">
               {option.focusOptions.map((focus) => (
                 <label>
@@ -135,15 +139,15 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           <summary>有其他資料的話，再補充</summary>
           <div class="application-optional__body">
             <div class="application-field">
-              <label for="applicant-organization">公司或團隊名稱 <span>選填</span></label>
+              <label for="applicant-organization">公司或團隊名稱 <span class="application-optional-marker">選填</span></label>
               <input id="applicant-organization" name="organization" type="text" autocomplete="organization" maxlength="120" />
             </div>
             <div class="application-field">
-              <label for="preferred-timing">希望什麼時候開始或進行？ <span>選填</span></label>
+              <label for="preferred-timing">希望什麼時候開始或進行？ <span class="application-optional-marker">選填</span></label>
               <input id="preferred-timing" name="preferred_timing" type="text" maxlength="120" placeholder="例如：九月、活動前兩週、時間都可以討論" />
             </div>
             <div class="application-field">
-              <label for="reference-links">有沒有我可以先看的公開連結？ <span>選填</span></label>
+              <label for="reference-links">有沒有我可以先看的公開連結？ <span class="application-optional-marker">選填</span></label>
               <textarea id="reference-links" name="reference_links" rows="3" maxlength="1000" aria-describedby="reference-links-help"></textarea>
               <p id="reference-links-help" class="application-help">一行一個。不要貼內網網址或任何敏感資料。</p>
             </div>
@@ -154,7 +158,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           <legend>送出前確認一下</legend>
           <label>
             <input type="checkbox" name="consent" value="agreed" required aria-describedby="consent-help consent-error" />
-            <span>我同意 CabLate 使用以上資料，判斷是否適合合作、回覆這次申請，以及處理後續聯絡。未經我另外同意，內容不會公開成案例。 <strong>必填</strong></span>
+            <span>我同意 CabLate 使用以上資料，判斷是否適合合作、回覆這次申請，以及處理後續聯絡。未經我另外同意，內容不會公開成案例。 <strong class="application-required">必填</strong></span>
           </label>
           <p id="consent-help">資料只用於這次申請與後續聯絡，不會自動加入電子報。詳細處理方式請見<a href="/privacy/">隱私權政策</a>。</p>
           <p id="consent-error" class="application-error"><span aria-hidden="true">!</span>請先勾選並確認資料使用方式。</p>
@@ -262,15 +266,13 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     const formDescription = document.querySelector<HTMLElement>('[data-form-description]');
     const submitNote = document.querySelector<HTMLElement>('[data-submit-note]');
     const selectedServicePanel = document.querySelector<HTMLElement>('[data-selected-service]');
-    const selectedServiceLabel = document.querySelector<HTMLElement>('[data-selected-service-label]');
+    const serviceSelect = document.querySelector<HTMLSelectElement>('[data-service-select]');
     const serviceChoice = document.querySelector<HTMLElement>('[data-service-choice]');
-    const changeServiceButton = document.querySelector<HTMLButtonElement>('[data-change-service]');
     const applicationBoundary = document.querySelector<HTMLElement>('[data-application-boundary]');
     const turnstileContainer = document.querySelector<HTMLElement>('[data-turnstile-container]');
     const turnstileStatus = document.querySelector<HTMLElement>('[data-turnstile-status]');
     const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
     const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]');
-    const serviceLabels = JSON.parse(form.dataset.serviceLabels ?? '{}') as Record<string, string>;
     type ApplicationCopy = {
       heroLabel: string;
       heroTitle: string;
@@ -289,12 +291,38 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       responseNote: string;
       applicationCopy: ApplicationCopy | null;
     }>;
+    const defaultApplicationCopy: ApplicationCopy = {
+      heroLabel: heroLabel?.textContent?.trim() ?? '',
+      heroTitle: heroTitle?.textContent?.trim() ?? '',
+      heroDescription: heroDescription?.textContent?.trim() ?? '',
+      nextTitle: nextTitle?.textContent?.trim() ?? '',
+      nextFirstStep: nextFirstStep?.textContent?.trim() ?? '',
+      formLabel: formLabel?.textContent?.trim() ?? '',
+      formTitle: formTitle?.textContent?.trim() ?? '',
+      formDescription: formDescription?.textContent?.trim() ?? '',
+      submitLabel: submitLabel?.textContent?.trim() ?? '送出申請',
+      submitNote: submitNote?.textContent?.trim() ?? '',
+    };
     const params = new URLSearchParams(window.location.search);
     const safeAttribution = (value: string | null, fallback = '') => value && /^[A-Za-z0-9._~-]{1,100}$/.test(value) ? value : fallback;
     let turnstileWidgetId = '';
     let turnstileToken = '';
     let turnstileReady = false;
-    let currentSubmitLabel = '送出申請';
+    let currentSubmitLabel = defaultApplicationCopy.submitLabel;
+
+    const applyApplicationCopy = (copy: ApplicationCopy) => {
+      if (heroLabel) heroLabel.textContent = copy.heroLabel;
+      if (heroTitle) heroTitle.textContent = copy.heroTitle;
+      if (heroDescription) heroDescription.textContent = copy.heroDescription;
+      if (nextTitle) nextTitle.textContent = copy.nextTitle;
+      if (nextFirstStep) nextFirstStep.textContent = copy.nextFirstStep;
+      if (formLabel) formLabel.textContent = copy.formLabel;
+      if (formTitle) formTitle.textContent = copy.formTitle;
+      if (formDescription) formDescription.textContent = copy.formDescription;
+      if (submitNote) submitNote.textContent = copy.submitNote;
+      currentSubmitLabel = copy.submitLabel;
+      if (submitLabel) submitLabel.textContent = currentSubmitLabel;
+    };
 
     const setHiddenValue = (name: string, value: string) => {
       const input = form.elements.namedItem(name);
@@ -327,27 +355,18 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         if (situationLabel) situationLabel.textContent = copy.situationLabel;
         if (situationHelp) situationHelp.textContent = copy.situationHelp;
         if (responseNote) responseNote.textContent = copy.responseNote;
-        if (copy.applicationCopy) {
-          if (heroLabel) heroLabel.textContent = copy.applicationCopy.heroLabel;
-          if (heroTitle) heroTitle.textContent = copy.applicationCopy.heroTitle;
-          if (heroDescription) heroDescription.textContent = copy.applicationCopy.heroDescription;
-          if (nextTitle) nextTitle.textContent = copy.applicationCopy.nextTitle;
-          if (nextFirstStep) nextFirstStep.textContent = copy.applicationCopy.nextFirstStep;
-          if (formLabel) formLabel.textContent = copy.applicationCopy.formLabel;
-          if (formTitle) formTitle.textContent = copy.applicationCopy.formTitle;
-          if (formDescription) formDescription.textContent = copy.applicationCopy.formDescription;
-          if (submitNote) submitNote.textContent = copy.applicationCopy.submitNote;
-          currentSubmitLabel = copy.applicationCopy.submitLabel;
-          if (submitLabel) submitLabel.textContent = currentSubmitLabel;
-        }
+        applyApplicationCopy(copy.applicationCopy ?? defaultApplicationCopy);
       }
 
       if (applicationBoundary) applicationBoundary.hidden = serviceId === 'coaching';
 
-      if (collapseChoice && serviceChoice && selectedServicePanel && selectedServiceLabel) {
+      if (serviceSelect && Array.from(serviceSelect.options).some((option) => option.value === serviceId)) {
+        serviceSelect.value = serviceId;
+      }
+
+      if (collapseChoice && serviceChoice && selectedServicePanel) {
         serviceChoice.hidden = true;
         selectedServicePanel.hidden = false;
-        selectedServiceLabel.textContent = serviceLabels[serviceId] ?? serviceId;
       }
     };
 
@@ -362,11 +381,11 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       radio.addEventListener('change', () => updateService(radio.value));
     });
 
-    changeServiceButton?.addEventListener('click', () => {
-      if (serviceChoice) serviceChoice.hidden = false;
-      if (selectedServicePanel) selectedServicePanel.hidden = true;
-      serviceChoice?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      form.querySelector<HTMLInputElement>('input[name="service"]:checked')?.focus();
+    serviceSelect?.addEventListener('change', () => {
+      const radio = form.querySelector<HTMLInputElement>(`input[name="service"][value="${serviceSelect.value}"]`);
+      if (!radio) return;
+      radio.checked = true;
+      updateService(radio.value, true);
     });
 
     const controls = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input, textarea, select'));

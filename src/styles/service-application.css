@@ -142,8 +142,16 @@
 #service-application-form legend > span,
 .application-field label > span:not([data-situation-label]) {
   margin-inline-start: 0.35rem;
-  color: var(--text-muted);
   font-size: 0.72rem;
+}
+
+.application-required {
+  color: #8a2f2a;
+  font-weight: 700;
+}
+
+.application-optional-marker {
+  color: var(--text-muted);
   font-weight: 500;
 }
 
@@ -347,12 +355,8 @@
 }
 
 .application-selected-service {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem 1rem;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.7rem 0.9rem;
+  display: grid;
+  padding: 0.85rem 0.9rem 0.9rem;
   border: 1px solid var(--border-strong);
   background: rgb(255 248 232 / 0.62);
 }
@@ -361,25 +365,37 @@
   display: none;
 }
 
-.application-selected-service div {
+.application-selected-service label {
   display: grid;
-  gap: 0.2rem;
+  gap: 0.45rem;
 }
 
-.application-selected-service span {
+.application-selected-service label > span {
   color: var(--text-muted);
   font-size: 0.74rem;
+  font-weight: 700;
 }
 
-.application-selected-service button {
+.application-selected-service select {
+  width: 100%;
   min-block-size: 3rem;
-  padding-inline: 0.85rem;
+  padding: 0.65rem 0.75rem;
   border: 1px solid var(--border-strong);
-  background: transparent;
-  color: var(--accent-text);
+  border-radius: 0;
+  background-color: rgb(255 255 255 / 0.54);
+  color: var(--text-primary);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+}
+
+.application-selected-service select:hover {
+  border-color: var(--accent-text);
+}
+
+.application-selected-service select:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent-text) 36%, transparent);
+  outline-offset: 2px;
 }
 
 .application-optional {
