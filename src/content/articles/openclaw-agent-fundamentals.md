@@ -95,3 +95,5 @@ OpenClaw 爆火的時候，我的反應不是興奮，是略為不解。
 這四步跟你用什麼框架無關，它測試的是你對 Agent 運作原理的理解程度。
 
 下一個爆火的框架一定會來。到時候你是又要從頭學一次，還是看一眼就知道它在做什麼，取決於你現在花時間搞懂的是工具還是概念。
+
+如果你想繼續思考 Agent 不只「做任務」，還能怎麼替人持續接收、整理與重新使用內容，可以接著看 CabAI 的公開文章：[未來追蹤一個創作者，可能不再需要你一直回來找他](https://cabai.cablate.com/library/creator-agent-information-channel?utm_source=cablate&utm_medium=article&utm_campaign=creator_agent_channel)。

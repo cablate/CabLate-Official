@@ -122,6 +122,8 @@ AI 在這種「大範圍但規則明確」的改動特別有效率。手動改�
 
 這就是我說的「用架構思維駕馭 AI」。
 
+如果你同時使用 Codex，不確定日常開發、長任務或高難度推理該選哪個模型，CabAI 也整理了 [Codex 模型與 Fast Mode 的選擇建議](https://cabai.cablate.com/library/codex-model-selection-fast-mode-20260731?utm_source=cablate&utm_medium=article&utm_campaign=codex_model_selection)。
+
 ---
 
 *這篇文章本身也是用 Claude Code 協助完成的——但每一個觀點都是我的。*
