@@ -129,3 +129,5 @@ GitHub 上的相關 issue 已經存在半年了。
 我自己是 Agent SDK 的用戶，這個問題對我的影響直接。研究完這些之後，大概得自己去動 source code 來緩解，等官方修是等不住的。
 
 如果你用 Claude Code 有遇到類似的額度問題，或是對 system-reminder 的注入機制有更多觀察，歡迎留言。
+
+如果你遇到的不是額度異常，而是 Windows 版 Codex 在切換對話、送出訊息或載入紀錄時反覆凍結，可以接著看 CabAI 整理的 [Windows 版 Codex 卡頓原因與暫時處理方式](https://cabai.cablate.com/library/windows-codex-lag-troubleshooting-20260718?utm_source=cablate&utm_medium=article&utm_campaign=claude_code_troubleshooting)。
