@@ -2,7 +2,9 @@ import fs from 'node:fs';
 
 const read = (path) => fs.readFileSync(path, 'utf8');
 const application = read('src/pages/services/apply.astro');
+const endpoint = read('functions/api/service-application.js');
 const config = read('src/config/serviceApplication.ts');
+const consultingPage = read('src/pages/services/consulting.astro');
 const styles = read('src/styles/service-application.css');
 const privacy = read('src/pages/privacy.astro');
 const contract = read('docs/contracts/service-application-and-lead-ledger-v1.md');
@@ -16,18 +18,53 @@ const rejectText = (source, text, label) => {
 };
 
 expectText(application, 'noindex={true}', 'application privacy');
-expectText(application, 'analytics="disabled"', 'application privacy');
-expectText(application, 'method="post"', 'form fallback');
-expectText(application, 'enctype="text/plain"', 'form fallback');
-expectText(application, '開啟草稿不代表我已經收到', 'truthful receipt state');
+rejectText(application, 'analytics="disabled"', 'application consent-aware analytics');
+expectText(application, "name: 'generate_lead'", 'application conversion event');
+expectText(application, 'action="/api/service-application"', 'form endpoint');
+expectText(application, 'method="post"', 'form method');
+expectText(application, 'novalidate={true}', 'consistent client validation');
+expectText(application, 'name="situation"', 'compressed situation question');
+expectText(application, 'name="focus"', 'route focus question');
+expectText(application, 'application-optional', 'optional details disclosure');
 expectText(application, 'consent" value="agreed" required', 'consent');
-expectText(application, 'mailto.length <= 8000', 'mailto length guard');
-expectText(application, 'CAB-${date}-', 'lead ID');
+expectText(application, 'application-honeypot', 'honeypot');
+expectText(application, 'cf_turnstile_response', 'turnstile token submission');
+expectText(application, '申請已送出', 'truthful submission state');
+expectText(application, 'data-error-list', 'actionable error summary');
+expectText(application, 'data-ready-email', 'submission email confirmation');
+expectText(application, 'data-route-summary', 'nearby service-change feedback');
+expectText(application, 'aria-live="polite"', 'service-change announcement');
+expectText(config, '送出免費訪談申請', 'coaching message match');
+expectText(config, '下面哪一句最像你現在的狀況？', 'voice-of-customer coaching focus');
+expectText(config, '14 天內加入可全額折抵，陪跑剩餘 NT$44,800', 'coaching consultation credit');
+if (application.indexOf('data-selected-service') > application.indexOf('data-hero-title')) {
+  failures.push('mobile service selector: preselected service control must appear before dynamic hero copy');
+}
+expectText(application, '免費訪談不是縮短版的付費諮詢', 'free and paid boundary');
 expectText(application, '^[A-Za-z0-9._~-]{1,100}$', 'attribution allowlist');
+rejectText(application, 'current_work', 'removed duplicate question');
+rejectText(application, 'main_blocker', 'removed duplicate question');
+rejectText(application, 'desired_change', 'removed duplicate question');
+rejectText(application, 'cab_help', 'removed duplicate question');
+rejectText(application, 'mailto.length', 'legacy mailto guard');
 rejectText(application, 'localStorage', 'PII persistence');
 rejectText(application, 'sessionStorage', 'PII persistence');
-rejectText(application, 'fetch(', 'unapproved application backend');
 rejectText(application, 'gtag(', 'PII analytics');
+
+expectText(endpoint, 'onRequestGet', 'public Turnstile config');
+expectText(endpoint, 'onRequestPost', 'application endpoint');
+expectText(endpoint, 'sameOrigin(request)', 'same-origin gate');
+expectText(endpoint, 'verifyTurnstile', 'server-side Turnstile');
+expectText(endpoint, 'TURNSTILE_VERIFY_URL', 'Turnstile Siteverify');
+expectText(endpoint, "'Idempotency-Key'", 'email idempotency');
+expectText(endpoint, 'SERVICE_APPLICATION_DRY_RUN', 'local delivery test mode');
+expectText(endpoint, 'reply_to: data.email', 'reply route');
+expectText(endpoint, 'html: buildEmailHtml(data, leadId)', 'scannable HTML owner email');
+expectText(endpoint, 'escapeHtml', 'HTML email escaping');
+expectText(endpoint, 'payload.consent !== true', 'server consent validation');
+rejectText(endpoint, 'RESEND_API_KEY =', 'hard-coded Resend key');
+rejectText(endpoint, 'TURNSTILE_SECRET_KEY =', 'hard-coded Turnstile secret');
+
 expectText(styles, '@media (max-width: 760px)', 'mobile layout');
 expectText(styles, 'grid-template-columns: 1fr;', 'mobile single-column layout');
 expectText(styles, 'min-block-size: 3.25rem;', 'form control target size');
@@ -36,14 +73,24 @@ expectText(styles, 'font-size: 1rem;', 'mobile form font size');
 for (const service of ['consulting', 'coaching', 'enterprise', 'partnerships']) {
   const page = read(`src/pages/services/${service}.astro`);
   expectText(config, `id: '${service}'`, `${service} config`);
+  expectText(config, 'focusOptions:', `${service} focus options`);
   expectText(page, `getServiceApplicationHref('${service}', '${service}_page')`, `${service} source route`);
   rejectText(page, `const ${service === 'partnerships' ? 'partnership' : service}Mailto`, `${service} legacy mailto`);
 }
 
+expectText(config, 'service-application-v2', 'application schema version');
+expectText(config, "label: '專案卡關諮詢'", 'broad consulting route');
+expectText(consultingPage, '工作、事業、產品、內容或流程都可以', 'consulting scope');
+rejectText(config, 'AI 專案卡關諮詢', 'consulting is not AI-only');
+rejectText(consultingPage, 'AI 專案卡關諮詢', 'consulting page is not AI-only');
+expectText(config, '30 分鐘免費陪跑訪談', 'coaching interview route');
+expectText(config, '60 分鐘付費諮詢', 'paid consulting route');
 expectText(privacy, '<h2>服務申請與 Email</h2>', 'privacy disclosure');
+expectText(privacy, 'Cloudflare Turnstile', 'Turnstile disclosure');
+expectText(privacy, 'Resend', 'Resend disclosure');
 expectText(privacy, '不會因此自動加入電子報', 'purpose separation');
 expectText(contract, 'revenue-pipeline-ledger.md', 'unique ledger authority');
-expectText(contract, '`email_prepared`', 'honest state contract');
+expectText(contract, '`received`', 'honest state contract');
 expectText(contract, '只有後端確認成功後', 'backend receipt gate');
 
 if (failures.length > 0) {

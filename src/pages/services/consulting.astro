@@ -9,29 +9,29 @@ const consultingApplicationHref = getServiceApplicationHref('consulting', 'consu
 const deliverables = [
   ['一句核心判斷', '先把問題講成一句能做決定的話。'],
   ['主要卡點', '找出現在到底是哪一段沒有接上。'],
-  ['該做與先不做', '判斷要繼續、縮小、換一條路，或暫時不要做成 Agent。'],
+  ['該做與先不做', '判斷要繼續、縮小、換一條路，或暫時先停。'],
   ['一頁行動卡', '留下優先三步、先不做什麼、還缺哪些資訊，以及何時回頭檢查。'],
 ];
 
 const faq = [
   ['會不會只得到很大的方向？', '不會只丟一句「建議你再想清楚」。資訊夠，我會排出接下來先做什麼；資訊不夠，我也會明確告訴你還缺哪一塊。'],
-  ['不是工程師也適合嗎？', '可以。重點是你有一個真實任務與可描述的結果，不是你會不會寫程式。'],
+  ['不是做 AI 或工程專案，也適合嗎？', '可以。工作、事業、產品、內容或流程都可以；重點是你有一個真實題目與可描述的結果。'],
   ['諮詢會直接幫我開發嗎？', '不包含代開發。這 60 分鐘先找出真正問題、該不該做與先做什麼。需要一起實作時，再另外確認陪跑是否適合。'],
   ['費用與時段怎麼確認？', '費用是 NT$5,000。先提交情境，確認這種方式適合後，我會提供可選時段與完整條款；完成付款才保留時段。'],
 ];
 ---
 
-<BaseLayout title="AI 專案卡關諮詢" description="針對一個已經投入時間、卻反覆重做或不知道該先改哪裡的 AI 專案，做出核心診斷、取捨判斷與下一步行動卡。" image="/og/pages/consulting.png" imageAlt="AI 專案卡關諮詢：已經做了一段時間，還是不知道問題在哪？" imageWidth={1200} imageHeight={630} analytics="disabled">
+<BaseLayout title="專案卡關諮詢" description="針對一個已經投入時間、卻反覆重做或不知道該先改哪裡的專案或具體問題，做出核心診斷、取捨判斷與下一步行動卡。" image="/og/pages/consulting.png" imageAlt="專案卡關諮詢：已經做了一段時間，還是不知道問題在哪？" imageWidth={1200} imageHeight={630}>
   <article class="service-page paper-page">
     <nav class="service-shell service-back" aria-label="服務導覽"><a href="/services/"><ArrowLeft size={16} aria-hidden="true" />回到合作方式</a></nav>
 
     <header class="service-shell service-detail-hero page-paper paper-card">
       <div class="service-detail-hero__copy">
-        <p class="section-label">AI 專案卡關諮詢</p>
+        <p class="section-label">專案卡關諮詢</p>
         <h1 class="display-heading">已經做了一段時間，還是不知道到底哪裡有問題？</h1>
         <p class="service-lead">帶一個你已經做過、但不知道接下來該往哪走的專案來。60 分鐘內，我們會把做過什麼、哪裡反覆出問題、還缺什麼攤開，最後排出先做什麼、哪些先不要做。</p>
         <div class="service-actions">
-          <a class="btn btn-primary" href={consultingApplicationHref}>提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="btn btn-primary" href={consultingApplicationHref} data-analytics-placement="consulting_hero">提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
           <span>60 分鐘線上諮詢，NT$5,000。確認適合並完成付款後保留時段。</span>
         </div>
       </div>
@@ -49,6 +49,10 @@ const faq = [
       <div class="service-deliverables">
         {deliverables.map(([title, body]) => <article><h3>{title}</h3><p>{body}</p></article>)}
       </div>
+      <aside class="service-decision-example" aria-labelledby="decision-example-title">
+        <div><p class="section-label">一個常見的判斷方式</p><h3 id="decision-example-title">一直換工具，不一定是工具不夠好。</h3></div>
+        <p><strong>看到的症狀：</strong>做法一直換，結果仍然需要重做。<br /><strong>可能的卡點：</strong>真正要完成什麼、怎樣算完成，還沒有說清楚。<br /><strong>這次要做的事：</strong>把題目縮成一個能測的輸出，再決定工具要不要換。</p>
+      </aside>
     </section>
 
     <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="fit-title">
@@ -59,7 +63,7 @@ const faq = [
       <div class="service-fit-column">
         <h3><Check size={19} aria-hidden="true" />適合你，如果</h3>
         <ul>
-          <li>你正在做一個真實 AI 專案、工作流或產品。</li>
+          <li>你正在做一個真實專案、工作流程、產品或內容。</li>
           <li>你已經試過一些方法，卻還不知道真正瓶頸。</li>
           <li>問題已經造成重做、延誤、成本或決策壓力。</li>
           <li>你願意提供必要資訊，並親自做最後決定。</li>
@@ -69,7 +73,7 @@ const faq = [
         <h3><X size={19} aria-hidden="true" />這可能不適合你，如果</h3>
         <ul>
           <li>你只想拿一個萬用 Prompt。</li>
-          <li>你沒有真實題目，只想泛泛了解 AI。</li>
+          <li>你沒有具體題目，只想泛泛聊聊。</li>
           <li>你期待 Cab 直接代做全部工作。</li>
           <li>你需要 24 小時維運或保證營收。</li>
         </ul>
@@ -101,7 +105,7 @@ const faq = [
 
     <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="consulting-cta-title">
       <div><p class="section-label">下一步</p><h2 id="consulting-cta-title">不用先寫完整需求書。</h2><p>告訴我你想完成什麼、目前做到哪裡、試過什麼與最大阻礙。請勿附上密碼、Token 或機密原文。</p></div>
-      <a class="btn btn-primary" href={consultingApplicationHref}>提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
+      <a class="btn btn-primary" href={consultingApplicationHref} data-analytics-placement="consulting_final">提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
   </article>
 </BaseLayout>

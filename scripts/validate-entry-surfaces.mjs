@@ -26,9 +26,11 @@ assert(expertiseSource.includes('aria-label="開始檢查一個真實 AI 工作�
 assert(!homeSource.includes('給還在觀望的你'), 'retired anxiety section is still present');
 assert(!homeSource.includes('代表案例') && !homeSource.includes('stars／') && !homeSource.includes('位學員'), 'unapproved proof is rendered on home');
 
-const navBlock = navigationSource.match(/export const primaryNavigation = \[([\s\S]*?)\] as const;/)?.[1] ?? '';
-assert(count(navBlock.replace(/^\s*\/\/.*$/gm, ''), /href:/g) === 4, 'primary navigation must contain exactly four active links');
-for (const label of ['專業方法', '學習', '合作', '關於']) assert(navBlock.includes(`label: '${label}'`), `navigation label missing: ${label}`);
+const navBlock = navigationSource.match(/export const primaryNavigationGroups = \[([\s\S]*?)\] as const;/)?.[1] ?? '';
+assert(count(navBlock.replace(/^\s*\/\/.*$/gm, ''), /href:/g) === 8, 'primary navigation must contain exactly eight active destination links');
+for (const label of ['專業方法', '課程與手冊', '專案諮詢', 'AI 應用陪跑', '企業合作', '講師與內容', '作品與經歷', '關於 Cab']) {
+  assert(navBlock.includes(`label: '${label}'`), `navigation label missing: ${label}`);
+}
 assert(!headerSource.includes('site-rail__social'), 'header still renders external/social links');
 for (const label of ['專業方法', '學習', '合作', '關於', 'CabAI 學習平台', 'Email', 'Threads', 'GitHub', '隱私權政策']) assert(layoutSource.includes(label), `footer label missing: ${label}`);
 assert(!layoutSource.includes('>RSS<') && !layoutSource.includes('>Articles<'), 'footer exposes a paused RSS or Articles entry');
@@ -39,8 +41,8 @@ assert(count(layerSource, /code: '/g) === 5, 'diagnostic config must contain exa
 assert(!/<textarea[^>]*\bname=/i.test(worksheetSource), 'diagnostic free-text textarea has a network-submittable name');
 for (const call of ['localStorage', 'sessionStorage', 'fetch(', 'XMLHttpRequest']) assert(!worksheetSource.includes(call), `diagnostic client persists or transmits content through ${call}`);
 for (const forbidden of ['task:', 'answer:', 'evidence:', 'correction:', 'expected:', 'next:']) assert(!eventSource.includes(forbidden), `event schema admits diagnostic body field: ${forbidden}`);
-assert(eventSource.includes('no-op until the A04 consent gate is approved'), 'event sink is not explicitly no-op');
-assert(expertiseSource.includes('analytics="disabled"'), 'expertise route does not explicitly disable existing analytics');
+assert(eventSource.includes('trackAnalyticsEvent(event)'), 'event sink is not connected to the consent-aware analytics boundary');
+assert(!expertiseSource.includes('analytics="disabled"'), 'expertise route still disables consent-aware analytics');
 
 assert(notFoundSource.includes('noindex, follow'), '404 robots contract is missing');
 for (const href of ['/expertise/', '/courses/']) assert(notFoundSource.includes(`href="${href}"`), `404 link missing: ${href}`);
@@ -53,7 +55,7 @@ if (existsSync(join(root, 'dist'))) {
   assert(count(homeHtml, /<h1\b/g) === 1, 'built home must contain exactly one H1');
   assert(count(expertiseHtml, /<h1\b/g) === 1, 'built expertise must contain exactly one H1');
   assert(count(expertiseHtml, /<fieldset class="layer-check"/g) === 5, 'built expertise must contain five check fieldsets');
-  assert(!expertiseHtml.includes('googletagmanager.com'), 'built expertise contains an outbound analytics script');
+  assert(!/<script[^>]+src=["']https:\/\/www\.googletagmanager\.com/i.test(expertiseHtml), 'built expertise eagerly loads an outbound analytics script');
   assert(notFoundHtml.includes('noindex, follow'), 'built 404 robots contract is missing');
   for (const route of ['', 'expertise', 'courses', 'services', 'about', 'privacy']) {
     const path = route ? join(root, 'dist', route, 'index.html') : join(root, 'dist', 'index.html');

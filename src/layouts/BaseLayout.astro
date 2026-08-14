@@ -15,6 +15,8 @@ interface Props {
 import { ViewTransitions } from 'astro:transitions';
 import SEO from '../components/SEO.astro';
 import ArchiveNavigation from '../components/ArchiveNavigation.astro';
+import AnalyticsHead from '../components/analytics/AnalyticsHead.astro';
+import AnalyticsConsent from '../components/analytics/AnalyticsConsent.astro';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 import '@fontsource/noto-sans-tc/400.css';
 import '@fontsource/noto-sans-tc/500.css';
@@ -64,17 +66,9 @@ const currentYear = new Date().getFullYear();
     <!-- Google Search Console 驗證 -->
     <meta name="google-site-verification" content={siteConfig.gscVerification} />
 
+    {analytics === 'default' && <AnalyticsHead ga4Id={siteConfig.ga4Id} />}
     {analytics === 'default' && (
-      <>
-        <!-- Existing deployed GA4 behavior. Batch 20 disables it only on the local-only diagnostic route. -->
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.ga4Id}`}></script>
-        <script define:vars={{ ga4Id: siteConfig.ga4Id }}>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', ga4Id);
-        </script>
-        <script is:inline>
+      <script is:inline>
       (function() {
         // 只在文章頁面初始化
         if (!document.querySelector('.article-content')) {
@@ -115,7 +109,7 @@ const currentYear = new Date().getFullYear();
           scrollThresholds.forEach((threshold) => {
             if (currentDepth >= threshold && !trackedDepths.has(threshold)) {
               trackedDepths.add(threshold);
-              window.gtag('event', 'scroll_depth', { percent: threshold });
+              window.cablateAnalytics?.track('article_scroll', { percent: threshold });
             }
           });
         }
@@ -131,8 +125,7 @@ const currentYear = new Date().getFullYear();
           }
         }, { passive: true });
       })();
-        </script>
-      </>
+      </script>
     )}
 
 </head>
@@ -150,21 +143,23 @@ const currentYear = new Date().getFullYear();
         <div class="footer-inner">
           <div class="footer-statement">
             <a href="/" class="footer-brand">CabLate</a>
-            <p>我專門處理那些「AI 明明用了，事情卻還是一直重做」的問題。從流程、方法到實作，把卡住的地方一層層拆開。</p>
+            <p>我從 AI 應用與產品實作切入，處理那些已經做了一段時間，卻一直重做或不知道怎麼繼續的問題。看清楚卡點之後，再決定 AI 該不該進來。</p>
           </div>
           <div class="footer-links">
             <nav aria-label="內容與服務">
               <strong>探索</strong>
-              {/* Articles inbound links paused. */}<a href="/expertise/">專業方法</a><a href="/courses/">學習</a><a href="/services/">合作</a><a href="/about/">關於</a>
+              {/* Articles inbound links paused. */}<a href="/expertise/">專業方法</a><a href="/courses/">學習</a><a href="/services/">合作</a><a href="/about/#public-output-title">作品與經歷</a><a href="/about/">關於</a>
             </nav>
             <nav aria-label="外部連結">
               <strong>連結</strong>
               <a href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'site_navigation')} target="_blank" rel="noopener">CabAI 學習平台</a><a href={`mailto:${siteConfig.contactEmail}`}>Email</a><a href={siteConfig.threadsUrl} target="_blank" rel="noopener">Threads</a><a href={siteConfig.githubUrl} target="_blank" rel="noopener">GitHub</a>{/* Articles inbound links paused: RSS 入口暫停。 */}
             </nav>
           </div>
-          <div class="footer-meta"><p>&copy; {currentYear} CabLate</p><a href="/privacy/">隱私權政策</a></div>
+          <div class="footer-meta"><p>&copy; {currentYear} CabLate</p><a href="/privacy/">隱私權政策</a>{analytics === 'default' && <button type="button" data-analytics-settings>分析設定</button>}</div>
         </div>
     </footer>}
+
+    {analytics === 'default' && <AnalyticsConsent />}
 
     <!-- Scroll Reveal Observer -->
     <script is:inline>
@@ -201,6 +196,14 @@ const currentYear = new Date().getFullYear();
         });
       })();
     </script>
+    {analytics === 'default' && (
+      <script is:inline>
+        document.addEventListener('click', (event) => {
+          const button = event.target.closest?.('[data-analytics-settings]');
+          if (button) window.cablateAnalytics?.openPreferences();
+        });
+      </script>
+    )}
 </body>
 </html>
 
@@ -224,9 +227,20 @@ const currentYear = new Date().getFullYear();
       text-decoration: none;
       border-radius: 0 0 var(--radius-sm) 0;
     }
-     .skip-link:focus-visible {
+    .skip-link:focus-visible {
        top: 0;
      }
+
+    .footer-meta button {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-decoration: underline;
+      text-underline-offset: .18em;
+      cursor: pointer;
+    }
 
     /* Accessibility: Focus Visible */
     :focus-visible {

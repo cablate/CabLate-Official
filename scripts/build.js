@@ -6,9 +6,11 @@ const isCI = Boolean(process.env.CF_PAGES || process.env.CI);
 
 // 0. Content validation — fail fast before building
 execSync('node scripts/validate-content.js', { stdio: 'inherit' });
+execSync('node scripts/validate-analytics.mjs', { stdio: 'inherit' });
 
 // 1. Astro build
 execSync('npx astro build', { stdio: 'inherit' });
+execSync('node scripts/validate-analytics.mjs --built', { stdio: 'inherit' });
 
 // 2. Sitemap ping — only notify search engines after a CI build.
 if (isCI) {

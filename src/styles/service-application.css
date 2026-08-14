@@ -3,7 +3,7 @@
 }
 
 .application-shell {
-  width: min(100% - 3rem, 72rem);
+  width: min(100% - 3rem, 78rem);
   margin-inline: auto;
 }
 
@@ -20,20 +20,30 @@
   font-weight: 700;
 }
 
-.application-hero {
+.application-stage {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
-  gap: clamp(2.5rem, 7vw, 6rem);
-  align-items: end;
-  padding-block: clamp(3rem, 7vw, 5.5rem);
+  grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1.28fr);
+  gap: 1rem;
+  align-items: start;
+  padding-block: 0.75rem 2rem;
+}
+
+.application-hero {
+  position: sticky;
+  top: 1rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.application-hero .application-selected-service {
+  margin-block-end: 1.5rem;
 }
 
 .application-hero h1 {
-  max-width: 16ch;
+  max-width: 13ch;
   margin: 1rem 0 0;
-  font-size: clamp(2.35rem, 5vw, 4.4rem);
-  line-height: 1.14;
-  letter-spacing: -0.06em;
+  font-size: clamp(2rem, 3.4vw, 3.15rem);
+  line-height: 1.16;
+  letter-spacing: -0.05em;
   text-wrap: balance;
 }
 
@@ -46,7 +56,8 @@
 }
 
 .application-hero aside {
-  padding-block-start: 1.25rem;
+  margin-block-start: 2rem;
+  padding-block-start: 1rem;
   border-top: 2px solid var(--accent-text);
 }
 
@@ -55,37 +66,30 @@
   font-size: 1rem;
 }
 
-.application-hero aside ol {
-  margin: 1rem 0 0;
-  padding: 0;
-  list-style: none;
+.application-hero aside > p {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.8rem 0 0;
 }
 
-.application-hero aside li {
-  display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
-  gap: 0.75rem;
-  padding-block: 0.85rem;
-  border-bottom: 1px solid var(--border);
+.application-hero aside span {
   color: var(--text-secondary);
+  font-size: 0.9rem;
   line-height: 1.65;
 }
 
-.application-hero aside li span {
-  color: var(--accent-text);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 700;
-}
-
 .application-form-card {
-  padding-block: clamp(3rem, 6vw, 5rem);
-  border-top: 1px solid var(--border);
+  min-width: 0;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .application-form-card > header {
   max-width: 48rem;
-  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.application-form-card > header [data-form-label]:empty {
+  display: none;
 }
 
 .application-form-card > header h2,
@@ -98,17 +102,43 @@
   text-wrap: balance;
 }
 
-.application-form-card > header > p:last-child,
+.application-form-card > header > [data-form-description],
 .application-ready > div > p,
 .application-boundary li {
   color: var(--text-secondary);
   line-height: 1.75;
 }
 
+.application-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  list-style: none;
+}
+
+.application-trust-strip li {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.application-trust-strip svg {
+  flex: 0 0 auto;
+  color: var(--accent-text);
+}
+
 #service-application-form {
   display: grid;
-  gap: 2.75rem;
-  max-width: 58rem;
+  gap: 1.5rem;
+  max-width: 100%;
+}
+
+#service-application-form[hidden] {
+  display: none;
 }
 
 #service-application-form :is(fieldset, .application-field, .application-field-grid)[hidden] {
@@ -118,13 +148,13 @@
 #service-application-form fieldset {
   min-width: 0;
   margin: 0;
-  padding: 0 0 2.75rem;
+  padding: 0 0 1.5rem;
   border: 0;
   border-bottom: 1px solid var(--border-strong);
 }
 
 #service-application-form legend {
-  margin-bottom: 1.35rem;
+  margin-bottom: 1rem;
   padding: 0;
   color: var(--text-primary);
   font-size: 1.2rem;
@@ -132,10 +162,18 @@
 }
 
 #service-application-form legend > span,
-.application-field label > span {
+.application-field label > span:not([data-situation-label]) {
   margin-inline-start: 0.35rem;
-  color: var(--text-muted);
   font-size: 0.72rem;
+}
+
+.application-required {
+  color: #8a2f2a;
+  font-weight: 700;
+}
+
+.application-optional-marker {
+  color: var(--text-muted);
   font-weight: 500;
 }
 
@@ -146,32 +184,36 @@
   line-height: 1.65;
 }
 
-.application-choice__grid {
+.application-choice__grid,
+.application-focus__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
-.application-choice__grid label {
+.application-choice__grid label,
+.application-focus__grid label {
   position: relative;
   display: grid;
   grid-template-columns: 1.25rem minmax(0, 1fr);
   gap: 0.8rem;
   align-items: start;
-  min-block-size: 7rem;
-  padding: 1.2rem;
+  min-block-size: 6rem;
+  padding: 1rem;
   border: 1px solid var(--border-strong);
   background: rgb(255 255 255 / 0.28);
   cursor: pointer;
 }
 
-.application-choice__grid label:has(input:checked) {
+.application-choice__grid label:has(input:checked),
+.application-focus__grid label:has(input:checked) {
   border-color: var(--accent-text);
   background: rgb(255 248 232 / 0.62);
   box-shadow: inset 0.2rem 0 var(--accent-text);
 }
 
 .application-choice__grid input,
+.application-focus__grid input,
 .application-consent input {
   width: 1.15rem;
   height: 1.15rem;
@@ -179,16 +221,19 @@
   accent-color: var(--accent-text);
 }
 
-.application-choice__grid span {
+.application-choice__grid span,
+.application-focus__grid span {
   display: grid;
   gap: 0.45rem;
 }
 
-.application-choice__grid strong {
+.application-choice__grid strong,
+.application-focus__grid strong {
   font-size: 1rem;
 }
 
-.application-choice__grid small {
+.application-choice__grid small,
+.application-focus__grid small {
   color: var(--text-secondary);
   font-size: 0.82rem;
   line-height: 1.65;
@@ -208,6 +253,16 @@
 
 .application-field:last-child {
   margin-block-end: 0;
+}
+
+.application-single-field {
+  padding-block-end: 1.5rem;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.application-sensitive-note {
+  color: var(--text-muted);
+  font-size: 0.78rem;
 }
 
 .application-field label {
@@ -238,6 +293,7 @@
 
 .application-field :is(input, textarea):focus-visible,
 .application-choice__grid input:focus-visible,
+.application-focus__grid input:focus-visible,
 .application-consent input:focus-visible {
   outline: 3px solid var(--accent-text);
   outline-offset: 3px;
@@ -281,6 +337,8 @@
 .application-field :is(input, textarea)[aria-invalid='true'] ~ .application-error,
 .application-choice:has(input:user-invalid) > .application-error,
 .application-choice:has(input[aria-invalid='true']) > .application-error,
+.application-focus:has(input:user-invalid) > .application-error,
+.application-focus:has(input[aria-invalid='true']) > .application-error,
 .application-consent:has(input:user-invalid) > .application-error,
 .application-consent:has(input[aria-invalid='true']) > .application-error {
   display: flex;
@@ -318,6 +376,165 @@
   font-weight: 700;
 }
 
+.application-selected-service {
+  display: grid;
+  padding: 0.75rem 0.85rem 0.85rem;
+  border: 1px solid var(--border-strong);
+  background: rgb(255 248 232 / 0.62);
+}
+
+.application-selected-service[hidden] {
+  display: none;
+}
+
+.application-selected-service label {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.application-selected-service label > span {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.application-selected-service select {
+  width: 100%;
+  min-block-size: 3rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  background-color: rgb(255 255 255 / 0.54);
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.application-selected-service select:hover {
+  border-color: var(--accent-text);
+}
+
+.application-selected-service select:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent-text) 36%, transparent);
+  outline-offset: 2px;
+}
+
+.application-route-feedback {
+  display: grid;
+  gap: 0.55rem;
+  margin-block-start: 0.85rem;
+  padding-block-start: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.application-route-feedback[hidden] {
+  display: none;
+}
+
+.application-route-feedback > :is(p, strong) {
+  margin: 0;
+}
+
+.application-route-feedback > strong {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.application-route-feedback > p:not(.application-route-offer) {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.application-route-feedback--choice {
+  margin-block-start: 1rem;
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--border-strong);
+  background: rgb(255 248 232 / 0.5);
+}
+
+.application-route-offer {
+  display: grid;
+  gap: 0.25rem;
+  margin-block-start: 0.25rem !important;
+  padding: 0.75rem 0.85rem;
+  border-inline-start: 3px solid var(--accent-text);
+  background: rgb(255 255 255 / 0.48);
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+.application-route-offer[hidden] {
+  display: none;
+}
+
+.application-route-offer strong {
+  color: var(--text-primary);
+  font-size: 0.76rem;
+}
+
+.application-optional {
+  max-width: 58rem;
+  padding-block-end: 1.5rem;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.application-optional summary {
+  display: flex;
+  align-items: center;
+  min-block-size: 3.25rem;
+  color: var(--accent-text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.application-optional__body {
+  max-width: 48rem;
+  padding-block-start: 1.5rem;
+}
+
+.application-honeypot {
+  position: absolute;
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.application-verification {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.85rem;
+  align-items: center;
+  max-width: 52rem;
+  padding: 0;
+}
+
+.application-verification > div:first-child {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.application-verification > div:first-child svg {
+  color: var(--accent-text);
+}
+
+.application-verification > p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.application-verification a {
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
 .application-error-summary,
 .application-noscript {
   max-width: 52rem;
@@ -333,6 +550,40 @@
   line-height: 1.6;
 }
 
+.application-error-summary ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.application-error-summary ul:empty {
+  display: none;
+}
+
+.application-error-summary button {
+  min-block-size: 2.5rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.application-error-summary button:hover,
+.application-error-summary button:focus-visible {
+  background: rgb(255 255 255 / 0.52);
+}
+
+.application-error-summary button:active {
+  transform: translateY(1px);
+}
+
 .application-submit {
   display: flex;
   flex-wrap: wrap;
@@ -342,6 +593,11 @@
 
 .application-submit button {
   min-block-size: 3.25rem;
+}
+
+.application-submit button:disabled {
+  cursor: wait;
+  opacity: 0.62;
 }
 
 .application-submit p {
@@ -354,7 +610,7 @@
 
 .application-ready {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) max-content;
   gap: 2rem 4rem;
   align-items: end;
   margin-top: 4rem;
@@ -372,21 +628,8 @@
   font-size: 0.78rem;
 }
 
-.application-ready__actions {
-  display: grid;
-  gap: 0.75rem;
-  justify-items: stretch;
-}
-
-.application-ready__actions .btn {
-  justify-content: center;
-}
-
-.application-ready__actions > p {
-  min-height: 1.2rem;
-  margin: 0;
-  color: var(--text-secondary);
-  font-size: 0.78rem;
+.application-ready__email {
+  margin-block-end: 0.25rem;
 }
 
 .application-boundary {
@@ -396,6 +639,10 @@
   align-items: start;
   padding-block: clamp(3.5rem, 7vw, 6rem);
   border-top: 1px solid var(--border);
+}
+
+.application-boundary[hidden] {
+  display: none;
 }
 
 .application-boundary ul {
@@ -417,25 +664,105 @@
   color: var(--accent-text);
 }
 
+.application-boundary li > span {
+  min-width: 0;
+}
+
 @media (max-width: 760px) {
   .application-shell {
     width: min(100% - 2rem, 72rem);
   }
 
-  .application-hero,
   .application-boundary,
   .application-ready,
   .application-field-grid,
-  .application-choice__grid {
+  .application-choice__grid,
+  .application-focus__grid {
     grid-template-columns: 1fr;
   }
 
   .application-hero h1 {
-    font-size: clamp(2.25rem, 12vw, 3.4rem);
+    max-width: 18ch;
+    margin-top: 0.65rem;
+    font-size: clamp(1.7rem, 7vw, 2rem);
+  }
+
+  .application-hero {
+    padding: 1.1rem 1.2rem 1.2rem;
+  }
+
+  .application-hero .application-selected-service {
+    margin-block-end: 0.9rem;
+  }
+
+  .application-hero > div > p:last-child {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .application-hero aside {
+    display: none;
+  }
+
+  .application-form-card {
+    padding: 1.35rem;
+  }
+
+  .application-form-card > header {
+    margin-bottom: 1.1rem;
+  }
+
+  .application-form-card > header h2 {
+    font-size: 1.45rem;
+  }
+
+  .application-form-card > header > [data-form-description] {
+    margin-block: 0.65rem 0;
+    font-size: 0.9rem;
+    line-height: 1.65;
   }
 
   .application-choice__grid label {
     min-block-size: auto;
+  }
+
+  .application-focus__grid label {
+    min-block-size: auto;
+  }
+
+  .application-choice__grid label,
+  .application-focus__grid label {
+    gap: 0.65rem;
+    padding: 0.8rem;
+  }
+
+  .application-selected-service {
+    padding: 0.65rem 0.75rem 0.7rem;
+  }
+
+  .application-route-feedback {
+    gap: 0.35rem;
+    margin-block-start: 0.55rem;
+    padding-block-start: 0.55rem;
+  }
+
+  .application-route-offer {
+    display: flex;
+    gap: 0.35rem;
+    align-items: baseline;
+    padding: 0.55rem 0.65rem;
+    font-size: 0.78rem;
+  }
+
+  .application-route-offer strong {
+    flex: 0 0 auto;
+  }
+
+  .application-trust-strip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem 0.75rem;
   }
 
   .application-submit {
@@ -449,6 +776,16 @@
 
   .application-ready__actions {
     justify-items: stretch;
+  }
+}
+
+@media (max-width: 960px) {
+  .application-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .application-hero {
+    position: static;
   }
 }
 

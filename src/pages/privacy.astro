@@ -11,28 +11,31 @@ import { siteConfig } from '../config/siteConfig';
 
             <section>
                 <h2>資料收集</h2>
-                <p>本站使用 Google Analytics 4（GA4）收集匿名的網站使用數據，包括：頁面瀏覽量、訪問時間、裝置類型、大致地理位置。這些數據用於了解內容表現和改善網站體驗，不會用於識別個人身份。</p>
+                <p>只有在你選擇「允許網站分析」後，本站才會載入 Google Analytics 4（GA4）。分析資料包括不含網址參數的頁面路徑、服務類型、進行到哪個流程階段，以及 GA4 提供的裝置與大致地區資料。這些資料只用來判斷哪些內容有幫助、申請流程卡在哪裡。</p>
+                <p>姓名、Email、表單自由文字、申請編號與你貼上的連結不會送進 GA4。你也可以在每一頁頁尾點選「分析設定」，隨時允許或停用網站分析。</p>
             </section>
 
             <section>
                 <h2>服務申請與 Email</h2>
-                <p>服務申請頁目前不會把你填寫的內容上傳或儲存在 CabLate 網站伺服器。頁面只會在你的裝置上整理內容，並嘗試開啟 Email 草稿；只有你在自己的 Email 應用程式確認寄出後，CabLate 才可能收到申請。</p>
-                <p>寄出的姓名、Email、公司或團隊名稱、工作情況、合作需求與來源資訊，只用於判斷合作是否適合、回覆申請與後續服務聯絡，不會因此自動加入電子報，也不會在未取得另外同意前公開成案例。請勿提交密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
+                <p>服務申請頁會收集你主動提供的姓名、Email、想推進的事情、目前卡點，以及選填的公司名稱、時間與公開參考連結。這些資料會先經 Cloudflare Turnstile 驗證是否為正常訪客，再由 Cloudflare Pages Function 透過 Resend 寄到 CabLate 的服務信箱。</p>
+                <p>這些資料只用於判斷合作是否適合、準備會談、回覆申請與後續服務聯絡，不會因此自動加入電子報，也不會在未取得另外同意前公開成案例。CabLate 網站目前不另建服務申請資料庫；信件會依信箱與服務紀錄的必要期間保存。你可以隨時聯絡我要求查詢、更正或刪除。請勿提交密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
             </section>
 
             <section>
                 <h2>Cookie 使用</h2>
-                <p>本站透過 GA4 使用 Cookie 追蹤訪客行為。你可以透過瀏覽器設定停用 Cookie，停用後網站功能不受影響。</p>
+                <p>在你允許網站分析前，本站不會載入 GA4，也不會建立 GA4 的分析 Cookie。若你之後改為停用，本站會更新同意狀態並清除可由本站移除的 GA4 第一方 Cookie。停用分析不會影響網站內容或服務申請功能。</p>
             </section>
 
             <section>
                 <h2>第三方服務</h2>
                 <p>本站使用以下第三方服務：</p>
                 <ul>
-                    <li><strong>Google Analytics 4</strong>：網站流量分析</li>
+                    <li><strong>Google Analytics 4</strong>：取得同意後才載入的網站與申請流程分析</li>
                     <li><strong>Cloudflare Pages</strong>：網站託管與 CDN</li>
+                    <li><strong>Cloudflare Turnstile</strong>：服務申請的人機驗證</li>
+                    <li><strong>Resend</strong>：將服務申請寄送到 CabLate 信箱</li>
                     <li><strong>自託管字體 (Fontsource)</strong>：字型載入（不向第三方伺服器請求）</li>
-                    <li><strong>你與 CabLate 使用的 Email 服務</strong>：只有在你實際寄出服務申請後，才會傳遞與保存信件</li>
+                    <li><strong>CabLate 使用的 Email 服務</strong>：接收、保存與回覆服務申請信件</li>
                 </ul>
                 <p>這些服務各有其隱私權政策，建議參閱其官方說明。</p>
             </section>

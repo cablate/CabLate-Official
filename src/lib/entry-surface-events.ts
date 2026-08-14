@@ -1,4 +1,5 @@
 import type { DiagnosticLayerCode } from '../config/workflowDiagnostic';
+import { trackAnalyticsEvent } from './analytics-client';
 
 type EntrySurfaceEvent =
   | { name: 'diagnostic_start'; properties: { page: '/expertise/'; version: 'b20-v1'; placement: 'hero' | 'worksheet' } }
@@ -7,9 +8,9 @@ type EntrySurfaceEvent =
   | { name: 'primary_cta_click'; properties: { layer: DiagnosticLayerCode; placement: 'diagnostic_result'; destination: 'agentskill' | 'handbook' } };
 
 /**
- * Batch 20 deliberately has no analytics sink. This typed boundary documents
- * the only safe event shapes without transmitting diagnostic content.
+ * Sends only the diagnostic stage and result category. Text entered into the
+ * worksheet remains in the browser and is never admitted by this event type.
  */
-export function emitEntrySurfaceEvent(_event: EntrySurfaceEvent): void {
-  // no-op until the A04 consent gate is approved
+export function emitEntrySurfaceEvent(event: EntrySurfaceEvent): void {
+  trackAnalyticsEvent(event);
 }

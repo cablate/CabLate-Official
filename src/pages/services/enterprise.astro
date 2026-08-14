@@ -46,15 +46,15 @@ const faq = [
 ];
 ---
 
-<BaseLayout title="企業 AI 現況診斷、工作坊與導入" description="從團隊真實工作與重複發生的問題出發，先判斷能力、流程、資料、工具或管理問題，再設計現況診斷、工作坊或小規模導入。" image="/og/pages/enterprise.png" imageAlt="企業與團隊合作：一堂 AI 課，不會讓團隊把工作做穩。" imageWidth={1200} imageHeight={630} analytics="disabled">
+<BaseLayout title="企業 AI 現況診斷、工作坊與導入" description="讓團隊不只會操作 AI，也知道怎麼把結果做穩、交接與檢查，再依現況安排診斷、工作坊或小規模導入。" image="/og/pages/enterprise.png" imageAlt="企業與團隊合作：讓團隊不只會用 AI，也知道怎麼把結果做穩。" imageWidth={1200} imageHeight={630}>
   <article class="service-page paper-page">
     <nav class="service-shell service-back" aria-label="服務導覽"><a href="/services/"><ArrowLeft size={16} aria-hidden="true" />回到合作方式</a></nav>
 
     <header class="service-shell service-detail-hero service-enterprise-hero page-paper paper-card">
       <div class="service-detail-hero__copy">
         <p class="section-label">企業與團隊合作</p>
-        <h1 class="display-heading">一堂 AI 課，不會讓團隊把工作做穩。</h1>
-        <p class="service-lead">如果大家上完課還是各做各的、無法交接，或試點只能靠少數人撐，問題通常不只是「還不會用 AI」。我會先看是哪一段工作出了問題，再決定適合上課、改流程，還是做一個小型試點。</p>
+        <h1 class="display-heading">讓團隊不只會用 AI，也知道怎麼把結果做穩。</h1>
+        <p class="service-lead">如果大家上完課還是各做各的、無法交接，或試點只能靠少數人撐，問題通常不只在工具。我會看工作、角色、資料、安全和驗收怎麼接，再安排課程、流程調整或小型試點。</p>
         <div class="service-actions">
           <a class="btn btn-primary" href="#enterprise-fit">先確認企業合作條件 <ArrowRight size={18} aria-hidden="true" /></a>
         </div>
@@ -133,7 +133,7 @@ const faq = [
 
     <section class="service-shell service-section service-process service-process--five page-paper paper-card" aria-labelledby="enterprise-process-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="enterprise-process-title">先把問題看清楚，我才會提方案。</h2>
+        <h2 id="enterprise-process-title">方案要回答：誰負責、怎麼驗證、什麼時候該停。</h2>
       </header>
       <ol>
         {enterpriseProcess.map(([title, body], index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{title}</h3><p>{body}</p></div></li>)}
@@ -142,7 +142,7 @@ const faq = [
 
     <section class="service-shell service-section service-faq page-paper paper-card" aria-labelledby="enterprise-faq-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="enterprise-faq-title">先把企業合作最容易誤解的地方說清楚。</h2>
+        <h2 id="enterprise-faq-title">企業合作常見的四個問題。</h2>
       </header>
       <div>{faq.map(([question, answer]) => <details><summary>{question}</summary><p>{answer}</p></details>)}</div>
     </section>
@@ -153,7 +153,7 @@ const faq = [
         <h2 id="enterprise-cta-title">不用先做完整標案。告訴我哪一群人正在做什麼、現在最麻煩的是哪一段就可以。</h2>
         <p>不必先整理成完整標案。請勿附密碼、Token 或機密原文；確認適合後，才會進一步討論工作內容、費用與條款。</p>
       </div>
-      <a class="btn btn-primary" href={enterpriseApplicationHref}>提交企業合作情境 <ArrowRight size={18} aria-hidden="true" /></a>
+      <a class="btn btn-primary" href={enterpriseApplicationHref} data-analytics-placement="enterprise_final">提交企業合作情境 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
   </article>
 </BaseLayout>
