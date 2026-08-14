@@ -102,13 +102,13 @@ export const GET: APIRoute = async () => {
                           children: [
                             {
                               type: 'div',
-                              props: { style: { display: 'flex' }, children: '把你手上那件事做下去，' },
+                              props: { style: { display: 'flex' }, children: '把一直卡住的事，' },
                             },
                             {
                               type: 'div',
                               props: {
                                 style: { display: 'flex', marginTop: '5px', color: '#17233d' },
-                                children: '再決定 AI 該幫哪一段。',
+                                children: '真的做出來。',
                               },
                             },
                           ],
@@ -124,7 +124,7 @@ export const GET: APIRoute = async () => {
                             fontSize: '23px',
                             lineHeight: 1.45,
                           },
-                            children: '帶著正在做的工作、產品、內容或專案來。',
+                            children: '先看清楚問題，再決定 AI 該幫哪一段。',
                         },
                       },
                     ],
