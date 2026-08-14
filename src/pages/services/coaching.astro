@@ -93,7 +93,7 @@ const breadcrumbJsonLd = {
 };
 ---
 
-<BaseLayout title="AI 應用陪跑" noSEO={true} analytics="disabled">
+<BaseLayout title="AI 應用陪跑" noSEO={true}>
   <SEO
     slot="head"
     title={seoTitle}
@@ -115,7 +115,7 @@ const breadcrumbJsonLd = {
         <h1 class="display-heading">把你手上那件事做下去，再決定 AI 該幫哪一段。</h1>
         <p class="service-lead">帶著你正在做的工作、產品、內容或專案來。我會跟你一起找出到底卡在哪，再決定要用 AI、改流程，還是先處理別的問題。</p>
         <div class="service-actions">
-          <a class="btn btn-primary" href={coachingApplicationHref}>跟我說說你卡在哪 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="btn btn-primary" href={coachingApplicationHref} data-analytics-placement="coaching_hero">跟我說說你卡在哪 <ArrowRight size={18} aria-hidden="true" /></a>
           <dl class="service-hero-facts" aria-label="陪跑方案摘要">
             <div><dt>期間</dt><dd>五週</dd></div>
             <div><dt>會議</dt><dd>五次</dd></div>
@@ -215,7 +215,7 @@ const breadcrumbJsonLd = {
 
     <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="coaching-cta-title">
       <div><p class="section-label">下一步</p><h2 id="coaching-cta-title">如果你手上真的有件事卡住了，可以先拿來聊。</h2><p>先用一分鐘告訴我你正在推進什麼、反覆卡在哪。適合的話，我會邀請你進行 30 分鐘免費訪談；不適合我也會直接說。</p></div>
-      <a class="btn btn-primary" href={coachingApplicationHref}>申請 30 分鐘免費訪談 <ArrowRight size={18} aria-hidden="true" /></a>
+      <a class="btn btn-primary" href={coachingApplicationHref} data-analytics-placement="coaching_fit">申請 30 分鐘免費訪談 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
 
     <aside class="service-coaching-sticky" aria-label="AI 應用陪跑下一步">
@@ -223,7 +223,7 @@ const breadcrumbJsonLd = {
         <strong>五週・1 對 1 AI 陪跑</strong>
         <span>NT$49,800｜同時最多三位</span>
       </div>
-      <a class="btn btn-primary" href={coachingApplicationHref}>申請免費訪談 <ArrowRight size={17} aria-hidden="true" /></a>
+      <a class="btn btn-primary" href={coachingApplicationHref} data-analytics-placement="coaching_final">申請免費訪談 <ArrowRight size={17} aria-hidden="true" /></a>
     </aside>
   </article>
 </BaseLayout>

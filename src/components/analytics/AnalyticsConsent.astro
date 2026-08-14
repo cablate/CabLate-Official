@@ -1,0 +1,88 @@
+<aside class="analytics-consent" data-analytics-consent hidden aria-labelledby="analytics-consent-title">
+  <div>
+    <strong id="analytics-consent-title">網站分析設定</strong>
+    <p>我只會用頁面、服務類型與流程階段了解網站哪裡卡住；不會把姓名、Email 或你填的內容送進分析工具。</p>
+    <a href="/privacy/">查看隱私說明</a>
+  </div>
+  <div class="analytics-consent__actions">
+    <button class="btn btn-primary" type="button" data-analytics-accept>允許網站分析</button>
+    <button class="btn btn-ghost" type="button" data-analytics-decline>只使用必要功能</button>
+  </div>
+</aside>
+
+<script>
+  const initializeAnalyticsConsent = () => {
+    const panel = document.querySelector<HTMLElement>('[data-analytics-consent]');
+    if (!panel || panel.dataset.ready === 'true') return;
+    panel.dataset.ready = 'true';
+
+    const analytics = window.cablateAnalytics;
+    if (!analytics?.getPreference()) panel.hidden = false;
+
+    if (window.cablateConsentHandlersReady) return;
+    window.cablateConsentHandlersReady = true;
+    const currentPanel = () => document.querySelector<HTMLElement>('[data-analytics-consent]');
+    const show = () => { const activePanel = currentPanel(); if (activePanel) activePanel.hidden = false; };
+    const hide = () => { const activePanel = currentPanel(); if (activePanel) activePanel.hidden = true; };
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (target.closest('[data-analytics-accept]')) {
+        window.cablateAnalytics?.setPreference('granted');
+        hide();
+        return;
+      }
+      if (target.closest('[data-analytics-decline]')) {
+        window.cablateAnalytics?.setPreference('denied');
+        hide();
+        return;
+      }
+      const link = target.closest<HTMLAnchorElement>('a[data-analytics-placement]');
+      if (!link) return;
+      const url = new URL(link.href, window.location.origin);
+      const placement = link.dataset.analyticsPlacement ?? 'unknown';
+      const applicationService = url.searchParams.get('service');
+      const routeService = url.pathname.match(/^\/services\/(consulting|coaching|enterprise|partnerships)\/?$/)?.[1];
+      if (applicationService && ['consulting', 'coaching', 'enterprise', 'partnerships'].includes(applicationService)) {
+        window.cablateAnalytics?.track('service_cta_click', { service: applicationService, placement });
+      } else if (routeService) {
+        window.cablateAnalytics?.track('service_route_click', { service: routeService, placement });
+      }
+    });
+    window.addEventListener('cablate:analytics-open', show);
+  };
+
+  initializeAnalyticsConsent();
+  document.addEventListener('astro:page-load', initializeAnalyticsConsent);
+</script>
+
+<style>
+  .analytics-consent {
+    position: fixed;
+    right: clamp(1rem, 3vw, 2rem);
+    bottom: clamp(1rem, 3vw, 2rem);
+    z-index: 10000;
+    display: grid;
+    width: min(34rem, calc(100vw - 2rem));
+    gap: 1rem;
+    padding: clamp(1.15rem, 3vw, 1.5rem);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    background: rgb(255 253 248 / .96);
+    box-shadow: 0 1.2rem 3rem rgb(42 35 24 / .2);
+    backdrop-filter: blur(16px);
+  }
+
+  .analytics-consent[hidden] { display: none; }
+  .analytics-consent strong { display: block; margin-bottom: .4rem; font-size: 1rem; }
+  .analytics-consent p { margin: 0; color: var(--text-secondary); font-size: .9rem; line-height: 1.65; }
+  .analytics-consent a { display: inline-block; margin-top: .5rem; color: var(--accent); font-size: .82rem; }
+  .analytics-consent__actions { display: flex; flex-wrap: wrap; gap: .65rem; }
+  .analytics-consent__actions .btn { min-height: 2.75rem; padding: .65rem 1rem; font-size: .86rem; }
+
+  @media (max-width: 36rem) {
+    .analytics-consent { left: 1rem; right: 1rem; bottom: 1rem; width: auto; }
+    .analytics-consent__actions { display: grid; }
+    .analytics-consent__actions .btn { width: 100%; }
+  }
+</style>

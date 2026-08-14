@@ -18,7 +18,8 @@ const rejectText = (source, text, label) => {
 };
 
 expectText(application, 'noindex={true}', 'application privacy');
-expectText(application, 'analytics="disabled"', 'application privacy');
+rejectText(application, 'analytics="disabled"', 'application consent-aware analytics');
+expectText(application, "name: 'generate_lead'", 'application conversion event');
 expectText(application, 'action="/api/service-application"', 'form endpoint');
 expectText(application, 'method="post"', 'form method');
 expectText(application, 'novalidate={true}', 'consistent client validation');

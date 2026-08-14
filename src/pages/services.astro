@@ -58,7 +58,7 @@ const organizationPaths = [
 ];
 ---
 
-<BaseLayout title="專案諮詢、AI 應用陪跑與企業合作" description="分清楚你需要一次把卡點看懂、找人一起做五週，還是處理團隊與合作邀約。" image="/og/pages/services.png" imageAlt="CabLate 合作方式：卡住時，分清楚要一次看懂，還是找人一起做。" imageWidth={1200} imageHeight={630} analytics="disabled">
+<BaseLayout title="專案諮詢、AI 應用陪跑與企業合作" description="分清楚你需要一次把卡點看懂、找人一起做五週，還是處理團隊與合作邀約。" image="/og/pages/services.png" imageAlt="CabLate 合作方式：卡住時，分清楚要一次看懂，還是找人一起做。" imageWidth={1200} imageHeight={630}>
   <article class="service-page paper-page">
     <header class="service-shell service-hero page-paper paper-card">
       <div class="service-hero__copy">
@@ -66,8 +66,8 @@ const organizationPaths = [
         <h1 class="display-heading">卡住時，分清楚要一次看懂，還是找人一起做。</h1>
         <p class="service-lead">60 分鐘諮詢用來拆清楚一個具體卡點；五週陪跑則是把你手上的事情繼續做下去。團隊導入、演講、工作坊和內容合作，也有各自入口。</p>
         <div class="service-actions">
-          <a class="btn btn-primary" href="/services/consulting/">看卡關諮詢 <ArrowRight size={18} aria-hidden="true" /></a>
-          <a class="service-text-link" href="/services/coaching/">想一起做五週？看陪跑 <MoveRight size={17} aria-hidden="true" /></a>
+          <a class="btn btn-primary" href="/services/consulting/" data-analytics-placement="services_hero_primary">看卡關諮詢 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="service-text-link" href="/services/coaching/" data-analytics-placement="services_hero_secondary">想一起做五週？看陪跑 <MoveRight size={17} aria-hidden="true" /></a>
         </div>
         <p class="service-fine-print">不知道該選哪個沒關係，挑最接近你現在狀況的就好。填資料不代表成交，不適合我也會直接說。</p>
       </div>
@@ -93,7 +93,7 @@ const organizationPaths = [
             <ul>
               {path.outcomes.map((outcome) => <li><Check size={17} aria-hidden="true" />{outcome}</li>)}
             </ul>
-            <a class:list={['btn', path.primary ? 'btn-primary' : 'btn-ghost']} href={path.href}>{path.action} <ArrowRight size={17} aria-hidden="true" /></a>
+            <a class:list={['btn', path.primary ? 'btn-primary' : 'btn-ghost']} href={path.href} data-analytics-placement="services_path_card">{path.action} <ArrowRight size={17} aria-hidden="true" /></a>
           </article>
         ))}
       </div>
@@ -136,7 +136,7 @@ const organizationPaths = [
             <h3>{path.title}</h3>
             <p>{path.description}</p>
             <strong>{path.detail}</strong>
-            <a class="service-route-link" href={path.href}>{path.action} <ArrowRight size={17} aria-hidden="true" /></a>
+            <a class="service-route-link" href={path.href} data-analytics-placement="services_organization_card">{path.action} <ArrowRight size={17} aria-hidden="true" /></a>
           </article>
         ))}
       </div>

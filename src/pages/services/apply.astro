@@ -20,7 +20,6 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
   title="提出服務申請"
   description="簡短告訴我你正在做什麼、目前卡在哪裡。我會依照你的需求，回覆 60 分鐘付費諮詢、30 分鐘免費陪跑訪談或其他合作的下一步。"
   noindex={true}
-  analytics="disabled"
 >
   <article class="application-page paper-page">
     <nav class="application-shell application-back" aria-label="服務導覽">
@@ -229,6 +228,8 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 </BaseLayout>
 
 <script>
+  import { trackAnalyticsEvent, type ServiceId } from '../../lib/analytics-client';
+
   declare global {
     interface Window {
       turnstile?: {
@@ -332,6 +333,16 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     };
     const params = new URLSearchParams(window.location.search);
     const safeAttribution = (value: string | null, fallback = '') => value && /^[A-Za-z0-9._~-]{1,100}$/.test(value) ? value : fallback;
+    const analyticsServices = new Set<ServiceId>(['consulting', 'coaching', 'enterprise', 'partnerships']);
+    const analyticsSources = new Set(['direct', 'coaching_page', 'consulting_page', 'enterprise_page', 'partnerships_page', 'services_page']);
+    const analyticsService = (): ServiceId | 'unknown' => {
+      const value = form.querySelector<HTMLInputElement>('input[name="service"]:checked')?.value;
+      return value && analyticsServices.has(value as ServiceId) ? value as ServiceId : 'unknown';
+    };
+    const analyticsSource = () => {
+      const value = params.get('source');
+      return value && analyticsSources.has(value) ? value : 'direct';
+    };
     let turnstileWidgetId = '';
     let turnstileToken = '';
     let turnstileReady = false;
@@ -421,7 +432,12 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     }
 
     form.querySelectorAll<HTMLInputElement>('input[name="service"]').forEach((radio) => {
-      radio.addEventListener('change', () => updateService(radio.value));
+      radio.addEventListener('change', () => {
+        updateService(radio.value);
+        if (analyticsServices.has(radio.value as ServiceId)) {
+          trackAnalyticsEvent({ name: 'service_choice_change', properties: { service: radio.value as ServiceId } });
+        }
+      });
     });
 
     serviceSelect?.addEventListener('change', () => {
@@ -429,7 +445,14 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       if (!radio) return;
       radio.checked = true;
       updateService(radio.value, true);
+      if (analyticsServices.has(radio.value as ServiceId)) {
+        trackAnalyticsEvent({ name: 'service_choice_change', properties: { service: radio.value as ServiceId } });
+      }
     });
+
+    form.addEventListener('focusin', () => {
+      trackAnalyticsEvent({ name: 'form_start', properties: { service: analyticsService(), source: analyticsSource() } });
+    }, { once: true });
 
     const controls = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input, textarea, select'));
     const fieldLabels: Record<string, string> = {
@@ -560,6 +583,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      trackAnalyticsEvent({ name: 'form_submit_attempt', properties: { service: analyticsService() } });
       if (!form.checkValidity()) {
         const invalidFields: string[] = [];
         controls.forEach((control) => {
@@ -568,11 +592,13 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           if (!control.validity.valid && control.name) invalidFields.push(control.name);
         });
         showErrorSummary('請從下面的項目回去修改。', invalidFields);
+        trackAnalyticsEvent({ name: 'form_submit_invalid', properties: { service: analyticsService(), reason: 'client_validation' } });
         return;
       }
 
       if (!turnstileReady) {
         showErrorSummary('安全檢查尚未載入，請稍等一下再送出。', ['turnstile']);
+        trackAnalyticsEvent({ name: 'form_submit_invalid', properties: { service: analyticsService(), reason: 'turnstile_not_ready' } });
         return;
       }
 
@@ -587,6 +613,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           if (submitButton) submitButton.disabled = false;
           if (submitLabel) submitLabel.textContent = currentSubmitLabel;
           showErrorSummary('安全檢查暫時沒有完成，請再送出一次。', ['turnstile']);
+          trackAnalyticsEvent({ name: 'form_submit_invalid', properties: { service: analyticsService(), reason: 'turnstile_timeout' } });
           return;
         }
       }
@@ -615,6 +642,14 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           if (readyLabel) readyLabel.textContent = '測試資料已接受';
           if (readyTitle) readyTitle.textContent = '這次沒有寄出 Email。';
         }
+        trackAnalyticsEvent({
+          name: 'generate_lead',
+          properties: {
+            service: analyticsService(),
+            source: analyticsSource(),
+            delivery: result.delivery === 'dry_run' ? 'dry_run' : 'email_sent',
+          },
+        });
         form.hidden = true;
         if (readyPanel) {
           readyPanel.hidden = false;
@@ -634,6 +669,13 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         } else {
           showErrorSummary(result?.message || `資料還沒有送出。請稍後再試，或直接寄到 ${form.dataset.contactEmail}。`);
         }
+        trackAnalyticsEvent({
+          name: 'form_submit_error',
+          properties: {
+            service: analyticsService(),
+            error_type: serverFields.length > 0 ? 'server_validation' : result ? 'server_response' : 'network_or_unknown',
+          },
+        });
       } finally {
         form.removeAttribute('aria-busy');
         if (submitButton) submitButton.disabled = false;

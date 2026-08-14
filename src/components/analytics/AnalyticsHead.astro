@@ -1,0 +1,193 @@
+---
+interface Props {
+  ga4Id: string;
+}
+
+const { ga4Id } = Astro.props;
+---
+
+<meta name="cablate-ga4-id" content={ga4Id} />
+
+<script>
+  const ga4Id = document.querySelector<HTMLMetaElement>('meta[name="cablate-ga4-id"]')?.content ?? '';
+  (() => {
+    const STORAGE_KEY = 'cablate_analytics_consent_v1';
+    const PRODUCTION_HOSTS = new Set(['cablate.com', 'www.cablate.com']);
+    const SERVICES = new Set(['consulting', 'coaching', 'enterprise', 'partnerships']);
+    const SOURCES = new Set(['direct', 'coaching_page', 'consulting_page', 'enterprise_page', 'partnerships_page', 'services_page']);
+    const EVENT_KEYS = {
+      service_hub_view: [],
+      service_page_view: ['service'],
+      service_route_click: ['service', 'placement'],
+      service_cta_click: ['service', 'placement'],
+      application_view: ['service', 'source'],
+      form_start: ['service', 'source'],
+      service_choice_change: ['service'],
+      form_submit_attempt: ['service'],
+      form_submit_invalid: ['service', 'reason'],
+      form_submit_error: ['service', 'error_type'],
+      generate_lead: ['service', 'source', 'delivery'],
+      diagnostic_start: ['page', 'version', 'placement'],
+      diagnostic_complete: ['page', 'version'],
+      diagnostic_result_layer: ['layer'],
+      primary_cta_click: ['layer', 'placement', 'destination'],
+      article_scroll: ['percent'],
+    } as const;
+    type RuntimeEventName = keyof typeof EVENT_KEYS;
+    const VALUE_PATTERN = /^[A-Za-z0-9._~/-]{1,80}$/;
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function gtag(){ window.dataLayer.push(arguments); };
+    window.gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+    });
+    window.gtag('set', 'ads_data_redaction', true);
+
+    let preference: 'granted' | 'denied' | null = null;
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY);
+      preference = stored === 'granted' || stored === 'denied' ? stored : null;
+    } catch {
+      preference = null;
+    }
+
+    let configured = false;
+    let lastPageKey = '';
+    const root = document.documentElement;
+    root.dataset.analyticsReady = 'true';
+    root.dataset.analyticsPreference = preference ?? 'unknown';
+
+    const safePath = (value: string) => {
+      try {
+        const url = new URL(value, window.location.origin);
+        return `${url.origin}${url.pathname}`;
+      } catch {
+        return `${window.location.origin}${window.location.pathname}`;
+      }
+    };
+    const safeReferrer = (value: string) => {
+      try { return new URL(value, window.location.origin).origin; }
+      catch { return ''; }
+    };
+    const queryValue = (key: string, allowed: Set<string>, fallback: string) => {
+      const value = new URLSearchParams(window.location.search).get(key);
+      return value && allowed.has(value) ? value : fallback;
+    };
+    const currentService = () => {
+      const routeMatch = window.location.pathname.match(/^\/services\/(consulting|coaching|enterprise|partnerships)\/?$/);
+      if (routeMatch) return routeMatch[1];
+      return queryValue('service', SERVICES, 'unknown');
+    };
+    const currentSource = () => queryValue('source', SOURCES, 'direct');
+    const loadGoogleTag = () => {
+      if (!ga4Id || !PRODUCTION_HOSTS.has(window.location.hostname) || document.querySelector('script[data-cablate-ga4]')) return;
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(ga4Id)}`;
+      script.dataset.cablateGa4 = 'true';
+      document.head.append(script);
+    };
+    const configure = () => {
+      if (configured) return;
+      configured = true;
+      window.gtag('js', new Date());
+      window.gtag('set', {
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+        page_location: safePath(window.location.href),
+        page_referrer: document.referrer ? safeReferrer(document.referrer) : '',
+      });
+      window.gtag('config', ga4Id, { send_page_view: false });
+      loadGoogleTag();
+    };
+    const cleanProperties = (eventName: RuntimeEventName, properties: Record<string, unknown> = {}) => {
+      const allowedKeys = EVENT_KEYS[eventName];
+      if (!allowedKeys) return null;
+      const clean: Record<string, string | number> = {};
+      for (const key of allowedKeys) {
+        const value = properties[key];
+        if (typeof value === 'number' && Number.isFinite(value)) clean[key] = value;
+        if (typeof value === 'string' && VALUE_PATTERN.test(value)) clean[key] = value;
+      }
+      return clean;
+    };
+    const track = (eventName: RuntimeEventName, properties: Record<string, unknown> = {}) => {
+      if (preference !== 'granted') return;
+      const clean = cleanProperties(eventName, properties);
+      if (!clean) return;
+      configure();
+      window.gtag('event', eventName, clean);
+      if (!PRODUCTION_HOSTS.has(window.location.hostname)) {
+        root.dataset.analyticsLastEvent = eventName;
+        root.dataset.analyticsLastPayload = JSON.stringify(clean);
+      }
+    };
+    const trackPage = () => {
+      if (preference !== 'granted') return;
+      configure();
+      const pageKey = `${window.location.pathname}|${currentService()}|${currentSource()}`;
+      if (pageKey === lastPageKey) return;
+      lastPageKey = pageKey;
+      window.gtag('set', {
+        page_location: safePath(window.location.href),
+        page_referrer: document.referrer ? safeReferrer(document.referrer) : '',
+      });
+      window.gtag('event', 'page_view', {
+        page_title: document.title.slice(0, 100),
+        page_location: safePath(window.location.href),
+      });
+
+      if (window.location.pathname === '/services/' || window.location.pathname === '/services') {
+        track('service_hub_view');
+      } else if (/^\/services\/(consulting|coaching|enterprise|partnerships)\/?$/.test(window.location.pathname)) {
+        track('service_page_view', { service: currentService() });
+      } else if (/^\/services\/apply\/?$/.test(window.location.pathname)) {
+        track('application_view', { service: currentService(), source: currentSource() });
+      }
+    };
+    const persist = (value: 'granted' | 'denied') => {
+      preference = value;
+      root.dataset.analyticsPreference = value;
+      try { window.localStorage.setItem(STORAGE_KEY, value); } catch { /* storage may be unavailable */ }
+      window.gtag('consent', 'update', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: value,
+      });
+      if (value === 'granted') trackPage();
+      if (value === 'denied') {
+        document.cookie.split(';').forEach((cookie) => {
+          const name = cookie.split('=')[0]?.trim();
+          if (name === '_ga' || name?.startsWith('_ga_')) {
+            document.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax`;
+          }
+        });
+      }
+      window.dispatchEvent(new CustomEvent('cablate:analytics-preference', { detail: { value } }));
+    };
+
+    window.cablateAnalytics = {
+      track,
+      openPreferences: () => window.dispatchEvent(new Event('cablate:analytics-open')),
+      setPreference: persist,
+      getPreference: () => preference,
+      trackPage,
+    };
+
+    if (preference === 'granted') {
+      window.gtag('consent', 'update', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'granted',
+      });
+      configure();
+    }
+
+    document.addEventListener('astro:page-load', trackPage);
+  })();
+</script>

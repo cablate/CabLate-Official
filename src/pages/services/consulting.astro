@@ -21,7 +21,7 @@ const faq = [
 ];
 ---
 
-<BaseLayout title="專案卡關諮詢" description="針對一個已經投入時間、卻反覆重做或不知道該先改哪裡的專案或具體問題，做出核心診斷、取捨判斷與下一步行動卡。" image="/og/pages/consulting.png" imageAlt="專案卡關諮詢：已經做了一段時間，還是不知道問題在哪？" imageWidth={1200} imageHeight={630} analytics="disabled">
+<BaseLayout title="專案卡關諮詢" description="針對一個已經投入時間、卻反覆重做或不知道該先改哪裡的專案或具體問題，做出核心診斷、取捨判斷與下一步行動卡。" image="/og/pages/consulting.png" imageAlt="專案卡關諮詢：已經做了一段時間，還是不知道問題在哪？" imageWidth={1200} imageHeight={630}>
   <article class="service-page paper-page">
     <nav class="service-shell service-back" aria-label="服務導覽"><a href="/services/"><ArrowLeft size={16} aria-hidden="true" />回到合作方式</a></nav>
 
@@ -31,7 +31,7 @@ const faq = [
         <h1 class="display-heading">已經做了一段時間，還是不知道到底哪裡有問題？</h1>
         <p class="service-lead">帶一個你已經做過、但不知道接下來該往哪走的專案來。60 分鐘內，我們會把做過什麼、哪裡反覆出問題、還缺什麼攤開，最後排出先做什麼、哪些先不要做。</p>
         <div class="service-actions">
-          <a class="btn btn-primary" href={consultingApplicationHref}>提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="btn btn-primary" href={consultingApplicationHref} data-analytics-placement="consulting_hero">提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
           <span>60 分鐘線上諮詢，NT$5,000。確認適合並完成付款後保留時段。</span>
         </div>
       </div>
@@ -105,7 +105,7 @@ const faq = [
 
     <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="consulting-cta-title">
       <div><p class="section-label">下一步</p><h2 id="consulting-cta-title">不用先寫完整需求書。</h2><p>告訴我你想完成什麼、目前做到哪裡、試過什麼與最大阻礙。請勿附上密碼、Token 或機密原文。</p></div>
-      <a class="btn btn-primary" href={consultingApplicationHref}>提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
+      <a class="btn btn-primary" href={consultingApplicationHref} data-analytics-placement="consulting_final">提交你的卡關情境 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
   </article>
 </BaseLayout>
