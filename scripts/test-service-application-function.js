@@ -2,13 +2,13 @@ import assert from 'node:assert/strict';
 import { buildEmailHtml, buildEmailText, makeLeadId, onRequestGet, onRequestPost, validatePayload } from '../functions/api/service-application.js';
 
 const validPayload = {
-  application_version: 'service-application-v2',
+  application_version: 'service-application-v3',
   submission_id: '0f166463-8df9-41fd-9949-b1c7a4be81b8',
   service: 'coaching',
   name: '測試申請人',
   email: 'learner@example.com',
-  situation: '我正在整理一套內容工作流程，但每次換題目就要全部重來，不確定真正卡點是不是 AI。',
-  focus: 'using_but_reworking',
+  situation: '我正在整理一套內容工作流程，目前已有幾份素材，希望五週後能完成可以持續使用的第一版。',
+  focus: 'clear_direction_no_first_version',
   consent: true,
   source_path: '/services/apply/',
   source_key: 'coaching_page',
@@ -23,7 +23,7 @@ const validPayload = {
 const valid = validatePayload(validPayload);
 assert.deepEqual(valid.errors, {});
 assert.equal(valid.data.serviceConfig.label, '五週一對一陪跑申請');
-assert.match(buildEmailText(valid.data, 'CAB-20260813-0F16646'), /已經在用 AI，卻還是一直重做/);
+assert.match(buildEmailText(valid.data, 'CAB-20260813-0F16646'), /有明確方向和素材/);
 assert.match(buildEmailHtml(valid.data, 'CAB-20260813-0F16646'), /回覆申請人/);
 assert.match(buildEmailHtml({ ...valid.data, situation: '<script>alert(1)</script>' }, 'CAB-20260813-0F16646'), /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
 assert.doesNotMatch(buildEmailHtml({ ...valid.data, situation: '<script>alert(1)</script>' }, 'CAB-20260813-0F16646'), /<script>/);

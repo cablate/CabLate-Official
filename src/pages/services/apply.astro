@@ -11,6 +11,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
   offerNote: option.offerNote,
   situationLabel: option.situationLabel,
   situationHelp: option.situationHelp,
+  situationPlaceholder: 'situationPlaceholder' in option ? option.situationPlaceholder : '',
   responseNote: option.responseNote,
   applicationCopy: 'applicationCopy' in option ? option.applicationCopy : null,
 }]));
@@ -280,6 +281,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     const responseNote = document.querySelector<HTMLElement>('[data-application-response]');
     const situationLabel = document.querySelector<HTMLElement>('[data-situation-label]');
     const situationHelp = document.querySelector<HTMLElement>('[data-situation-help]');
+    const situationInput = document.querySelector<HTMLTextAreaElement>('#applicant-situation');
     const heroLabel = document.querySelector<HTMLElement>('[data-hero-label]');
     const heroTitle = document.querySelector<HTMLElement>('[data-hero-title]');
     const heroDescription = document.querySelector<HTMLElement>('[data-hero-description]');
@@ -316,6 +318,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       offerNote: string;
       situationLabel: string;
       situationHelp: string;
+      situationPlaceholder: string;
       responseNote: string;
       applicationCopy: ApplicationCopy | null;
     }>;
@@ -406,6 +409,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         });
         if (situationLabel) situationLabel.textContent = copy.situationLabel;
         if (situationHelp) situationHelp.textContent = copy.situationHelp;
+        if (situationInput) situationInput.placeholder = copy.situationPlaceholder || '簡單寫你正在做什麼、目前做到哪裡，以及接下來最難決定的事。';
         if (responseNote) responseNote.textContent = copy.responseNote;
         applyApplicationCopy(copy.applicationCopy ?? defaultApplicationCopy);
       }
@@ -460,7 +464,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       name: '填寫姓名',
       email: '確認聯絡 Email',
       situation: '補充你正在做的事與目前卡點',
-      focus: '選擇最接近的狀況',
+      focus: '選擇一個最接近的選項',
       consent: '確認資料使用方式',
       turnstile: '完成安全檢查',
     };
