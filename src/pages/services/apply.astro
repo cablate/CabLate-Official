@@ -51,11 +51,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         </div>
         <aside aria-labelledby="application-next-title">
           <h2 id="application-next-title" data-next-title>我收到後會怎麼做</h2>
-          <ul>
-            <li data-next-first-step>先看問題與服務是否適合。</li>
-            <li data-application-response>適合的話，我會回覆下一步與可選時間。</li>
-            <li>不適合或還缺資料，我也會直接說。</li>
-          </ul>
+          <p><span data-next-first-step>Cab 會親自看問題與服務是否適合。</span><span data-application-response>適合的話，我會回覆下一步與可選時間。</span><span>不適合或還缺資料，我也會直接說。</span></p>
         </aside>
       </header>
 
@@ -64,6 +60,11 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         <p class="section-label" data-form-label>簡短申請</p>
         <h2 id="application-form-title" data-form-title>留幾個關鍵資訊就好。</h2>
         <p data-form-description>只有姓名、Email 和兩個問題；其他資料有需要再補。</p>
+        <ul class="application-trust-strip" aria-label="申請資料處理原則">
+          <li><Check size={16} aria-hidden="true" />Cab 親自閱讀</li>
+          <li><Check size={16} aria-hidden="true" />不自動加入電子報</li>
+          <li><Check size={16} aria-hidden="true" />不適合也會直接說</li>
+        </ul>
       </header>
 
       <form

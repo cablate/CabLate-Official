@@ -49,6 +49,10 @@ const faq = [
       <div class="service-deliverables">
         {deliverables.map(([title, body]) => <article><h3>{title}</h3><p>{body}</p></article>)}
       </div>
+      <aside class="service-decision-example" aria-labelledby="decision-example-title">
+        <div><p class="section-label">一個常見的判斷方式</p><h3 id="decision-example-title">一直換工具，不一定是工具不夠好。</h3></div>
+        <p><strong>看到的症狀：</strong>做法一直換，結果仍然需要重做。<br /><strong>可能的卡點：</strong>真正要完成什麼、怎樣算完成，還沒有說清楚。<br /><strong>這次要做的事：</strong>把題目縮成一個能測的輸出，再決定工具要不要換。</p>
+      </aside>
     </section>
 
     <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="fit-title">

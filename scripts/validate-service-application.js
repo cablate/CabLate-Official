@@ -35,7 +35,7 @@ expectText(application, 'data-route-summary', 'nearby service-change feedback');
 expectText(application, 'aria-live="polite"', 'service-change announcement');
 expectText(config, '送出免費訪談申請', 'coaching message match');
 expectText(config, '下面哪一句最像你現在的狀況？', 'voice-of-customer coaching focus');
-expectText(config, '14 天內加入陪跑，諮詢費可以全額折抵，陪跑剩餘 NT$44,800', 'coaching consultation credit');
+expectText(config, '14 天內加入可全額折抵，陪跑剩餘 NT$44,800', 'coaching consultation credit');
 if (application.indexOf('data-selected-service') > application.indexOf('data-hero-title')) {
   failures.push('mobile service selector: preselected service control must appear before dynamic hero copy');
 }

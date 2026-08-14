@@ -522,6 +522,35 @@
   min-height: auto;
 }
 
+.service-decision-example {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.72fr) minmax(0, 1.28fr);
+  gap: 1.5rem clamp(2.5rem, 7vw, 6rem);
+  margin-block-start: clamp(2rem, 4vw, 3rem);
+  padding-block-start: clamp(1.75rem, 3vw, 2.5rem);
+  border-top: 1px solid var(--border-strong);
+}
+
+.service-decision-example h3,
+.service-decision-example p {
+  margin: 0;
+}
+
+.service-decision-example h3 {
+  max-width: 19ch;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  line-height: 1.4;
+}
+
+.service-decision-example > p {
+  color: var(--text-secondary);
+  line-height: 1.85;
+}
+
+.service-decision-example strong {
+  color: var(--text-primary);
+}
+
 .service-conversation-note {
   max-width: 44rem;
   margin: 1.4rem 0 0;
@@ -1161,6 +1190,7 @@
   .service-secondary,
   .service-final-cta,
   .service-enterprise-evidence,
+  .service-decision-example,
   .service-partnership-brief {
     grid-template-columns: 1fr;
   }

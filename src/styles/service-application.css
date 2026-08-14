@@ -66,29 +66,16 @@
   font-size: 1rem;
 }
 
-.application-hero aside ul {
-  margin: 1rem 0 0;
-  padding: 0;
-  list-style: none;
+.application-hero aside > p {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.8rem 0 0;
 }
 
-.application-hero aside li {
-  position: relative;
-  padding: 0.75rem 0 0.75rem 1.15rem;
-  border-bottom: 1px solid var(--border);
+.application-hero aside span {
   color: var(--text-secondary);
+  font-size: 0.9rem;
   line-height: 1.65;
-}
-
-.application-hero aside li::before {
-  position: absolute;
-  top: 1.35rem;
-  left: 0;
-  width: 0.35rem;
-  height: 0.35rem;
-  border-radius: 50%;
-  background: var(--accent-text);
-  content: '';
 }
 
 .application-form-card {
@@ -115,11 +102,33 @@
   text-wrap: balance;
 }
 
-.application-form-card > header > p:last-child,
+.application-form-card > header > [data-form-description],
 .application-ready > div > p,
 .application-boundary li {
   color: var(--text-secondary);
   line-height: 1.75;
+}
+
+.application-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  list-style: none;
+}
+
+.application-trust-strip li {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.application-trust-strip svg {
+  flex: 0 0 auto;
+  color: var(--accent-text);
 }
 
 #service-application-form {
@@ -673,17 +682,17 @@
   }
 
   .application-hero h1 {
-    max-width: 16ch;
+    max-width: 18ch;
     margin-top: 0.65rem;
-    font-size: clamp(1.8rem, 8vw, 2.35rem);
+    font-size: clamp(1.7rem, 7vw, 2rem);
   }
 
   .application-hero {
-    padding: 1.35rem;
+    padding: 1.1rem 1.2rem 1.2rem;
   }
 
   .application-hero .application-selected-service {
-    margin-block-end: 1.15rem;
+    margin-block-end: 0.9rem;
   }
 
   .application-hero > div > p:last-child {
@@ -693,21 +702,7 @@
   }
 
   .application-hero aside {
-    margin-top: 1.25rem;
-    padding-top: 0.75rem;
-  }
-
-  .application-hero aside ul {
-    margin-top: 0.5rem;
-  }
-
-  .application-hero aside li {
-    padding-block: 0.5rem;
-    font-size: 0.9rem;
-  }
-
-  .application-hero aside li::before {
-    top: 1.05rem;
+    display: none;
   }
 
   .application-form-card {
@@ -715,11 +710,17 @@
   }
 
   .application-form-card > header {
-    margin-bottom: 1.35rem;
+    margin-bottom: 1.1rem;
   }
 
   .application-form-card > header h2 {
-    font-size: 1.6rem;
+    font-size: 1.45rem;
+  }
+
+  .application-form-card > header > [data-form-description] {
+    margin-block: 0.65rem 0;
+    font-size: 0.9rem;
+    line-height: 1.65;
   }
 
   .application-choice__grid label {
@@ -728,6 +729,40 @@
 
   .application-focus__grid label {
     min-block-size: auto;
+  }
+
+  .application-choice__grid label,
+  .application-focus__grid label {
+    gap: 0.65rem;
+    padding: 0.8rem;
+  }
+
+  .application-selected-service {
+    padding: 0.65rem 0.75rem 0.7rem;
+  }
+
+  .application-route-feedback {
+    gap: 0.35rem;
+    margin-block-start: 0.55rem;
+    padding-block-start: 0.55rem;
+  }
+
+  .application-route-offer {
+    display: flex;
+    gap: 0.35rem;
+    align-items: baseline;
+    padding: 0.55rem 0.65rem;
+    font-size: 0.78rem;
+  }
+
+  .application-route-offer strong {
+    flex: 0 0 auto;
+  }
+
+  .application-trust-strip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem 0.75rem;
   }
 
   .application-submit {

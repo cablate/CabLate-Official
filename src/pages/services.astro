@@ -5,10 +5,10 @@ import '../styles/service-pages.css';
 
 const paths = [
   {
-    kind: '先把問題看清楚',
+    kind: '一次把卡點理清楚',
     title: '專案卡關諮詢',
-    description: '適合已經花了不少時間，卻還是說不清楚到底卡在哪的人。60 分鐘內一起把問題、取捨和接下來先做什麼理清楚。',
-    outcomes: ['這次最核心的判斷', '目前最需要處理的問題', '接下來先做的三件事，以及先不要做什麼', '一頁行動卡，方便你之後繼續執行'],
+    description: '你已經花了不少時間，卻還是說不清楚到底卡在哪。60 分鐘內一起把問題、取捨和接下來要做的事理清楚。',
+    outcomes: ['這次最核心的判斷', '目前最需要處理的卡點', '接下來要做的三件事，以及暫時不做什麼', '一頁行動卡，方便你之後繼續執行'],
     href: '/services/consulting/',
     action: '查看諮詢方式',
     primary: true,
@@ -16,8 +16,8 @@ const paths = [
   {
     kind: '手上有件事，想真的把它做下去',
     title: 'AI 應用陪跑',
-    description: '適合手上已經有工作、產品、內容或專案，想用 AI 做下去，卻一直卡住的人。五週一對一，我會跟你一起拆問題、實作、檢查，再決定下一步。',
-    outcomes: ['先找出現在最值得處理的問題', '看 AI 到底能幫哪一段，不適合就不用硬上', '直接拿你手上的東西一起做、一起測', '做完一輪後，知道接下來該繼續、縮小還是換方法'],
+    description: '你手上已經有工作、產品、內容或專案，想用 AI 做下去，卻一直卡住。五週一對一，我會跟你一起拆解、實作和檢查。',
+    outcomes: ['第一次會議就找出最值得處理的卡點', '確認 AI 能幫哪一段，不適合就不用硬上', '直接拿你手上的東西一起做、一起測', '做完一輪後，知道該繼續、縮小還是換方法'],
     href: '/services/coaching/',
     action: '看五週陪跑怎麼進行',
     primary: false,
@@ -25,10 +25,17 @@ const paths = [
 ];
 
 const process = [
-  ['先看你現在怎麼做', '你想完成什麼？手上有哪些東西？最常在哪裡卡住？先把這些講清楚。'],
-  ['再決定適合哪一種', '有時候需要一次諮詢，有時候適合五週陪跑、企業合作，也有可能現在根本不需要花錢合作。'],
-  ['適合再把條件談清楚', '要處理什麼、誰負責什麼、費用、時間和哪些事不包含，都在開始前說明。'],
-  ['然後才開始做', '後面就跟著你手上的進度走，不拿一套固定流程硬套所有人。'],
+  ['看你現在怎麼做', '你想完成什麼？手上有哪些東西？最常在哪裡卡住？把這些講清楚。'],
+  ['選合作方式', '一次諮詢、五週陪跑、企業合作，處理的問題不同；也可能現在根本不需要花錢合作。'],
+  ['把條件說清楚', '要處理什麼、誰負責什麼、費用、時間和哪些事不包含，都在開始前說明。'],
+  ['照真實進度往下做', '後面跟著你手上的進度走，不拿一套固定流程硬套所有人。'],
+];
+
+const sharedProgress = [
+  ['看清楚', '知道事情真正卡在哪一段。'],
+  ['排順序', '知道哪件要做，哪件暫時不做。'],
+  ['做一次', '用手上的真實內容、資料或專案驗證。'],
+  ['留得下來', '知道做完後怎麼檢查，接下來怎麼走。'],
 ];
 
 const organizationPaths = [
@@ -51,28 +58,28 @@ const organizationPaths = [
 ];
 ---
 
-<BaseLayout title="專案諮詢、AI 應用陪跑與企業合作" description="60 分鐘專案諮詢、五週一對一 AI 應用陪跑、企業合作，或講師與內容合作。先看你現在遇到什麼問題，再決定適合哪一種。" image="/og/pages/services.png" imageAlt="CabLate 合作方式：從你現在卡住的事情，決定適合的合作方式。" imageWidth={1200} imageHeight={630} analytics="disabled">
+<BaseLayout title="專案諮詢、AI 應用陪跑與企業合作" description="分清楚你需要一次把卡點看懂、找人一起做五週，還是處理團隊與合作邀約。" image="/og/pages/services.png" imageAlt="CabLate 合作方式：卡住時，分清楚要一次看懂，還是找人一起做。" imageWidth={1200} imageHeight={630} analytics="disabled">
   <article class="service-page paper-page">
     <header class="service-shell service-hero page-paper paper-card">
       <div class="service-hero__copy">
         <p class="section-label">合作方式</p>
-        <h1 class="display-heading">先別急著選服務，從你現在卡住的事情開始。</h1>
-        <p class="service-lead">如果你只是想先弄清楚問題，可以約一次 60 分鐘諮詢；如果你手上已經有一件事想繼續做，我們可以用五週一起拆、一起做。團隊導入、演講、工作坊和內容合作，也都有各自的入口。</p>
+        <h1 class="display-heading">卡住時，分清楚要一次看懂，還是找人一起做。</h1>
+        <p class="service-lead">60 分鐘諮詢用來拆清楚一個具體卡點；五週陪跑則是把你手上的事情繼續做下去。團隊導入、演講、工作坊和內容合作，也有各自入口。</p>
         <div class="service-actions">
-          <a class="btn btn-primary" href="/services/consulting/">先看卡關諮詢 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="btn btn-primary" href="/services/consulting/">看卡關諮詢 <ArrowRight size={18} aria-hidden="true" /></a>
           <a class="service-text-link" href="/services/coaching/">想一起做五週？看陪跑 <MoveRight size={17} aria-hidden="true" /></a>
         </div>
-        <p class="service-fine-print">不知道該選哪個沒關係，先看最接近你現在狀況的就好。填資料不代表成交，不適合我也會直接說。</p>
+        <p class="service-fine-print">不知道該選哪個沒關係，挑最接近你現在狀況的就好。填資料不代表成交，不適合我也會直接說。</p>
       </div>
       <figure class="service-hero__visual">
         <img src="/images/photos/cablate-speaking-ai-meetup-april.webp" alt="Cab 在 AI 聚會中說明實作方法" width="1920" height="1080" loading="eager" fetchpriority="high" />
-        <figcaption>先看你現在怎麼做、哪裡卡住，再決定要不要用 AI。</figcaption>
+        <figcaption>從你正在做的事出發，AI 只用在真的有幫助的地方。</figcaption>
       </figure>
     </header>
 
     <section class="service-shell service-section page-paper paper-card" aria-labelledby="choose-title">
       <header class="service-section__intro">
-        <h2 id="choose-title">想先把問題弄清楚，和想找人一起做，是兩種不同的合作。</h2>
+        <h2 id="choose-title">一次看懂，和陪你做下去，是兩種不同的合作。</h2>
         <p>專案諮詢是用 60 分鐘把問題看清楚，知道下一步先做什麼。AI 應用陪跑則是五週一起做：從你手上的事情出發，邊拆問題、邊實作、邊調整。</p>
       </header>
 
@@ -92,9 +99,19 @@ const organizationPaths = [
       </div>
     </section>
 
+    <section class="service-shell service-section page-paper paper-card" aria-labelledby="shared-progress-title">
+      <header class="service-section__intro service-section__intro--stacked">
+        <h2 id="shared-progress-title">不論選哪一條，合作都要讓事情往前一步。</h2>
+        <p>這裡不先承諾每個人都會得到同一種成果。能確定的是，合作不能只留下一場談得很開心的會議。</p>
+      </header>
+      <div class="service-result-strip" aria-label="合作後應該看見的四個進展">
+        {sharedProgress.map(([label, body]) => <div><span>{label}</span><strong>{body}</strong></div>)}
+      </div>
+    </section>
+
     <section class="service-shell service-section service-process page-paper paper-card" aria-labelledby="process-title">
       <header class="service-section__intro service-section__intro--compact">
-        <h2 id="process-title">先把你的狀況弄清楚，再決定要不要合作。</h2>
+        <h2 id="process-title">從說清楚現況，到真的開始做。</h2>
       </header>
       <ol>
         {process.map(([title, body], index) => (
@@ -130,7 +147,7 @@ const organizationPaths = [
         <h2 id="principle-title">可以很客製，但不是什麼都包。</h2>
       </div>
       <ul>
-        <li><strong>開始前先講清楚。</strong>這次最重要的是什麼、誰負責哪一段、怎麼看進度，都先對齊。</li>
+        <li><strong>開始前講清楚。</strong>這次最重要的是什麼、誰負責哪一段、怎麼看進度，都會寫明。</li>
         <li><strong>重要的東西不要只留在會議裡。</strong>做過哪些判斷、有哪些限制、下一步是什麼，都會留下來。</li>
         <li><strong>不為了用 AI 而用 AI。</strong>Agent、自動化、新工具不是答案時，我會直接說。</li>
         <li><strong>中途冒出新需求沒問題，但要重新排順序。</strong>不會默默把所有事情都塞進同一期。</li>
