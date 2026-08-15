@@ -102,13 +102,13 @@ export const GET: APIRoute = async () => {
                           children: [
                             {
                               type: 'div',
-                              props: { style: { display: 'flex' }, children: '有件事一直想做？' },
+                              props: { style: { display: 'flex' }, children: '有件事想做？' },
                             },
                             {
                               type: 'div',
                               props: {
                                 style: { display: 'flex', marginTop: '5px', color: '#17233d' },
-                                children: '我陪你把它做下去。',
+                                children: '我陪你做下去。',
                               },
                             },
                           ],
