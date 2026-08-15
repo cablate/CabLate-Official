@@ -108,7 +108,7 @@ export const GET: APIRoute = async () => {
                               type: 'div',
                               props: {
                                 style: { display: 'flex', marginTop: '5px', color: '#17233d' },
-                                children: '我陪你做下去。',
+                                children: '我陪你做下去',
                               },
                             },
                           ],
