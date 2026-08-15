@@ -1,4 +1,4 @@
-export const serviceApplicationVersion = 'service-application-v3';
+export const serviceApplicationVersion = 'service-application-v4';
 
 export const serviceApplicationOptions = [
   {

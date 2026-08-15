@@ -26,7 +26,10 @@ expectText(application, 'novalidate={true}', 'consistent client validation');
 expectText(application, 'name="situation"', 'compressed situation question');
 expectText(application, 'name="focus"', 'route focus question');
 expectText(application, 'application-optional', 'optional details disclosure');
-expectText(application, 'consent" value="agreed" required', 'consent');
+rejectText(application, '送出前確認', 'removed pre-submit confirmation block');
+rejectText(application, 'application-consent', 'removed consent checkbox');
+rejectText(application, '不自動加入電子報', 'removed newsletter reassurance');
+rejectText(application, '請不要貼密碼、Token、未遮蔽的客戶資料或公司機密原文。', 'removed sensitive-data warning');
 expectText(application, 'application-honeypot', 'honeypot');
 expectText(application, 'cf_turnstile_response', 'turnstile token submission');
 expectText(application, '申請已送出', 'truthful submission state');
@@ -64,7 +67,8 @@ expectText(endpoint, 'SERVICE_APPLICATION_DRY_RUN', 'local delivery test mode');
 expectText(endpoint, 'reply_to: data.email', 'reply route');
 expectText(endpoint, 'html: buildEmailHtml(data, leadId)', 'scannable HTML owner email');
 expectText(endpoint, 'escapeHtml', 'HTML email escaping');
-expectText(endpoint, 'payload.consent !== true', 'server consent validation');
+rejectText(endpoint, 'payload.consent !== true', 'removed server consent validation');
+rejectText(endpoint, 'consent：agreed', 'removed false consent audit claim');
 rejectText(endpoint, 'RESEND_API_KEY =', 'hard-coded Resend key');
 rejectText(endpoint, 'TURNSTILE_SECRET_KEY =', 'hard-coded Turnstile secret');
 
@@ -81,7 +85,7 @@ for (const service of ['consulting', 'coaching', 'enterprise', 'partnerships']) 
   rejectText(page, `const ${service === 'partnerships' ? 'partnership' : service}Mailto`, `${service} legacy mailto`);
 }
 
-expectText(config, 'service-application-v3', 'application schema version');
+expectText(config, 'service-application-v4', 'application schema version');
 expectText(config, "label: '專案卡關諮詢'", 'broad consulting route');
 expectText(consultingPage, '工作、事業、產品、內容或流程都可以', 'consulting scope');
 rejectText(config, 'AI 專案卡關諮詢', 'consulting is not AI-only');

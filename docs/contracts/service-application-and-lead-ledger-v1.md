@@ -42,7 +42,6 @@ change_context:
 - `email`
 - `situation`：同一題取得想推進的事、目前進度與主要卡點；陪跑路線另取得五週後希望看到的進展
 - `focus`：依服務路線變化的單選題；陪跑路線用來辨識申請人手上已有的成果與準備程度，不重複分類卡點
-- `consent`
 - `source_path`
 - `source_key`
 - `cf_turnstile_response`
@@ -141,7 +140,7 @@ Scenario: visitor changes a service on a narrow screen
   And the change is announced politely without forcing a scroll
 
 Scenario: valid application is delivered
-  Given all required fields, consent, and Turnstile are valid
+  Given all required fields and Turnstile are valid
   When the visitor submits once
   Then the Function validates again on the server
   And Resend receives one request with an idempotency key

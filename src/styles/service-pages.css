@@ -589,97 +589,6 @@
   color: var(--text-primary);
 }
 
-.service-coaching-process-heading {
-  margin-block: clamp(2.5rem, 4vw, 3.5rem) 1.5rem;
-}
-
-.service-coaching-proof {
-  margin-block-start: clamp(2.25rem, 4vw, 3.5rem);
-  padding-block-start: clamp(1.75rem, 3vw, 2.5rem);
-  border-top: 1px solid var(--border-strong);
-}
-
-.service-coaching-proof__intro {
-  display: grid;
-  gap: 0.65rem;
-  max-width: 46rem;
-  margin-bottom: 1.5rem;
-}
-
-.service-coaching-proof__intro h3 {
-  max-width: 32rem;
-  margin: 0;
-  font-size: clamp(1.25rem, 1.7vw, 1.55rem);
-  line-height: 1.35;
-  letter-spacing: -0.035em;
-  text-wrap: balance;
-}
-
-.service-coaching-proof__intro p {
-  margin: 0;
-  color: var(--text-secondary);
-  line-height: 1.75;
-  text-wrap: pretty;
-}
-
-.service-coaching-proof__list {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-block: 1px solid var(--border-strong);
-}
-
-.service-coaching-proof__list article {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  padding: clamp(1.25rem, 2.25vw, 1.75rem);
-  border-inline-end: 1px solid var(--border);
-}
-
-.service-coaching-proof__list article:last-child {
-  border-inline-end: 0;
-}
-
-.service-coaching-proof__list strong {
-  color: var(--accent-text);
-  font-family: var(--font-mono);
-  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
-  letter-spacing: -0.035em;
-}
-
-.service-coaching-proof__list h4 {
-  margin: 0.75rem 0 0;
-  font-size: 0.98rem;
-  line-height: 1.55;
-}
-
-.service-coaching-proof__list p {
-  margin: 0.6rem 0 1rem;
-  color: var(--text-secondary);
-  font-size: 0.84rem;
-  line-height: 1.7;
-  text-wrap: pretty;
-}
-
-.service-coaching-proof__list a {
-  display: inline-flex;
-  gap: 0.4rem;
-  align-items: center;
-  min-block-size: 2.75rem;
-  margin-block-start: auto;
-  color: var(--accent-text);
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.service-coaching-proof__note {
-  max-width: 48rem;
-  margin: 0.9rem 0 0;
-  color: var(--text-muted);
-  font-size: 0.76rem;
-  line-height: 1.65;
-}
-
 .service-coaching-sticky {
   position: fixed;
   z-index: 800;
@@ -1271,28 +1180,6 @@
     grid-column: 2;
   }
 
-  .service-coaching-proof__list {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(16.5rem, 82%);
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scroll-snap-type: inline proximity;
-    scrollbar-width: none;
-  }
-
-  .service-coaching-proof__list::-webkit-scrollbar {
-    display: none;
-  }
-
-  .service-coaching-proof__list article {
-    border-inline-end: 1px solid var(--border);
-    scroll-snap-align: start;
-  }
-
-  .service-coaching-proof__list article:last-child {
-    border-inline-end: 0;
-  }
 }
 
 @media (max-width: 620px) {
