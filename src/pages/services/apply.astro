@@ -62,7 +62,6 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         <p data-form-description>只有姓名、Email 和兩個問題；其他資料有需要再補。</p>
         <ul class="application-trust-strip" aria-label="申請資料處理原則">
           <li><Check size={16} aria-hidden="true" />Cab 親自閱讀</li>
-          <li><Check size={16} aria-hidden="true" />不自動加入電子報</li>
           <li><Check size={16} aria-hidden="true" />不適合也會直接說</li>
         </ul>
       </header>
@@ -119,7 +118,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
             <div class="application-field">
               <label for="applicant-email">聯絡 Email <span class="application-required">必填</span></label>
               <input id="applicant-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" enterkeyhint="next" required aria-describedby="applicant-email-help applicant-email-error" />
-              <p id="applicant-email-help" class="application-help">只用於回覆這次申請，不會自動加入電子報。</p>
+              <p id="applicant-email-help" class="application-help">只用於回覆這次申請。</p>
               <p id="applicant-email-error" class="application-error"><span aria-hidden="true">!</span>請填寫可正常收信的 Email。</p>
             </div>
           </div>
@@ -128,9 +127,8 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         <div class="application-single-field">
           <div class="application-field">
             <label for="applicant-situation"><span data-situation-label>你想做的是什麼？做到哪裡卡住了？</span> <span class="application-required">必填</span></label>
-            <textarea id="applicant-situation" name="situation" rows="5" minlength="20" maxlength="1600" required aria-describedby="situation-help situation-sensitive-note situation-error" placeholder="簡單寫你正在做什麼、目前做到哪裡，以及接下來最難決定的事。"></textarea>
+            <textarea id="applicant-situation" name="situation" rows="5" minlength="20" maxlength="1600" required aria-describedby="situation-help situation-error" placeholder="簡單寫你正在做什麼、目前做到哪裡，以及接下來最難決定的事。"></textarea>
             <p id="situation-help" class="application-help" data-situation-help>簡單交代情境和卡點即可，不需要先整理成完整企劃書。</p>
-            <p id="situation-sensitive-note" class="application-help application-sensitive-note">請不要貼密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
             <p id="situation-error" class="application-error"><span aria-hidden="true">!</span>請再多說一點，至少 20 個字，讓我看得懂你正在做什麼、卡在哪裡。</p>
           </div>
         </div>
@@ -168,16 +166,6 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
             </div>
           </div>
         </details>
-
-        <fieldset class="application-consent">
-          <legend>送出前確認</legend>
-          <label>
-            <input id="application-consent" type="checkbox" name="consent" value="agreed" required aria-describedby="consent-help consent-error" />
-            <span>我同意 CabLate 使用這些資料來判斷是否適合、回覆申請並處理後續聯絡。未經我另外同意，不會公開成案例。 <strong class="application-required">必填</strong></span>
-          </label>
-          <p id="consent-help">不會自動加入電子報。詳細處理方式請見<a href="/privacy/">隱私權政策</a>。</p>
-          <p id="consent-error" class="application-error"><span aria-hidden="true">!</span>請先勾選並確認資料使用方式。</p>
-        </fieldset>
 
         <div class="application-verification" aria-labelledby="verification-title">
           <div><ShieldCheck size={20} aria-hidden="true" /><strong id="verification-title">安全檢查</strong></div>
@@ -465,7 +453,6 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       email: '確認聯絡 Email',
       situation: '補充你正在做的事與目前卡點',
       focus: '選擇一個最接近的選項',
-      consent: '確認資料使用方式',
       turnstile: '完成安全檢查',
     };
     const getFieldControl = (field: string) => {
@@ -625,7 +612,6 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
       const data = new FormData(form);
       const payload = Object.fromEntries(data.entries()) as Record<string, unknown>;
-      payload.consent = data.get('consent') === 'agreed';
       payload.cf_turnstile_response = turnstileToken;
 
       try {

@@ -9,46 +9,9 @@ const coachingApplicationHref = getServiceApplicationHref('coaching', 'coaching_
 
 const stuckSituations = [
   ['想做的事情太多', '每個方向都想試，最後不知道現在該先做哪一個。'],
-  ['AI 工具用了不少', '做出來的東西還是一直重做，方法也換了一輪又一輪。'],
+  ['課程和工具越收越多', '總覺得還少學一點、漏掉最新做法，真正想做的事反而一直沒有開始。'],
   ['已經有第一版了', '產品、內容或計畫做了一段，卻不知道該繼續修、縮小，還是換方向。'],
   ['手上有一套自己的經驗', '想把它整理成能賣、能教，或能重複使用的東西。'],
-];
-
-const publicProofs = [
-  {
-    metric: '3 個公開專案',
-    title: '合計 811 stars／191 forks',
-    body: '工具、資料產品與研究都有公開程式碼。數字加總自三個 GitHub 專案，截至 2026-07-02。',
-    href: '/about/#public-output-title',
-    linkLabel: '查看公開作品',
-  },
-  {
-    metric: '125 份課後問卷',
-    title: '兩場評分都在 4.5／5 以上',
-    body: 'AgentSkill 兩場講座分別收到 81 與 44 份問卷。除了內容本身，也留下學員是否聽懂、能不能實際使用的回饋。',
-    href: '/courses/',
-    linkLabel: '查看課程與手冊',
-  },
-  {
-    metric: '32 筆歷史交易',
-    title: '付費取得合計 NT$129,968',
-    body: '我把半年以上的實作整理成 45 課工程手冊。數字來自截至 2026-05 的內部交易紀錄。',
-    href: '/courses/',
-    linkLabel: '查看工程手冊',
-  },
-  {
-    metric: '至少 4 組合作',
-    title: '從個人實作走進企業現場',
-    body: '做過企業內訓、企業課與教學支援，也有多場延續合作。這裡只計入已有交付紀錄的企業與組織。',
-    href: '/services/enterprise/',
-    linkLabel: '查看企業合作',
-  },
-];
-
-const workLoop = [
-  ['先決定這五週要處理什麼', '第一次會議，我們把你手上的東西看過一輪，選出現在最值得推進的事。'],
-  ['照你的進度一起做', '接下來邊做邊調整。每個人的題目不同，不會拿一份固定課綱硬套。'],
-  ['把成果和後續做法留下來', '最後整理這五週做出了什麼、還有哪些問題，以及你接下來可以怎麼繼續。'],
 ];
 
 const faq = [
@@ -141,7 +104,7 @@ const breadcrumbJsonLd = {
         <h2 id="coaching-story-title">很多人缺的，不是另一堂課</h2>
       </header>
       <div class="service-coaching-story__body">
-        <p>我教過課，也陪人做過產品和系統。每個人的工作、能力和手上的材料都不一樣。課程可以教共同的方法，卻沒辦法在你卡住的當下，直接告訴你這裡該繼續、該縮小，還是根本走錯方向。</p>
+        <p>我教過課，也陪人做過產品和系統。每個人的工作、能力和手上的資源都不一樣。課程可以教共同的方法，卻沒辦法在你卡住的當下，直接告訴你這裡該繼續、該縮小，還是根本走錯方向。</p>
         <p>這就是我做陪跑的原因。你把正在做的東西帶來，我跟你一起判斷、一起做，也一起處理那些很難只靠教學影片解決的細節。</p>
       </div>
     </section>
@@ -150,7 +113,7 @@ const breadcrumbJsonLd = {
       <header class="service-section__intro">
         <p class="section-label">你可以帶甚麼來</p>
         <h2 id="coaching-result-title">想了很久，卻一直沒有進度</h2>
-        <p>工作、內容、產品、系統，或一個放了很久的計畫都可以。你不必先把它整理成完整企劃。</p>
+        <p>工作、內容、產品、系統，或一個放了很久的計畫都可以。</p>
       </header>
       <div class="service-deliverables service-deliverables--coaching">
         {stuckSituations.map(([title, body]) => <article><h3>{title}</h3><p>{body}</p></article>)}
@@ -160,8 +123,8 @@ const breadcrumbJsonLd = {
     <section class="service-shell service-section service-process service-coaching-plan page-paper paper-card" aria-labelledby="coaching-loop-title">
       <header class="service-section__intro">
         <p class="section-label">這五週怎麼陪你</p>
-        <h2 id="coaching-loop-title">五週裡，你不需要一個人卡到下次會議</h2>
-        <p>每週固定聊一次。中間遇到問題，可以直接傳訊息給我。有時我們會一起做，有時我會直接告訴你這條路不值得繼續。重點是讓事情往前，不是把五次會議開完。</p>
+        <h2 id="coaching-loop-title">五週裡，有問題都可以直接問我</h2>
+        <p>每週固定安排一次 60 分鐘線上會議，中間有問題也可以直接問。我們會一起做、一起調整，盡可能在五週內，讓你和手上的事情都大幅往前推進。</p>
       </header>
       <div class="service-offer">
         <div class="service-offer__price">
@@ -170,38 +133,13 @@ const breadcrumbJsonLd = {
           <p>30 分鐘談完，如果我們都認為適合，我會在陪跑邀請裡附上這一期的專屬優惠。若你曾做過 NT$5,000 專案諮詢，並在 14 天內加入，諮詢費仍可全額折抵。</p>
         </div>
         <dl>
-          <div><dt>五次一對一會議</dt><dd>每次 60 分鐘，直接看你當週做到哪裡、接下來怎麼走。</dd></div>
-          <div><dt>會議之間也能提問</dt><dd>合作期間可以隨時留言，工作日原則一個工作天內回覆。</dd></div>
-          <div><dt>直接處理你手上的東西</dt><dd>不做假作業。每次都拿你正在做的案例、資料、內容或產品來看。</dd></div>
-          <div><dt>最後幫你收好</dt><dd>把這一期做出的東西、還沒解決的問題和後續做法整理起來。</dd></div>
+          <div><dt>每週一次一對一會議</dt><dd>每次 60 分鐘，直接看你做到哪裡、接下來怎麼推進。</dd></div>
+          <div><dt>會議之外也能提問</dt><dd>五週內遇到問題可以直接留言，工作日原則上會在一個工作天內回覆。</dd></div>
+          <div><dt>直接解決你的問題</dt><dd>以你正在做的案例、資料、內容或產品為主，一起處理現在最需要解決的問題。</dd></div>
+          <div><dt>一起把進度往前推</dt><dd>我們會邊做邊調整，盡可能在五週內，讓你和手上的事情都大幅往前推進。</dd></div>
+          <div><dt>最後幫你整理好</dt><dd>把這一期的所有詢問、會議重點、做出的成果和後續方向整理給你。</dd></div>
         </dl>
       </div>
-
-      <header class="service-section__intro service-section__intro--compact service-coaching-process-heading">
-        <p class="section-label">五週怎麼進行</p>
-        <h2>每個人的題目不同，不拿一份固定課綱硬套</h2>
-      </header>
-      <ol>
-        {workLoop.map(([title, body]) => <li><div><h3>{title}</h3><p>{body}</p></div></li>)}
-      </ol>
-
-      <aside class="service-coaching-proof" aria-labelledby="coaching-proof-title">
-        <header class="service-coaching-proof__intro">
-          <h3 id="coaching-proof-title">做過多少，直接看紀錄</h3>
-          <p>從公開工具、實作教學、付費手冊到企業合作，我都親手做過。數字不能保證你的陪跑成果，但至少能讓你判斷，我是不是只會講概念。</p>
-        </header>
-        <div class="service-coaching-proof__list" role="list" tabindex="0" aria-label="公開實作紀錄，可左右滑動查看">
-          {publicProofs.map((proof) => (
-            <article role="listitem">
-              <strong>{proof.metric}</strong>
-              <h4>{proof.title}</h4>
-              <p>{proof.body}</p>
-              <a href={proof.href}>{proof.linkLabel} <ArrowRight size={15} aria-hidden="true" /></a>
-            </article>
-          ))}
-        </div>
-        <p class="service-coaching-proof__note">統計口徑與日期已寫在各項說明中；問卷與交易數字採聚合資料，不公開個人資料。</p>
-      </aside>
     </section>
 
     <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="coaching-fit-title">

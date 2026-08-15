@@ -213,8 +213,7 @@
 }
 
 .application-choice__grid input,
-.application-focus__grid input,
-.application-consent input {
+.application-focus__grid input {
   width: 1.15rem;
   height: 1.15rem;
   margin: 0.15rem 0 0;
@@ -260,11 +259,6 @@
   border-bottom: 1px solid var(--border-strong);
 }
 
-.application-sensitive-note {
-  color: var(--text-muted);
-  font-size: 0.78rem;
-}
-
 .application-field label {
   margin-bottom: 0.5rem;
   font-weight: 700;
@@ -293,8 +287,7 @@
 
 .application-field :is(input, textarea):focus-visible,
 .application-choice__grid input:focus-visible,
-.application-focus__grid input:focus-visible,
-.application-consent input:focus-visible {
+.application-focus__grid input:focus-visible {
   outline: 3px solid var(--accent-text);
   outline-offset: 3px;
 }
@@ -338,42 +331,8 @@
 .application-choice:has(input:user-invalid) > .application-error,
 .application-choice:has(input[aria-invalid='true']) > .application-error,
 .application-focus:has(input:user-invalid) > .application-error,
-.application-focus:has(input[aria-invalid='true']) > .application-error,
-.application-consent:has(input:user-invalid) > .application-error,
-.application-consent:has(input[aria-invalid='true']) > .application-error {
+.application-focus:has(input[aria-invalid='true']) > .application-error {
   display: flex;
-}
-
-.application-consent label {
-  display: grid;
-  grid-template-columns: 1.25rem minmax(0, 1fr);
-  gap: 0.85rem;
-  align-items: start;
-  max-width: 52rem;
-  cursor: pointer;
-}
-
-.application-consent label span {
-  color: var(--text-secondary);
-  line-height: 1.75;
-}
-
-.application-consent label strong {
-  color: var(--text-muted);
-  font-size: 0.72rem;
-}
-
-.application-consent > p {
-  max-width: 52rem;
-  margin: 0.8rem 0 0 2.1rem;
-  color: var(--text-muted);
-  font-size: 0.78rem;
-  line-height: 1.65;
-}
-
-.application-consent a {
-  color: var(--accent-text);
-  font-weight: 700;
 }
 
 .application-selected-service {

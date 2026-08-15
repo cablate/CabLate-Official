@@ -119,7 +119,6 @@ export const validatePayload = (payload) => {
   if (!emailPattern.test(email)) errors.email = '請填寫可正常收信的 Email。';
   if (situation.length < 20) errors.situation = '請再多說一點，至少 20 個字，讓我看得懂你正在做什麼、卡在哪裡。';
   if (!serviceConfig?.focus[focus]) errors.focus = '請選擇一個最接近的狀況。';
-  if (payload.consent !== true) errors.consent = '請先確認資料使用方式。';
   if (!submissionPattern.test(submissionId)) errors.submission_id = '這次申請無法辨識，請重新整理後再試。';
   if (!turnstileToken) errors.turnstile = '請完成安全檢查。';
 
@@ -205,7 +204,6 @@ export const buildEmailText = (data, leadId) => {
     `utm_medium：${data.attribution.utm_medium || 'none'}`,
     `utm_campaign：${data.attribution.utm_campaign || 'none'}`,
     `utm_content：${data.attribution.utm_content || 'none'}`,
-    'consent：agreed',
   ].join('\n');
 };
 
@@ -268,7 +266,7 @@ export const buildEmailHtml = (data, leadId) => {
               <td style="padding:20px 32px;background:#eee8dd;color:#737985;font-size:12px;line-height:1.75;">
                 來源：${escapeHtml(source)} ／ ${escapeHtml(data.sourcePath || 'unknown')}<br>
                 UTM：${escapeHtml(data.attribution.utm_source || 'none')} ／ ${escapeHtml(data.attribution.utm_medium || 'none')} ／ ${escapeHtml(data.attribution.utm_campaign || 'none')} ／ ${escapeHtml(data.attribution.utm_content || 'none')}<br>
-                表單版本：${escapeHtml(data.applicationVersion || 'unknown')} ／ consent：agreed
+                表單版本：${escapeHtml(data.applicationVersion || 'unknown')}
               </td>
             </tr>
           </table>

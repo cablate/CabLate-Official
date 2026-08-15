@@ -2,14 +2,13 @@ import assert from 'node:assert/strict';
 import { buildEmailHtml, buildEmailText, makeLeadId, onRequestGet, onRequestPost, validatePayload } from '../functions/api/service-application.js';
 
 const validPayload = {
-  application_version: 'service-application-v3',
+  application_version: 'service-application-v4',
   submission_id: '0f166463-8df9-41fd-9949-b1c7a4be81b8',
   service: 'coaching',
   name: '測試申請人',
   email: 'learner@example.com',
   situation: '我正在整理一套內容工作流程，目前已有幾份素材，希望五週後能完成可以持續使用的第一版。',
   focus: 'clear_direction_no_first_version',
-  consent: true,
   source_path: '/services/apply/',
   source_key: 'coaching_page',
   utm_source: 'local',
@@ -29,8 +28,8 @@ assert.match(buildEmailHtml({ ...valid.data, situation: '<script>alert(1)</scrip
 assert.doesNotMatch(buildEmailHtml({ ...valid.data, situation: '<script>alert(1)</script>' }, 'CAB-20260813-0F16646'), /<script>/);
 assert.equal(makeLeadId(validPayload.submission_id, new Date('2026-08-13T16:01:00.000Z')), 'CAB-20260814-0F16646');
 
-const invalid = validatePayload({ ...validPayload, email: 'bad', situation: '太短', focus: 'unknown', consent: false });
-assert.deepEqual(Object.keys(invalid.errors).sort(), ['consent', 'email', 'focus', 'situation']);
+const invalid = validatePayload({ ...validPayload, email: 'bad', situation: '太短', focus: 'unknown' });
+assert.deepEqual(Object.keys(invalid.errors).sort(), ['email', 'focus', 'situation']);
 
 const env = {
   ENVIRONMENT: 'preview',
