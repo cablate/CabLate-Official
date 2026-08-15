@@ -2,7 +2,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SEO from '../../components/SEO.astro';
 import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
-import { deliveryExperienceProofs, openSourceProofs } from '../../config/authority';
 import { getServiceApplicationHref } from '../../config/serviceApplication';
 import '../../styles/service-pages.css';
 
@@ -17,25 +16,32 @@ const stuckSituations = [
 
 const publicProofs = [
   {
-    metric: openSourceProofs[0].metric,
-    title: '我做過公開的 AI 工具，而且有人在用',
-    body: 'mcp-google-map 的程式碼、安裝方式和使用紀錄都公開在 GitHub。',
-    href: openSourceProofs[0].href,
-    linkLabel: openSourceProofs[0].sourceLabel,
-  },
-  {
-    metric: deliveryExperienceProofs[0].proof,
-    title: '我帶學員從實作做到交付和收款',
-    body: '從 API、訂單狀態、Webhook、權限，一路做到錯誤處理、交付和收款。',
-    href: '/courses/',
-    linkLabel: '查看課程整理',
-  },
-  {
-    metric: deliveryExperienceProofs[1].proof,
-    title: '複雜問題，我習慣拆成能重複使用的方法',
-    body: '內容涵蓋 Skill、Memory、Hook、Context 與 Harness。問題發生時，要知道去哪裡查、怎麼修。',
+    metric: '3 個公開專案',
+    title: '合計 811 stars／191 forks',
+    body: '工具、資料產品與研究都有公開程式碼。數字加總自三個 GitHub 專案，截至 2026-07-02。',
     href: '/about/#public-output-title',
-    linkLabel: '查看經歷與公開作品',
+    linkLabel: '查看公開作品',
+  },
+  {
+    metric: '125 份課後問卷',
+    title: '兩場評分都在 4.5／5 以上',
+    body: 'AgentSkill 兩場講座分別收到 81 與 44 份問卷。除了內容本身，也留下學員是否聽懂、能不能實際使用的回饋。',
+    href: '/courses/',
+    linkLabel: '查看課程與手冊',
+  },
+  {
+    metric: '32 筆歷史交易',
+    title: '付費取得合計 NT$129,968',
+    body: '我把半年以上的實作整理成 45 課工程手冊。數字來自截至 2026-05 的內部交易紀錄。',
+    href: '/courses/',
+    linkLabel: '查看工程手冊',
+  },
+  {
+    metric: '至少 4 組合作',
+    title: '從個人實作走進企業現場',
+    body: '做過企業內訓、企業課與教學支援，也有多場延續合作。這裡只計入已有交付紀錄的企業與組織。',
+    href: '/services/enterprise/',
+    linkLabel: '查看企業合作',
   },
 ];
 
@@ -50,7 +56,7 @@ const faq = [
   ['這 30 分鐘會聊什麼？', '我會先了解你想做什麼、目前卡在哪，也讓你確認我的合作方式適不適合。這不是縮短版諮詢，不會在 30 分鐘內硬做完整診斷。'],
   ['陪跑優惠怎麼拿？', '30 分鐘談完，確認彼此適合，我會寄出正式邀請和這一期的專屬優惠。優惠不會在送出表單時自動取得。'],
   ['一定要做 AI、Agent 或自動化嗎？', '不一定。主軸仍然是 AI 應用，但我不會為了賣 AI，還沒看懂問題就先叫你做 Agent 或自動化。有些題目最後需要的是內容、產品、資料或做法上的調整。'],
-  ['合作期間可以臨時問問題嗎？', '可以。五週內都能留言，工作日原則上一個工作天內回覆。需要改期可以直接跟我說，我會盡量配合。只希望你能提早告訴我，彼此都把時間留好。'],
+  ['合作期間可以臨時問問題嗎？', '可以。五週內都能留言，工作日原則上會在一個工作天內回覆。需要改期可以直接跟我說，我會盡量配合。只希望你能提早告訴我，彼此都把時間留好。'],
 ];
 
 const seoTitle = 'AI 應用陪跑｜五週一起把想做的事推下去｜CabLate';
@@ -112,7 +118,7 @@ const breadcrumbJsonLd = {
     <header class="service-shell service-detail-hero page-paper paper-card">
       <div class="service-detail-hero__copy">
         <p class="section-label">五週一對一陪跑・每期最多三位</p>
-        <h1 class="display-heading">有件事一直想做？<br />我陪你把它做下去。</h1>
+        <h1 class="display-heading">有件事想做？<br />我陪你做下去</h1>
         <p class="service-lead">你可以帶工作、內容、產品，或任何正在推進的計畫來。我會跟你一起看問題、試做、調整。AI 用得上就用，用不上也不會硬塞。</p>
         <div class="service-actions">
           <a class="btn btn-primary" href={coachingApplicationHref} data-analytics-placement="coaching_hero">申請 30 分鐘免費聊聊 <ArrowRight size={18} aria-hidden="true" /></a>
@@ -122,7 +128,7 @@ const breadcrumbJsonLd = {
             <div><dt>費用</dt><dd>NT$49,800</dd></div>
           </dl>
         </div>
-        <p class="service-conversation-note">你先填一份短表單，我會親自看過，再邀請適合的人免費聊 30 分鐘。談完確認適合，我才會提出陪跑邀請，並附上這一期的專屬優惠。</p>
+        <p class="service-conversation-note">你先填一份短表單，我會親自看過，再邀請適合的人免費聊 30 分鐘。聊完確認彼此適合，我才會正式邀請你加入，並附上這一期的專屬優惠。</p>
       </div>
       <figure class="service-detail-hero__visual service-detail-hero__visual--wide">
         <img src="/images/photos/cablate-speaking-ai-meetup-april.webp" alt="Cab 在 AI 實作聚會中拆解問題" width="1920" height="1080" loading="eager" fetchpriority="high" />
@@ -132,10 +138,10 @@ const breadcrumbJsonLd = {
     <section class="service-shell service-section service-coaching-story page-paper paper-card" aria-labelledby="coaching-story-title">
       <header class="service-section__intro">
         <p class="section-label">我為什麼做陪跑</p>
-        <h2 id="coaching-story-title">我教過課，也陪人做過產品和系統。後來我發現，很多人缺的不是另一堂課。</h2>
+        <h2 id="coaching-story-title">很多人缺的，不是另一堂課</h2>
       </header>
       <div class="service-coaching-story__body">
-        <p>每個人的工作、能力和手上的材料都不一樣。課程可以教共同的方法，卻沒辦法在你卡住的當下，直接告訴你這裡該繼續、該縮小，還是根本走錯方向。</p>
+        <p>我教過課，也陪人做過產品和系統。每個人的工作、能力和手上的材料都不一樣。課程可以教共同的方法，卻沒辦法在你卡住的當下，直接告訴你這裡該繼續、該縮小，還是根本走錯方向。</p>
         <p>這就是我做陪跑的原因。你把正在做的東西帶來，我跟你一起判斷、一起做，也一起處理那些很難只靠教學影片解決的細節。</p>
       </div>
     </section>
@@ -143,7 +149,7 @@ const breadcrumbJsonLd = {
     <section class="service-shell service-section page-paper paper-card" aria-labelledby="coaching-result-title">
       <header class="service-section__intro">
         <p class="section-label">你可以帶甚麼來</p>
-        <h2 id="coaching-result-title">你最近有沒有一件事，腦中想了很多次，卻始終沒有真的推下去？</h2>
+        <h2 id="coaching-result-title">想了很久，卻一直沒有進度</h2>
         <p>工作、內容、產品、系統，或一個放了很久的計畫都可以。你不必先把它整理成完整企劃。</p>
       </header>
       <div class="service-deliverables service-deliverables--coaching">
@@ -154,7 +160,7 @@ const breadcrumbJsonLd = {
     <section class="service-shell service-section service-process service-coaching-plan page-paper paper-card" aria-labelledby="coaching-loop-title">
       <header class="service-section__intro">
         <p class="section-label">這五週怎麼陪你</p>
-        <h2 id="coaching-loop-title">五週裡，你不需要一個人卡到下次會議。</h2>
+        <h2 id="coaching-loop-title">五週裡，你不需要一個人卡到下次會議</h2>
         <p>每週固定聊一次。中間遇到問題，可以直接傳訊息給我。有時我們會一起做，有時我會直接告訴你這條路不值得繼續。重點是讓事情往前，不是把五次會議開完。</p>
       </header>
       <div class="service-offer">
@@ -173,7 +179,7 @@ const breadcrumbJsonLd = {
 
       <header class="service-section__intro service-section__intro--compact service-coaching-process-heading">
         <p class="section-label">五週怎麼進行</p>
-        <h2>每個人的題目不同，不拿一份固定課綱硬套。</h2>
+        <h2>每個人的題目不同，不拿一份固定課綱硬套</h2>
       </header>
       <ol>
         {workLoop.map(([title, body]) => <li><div><h3>{title}</h3><p>{body}</p></div></li>)}
@@ -181,8 +187,8 @@ const breadcrumbJsonLd = {
 
       <aside class="service-coaching-proof" aria-labelledby="coaching-proof-title">
         <header class="service-coaching-proof__intro">
-          <h3 id="coaching-proof-title">這些年，我自己做過的東西不少。</h3>
-          <p>公開工具、課程、內容系統，還有產品、金流和後續維運，我都親手碰過。你帶來的東西不必整理得很漂亮，我通常看得懂它為甚麼卡住。</p>
+          <h3 id="coaching-proof-title">做過多少，直接看紀錄</h3>
+          <p>從公開工具、實作教學、付費手冊到企業合作，我都親手做過。數字不能保證你的陪跑成果，但至少能讓你判斷，我是不是只會講概念。</p>
         </header>
         <div class="service-coaching-proof__list" role="list" tabindex="0" aria-label="公開實作紀錄，可左右滑動查看">
           {publicProofs.map((proof) => (
@@ -194,13 +200,13 @@ const breadcrumbJsonLd = {
             </article>
           ))}
         </div>
-        <p class="service-coaching-proof__note">每個人的題目不同，成果當然也不會長得一樣。這些紀錄只是讓你知道，我不是只會在旁邊講。</p>
+        <p class="service-coaching-proof__note">統計口徑與日期已寫在各項說明中；問卷與交易數字採聚合資料，不公開個人資料。</p>
       </aside>
     </section>
 
     <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="coaching-fit-title">
       <header class="service-section__intro service-section__intro--compact">
-        <h2 id="coaching-fit-title">我比較想陪這樣的人。</h2>
+        <h2 id="coaching-fit-title">我比較想陪這樣的人</h2>
       </header>
       <div class="service-fit-column">
         <h3><Check size={19} aria-hidden="true" />我們應該會合作得不錯</h3>
@@ -229,7 +235,7 @@ const breadcrumbJsonLd = {
     </section>
 
     <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="coaching-cta-title">
-      <div><p class="section-label">下一步</p><h2 id="coaching-cta-title">如果你手上剛好有一件事，一個人推得有點累，可以先寫給我看。</h2><p>我會親自看過，再邀請適合的人免費聊 30 分鐘。談完確認合作，才會收到正式方案與這一期的專屬優惠。</p></div>
+      <div><p class="section-label">下一步</p><h2 id="coaching-cta-title">一個人做得有點累，我幫你少走彎路</h2><p>我會親自看過，再邀請適合的人免費聊 30 分鐘。聊完確認彼此適合，我才會正式邀請你加入，並附上這一期的專屬優惠。</p></div>
       <a class="btn btn-primary" href={coachingApplicationHref} data-analytics-placement="coaching_fit">申請 30 分鐘免費聊聊 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
 
