@@ -11,6 +11,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
   offerNote: option.offerNote,
   situationLabel: option.situationLabel,
   situationHelp: option.situationHelp,
+  situationPlaceholder: 'situationPlaceholder' in option ? option.situationPlaceholder : '',
   responseNote: option.responseNote,
   applicationCopy: 'applicationCopy' in option ? option.applicationCopy : null,
 }]));
@@ -18,7 +19,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
 <BaseLayout
   title="提出服務申請"
-  description="簡短告訴我你正在做什麼、目前卡在哪裡。我會依照你的需求，回覆 60 分鐘付費諮詢、30 分鐘免費陪跑訪談或其他合作的下一步。"
+  description="簡短告訴我你正在做什麼、目前卡在哪裡。我會依照你的需求，回覆 60 分鐘付費諮詢、陪跑免費聊聊或其他合作的下一步。"
   noindex={true}
 >
   <article class="application-page paper-page">
@@ -39,7 +40,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           </label>
           <div class="application-route-feedback" aria-live="polite" aria-atomic="true">
             <p data-route-summary></p>
-            <p class="application-route-offer" data-route-offer hidden><strong>費用折抵</strong><span data-route-offer-text></span></p>
+            <p class="application-route-offer" data-route-offer hidden><strong>優惠說明</strong><span data-route-offer-text></span></p>
           </div>
         </div>
 
@@ -102,7 +103,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           <div class="application-route-feedback application-route-feedback--choice" data-service-choice-feedback hidden aria-live="polite" aria-atomic="true">
             <strong data-route-label></strong>
             <p data-route-summary></p>
-            <p class="application-route-offer" data-route-offer hidden><strong>費用折抵</strong><span data-route-offer-text></span></p>
+            <p class="application-route-offer" data-route-offer hidden><strong>優惠說明</strong><span data-route-offer-text></span></p>
           </div>
           <p id="service-choice-error" class="application-error"><span aria-hidden="true">!</span>請先選一個最接近的方式。</p>
         </fieldset>
@@ -216,12 +217,12 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     <aside class="application-shell application-boundary page-paper paper-card" aria-labelledby="application-boundary-title" data-application-boundary>
       <div>
         <p class="section-label">兩條路的差別</p>
-        <h2 id="application-boundary-title">免費訪談不是縮短版的付費諮詢。</h2>
+        <h2 id="application-boundary-title">如果你還不知道該選哪一個，差別其實很簡單。</h2>
       </div>
       <ul>
-        <li><Check size={17} aria-hidden="true" /><span><strong>60 分鐘付費諮詢：</strong>帶一個具體問題來，我們會一起找出卡點、比較做法，排出下一步。</span></li>
-        <li><Check size={17} aria-hidden="true" /><span><strong>30 分鐘免費陪跑訪談：</strong>先聊你想做的事和目前卡點，確認五週陪跑是否適合；這 30 分鐘不做完整診斷。</span></li>
-        <li><Check size={17} aria-hidden="true" /><span>如果選錯也沒關係，我看完後會直接建議比較適合的方式。</span></li>
+        <li><Check size={17} aria-hidden="true" /><span><strong>你有一個具體問題，想用 60 分鐘直接拆開處理：</strong>選付費諮詢。</span></li>
+        <li><Check size={17} aria-hidden="true" /><span><strong>你想找人陪著做五週：</strong>先送陪跑申請，我會挑適合的人免費聊 30 分鐘。</span></li>
+        <li><Check size={17} aria-hidden="true" /><span>選錯沒關係，我看完會直接告訴你哪一個比較適合。</span></li>
       </ul>
     </aside>
   </article>
@@ -280,6 +281,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     const responseNote = document.querySelector<HTMLElement>('[data-application-response]');
     const situationLabel = document.querySelector<HTMLElement>('[data-situation-label]');
     const situationHelp = document.querySelector<HTMLElement>('[data-situation-help]');
+    const situationInput = document.querySelector<HTMLTextAreaElement>('#applicant-situation');
     const heroLabel = document.querySelector<HTMLElement>('[data-hero-label]');
     const heroTitle = document.querySelector<HTMLElement>('[data-hero-title]');
     const heroDescription = document.querySelector<HTMLElement>('[data-hero-description]');
@@ -316,6 +318,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       offerNote: string;
       situationLabel: string;
       situationHelp: string;
+      situationPlaceholder: string;
       responseNote: string;
       applicationCopy: ApplicationCopy | null;
     }>;
@@ -406,6 +409,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         });
         if (situationLabel) situationLabel.textContent = copy.situationLabel;
         if (situationHelp) situationHelp.textContent = copy.situationHelp;
+        if (situationInput) situationInput.placeholder = copy.situationPlaceholder || '簡單寫你正在做什麼、目前做到哪裡，以及接下來最難決定的事。';
         if (responseNote) responseNote.textContent = copy.responseNote;
         applyApplicationCopy(copy.applicationCopy ?? defaultApplicationCopy);
       }
@@ -460,7 +464,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       name: '填寫姓名',
       email: '確認聯絡 Email',
       situation: '補充你正在做的事與目前卡點',
-      focus: '選擇最接近的狀況',
+      focus: '選擇一個最接近的選項',
       consent: '確認資料使用方式',
       turnstile: '完成安全檢查',
     };
@@ -637,7 +641,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
 
         if (leadIdOutput) leadIdOutput.textContent = result.leadId;
         if (readyEmail) readyEmail.textContent = String(data.get('email') || '');
-        if (readyMessage) readyMessage.textContent = result.message || '我會用你留下的 Email 回覆陪跑是否適合，以及接下來怎麼進行。';
+        if (readyMessage) readyMessage.textContent = result.message || '我會先看你寫的內容。如果這次陪跑適合，我會寄信邀請你免費聊 30 分鐘。';
         if (result.delivery === 'dry_run') {
           if (readyLabel) readyLabel.textContent = '測試資料已接受';
           if (readyTitle) readyTitle.textContent = '這次沒有寄出 Email。';

@@ -16,13 +16,13 @@ const services = {
     },
   },
   coaching: {
-    label: '30 分鐘免費陪跑訪談',
-    focusQuestion: '下面哪一句最像你現在的狀況？',
+    label: '五週一對一陪跑申請',
+    focusQuestion: '你目前手上已經有什麼？',
     focus: {
-      unsure_where_to_start: '事情很多，最後沒有一個真的做下去',
-      using_but_reworking: '已經在用 AI，卻還是一直重做',
-      prototype_stuck: '已經做了一版，卻不知道怎麼繼續',
-      unsure_if_ai_problem: '還不確定是不是 AI 的問題',
+      active_work_in_progress: '已經有正在做的東西',
+      clear_direction_no_first_version: '有明確方向和素材',
+      multiple_directions_need_priority: '手上有幾個方向',
+      early_idea_needs_clarity: '現在還只有模糊想法',
     },
   },
   enterprise: {
@@ -373,7 +373,7 @@ export const onRequestPost = async ({ request, env }) => {
     message: delivery.id?.startsWith('dry-run-')
       ? '本地測試完成，沒有寄出 Email。'
       : data.service === 'coaching'
-        ? '我會用你留下的 Email 回覆陪跑是否適合，以及接下來怎麼進行。'
+        ? '我會先看你寫的內容。如果這次陪跑適合，我會寄信邀請你免費聊 30 分鐘。談完確認合作，才會收到正式方案與專屬優惠。'
         : '我會用你留下的 Email 回覆是否適合合作，以及接下來怎麼進行。',
   }, 201);
 };

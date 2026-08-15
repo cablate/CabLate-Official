@@ -1,4 +1,4 @@
-export const serviceApplicationVersion = 'service-application-v2';
+export const serviceApplicationVersion = 'service-application-v3';
 
 export const serviceApplicationOptions = [
   {
@@ -33,30 +33,31 @@ export const serviceApplicationOptions = [
   {
     id: 'coaching',
     label: 'AI 應用陪跑',
-    shortLabel: '30 分鐘免費陪跑訪談',
-    summary: '先聊你正在做的事與反覆卡住的地方，確認五週陪跑是否適合。',
-    offerNote: '做過 NT$5,000 專案諮詢者，14 天內加入可全額折抵，陪跑剩餘 NT$44,800。',
-    situationLabel: '你現在最想把什麼做下去？做到哪裡開始卡住？',
-    situationHelp: '工作、事業、產品或內容都可以，簡單說明目前做到哪裡。',
-    focusQuestion: '下面哪一句最像你現在的狀況？',
-    responseNote: '適合的話，我會回覆 30 分鐘訪談的可選時間。',
+    shortLabel: '申請五週一對一陪跑',
+    summary: '我會先看你想做的事，再邀請適合的人免費聊 30 分鐘。',
+    offerNote: '談完確認合作，會收到本期專屬優惠；做過 NT$5,000 專案諮詢者，14 天內加入仍可全額折抵。',
+    situationLabel: '你最想把什麼做下去？現在做到哪裡？如果這五週有進展，你最希望看到什麼？',
+    situationHelp: '工作、事業、產品或內容都可以，簡單寫目前進度和你希望出現的變化。',
+    situationPlaceholder: '寫你想做什麼、目前手上有什麼，以及五週後最希望看到的進展。',
+    focusQuestion: '你目前手上已經有什麼？',
+    responseNote: '如果這次陪跑適合，我會回覆 30 分鐘免費聊聊的可選時間。',
     applicationCopy: {
-      heroLabel: '30 分鐘免費訪談',
-      heroTitle: '跟我說說，你現在卡在哪裡。',
-      heroDescription: '把你正在做的事和目前卡住的地方告訴我。我會先看 AI 應用陪跑適不適合，再回覆你下一步。',
+      heroLabel: '五週一對一陪跑申請',
+      heroTitle: '先讓我看看，我們適不適合一起做。',
+      heroDescription: '簡單告訴我你想完成甚麼、目前做到哪裡。我會親自看，再邀請適合的人免費聊 30 分鐘。',
       nextTitle: '我收到後會怎麼做',
       nextFirstStep: '先看你正在做什麼、目前卡在哪裡。',
       formLabel: '',
-      formTitle: '留幾個關鍵資訊就好。',
-      formDescription: '只有姓名、Email 和兩個問題；其他資料有需要再補。',
-      submitLabel: '送出免費訪談申請',
-      submitNote: '送出不會扣款或保留名額。這 30 分鐘只確認陪跑是否適合，不做完整診斷。',
+      formTitle: '讓我先認識你正在做的事。',
+      formDescription: '姓名、Email 和兩個簡單問題就夠了，其他資料有需要再補。',
+      submitLabel: '送出陪跑申請',
+      submitNote: '送出後不會扣款。我看過內容後，會再邀請適合的人聊 30 分鐘；談完確認合作，才會收到正式方案與專屬優惠。',
     },
     focusOptions: [
-      { id: 'unsure_where_to_start', label: '事情很多，最後沒有一個真的做下去', summary: '每個方向都想試，不知道現在該先做哪一個。' },
-      { id: 'using_but_reworking', label: '已經在用 AI，卻還是一直重做', summary: '結果不穩，常常又換方法、換工具，或從頭來過。' },
-      { id: 'prototype_stuck', label: '已經做了一版，卻不知道怎麼繼續', summary: '不確定該繼續修、縮小範圍，還是換方向。' },
-      { id: 'unsure_if_ai_problem', label: '還不確定是不是 AI 的問題', summary: '我只知道事情做不下去，想先弄清楚問題出在哪裡。' },
+      { id: 'active_work_in_progress', label: '已經有正在做的東西', summary: '有內容、產品、流程或其他成果，可以直接一起看。' },
+      { id: 'clear_direction_no_first_version', label: '有明確方向和素材', summary: '知道想做什麼，但還沒整理出第一版。' },
+      { id: 'multiple_directions_need_priority', label: '手上有幾個方向', summary: '還不知道現在該先做哪一個。' },
+      { id: 'early_idea_needs_clarity', label: '現在還只有模糊想法', summary: '想先把問題和方向說清楚。' },
     ],
   },
   {

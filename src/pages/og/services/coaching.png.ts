@@ -85,7 +85,7 @@ export const GET: APIRoute = async () => {
                         type: 'div',
                         props: {
                           style: { color: '#6c4ccf', fontSize: '18px', letterSpacing: '1px' },
-                          children: '不是再學一套工具',
+                          children: '五週一對一陪跑',
                         },
                       },
                       {
@@ -102,13 +102,13 @@ export const GET: APIRoute = async () => {
                           children: [
                             {
                               type: 'div',
-                              props: { style: { display: 'flex' }, children: '把你手上那件事做下去，' },
+                              props: { style: { display: 'flex' }, children: '有件事一直想做？' },
                             },
                             {
                               type: 'div',
                               props: {
                                 style: { display: 'flex', marginTop: '5px', color: '#17233d' },
-                                children: '再決定 AI 該幫哪一段。',
+                                children: '我陪你把它做下去。',
                               },
                             },
                           ],
@@ -124,7 +124,7 @@ export const GET: APIRoute = async () => {
                             fontSize: '23px',
                             lineHeight: 1.45,
                           },
-                            children: '帶著正在做的工作、產品、內容或專案來。',
+                            children: '每期最多三位，先申請免費聊 30 分鐘。',
                         },
                       },
                     ],

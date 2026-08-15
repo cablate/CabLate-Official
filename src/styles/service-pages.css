@@ -6,6 +6,11 @@
   padding-block-end: 9rem;
 }
 
+.service-page--coaching .service-detail-hero .display-heading {
+  font-size: clamp(2.15rem, 4.2vw, 4rem) !important;
+  line-height: 1.12 !important;
+}
+
 .service-page--coaching .service-section {
   padding-block: clamp(2.75rem, 5vw, 4.5rem);
 }
@@ -561,6 +566,31 @@
 
 .service-conversation-note strong {
   color: var(--text-primary);
+}
+
+.service-coaching-story__body {
+  display: grid;
+  gap: 1.15rem;
+  max-width: 48rem;
+}
+
+.service-coaching-story__body p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 1.25vw, 1.08rem);
+  line-height: 1.9;
+  text-wrap: pretty;
+}
+
+.service-coaching-story__body p:last-child {
+  margin-block-start: 0.35rem;
+  padding-block-start: 1.35rem;
+  border-block-start: 1px solid var(--border-strong);
+  color: var(--text-primary);
+}
+
+.service-coaching-process-heading {
+  margin-block: clamp(2.5rem, 4vw, 3.5rem) 1.5rem;
 }
 
 .service-coaching-proof {
