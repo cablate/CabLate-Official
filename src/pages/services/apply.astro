@@ -216,6 +216,27 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
   </article>
 </BaseLayout>
 
+<script is:inline>
+  (() => {
+    const service = new URLSearchParams(window.location.search).get('service');
+    if (!service || !['consulting', 'coaching', 'enterprise', 'partnerships'].includes(service)) return;
+    const form = document.querySelector('#service-application-form');
+    const selectedRadio = form?.querySelector(`input[name="service"][value="${service}"]`);
+    if (!(selectedRadio instanceof HTMLInputElement)) return;
+    selectedRadio.checked = true;
+    form.querySelectorAll('[data-focus-group]').forEach((group) => {
+      if (!(group instanceof HTMLFieldSetElement)) return;
+      const active = group.dataset.focusGroup === service;
+      group.hidden = !active;
+      group.querySelectorAll('input[name="focus"]').forEach((input) => {
+        if (!(input instanceof HTMLInputElement)) return;
+        input.disabled = !active;
+        input.required = active;
+      });
+    });
+  })();
+</script>
+
 <script>
   import { trackAnalyticsEvent, type ServiceId } from '../../lib/analytics-client';
 
