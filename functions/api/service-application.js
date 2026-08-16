@@ -115,7 +115,7 @@ export const validatePayload = (payload) => {
   const turnstileToken = trimText(payload.cf_turnstile_response, 2048);
 
   if (!serviceConfig) errors.service = '請選擇一種合作方式。';
-  if (name.length < 1) errors.name = '請填寫姓名。';
+  if (name.length < 1) errors.name = '請填寫名字或常用帳號名稱。';
   if (!emailPattern.test(email)) errors.email = '請填寫可正常收信的 Email。';
   if (situation.length < 20) errors.situation = '請再多說一點，至少 20 個字，讓我看得懂你正在做什麼、卡在哪裡。';
   if (!serviceConfig?.focus[focus]) errors.focus = '請選擇一個最接近的狀況。';
@@ -182,7 +182,7 @@ export const buildEmailText = (data, leadId) => {
     '直接回覆這封信即可聯絡申請人。',
     '',
     `申請編號：${leadId}`,
-    `姓名：${data.name}`,
+    `名字／帳號：${data.name}`,
     `Email：${data.email}`,
     `公司／團隊：${optional(data.organization)}`,
     '',
@@ -245,6 +245,10 @@ export const buildEmailHtml = (data, leadId) => {
                   <tr>
                     <td style="width:96px;padding:10px 0;border-top:1px solid #e3ddd2;color:#7a7f89;font-size:13px;vertical-align:top;">申請編號</td>
                     <td style="padding:10px 0;border-top:1px solid #e3ddd2;color:#25324a;font-size:14px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;">${escapeHtml(leadId)}</td>
+                  </tr>
+                  <tr>
+                    <td style="width:96px;padding:10px 0;border-top:1px solid #e3ddd2;color:#7a7f89;font-size:13px;vertical-align:top;">名字／帳號</td>
+                    <td style="padding:10px 0;border-top:1px solid #e3ddd2;color:#25324a;font-size:14px;line-height:1.7;">${escapeHtml(data.name)}</td>
                   </tr>
                   <tr>
                     <td style="width:96px;padding:10px 0;border-top:1px solid #e3ddd2;color:#7a7f89;font-size:13px;vertical-align:top;">聯絡方式</td>

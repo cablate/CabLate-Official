@@ -36,6 +36,11 @@ expectText(application, 'cf_turnstile_response', 'turnstile token submission');
 expectText(application, '申請已送出', 'truthful submission state');
 expectText(application, 'data-error-list', 'actionable error summary');
 expectText(application, 'data-ready-email', 'submission email confirmation');
+expectText(application, '你的名字或常用帳號名稱', 'recognizable applicant identity label');
+expectText(application, '如果你曾在 IG 或 Threads 私訊我', 'platform identity helper');
+expectText(application, 'data-copy-lead-id', 'copyable lead id control');
+expectText(application, 'navigator.clipboard.writeText', 'clipboard interaction');
+expectText(application, 'data-copy-lead-id-status', 'clipboard status feedback');
 expectText(application, 'data-route-summary', 'nearby service-change feedback');
 expectText(application, 'aria-live="polite"', 'service-change announcement');
 expectText(application, '<script is:inline>', 'early route bootstrap');
@@ -71,6 +76,7 @@ expectText(endpoint, 'SERVICE_APPLICATION_DRY_RUN', 'local delivery test mode');
 expectText(endpoint, 'reply_to: data.email', 'reply route');
 expectText(endpoint, 'html: buildEmailHtml(data, leadId)', 'scannable HTML owner email');
 expectText(endpoint, 'escapeHtml', 'HTML email escaping');
+expectText(endpoint, '名字／帳號', 'owner email recognizable identity');
 rejectText(endpoint, 'payload.consent !== true', 'removed server consent validation');
 rejectText(endpoint, 'consent：agreed', 'removed false consent audit claim');
 rejectText(endpoint, 'RESEND_API_KEY =', 'hard-coded Resend key');
@@ -78,6 +84,8 @@ rejectText(endpoint, 'TURNSTILE_SECRET_KEY =', 'hard-coded Turnstile secret');
 
 expectText(styles, '@media (max-width: 760px)', 'mobile layout');
 expectText(styles, 'grid-template-columns: 1fr;', 'mobile single-column layout');
+expectText(styles, 'body.site-shell-desk #main-content:has(> .application-page)', 'application-specific mobile gutter override');
+expectText(styles, 'width: min(100% - 1rem, 72rem);', 'wider mobile application shell');
 expectText(styles, 'min-block-size: 3.25rem;', 'form control target size');
 expectText(styles, 'font-size: 1rem;', 'mobile form font size');
 
