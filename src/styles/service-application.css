@@ -582,13 +582,77 @@
   display: none;
 }
 
-.application-ready__id {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-}
-
 .application-ready__email {
   margin-block-end: 0.25rem;
+}
+
+.application-ready__receipt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-block-start: 1rem;
+}
+
+.application-ready__receipt > div {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.application-ready__receipt > div > span {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.application-ready__receipt strong {
+  overflow-wrap: anywhere;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  user-select: all;
+}
+
+.application-ready__receipt button {
+  display: inline-flex;
+  gap: 0.45rem;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 3rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  background: rgb(255 255 255 / 0.52);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.application-ready__receipt button:hover {
+  border-color: var(--accent-text);
+}
+
+.application-ready__receipt button:focus-visible {
+  outline: 3px solid var(--accent-text);
+  outline-offset: 3px;
+}
+
+.application-ready__receipt button:active {
+  transform: translateY(1px);
+}
+
+.application-ready__receipt button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.application-ready__copy-status {
+  min-block-size: 1.25rem;
+  margin: 0.35rem 0 0;
+  color: var(--accent-text);
+  font-size: 0.76rem;
+  font-weight: 700;
 }
 
 .application-boundary {
@@ -628,8 +692,16 @@
 }
 
 @media (max-width: 760px) {
+  body.site-shell-desk #main-content:has(> .application-page) {
+    padding-inline: 0;
+  }
+
+  .application-page.paper-page {
+    width: 100%;
+  }
+
   .application-shell {
-    width: min(100% - 2rem, 72rem);
+    width: min(100% - 1rem, 72rem);
   }
 
   .application-boundary,
@@ -735,6 +807,14 @@
 
   .application-ready__actions {
     justify-items: stretch;
+  }
+
+  .application-ready__receipt {
+    align-items: stretch;
+  }
+
+  .application-ready__receipt > div {
+    flex: 1 1 11rem;
   }
 }
 

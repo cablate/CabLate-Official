@@ -38,7 +38,7 @@ change_context:
 - `application_version`
 - `submission_id`
 - `service`
-- `name`
+- `name`：姓名或曾在 IG／Threads 等平台私訊 Cab 時使用的帳號名稱，讓 Cab 能辨認申請人；維持單一必填欄位，不另加社群帳號題
 - `email`
 - `situation`：同一題取得想推進的事、目前進度與主要卡點；陪跑路線另取得五週後希望看到的進展
 - `focus`：依服務路線變化的單選題；陪跑路線用來辨識申請人手上已有的成果與準備程度，不重複分類卡點
@@ -62,7 +62,7 @@ change_context:
 8. 不要求密碼、Token、未遮蔽客戶資料或公司機密原文。
 9. 申請頁維持 `noindex` 並停用 GA4；不得把個資放進分析事件。
 10. 收件通知同時提供純文字與 HTML 版本；HTML 只改善掃讀，不改變欄位契約，所有使用者輸入在插入 HTML 前必須 escape。
-11. 收件信第一屏先顯示服務路線、姓名、回覆方式、想處理的事與路線專屬答案；來源與 UTM 降為次要資訊，不得蓋過服務判斷。
+11. 收件信第一屏先顯示服務路線、名字／帳號、回覆方式、想處理的事與路線專屬答案；來源與 UTM 降為次要資訊，不得蓋過服務判斷。
 
 ## 可接受的狀態名稱
 
@@ -145,6 +145,12 @@ Scenario: valid application is delivered
   Then the Function validates again on the server
   And Resend receives one request with an idempotency key
   And the page shows a lead ID only after the provider returns success
+  And the lead ID has a copy button with visible success or recovery feedback
+
+Scenario: visitor has contacted Cab on a social platform
+  When the visitor reaches the identity field
+  Then the label accepts either their name or the account name used to message Cab
+  And the form does not add a separate social profile question
 
 Scenario: provider delivery fails
   When Resend does not confirm the request

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { ArrowLeft, Check, Send, ShieldCheck } from '@lucide/astro';
+import { ArrowLeft, Check, Copy, Send, ShieldCheck } from '@lucide/astro';
 import { siteConfig } from '../../config/siteConfig';
 import { serviceApplicationOptions, serviceApplicationVersion } from '../../config/serviceApplication';
 import '../../styles/service-application.css';
@@ -59,7 +59,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       <header>
         <p class="section-label" data-form-label>簡短申請</p>
         <h2 id="application-form-title" data-form-title>留幾個關鍵資訊就好。</h2>
-        <p data-form-description>只有姓名、Email 和兩個問題；其他資料有需要再補。</p>
+        <p data-form-description>留下名字或常用帳號名稱、Email，再回答兩個問題就好；其他資料有需要再補。</p>
         <ul class="application-trust-strip" aria-label="申請資料處理原則">
           <li><Check size={16} aria-hidden="true" />Cab 親自閱讀</li>
           <li><Check size={16} aria-hidden="true" />不適合也會直接說</li>
@@ -111,9 +111,10 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           <legend>先留一個能回覆你的方式</legend>
           <div class="application-field-grid">
             <div class="application-field">
-              <label for="applicant-name">你的姓名 <span class="application-required">必填</span></label>
-              <input id="applicant-name" name="name" type="text" autocomplete="name" maxlength="80" enterkeyhint="next" required aria-describedby="applicant-name-error" />
-              <p id="applicant-name-error" class="application-error"><span aria-hidden="true">!</span>請填寫姓名。</p>
+              <label for="applicant-name">你的名字或常用帳號名稱 <span class="application-required">必填</span></label>
+              <input id="applicant-name" name="name" type="text" autocomplete="name" maxlength="80" enterkeyhint="next" placeholder="例如：小明、@yourname" required aria-describedby="applicant-name-help applicant-name-error" />
+              <p id="applicant-name-help" class="application-help">如果你曾在 IG 或 Threads 私訊我，請填當時使用的名稱，方便我認出你。</p>
+              <p id="applicant-name-error" class="application-error"><span aria-hidden="true">!</span>請填寫名字或常用帳號名稱。</p>
             </div>
             <div class="application-field">
               <label for="applicant-email">聯絡 Email <span class="application-required">必填</span></label>
@@ -195,7 +196,17 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
           <h2 id="application-ready-title" data-ready-title>接下來我會先看你寫的內容。</h2>
           <p data-ready-message>我會用你留下的 Email 回覆是否適合，以及接下來怎麼進行。</p>
           <p class="application-ready__email">回覆會寄到：<strong data-ready-email></strong></p>
-          <p class="application-ready__id">申請編號：<strong data-lead-id></strong></p>
+          <div class="application-ready__receipt">
+            <div>
+              <span>申請編號</span>
+              <strong data-lead-id></strong>
+            </div>
+            <button type="button" data-copy-lead-id aria-describedby="application-copy-status" disabled>
+              <Copy size={16} aria-hidden="true" />
+              <span data-copy-lead-id-label>複製編號</span>
+            </button>
+          </div>
+          <p id="application-copy-status" class="application-ready__copy-status" data-copy-lead-id-status role="status" aria-live="polite"></p>
         </div>
         <a class="btn btn-ghost" href="/services/">回到合作方式</a>
       </section>
@@ -283,6 +294,9 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     const errorSummaryMessage = document.querySelector<HTMLElement>('[data-error-summary-message]');
     const errorList = document.querySelector<HTMLUListElement>('[data-error-list]');
     const leadIdOutput = document.querySelector<HTMLElement>('[data-lead-id]');
+    const copyLeadIdButton = document.querySelector<HTMLButtonElement>('[data-copy-lead-id]');
+    const copyLeadIdLabel = document.querySelector<HTMLElement>('[data-copy-lead-id-label]');
+    const copyLeadIdStatus = document.querySelector<HTMLElement>('[data-copy-lead-id-status]');
     const readyEmail = document.querySelector<HTMLElement>('[data-ready-email]');
     const readyMessage = document.querySelector<HTMLElement>('[data-ready-message]');
     const readyLabel = document.querySelector<HTMLElement>('[data-ready-label]');
@@ -470,7 +484,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
     const controls = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input, textarea, select'));
     const fieldLabels: Record<string, string> = {
       service: '選擇合作方式',
-      name: '填寫姓名',
+      name: '填寫名字或常用帳號名稱',
       email: '確認聯絡 Email',
       situation: '補充你正在做的事與目前卡點',
       focus: '選擇一個最接近的選項',
@@ -534,6 +548,22 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       turnstileToken = '';
       if (turnstileWidgetId && window.turnstile) window.turnstile.reset(turnstileWidgetId);
     };
+
+    copyLeadIdButton?.addEventListener('click', async () => {
+      const leadId = leadIdOutput?.textContent?.trim();
+      if (!leadId) return;
+
+      try {
+        await navigator.clipboard.writeText(leadId);
+        if (copyLeadIdLabel) copyLeadIdLabel.textContent = '已複製';
+        if (copyLeadIdStatus) copyLeadIdStatus.textContent = '申請編號已複製。';
+        window.setTimeout(() => {
+          if (copyLeadIdLabel) copyLeadIdLabel.textContent = '複製編號';
+        }, 2200);
+      } catch {
+        if (copyLeadIdStatus) copyLeadIdStatus.textContent = '無法自動複製，請長按申請編號複製。';
+      }
+    });
 
     const resolveTurnstileWaiters = () => {
       const waiters = turnstileTokenWaiters.splice(0);
@@ -647,6 +677,7 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
         }
 
         if (leadIdOutput) leadIdOutput.textContent = result.leadId;
+        if (copyLeadIdButton) copyLeadIdButton.disabled = false;
         if (readyEmail) readyEmail.textContent = String(data.get('email') || '');
         if (readyMessage) readyMessage.textContent = result.message || '我會先看你寫的內容。如果這次陪跑適合，我會寄信邀請你免費聊 30 分鐘。';
         if (result.delivery === 'dry_run') {
