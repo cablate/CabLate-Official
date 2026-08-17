@@ -1,35 +1,28 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Newsletter from '../components/sections/Newsletter.astro';
-import HeroCarousel from '../components/sections/HeroCarousel.astro';
-import { ArrowRight, Braces, Database, GitBranch } from '@lucide/astro';
+import { ArrowLeft, ArrowRight, Braces, Database, GitBranch } from '@lucide/astro';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 
-const heroSlides = [
+const heroMessages = [
   {
-    src: '/images/photos/cablate-speaking-ai-meetup-april.webp',
-    alt: 'CabLate 在 AI 小聚現場分享 AI 協作與技術實作',
-    width: 2000,
-    height: 1333,
+    statement: ['我研究 AI、Agent', '與真實工作流程'],
+    result: '找到做法也知道怎麼檢查\n用 AI 改善你的工作流程',
   },
   {
-    src: '/images/photos/cablate-speaking-workshop-0627.webp',
-    alt: 'CabLate 在工作坊現場帶領學員進行 AI 實作',
-    width: 1970,
-    height: 1970,
+    statement: ['我把工程上的拆解與驗證', '帶進 AI 應用'],
+    result: '把問題拆開也把判斷留下\n下一次不必再從頭猜',
+  },
+  {
+    statement: ['我熟悉 AI 應用', '也親手把方法做成產品'],
+    result: '看得出 AI 卡在哪裡\n把結果修到能驗收也能交接',
   },
 ];
 
-const symptoms = [
-  ['背景講過很多次，它還是接不起來。', 'AI 當下拿到的資訊不完整，或讀到了過期、互相衝突的內容。'],
-  ['它做了很多，最後還是得自己重做。', '任務看似完成，但沒有清楚的完成條件，也缺少能直接檢查結果的方法。'],
-  ['只要一步出錯，整個流程就得重來。', '過程沒有留下可追查的節點，失敗後也不知道該從哪裡繼續。'],
-];
-
-const methods = [
-  { icon: Database, term: 'Context', title: '資訊脈絡', body: 'AI 現在看到的資料對不對、版本對不對、是否剛好足夠。' },
-  { icon: Braces, term: 'Skill', title: '可重複方法', body: '上次做對的判斷、順序、限制與例外，有沒有被留下來。' },
-  { icon: GitBranch, term: 'Harness', title: '執行環境', body: '任務、工具、權限、驗收與失敗恢復，能不能真的接成一條流程。' },
+const diagnosticCases = [
+  { code: 'context', icon: Database, term: 'Context', title: '資訊脈絡', question: ['它這次到底', '看到了哪些資料'], symptom: ['講了很多次', 'AI 表現還是很差'], description: '你以為交代過了，下一次它卻像從沒看過。', diagnosis: ['你以為它知道的背景', '不一定真的進到這次任務裡'], next: ['挑一個明顯答錯的地方', '對照它當時實際讀到的資料'] },
+  { code: 'skill', icon: Braces, term: 'Skill', title: '可重複方法', question: ['上次做對的關鍵', '有沒有被留下來'], symptom: ['這次明明做出成果', '下次又得重來'], description: '結果留下了，真正有用的做法卻沒有。', diagnosis: ['留下成果不等於留下做法', '關鍵判斷沒保存，下次還是得重講'], next: ['找一個每次都得重講的判斷', '把它整理成下次能直接照做的步驟'] },
+  { code: 'harness', icon: GitBranch, term: 'Harness', title: '執行環境', question: ['流程是從哪一步', '開始斷掉的'], symptom: ['只要一步出錯', '整個流程就卡住'], description: '前面明明都成功了，一出錯還是只能從頭開始。', diagnosis: ['流程如果只記得從頭開始', '前面做對再多，出錯也接不回去'], next: ['找到失敗前最後完成的步驟', '讓流程直接從那裡繼續'] },
 ];
 
 const routes = [
@@ -39,50 +32,86 @@ const routes = [
 ];
 ---
 
-<BaseLayout title="CabLate｜AI 協作、Agent 工作流程與開發實戰" description="先找出 AI 工作流程真正失效的一層，再決定要自己修、系統學會，或找人一起處理。" image="/og/pages/home.png" imageAlt="CabLate：AI 已經做得很快了，難的是把事情真的做完。" imageWidth={1200} imageHeight={630}>
+<BaseLayout title="CabLate｜AI 應用、Agent 與產品實作" description="CabLate 的個人網站。從全端工程與系統設計出發，持續製作 AI 產品、研究 Agent，也整理文章、課程與工作方法。" image="/og/pages/home.png" imageAlt="CabLate：從工程走進 AI，持續做產品、寫研究與整理工作方法。" imageWidth={1200} imageHeight={630}>
   <div class="home-page" data-content-state="testing">
-    <section class="home-hero" aria-labelledby="home-title">
-      <div class="home-hero__copy paper-card">
-        <div class="paper-card__inner">
-          <p class="section-label">AI 協作・工作流程設計</p>
-          <h1 id="home-title"><span>AI 已經做得很快了，</span><span>難的是把事情真的做完。</span></h1>
-          <p>你可能已經用 AI 做了不少事，但背景常接不上、結果還要自己重修，出錯時又不知道從哪裡查。這些問題不一定靠改 Prompt 能解決。我通常會把工作拆開，看問題到底出在資料、工具、流程還是驗收。</p>
-          <a class="btn btn-primary hero-action" href="/expertise/" aria-label="開始 AI 工作流健檢">先做 AI 工作流健檢 <ArrowRight size={18} aria-hidden="true" /></a>
+    <section class="home-hero paper-card" aria-labelledby="home-title" data-hero-copy-rotation data-messages={JSON.stringify(heroMessages)}>
+      <header class="home-hero__lede">
+        <h1 id="home-title">嗨，我是 CabLate</h1>
+        <p class="home-hero__statement" id="home-hero-statement" data-hero-statement aria-live="off">
+          {heroMessages[0].statement.map((line) => <span data-hero-statement-line>{line}</span>)}
+        </p>
+      </header>
+
+      <figure class="home-hero__portraits">
+        <div class="hero-photo hero-photo--primary">
+          <img
+            src="/images/photos/cablate-speaking-ai-meetup-april-refined-v1.webp"
+            alt="Cab 在 AI 小聚現場分享 AI 協作與工作流程"
+            width="1122"
+            height="1402"
+            fetchpriority="high"
+          />
+        </div>
+        <div class="hero-photo hero-photo--secondary">
+          <img
+            src="/images/photos/cablate-speaking-workshop-0627-refined-v1.webp"
+            alt="Cab 在工作坊現場與學員拆解實作問題"
+            width="1122"
+            height="1402"
+            fetchpriority="low"
+          />
+        </div>
+        <p class="home-hero__annotation"><span>WORK NOTE</span>做出來之後呢？</p>
+      </figure>
+
+      <div class="home-hero__body">
+        <p class="home-hero__result" id="home-hero-result" data-hero-result aria-live="off">{heroMessages[0].result}</p>
+        <div class="home-hero__rotation-meta">
+          <div class="home-hero__rotation-controls" data-hero-rotation-controls role="group" aria-label="切換介紹內容" hidden>
+            <button type="button" data-hero-previous aria-label="上一則介紹" aria-controls="home-hero-statement home-hero-result"><ArrowLeft size={15} aria-hidden="true" /></button>
+            <span class="rotation-controls__count" aria-hidden="true"><span data-hero-current>01</span> / {String(heroMessages.length).padStart(2, '0')}</span>
+            <button type="button" data-hero-next aria-label="下一則介紹" aria-controls="home-hero-statement home-hero-result"><ArrowRight size={15} aria-hidden="true" /></button>
+          </div>
+          <span class="visually-hidden" data-hero-rotation-status aria-live="polite" aria-atomic="true"></span>
+        </div>
+        <div class="home-hero__actions">
+          <a class="btn btn-primary hero-action" href="/about/#public-output-title">先看我做過的東西 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="home-hero__secondary-action" href="#diagnostic-title">有個 AI 卡點？從這裡開始 <ArrowRight size={16} aria-hidden="true" /></a>
         </div>
       </div>
-      <HeroCarousel slides={heroSlides} label="CabLate 分享與工作坊現場" />
     </section>
 
-    <section class="symptom-section paper-card" aria-labelledby="symptom-title">
-      <div class="paper-card__inner section-grid">
-        <header>
-          <p class="section-label">你可能也遇過</p>
-          <h2 id="symptom-title">AI 偶爾成功，不等於能拿來工作。</h2>
-          <p>如果每次都要重新交代、重新檢查，甚至自己重做，那就不是「這次有沒有成功」的問題，而是這套做法還不能穩定工作。</p>
-          <a class="text-action" href="/expertise/#workflow-check">從症狀開始檢查 <ArrowRight size={16} aria-hidden="true" /></a>
-        </header>
-        <ol class="symptom-list">
-          {symptoms.map(([title, body], index) => (
-            <li><span>0{index + 1}</span><div><h3>{title}</h3><p>{body}</p></div></li>
-          ))}
-        </ol>
-      </div>
-    </section>
-
-    <section class="method-section" aria-labelledby="method-title">
-      <header class="method-heading">
-        <p class="section-label">先別急著堆更多規則</p>
-        <h2 id="method-title">我通常先查三件事。</h2>
+    <section class="diagnostic-stage" aria-labelledby="diagnostic-title">
+      <header class="diagnostic-heading">
+        <h2 id="diagnostic-title">你是不是也遇過<br />這幾種情況</h2>
       </header>
-      <div class="method-path">
-        {methods.map((method, index) => (
-          <article>
-            <div class="method-path__marker"><span>0{index + 1}</span><method.icon size={21} aria-hidden="true" /></div>
-            <div><p>{method.term}</p><h3>{method.title}</h3><p>{method.body}</p></div>
-          </article>
-        ))}
+
+      <div class="diagnostic-console">
+        <fieldset class="symptom-choices">
+          <legend class="visually-hidden">選擇最接近目前情況的症狀</legend>
+          {diagnosticCases.map((item, index) => (
+            <label class="symptom-choice" for={`home-diagnostic-${item.code}`}>
+              <input id={`home-diagnostic-${item.code}`} type="radio" name="home-diagnostic" value={item.code} checked={index === 0} aria-controls={`home-trace-${item.code}`} />
+              <span class="symptom-choice__surface"><strong>{item.symptom.map((line) => <span class="symptom-copy-line">{line}</span>)}</strong><span>{item.description}</span></span>
+            </label>
+          ))}
+        </fieldset>
+
+        <div class="trace-panels" aria-live="polite">
+          {diagnosticCases.map((item) => (
+            <article class="trace-panel" id={`home-trace-${item.code}`} data-trace={item.code}>
+              <header class="trace-panel__heading">
+                <div class="diagnosis-stamp"><item.icon size={22} aria-hidden="true" /><span>{item.term} / {item.title}</span></div>
+                <h3>{item.question.map((line) => <span>{line}</span>)}</h3>
+              </header>
+              <div class="trace-reading">
+                <p class="trace-diagnosis">{item.diagnosis.map((line) => <span>{line}</span>)}</p>
+                <p class="trace-next"><span class="trace-next__arrow" aria-hidden="true">→</span><strong>{item.next.map((line) => <span>{line}</span>)}</strong></p>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
-      <p class="method-note">我不會一開始就猜是哪一層。拿你手上的工作案例跑一次，通常比繼續猜有效。</p>
     </section>
 
     <section class="route-section paper-card" aria-labelledby="route-title">
@@ -120,22 +149,258 @@ const routes = [
   </div>
 </BaseLayout>
 
+<script>
+  const initializeHeroCopyRotation = () => {
+    const heroes = document.querySelectorAll<HTMLElement>('[data-hero-copy-rotation]');
+
+    heroes.forEach((hero) => {
+      if (hero.dataset.rotationReady === 'true') return;
+
+      const statement = hero.querySelector<HTMLElement>('[data-hero-statement]');
+      const statementLines = Array.from(hero.querySelectorAll<HTMLElement>('[data-hero-statement-line]'));
+      const result = hero.querySelector<HTMLElement>('[data-hero-result]');
+      const controls = hero.querySelector<HTMLElement>('[data-hero-rotation-controls]');
+      const previous = hero.querySelector<HTMLButtonElement>('[data-hero-previous]');
+      const next = hero.querySelector<HTMLButtonElement>('[data-hero-next]');
+      const currentLabel = hero.querySelector<HTMLElement>('[data-hero-current]');
+      const status = hero.querySelector<HTMLElement>('[data-hero-rotation-status]');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      if (!statement || statementLines.length < 2 || !result || !controls || !previous || !next || !currentLabel || !status || !hero.dataset.messages) return;
+
+      const messages = JSON.parse(hero.dataset.messages) as Array<{ statement: string[]; result: string }>;
+      if (messages.length < 2) return;
+
+      hero.dataset.rotationReady = 'true';
+      let currentIndex = 0;
+      let autoplayId = 0;
+      let transitionId = 0;
+      let isInViewport = true;
+      let userInteracted = false;
+      let pointerStart: { x: number; y: number } | null = null;
+
+      const stop = () => {
+        window.clearTimeout(autoplayId);
+        autoplayId = 0;
+      };
+
+      const render = (index: number) => {
+        currentIndex = index;
+        statementLines.forEach((line, lineIndex) => {
+          line.textContent = messages[currentIndex].statement[lineIndex] ?? '';
+        });
+        result.textContent = messages[currentIndex].result;
+        currentLabel.textContent = String(currentIndex + 1).padStart(2, '0');
+      };
+
+      const announce = () => {
+        status.textContent = `第 ${currentIndex + 1} 則介紹：${messages[currentIndex].statement.join(' ')}。${messages[currentIndex].result.replace('\n', ' ')}`;
+      };
+
+      const start = () => {
+        stop();
+        if (document.hidden || reduceMotion.matches || userInteracted || !isInViewport) return;
+        autoplayId = window.setTimeout(() => changeTo(currentIndex + 1, 'next', false), 3000);
+      };
+
+      const changeTo = (index: number, direction: 'previous' | 'next', shouldAnnounce: boolean) => {
+        const nextIndex = (index + messages.length) % messages.length;
+        if (nextIndex === currentIndex) return;
+
+        stop();
+        const directionClass = direction === 'previous' ? 'is-switching--previous' : 'is-switching--next';
+        statement.classList.add('is-switching');
+        statement.classList.add(directionClass);
+        result.classList.add('is-switching');
+        result.classList.add(directionClass);
+        window.clearTimeout(transitionId);
+        transitionId = window.setTimeout(() => {
+          render(nextIndex);
+          requestAnimationFrame(() => {
+            statement.classList.remove('is-switching');
+            statement.classList.remove(directionClass);
+            result.classList.remove('is-switching');
+            result.classList.remove(directionClass);
+          });
+          if (shouldAnnounce) announce();
+          start();
+        }, reduceMotion.matches ? 0 : 220);
+      };
+
+      const handleVisibility = () => {
+        if (document.hidden) stop();
+        else start();
+      };
+
+      const handleMotionPreference = () => {
+        stop();
+        window.clearTimeout(transitionId);
+        statement.classList.remove('is-switching');
+        statement.classList.remove('is-switching--previous', 'is-switching--next');
+        result.classList.remove('is-switching');
+        result.classList.remove('is-switching--previous', 'is-switching--next');
+        start();
+      };
+
+      const navigate = (index: number, direction: 'previous' | 'next') => {
+        userInteracted = true;
+        changeTo(index, direction, true);
+      };
+
+      const handlePrevious = () => navigate(currentIndex - 1, 'previous');
+      const handleNext = () => navigate(currentIndex + 1, 'next');
+
+      const handlePointerDown = (event: PointerEvent) => {
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
+        pointerStart = { x: event.clientX, y: event.clientY };
+      };
+
+      const handlePointerUp = (event: PointerEvent) => {
+        if (!pointerStart) return;
+        const deltaX = event.clientX - pointerStart.x;
+        const deltaY = event.clientY - pointerStart.y;
+        pointerStart = null;
+
+        if (Math.abs(deltaX) < 48 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return;
+        if (deltaX < 0) handleNext();
+        else handlePrevious();
+      };
+
+      const handlePointerCancel = () => {
+        pointerStart = null;
+      };
+
+      const observer = 'IntersectionObserver' in window
+        ? new IntersectionObserver(([entry]) => {
+            isInViewport = entry?.isIntersecting ?? false;
+            if (isInViewport) start();
+            else stop();
+          }, { threshold: 0.24 })
+        : null;
+
+      const cleanup = () => {
+        stop();
+        window.clearTimeout(transitionId);
+        previous.removeEventListener('click', handlePrevious);
+        next.removeEventListener('click', handleNext);
+        hero.removeEventListener('pointerdown', handlePointerDown);
+        hero.removeEventListener('pointerup', handlePointerUp);
+        hero.removeEventListener('pointercancel', handlePointerCancel);
+        document.removeEventListener('visibilitychange', handleVisibility);
+        reduceMotion.removeEventListener('change', handleMotionPreference);
+        observer?.disconnect();
+      };
+
+      controls.hidden = false;
+      previous.addEventListener('click', handlePrevious);
+      next.addEventListener('click', handleNext);
+      hero.addEventListener('pointerdown', handlePointerDown);
+      hero.addEventListener('pointerup', handlePointerUp);
+      hero.addEventListener('pointercancel', handlePointerCancel);
+      document.addEventListener('visibilitychange', handleVisibility);
+      reduceMotion.addEventListener('change', handleMotionPreference);
+      document.addEventListener('astro:before-swap', cleanup, { once: true });
+      observer?.observe(hero);
+
+      start();
+    });
+  };
+
+  initializeHeroCopyRotation();
+  document.addEventListener('astro:page-load', initializeHeroCopyRotation);
+</script>
+
 <style>
   .home-page { width: min(calc(100% - 2rem), 86rem); display: grid; gap: 1rem; margin-inline: auto; padding-block: 1rem 2rem; }
   .home-page h1, .home-page h2, .home-page h3 { text-wrap: balance; }
   .home-page p, .home-page li { text-wrap: pretty; }
-  .home-hero { display: grid; grid-template-columns: minmax(0, .84fr) minmax(0, 1.16fr); align-items: center; gap: 1.35rem; }
-  .home-hero__copy { position: relative; z-index: 2; margin-right: -2.5rem; }
-  .home-hero__copy .paper-card__inner { padding: clamp(2.2rem, 4vw, 3.5rem); }
-  .home-hero h1 { max-width: none; margin: 0; font-family: var(--font-serif); font-size: clamp(2.1rem, 3.2vw, 3.3rem); letter-spacing: -.055em; line-height: 1.16; }
-  .home-hero h1 span { display: block; white-space: nowrap; }
-  .home-hero__copy p:not(.section-label) { max-width: 37rem; margin: 1.35rem 0 0; color: var(--text-secondary); line-height: 1.85; }
-  .hero-action { margin-top: 1.6rem; white-space: nowrap; }
+  .home-hero { position: relative; display: grid; grid-template-areas: 'lede portraits' 'body portraits'; grid-template-columns: minmax(0, 1.06fr) minmax(24rem, .94fr); grid-template-rows: 1fr auto; gap: 1.5rem clamp(2rem, 4vw, 4.5rem); min-height: clamp(38rem, 46vw, 44rem); padding: clamp(3rem, 5.5vw, 5.2rem); overflow: hidden; touch-action: pan-y; }
+  .home-hero::after { position: absolute; right: clamp(2rem, 4vw, 4rem); bottom: clamp(1.7rem, 3vw, 2.8rem); width: 4.8rem; height: 1px; content: ''; background: var(--accent); opacity: .42; }
+  .home-hero__lede { grid-area: lede; align-self: end; position: relative; z-index: 2; min-width: 0; max-width: 42rem; }
+  .home-hero h1 { max-width: none; margin: 0; color: var(--text-primary); font-family: var(--font-serif); font-size: clamp(3.25rem, 4.65vw, 4.65rem); font-weight: 700; letter-spacing: -.055em; line-height: 1.12; white-space: nowrap; }
+  .home-hero__statement { display: grid; gap: .08em; min-height: 2.8em; margin: 1.25rem 0 0; color: var(--text-primary); font-family: var(--font-sans); font-size: clamp(1.45rem, 2.15vw, 2.05rem); font-weight: 700; letter-spacing: -.04em; line-height: 1.4; text-align: center; text-wrap: balance; }
+  .home-hero__statement span { display: block; }
+  .home-hero__body { grid-area: body; position: relative; z-index: 3; align-self: start; min-width: 0; max-width: 36rem; }
+  .home-hero__result { min-height: 3.56em; margin: 0; color: var(--text-primary); font-size: 1.02rem; font-weight: 500; line-height: 1.78; text-align: center; white-space: pre-line; text-wrap: pretty; }
+  .home-hero__rotation-meta { display: flex; min-height: 2.1rem; align-items: center; justify-content: center; margin-top: .45rem; }
+  .home-hero__rotation-controls { display: inline-grid; grid-template-columns: 1.9rem auto 1.9rem; gap: .35rem; align-items: center; }
+  .home-hero__rotation-controls[hidden] { display: none; }
+  .home-hero__rotation-controls button { display: grid; width: 1.9rem; height: 1.9rem; padding: 0; place-items: center; border: 1px solid var(--border-strong); border-radius: 50%; background: color-mix(in srgb, var(--bg-soft) 88%, transparent); color: var(--text-secondary); cursor: pointer; transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease, transform 120ms ease; }
+  .home-hero__rotation-controls button:hover { border-color: var(--accent); background: var(--accent-subtle); color: var(--accent-text); }
+  .home-hero__rotation-controls button:active { transform: translateY(1px); }
+  .home-hero__rotation-controls button:focus-visible { outline: 3px solid var(--accent); outline-offset: .2rem; }
+  .rotation-controls__count { min-width: 3.1rem; color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .035em; text-align: center; }
+  .home-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.2rem; margin-top: 1rem; }
+  .hero-action { white-space: nowrap; }
+  .home-hero__secondary-action { display: inline-flex; align-items: center; gap: .4rem; padding-block: .45rem; color: var(--accent-text); font-size: .84rem; font-weight: 700; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .28em; }
+  .home-hero__secondary-action:hover { color: var(--accent-hover); }
+  .home-hero__secondary-action:focus-visible { outline: 3px solid var(--accent); outline-offset: .3rem; }
+  .home-hero__portraits { grid-area: portraits; align-self: stretch; position: relative; z-index: 1; min-height: 31rem; margin: 0; }
+  .hero-photo { position: absolute; padding: .48rem; border: 1px solid rgb(66 56 82 / .2); background: #fffdf8; box-shadow: 0 .9rem 1.7rem rgb(58 48 38 / .16); }
+  .hero-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .hero-photo--primary { top: -.6rem; right: -.2rem; z-index: 2; width: 68%; aspect-ratio: 1122 / 1402; transform: rotate(2.1deg); }
+  .hero-photo--secondary { bottom: .8rem; left: -.5rem; z-index: 1; width: 52%; aspect-ratio: 1122 / 1402; transform: rotate(-5.2deg); }
+  .hero-photo--secondary img { object-position: 51% center; }
+  .home-hero__annotation { position: absolute; right: -.1rem; bottom: 3.2rem; z-index: 4; display: grid; gap: .18rem; margin: 0; padding: .72rem .92rem; border: 1px solid rgb(83 62 161 / .35); background: #eee7ff; color: var(--accent-text); font-family: var(--font-sans); font-size: .78rem; font-weight: 800; line-height: 1.35; transform: rotate(-2.5deg); box-shadow: 0 .45rem .9rem rgb(63 51 81 / .14); }
+  .home-hero__annotation span { font-family: var(--font-mono); font-size: .55rem; font-weight: 600; letter-spacing: .09em; }
+  @media (prefers-reduced-motion: no-preference) {
+    .home-hero__statement, .home-hero__result { transition: opacity 220ms ease, transform 220ms ease; }
+    .home-hero__statement.is-switching, .home-hero__result.is-switching { opacity: 0; }
+    .home-hero__statement.is-switching--next, .home-hero__result.is-switching--next { transform: translateX(-.45rem); }
+    .home-hero__statement.is-switching--previous, .home-hero__result.is-switching--previous { transform: translateX(.45rem); }
+    .hero-photo--primary { animation: hero-photo-primary-in 620ms cubic-bezier(.2, .72, .2, 1) both; }
+    .hero-photo--secondary { animation: hero-photo-secondary-in 680ms 90ms cubic-bezier(.2, .72, .2, 1) both; }
+    .home-hero__annotation { animation: hero-note-in 420ms 430ms cubic-bezier(.2, .72, .2, 1) both; }
+  }
+  @keyframes hero-photo-primary-in { from { opacity: 0; transform: translate3d(1.2rem, -1rem, 0) rotate(4.8deg); } to { opacity: 1; transform: translate3d(0, 0, 0) rotate(2.1deg); } }
+  @keyframes hero-photo-secondary-in { from { opacity: 0; transform: translate3d(-1.4rem, 1.2rem, 0) rotate(-7.5deg); } to { opacity: 1; transform: translate3d(0, 0, 0) rotate(-5.2deg); } }
+  @keyframes hero-note-in { from { opacity: 0; transform: translate3d(.6rem, .5rem, 0) rotate(1deg); } to { opacity: 1; transform: translate3d(0, 0, 0) rotate(-2.5deg); } }
   .section-grid { display: grid; grid-template-columns: minmax(0, .82fr) minmax(20rem, 1.18fr); gap: clamp(2rem, 6vw, 5rem); }
   .section-grid h2, .method-heading h2, .route-heading h2, .fit-column h2 { margin: 0; font-family: var(--font-serif); font-size: clamp(1.75rem, 3.2vw, 2.75rem); letter-spacing: -.035em; line-height: 1.35; }
   .section-grid header > p:not(.section-label), .section-grid > div > p { color: var(--text-secondary); line-height: 1.82; }
   .text-action { display: inline-flex; align-items: center; gap: .4rem; margin-top: 1rem; color: var(--accent-text); font-size: .88rem; font-weight: 700; text-decoration: underline; text-underline-offset: .24em; }
   .text-action:hover { color: var(--accent-hover); }
+  .diagnostic-stage { padding: clamp(2.25rem, 5vw, 4.5rem); border: 1px solid var(--surface-dark-border); background: var(--surface-dark); color: var(--surface-dark-text); }
+  .diagnostic-stage :is(h2, h3) { color: var(--surface-dark-text); }
+  .diagnostic-heading h2 { margin: 0; font-family: var(--font-serif); font-size: clamp(1.9rem, 3.6vw, 3.15rem); letter-spacing: -.04em; line-height: 1.28; }
+  .diagnostic-console { display: grid; grid-template-columns: minmax(17rem, .72fr) minmax(0, 1.28fr); margin-top: clamp(2rem, 4vw, 3.5rem); }
+  .symptom-choices { display: grid; align-content: start; margin: 0; padding: 0; border: 0; background: var(--surface-dark); }
+  .symptom-choice { position: relative; display: block; cursor: pointer; }
+  .symptom-choice + .symptom-choice { border-top: 1px solid var(--surface-dark-border); }
+  .symptom-choice input { position: absolute; inline-size: 1px; block-size: 1px; opacity: 0; }
+  .symptom-choice__surface { display: grid; gap: .65rem; min-block-size: 8.4rem; padding: 1.4rem 1.5rem 1.35rem 1.75rem; color: var(--surface-dark-muted); transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease; }
+  .symptom-choice__surface strong { color: var(--surface-dark-text); font-size: 1rem; line-height: 1.5; text-wrap: wrap; }
+  .symptom-copy-line { display: inline; }
+  .symptom-copy-line + .symptom-copy-line::before { content: ' '; }
+  .symptom-choice__surface > span { font-size: .78rem; line-height: 1.65; }
+  .symptom-choice:hover .symptom-choice__surface { background: rgb(255 255 255 / .035); }
+  .symptom-choice input:checked + .symptom-choice__surface { background: rgb(128 100 234 / .14); color: var(--surface-dark-text); box-shadow: inset .28rem 0 var(--accent-bright); }
+  .symptom-choice input:focus-visible + .symptom-choice__surface { outline: 3px solid var(--accent-bright); outline-offset: -4px; }
+  .trace-panels { min-width: 0; background: var(--surface-dark); color: var(--text-primary); }
+  .trace-panel { position: relative; display: grid; min-height: 100%; padding: clamp(1.5rem, 3.5vw, 2.75rem); overflow: hidden; background-color: transparent; background-image: var(--paper-white-image); background-repeat: no-repeat; background-position: center; background-size: 115.2% 115.2%; color: var(--text-primary); filter: drop-shadow(0 .42rem .48rem rgb(18 21 17 / .16)); animation: trace-panel-in 180ms ease both; }
+  .trace-panel::before { position: absolute; inset: 1rem 1rem auto auto; width: 5rem; height: 5rem; border-top: 1px solid var(--accent); border-right: 1px solid var(--accent); content: ''; opacity: .28; }
+  .trace-panel__heading { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.25rem; align-items: center; padding-bottom: 1.4rem; border-bottom: 1px solid var(--border-strong); }
+  .trace-panel__heading h3 { margin: 0; color: var(--text-primary); font-family: var(--font-serif); font-size: clamp(1.7rem, 3vw, 2.55rem); }
+  .trace-panel__heading h3 span { display: inline; }
+  .trace-panel__heading h3 span + span::before { content: ' '; }
+  .diagnosis-stamp { display: grid; place-items: center; gap: .4rem; min-width: 7.2rem; padding: .8rem; border: 1px solid var(--accent); background: var(--accent-subtle); color: var(--accent-text); transform: rotate(-1.25deg); animation: stamp-in 260ms ease both; }
+  .diagnosis-stamp span { font-family: var(--font-mono); font-size: .68rem; font-weight: 700; }
+  .trace-reading { padding-top: 1.25rem; animation: trace-step-in 240ms 130ms ease both; }
+  .trace-diagnosis { max-width: 42rem; margin: 0; color: var(--text-primary); font-size: .94rem; line-height: 1.8; }
+  .trace-diagnosis span { display: block; }
+  .trace-next { display: flex; justify-content: center; align-items: center; gap: .75rem; width: fit-content; max-width: 100%; margin: 1.35rem auto 0; color: var(--accent-text); font-size: .86rem; line-height: 1.65; text-align: center; }
+  .trace-next__arrow { flex: 0 0 auto; font-family: var(--font-mono); font-weight: 700; }
+  .trace-next strong { font-weight: 700; }
+  .trace-next strong span { display: block; }
+  @supports selector(:has(*)) {
+    .trace-panel { display: none; }
+    .diagnostic-stage:has(#home-diagnostic-context:checked) [data-trace='context'],
+    .diagnostic-stage:has(#home-diagnostic-skill:checked) [data-trace='skill'],
+    .diagnostic-stage:has(#home-diagnostic-harness:checked) [data-trace='harness'] { display: grid; }
+  }
+  @keyframes trace-panel-in { from { opacity: .65; } to { opacity: 1; } }
+  @keyframes stamp-in { from { opacity: 0; transform: translateY(-.5rem) rotate(-4deg); } to { opacity: 1; transform: translateY(0) rotate(-1.25deg); } }
+  @keyframes trace-step-in { from { opacity: 0; transform: translateY(.45rem); } to { opacity: 1; transform: translateY(0); } }
   .symptom-list { margin: 0; padding: 0; list-style: none; }
   .symptom-list li { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; padding: 1.15rem 0; border-top: 1px solid var(--border); }
   .symptom-list li:first-child { padding-top: 0; border-top: 0; }
@@ -173,18 +438,35 @@ const routes = [
   .cabai-section h2 { max-width: 17ch; }
   .cabai-section .btn { margin-top: 1rem; }
   @media (max-width: 980px) {
-    .home-hero { grid-template-columns: 1fr 1fr; }
-    .home-hero__copy { margin-right: -1rem; }
+    .home-hero { grid-template-columns: minmax(0, 1fr) minmax(20rem, .82fr); gap: 1.35rem 2rem; padding-inline: clamp(2rem, 4.5vw, 3.5rem); }
+    .home-hero h1 { font-size: clamp(2.75rem, 5vw, 3.55rem); }
+    .home-hero__statement { font-size: clamp(1.35rem, 2.45vw, 1.75rem); }
     .route-item { grid-template-columns: 2.5rem minmax(0, 1fr) auto; }
     .route-item > p { grid-column: 2 / 3; }
   }
   @media (max-width: 760px) {
-    .home-page { gap: .75rem; padding-block: 0; }
+    .home-page { width: min(calc(100% - 1rem), 86rem); gap: .75rem; padding-block: 0; }
     .home-hero, .section-grid, .fit-grid { grid-template-columns: 1fr; }
-    .home-hero__copy { margin-right: 0; }
-    .home-hero h1 { font-size: clamp(1.72rem, 8.4vw, 3rem); }
-    .home-hero h1 span { white-space: normal; }
+    .home-hero { grid-template-areas: 'lede' 'portraits' 'body'; grid-template-rows: auto auto auto; gap: .65rem; min-height: 0; padding: 1.55rem .6rem 1.8rem; }
+    .home-hero::after { display: none; }
+    .home-hero__lede { align-self: start; }
+    .home-hero h1 { font-size: clamp(1.65rem, 8.1vw, 2.3rem); letter-spacing: -.045em; line-height: 1.16; white-space: nowrap; }
+    .home-hero__statement { gap: .12em; margin-top: .85rem; font-size: clamp(1.28rem, 5.6vw, 1.55rem); line-height: 1.42; }
+    .home-hero__portraits { isolation: isolate; inline-size: 72%; block-size: clamp(10.62rem, 43.2vw, 20.16rem); min-height: 0; justify-self: center; margin: .25rem auto 0; overflow: clip; overflow-clip-margin: .8rem; }
+    .hero-photo { padding: .32rem; }
+    .hero-photo--primary { top: -.43rem; right: -.55rem; width: 68%; }
+    .hero-photo--secondary { bottom: .58rem; left: -.75rem; width: 52%; }
+    .home-hero__annotation { right: -.07rem; bottom: 2.3rem; padding: .52rem .66rem; font-size: .56rem; }
+    .home-hero__annotation span { font-size: .4rem; }
+    .home-hero__body { margin-top: 1.35rem; padding-top: 1.25rem; border-top: 1px solid var(--border-strong); }
+    .home-hero__result { min-height: 3.5em; font-size: 1rem; font-weight: 600; line-height: 1.75; }
+    .home-hero__rotation-meta { position: absolute; top: -1rem; right: .15rem; z-index: 4; min-height: 0; margin: 0; }
+    .home-hero__rotation-controls { gap: .24rem; padding: .16rem; border: 1px solid var(--border-strong); border-radius: 999px; background: var(--bg-soft); box-shadow: 0 .2rem .5rem rgb(58 48 38 / .1); }
+    .home-hero__rotation-controls button { width: 1.75rem; height: 1.75rem; border: 0; background: transparent; }
+    .rotation-controls__count { min-width: 2.65rem; font-size: .56rem; }
+    .home-hero__actions { display: grid; gap: .7rem; margin-top: 1.15rem; }
     .hero-action { width: 100%; white-space: normal; }
+    .home-hero__secondary-action { width: fit-content; justify-self: center; }
     .method-path article > div:last-child { grid-template-columns: 1fr; gap: .3rem; }
     .fit-column + .fit-column { border-top: 1px solid var(--border); border-left: 0; }
     .route-item { grid-template-columns: 2rem minmax(0, 1fr); }
@@ -193,8 +475,37 @@ const routes = [
     .cabai-section { transform: none; }
   }
   @media (max-width: 390px) {
-    .home-hero__copy .paper-card__inner, .method-section { padding: 1.5rem 1.2rem; }
+    .home-hero { padding-inline: .5rem; }
     .method-path article { grid-template-columns: 3.5rem minmax(0, 1fr); gap: .75rem; }
     .method-path__marker { align-items: flex-start; }
+  }
+  @media (max-width: 760px) {
+    .diagnostic-console { grid-template-columns: 1fr; }
+    .symptom-choices { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .symptom-choice + .symptom-choice { border-top: 0; border-left: 1px solid var(--surface-dark-border); }
+    .symptom-choice__surface { min-block-size: 7.5rem; padding: 1rem; }
+    .symptom-copy-line { display: block; }
+    .symptom-copy-line + .symptom-copy-line::before { content: none; }
+    .symptom-choice__surface > span { display: none; }
+  }
+  @media (max-width: 600px) {
+    .diagnostic-stage { padding: 2rem 1.2rem; }
+    .symptom-choices { grid-template-columns: 1fr; }
+    .symptom-choice + .symptom-choice { border-top: 1px solid var(--surface-dark-border); border-left: 0; }
+    .symptom-choice__surface { min-block-size: 0; padding: .85rem 1rem; }
+    .symptom-copy-line { display: inline; }
+    .symptom-copy-line + .symptom-copy-line::before { content: ' '; }
+    .symptom-choice__surface > span { display: none; }
+    .trace-panel { padding: 1.25rem 1.25rem 1.25rem 1.5rem; box-shadow: inset .24rem 0 var(--accent); }
+    .trace-panel__heading { grid-template-columns: 1fr; }
+    .trace-panel__heading h3 span { display: block; }
+    .trace-panel__heading h3 span + span::before { content: none; }
+    .diagnosis-stamp { width: max-content; grid-template-columns: auto auto; }
+    .trace-next { font-size: .82rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-hero__rotation-controls button { transition: none; }
+    .symptom-choice__surface { transition: none; }
+    .trace-panel, .diagnosis-stamp, .trace-reading { animation: none; }
   }
 </style>

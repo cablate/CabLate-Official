@@ -990,6 +990,10 @@ main .lp-inner {
     overflow: visible;
   }
 
+  body.site-shell-desk #main-content:has(> .home-page) {
+    padding-inline: 0.375rem;
+  }
+
   body.site-shell-desk #main-content:has(> .desk-page) {
     width: 100%;
     margin: 0;
