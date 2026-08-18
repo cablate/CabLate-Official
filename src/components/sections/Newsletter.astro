@@ -4,14 +4,13 @@ import KitForm from '../common/KitForm.astro';
 
 <section class="newsletter-section" id="newsletter" aria-labelledby="newsletter-title">
   <div class="newsletter-text">
-    <p class="newsletter-label">更新通知</p>
-    <h2 id="newsletter-title">有值得看的新內容，<br />再寄信告訴你。</h2>
-    <p class="newsletter-copy">新課程、手冊更新、公開活動或重要研究上線時，我會寄一封通知。沒有固定週期，也不會把單次資源領取偷偷變成高頻行銷。</p>
+    <h2 id="newsletter-title">有新內容，<br />再寄信告訴你</h2>
+    <p class="newsletter-copy">電子報、新課程、新活動會寄信給你。</p>
   </div>
 
   <div class="newsletter-form">
-    <KitForm submitLabel="加入更新通知" successMessage="資料已送出，請到信箱點擊確認連結，完成訂閱。" />
-    <p class="newsletter-note">加入後請到信箱完成確認。你可以隨時退出；資料使用方式請見<a href="/privacy/">隱私權政策</a>。</p>
+    <KitForm submitLabel="收到新內容通知" successMessage="資料已送出，請到信箱點擊確認連結，完成訂閱。" />
+    <p class="newsletter-note">送出後請到信箱完成確認。可以隨時退出；資料使用方式見<a href="/privacy/">隱私權政策</a></p>
   </div>
 </section>
 
@@ -22,14 +21,6 @@ import KitForm from '../common/KitForm.astro';
     grid-template-columns: 1.15fr .85fr;
     align-items: center;
     gap: clamp(2rem, 6vw, 5rem);
-  }
-
-  .newsletter-label {
-    margin: 0 0 .7rem;
-    color: var(--accent, #8064ea);
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .08em;
   }
 
   .newsletter-text h2 {
@@ -55,13 +46,14 @@ import KitForm from '../common/KitForm.astro';
   }
 
   .newsletter-form :global(.kit-form-wrapper .formkit-fields) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
     max-width: none;
-    align-items: stretch;
-    flex-direction: column;
+    align-items: end;
   }
 
   .newsletter-form :global(.kit-form-wrapper .formkit-submit) {
-    width: 100%;
+    min-width: 10.5rem;
     min-height: 3.15rem;
   }
 
@@ -85,6 +77,16 @@ import KitForm from '../common/KitForm.astro';
 
     .newsletter-text h2 {
       font-size: clamp(1.9rem, 9vw, 2.65rem);
+    }
+
+    .newsletter-form :global(.kit-form-wrapper .formkit-fields) {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: stretch;
+    }
+
+    .newsletter-form :global(.kit-form-wrapper .formkit-submit) {
+      width: 100%;
+      min-width: 0;
     }
   }
 </style>
