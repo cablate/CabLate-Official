@@ -180,14 +180,7 @@ export const serviceTracks = [
 ] as const;
 
 export const primaryNavigationGroups = [
-  {
-    label: '探索',
-    items: [
-      // Articles inbound links paused: 恢復全站文章導流時再放回主要導覽。
-      { label: '專業方法', railLabel: 'AI 為什麼總是做不完、一直重做', href: '/expertise/' },
-      { label: '課程與手冊', railLabel: '想自己研究，從這裡開始', href: '/courses/' },
-    ],
-  },
+  // Exploration routes are temporarily hidden from the primary navigation.
   {
     label: '合作方式',
     overviewHref: '/services/',

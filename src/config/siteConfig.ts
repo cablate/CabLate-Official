@@ -20,6 +20,7 @@ export const siteConfig = {
   cabAi: {
     homeUrl: 'https://cabai.cablate.com/',
     productsUrl: 'https://cabai.cablate.com/products',
+    libraryUrl: 'https://cabai.cablate.com/library',
     agentSkillUrl: 'https://cabai.cablate.com/products/agentskill-course',
     handbookUrl: 'https://cabai.cablate.com/products/cc-deep-engineering',
     accountUrl: 'https://cabai.cablate.com/login?callbackUrl=%2Fdashboard',

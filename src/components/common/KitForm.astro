@@ -39,12 +39,12 @@ const {
           id={`kit-email-${formId}`}
           class="formkit-input"
           name="email_address"
-          aria-label="輸入你的電子信箱"
-          placeholder="name@example.com"
+          placeholder="you@example.com"
           required
           type="email"
           inputmode="email"
           autocomplete="email"
+          enterkeyhint="done"
         >
       </div>
       <button data-element="submit" class="formkit-submit" type="submit">
@@ -101,9 +101,15 @@ const {
   }
 
   .kit-form-wrapper .formkit-input:focus {
-    outline: none !important;
     border-color: var(--text-muted) !important;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: 0 0 0 2px rgb(128 100 234 / .22) !important;
+  }
+
+  .kit-form-wrapper .formkit-input:focus-visible {
+    outline: 3px solid var(--accent) !important;
+    outline-offset: 3px;
+    border-color: var(--accent-text) !important;
+    box-shadow: 0 0 0 2px rgb(128 100 234 / .22) !important;
   }
 
   .kit-form-wrapper .formkit-input::placeholder {
@@ -164,6 +170,11 @@ const {
 
     .kit-form-wrapper .formkit-submit {
       width: 100%;
+    }
+
+    .kit-form-wrapper .formkit-input {
+      min-height: 3.25rem;
+      font-size: 1rem !important;
     }
   }
 </style>
