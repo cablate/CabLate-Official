@@ -101,41 +101,77 @@ const {
   }
 
   .kit-form-wrapper .formkit-input:focus {
-    border-color: var(--text-muted) !important;
-    box-shadow: 0 0 0 2px rgb(128 100 234 / .22) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgb(128 100 234 / .25) !important;
   }
 
   .kit-form-wrapper .formkit-input:focus-visible {
-    outline: 3px solid var(--accent) !important;
-    outline-offset: 3px;
+    outline: 2px solid var(--accent) !important;
+    outline-offset: 2px;
     border-color: var(--accent-text) !important;
-    box-shadow: 0 0 0 2px rgb(128 100 234 / .22) !important;
+    box-shadow: 0 0 0 3px rgb(128 100 234 / .25) !important;
   }
 
   .kit-form-wrapper .formkit-input::placeholder {
     color: var(--text-muted) !important;
-    opacity: 1 !important;
+    opacity: 0.8 !important;
   }
 
   .kit-form-wrapper .formkit-submit {
-    background: var(--text-primary) !important;
-    border: none !important;
+    position: relative !important;
+    background: linear-gradient(135deg, #253047 0%, #1a2233 100%) !important;
+    border: 1px solid color-mix(in srgb, var(--text-primary) 80%, black) !important;
     border-radius: var(--radius-sm) !important;
-    color: var(--bg) !important;
+    color: #fff !important;
     font-size: 0.9rem !important;
-    font-weight: 500 !important;
+    font-weight: 700 !important;
     padding: 0.85rem 1.75rem !important;
     cursor: pointer !important;
-    transition: all 0.2s ease !important;
+    box-shadow: 0 4px 14px rgb(37 48 71 / 0.22), inset 0 1px 0 rgb(255 255 255 / 0.15) !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+    animation: btn-primary-ambient-heartbeat 4.8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite !important;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform 160ms ease !important;
     margin: 0 !important;
     white-space: nowrap;
   }
 
+  .kit-form-wrapper .formkit-submit::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 60% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.15), transparent) !important;
+    transform: skewX(-20deg) !important;
+    animation: btn-primary-ambient-shimmer 4.8s ease-in-out infinite !important;
+    pointer-events: none !important;
+  }
+
   .kit-form-wrapper .formkit-submit:hover {
-    opacity: 0.85 !important;
+    animation: btn-wiggle-bounce 450ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
+    background: linear-gradient(135deg, #3d2f78 0%, #271e50 100%) !important;
+    border-color: var(--accent) !important;
+    color: #fff !important;
+    box-shadow: 0 8px 22px rgb(98 72 200 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.25) !important;
+  }
+
+  .kit-form-wrapper .formkit-submit:hover::before {
+    animation: none !important;
+    left: 140% !important;
+    transition: left 400ms ease !important;
+  }
+
+  .kit-form-wrapper .formkit-submit:active {
+    animation: none !important;
+    transform: translateY(1px) scale(0.99) !important;
+    box-shadow: 0 2px 6px rgb(23 24 22 / 0.2) !important;
   }
 
   .kit-form-wrapper .formkit-submit span {
+    position: relative !important;
+    z-index: 1 !important;
     padding: 0 !important;
   }
 
