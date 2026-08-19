@@ -1,3 +1,9 @@
+html,
+body {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
 .paper-card {
   position: relative;
   border: 0;

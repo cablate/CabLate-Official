@@ -344,9 +344,9 @@ const speakerRecords = [
     heroes.forEach((hero) => {
       if (hero.dataset.rotationReady === 'true') return;
 
-      const statement = hero.querySelector<HTMLElement>('[data-hero-statement]');
       const statementLines = Array.from(hero.querySelectorAll<HTMLElement>('[data-hero-statement-line]'));
       const result = hero.querySelector<HTMLElement>('[data-hero-result]');
+      const statement = hero.querySelector<HTMLElement>('[data-hero-statement]');
       const controls = hero.querySelector<HTMLElement>('[data-hero-rotation-controls]');
       const previous = hero.querySelector<HTMLButtonElement>('[data-hero-previous]');
       const next = hero.querySelector<HTMLButtonElement>('[data-hero-next]');
@@ -354,23 +354,14 @@ const speakerRecords = [
       const status = hero.querySelector<HTMLElement>('[data-hero-rotation-status]');
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-      if (!statement || statementLines.length < 2 || !result || !controls || !previous || !next || !currentLabel || !status || !hero.dataset.messages) return;
+      if (!statement || statementLines.length === 0 || !result || !controls || !previous || !next || !currentLabel || !status || !hero.dataset.messages) return;
 
       const messages = JSON.parse(hero.dataset.messages) as Array<{ statement: string[]; result: string }>;
       if (messages.length < 2) return;
 
       hero.dataset.rotationReady = 'true';
       let currentIndex = 0;
-      let autoplayId = 0;
       let transitionId = 0;
-      let isInViewport = true;
-      let userInteracted = false;
-      let pointerStart: { x: number; y: number } | null = null;
-
-      const stop = () => {
-        window.clearTimeout(autoplayId);
-        autoplayId = 0;
-      };
 
       const render = (index: number) => {
         currentIndex = index;
@@ -385,112 +376,39 @@ const speakerRecords = [
         status.textContent = `第 ${currentIndex + 1} 則介紹：${messages[currentIndex].statement.join(' ')}。${messages[currentIndex].result.replace('\n', ' ')}`;
       };
 
-      const start = () => {
-        stop();
-        if (document.hidden || reduceMotion.matches || userInteracted || !isInViewport) return;
-        autoplayId = window.setTimeout(() => changeTo(currentIndex + 1, 'next', false), 3000);
-      };
-
-      const changeTo = (index: number, direction: 'previous' | 'next', shouldAnnounce: boolean) => {
+      const changeTo = (index: number) => {
         const nextIndex = (index + messages.length) % messages.length;
         if (nextIndex === currentIndex) return;
 
-        stop();
-        const directionClass = direction === 'previous' ? 'is-switching--previous' : 'is-switching--next';
         statement.classList.add('is-switching');
-        statement.classList.add(directionClass);
         result.classList.add('is-switching');
-        result.classList.add(directionClass);
+
         window.clearTimeout(transitionId);
         transitionId = window.setTimeout(() => {
           render(nextIndex);
           requestAnimationFrame(() => {
             statement.classList.remove('is-switching');
-            statement.classList.remove(directionClass);
             result.classList.remove('is-switching');
-            result.classList.remove(directionClass);
           });
-          if (shouldAnnounce) announce();
-          start();
-        }, reduceMotion.matches ? 0 : 220);
+          announce();
+        }, reduceMotion.matches ? 0 : 180);
       };
 
-      const handleVisibility = () => {
-        if (document.hidden) stop();
-        else start();
-      };
-
-      const handleMotionPreference = () => {
-        stop();
-        window.clearTimeout(transitionId);
-        statement.classList.remove('is-switching');
-        statement.classList.remove('is-switching--previous', 'is-switching--next');
-        result.classList.remove('is-switching');
-        result.classList.remove('is-switching--previous', 'is-switching--next');
-        start();
-      };
-
-      const navigate = (index: number, direction: 'previous' | 'next') => {
-        userInteracted = true;
-        changeTo(index, direction, true);
-      };
-
-      const handlePrevious = () => navigate(currentIndex - 1, 'previous');
-      const handleNext = () => navigate(currentIndex + 1, 'next');
-
-      const handlePointerDown = (event: PointerEvent) => {
-        if (event.pointerType === 'mouse' && event.button !== 0) return;
-        pointerStart = { x: event.clientX, y: event.clientY };
-      };
-
-      const handlePointerUp = (event: PointerEvent) => {
-        if (!pointerStart) return;
-        const deltaX = event.clientX - pointerStart.x;
-        const deltaY = event.clientY - pointerStart.y;
-        pointerStart = null;
-
-        if (Math.abs(deltaX) < 48 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return;
-        if (deltaX < 0) handleNext();
-        else handlePrevious();
-      };
-
-      const handlePointerCancel = () => {
-        pointerStart = null;
-      };
-
-      const observer = 'IntersectionObserver' in window
-        ? new IntersectionObserver(([entry]) => {
-            isInViewport = entry?.isIntersecting ?? false;
-            if (isInViewport) start();
-            else stop();
-          }, { threshold: 0.24 })
-        : null;
-
-      const cleanup = () => {
-        stop();
-        window.clearTimeout(transitionId);
-        previous.removeEventListener('click', handlePrevious);
-        next.removeEventListener('click', handleNext);
-        hero.removeEventListener('pointerdown', handlePointerDown);
-        hero.removeEventListener('pointerup', handlePointerUp);
-        hero.removeEventListener('pointercancel', handlePointerCancel);
-        document.removeEventListener('visibilitychange', handleVisibility);
-        reduceMotion.removeEventListener('change', handleMotionPreference);
-        observer?.disconnect();
-      };
+      const handlePrevious = () => changeTo(currentIndex - 1);
+      const handleNext = () => changeTo(currentIndex + 1);
 
       controls.hidden = false;
       previous.addEventListener('click', handlePrevious);
       next.addEventListener('click', handleNext);
-      hero.addEventListener('pointerdown', handlePointerDown);
-      hero.addEventListener('pointerup', handlePointerUp);
-      hero.addEventListener('pointercancel', handlePointerCancel);
-      document.addEventListener('visibilitychange', handleVisibility);
-      reduceMotion.addEventListener('change', handleMotionPreference);
-      document.addEventListener('astro:before-swap', cleanup, { once: true });
-      observer?.observe(hero);
 
-      start();
+      const cleanup = () => {
+        window.clearTimeout(transitionId);
+        previous.removeEventListener('click', handlePrevious);
+        next.removeEventListener('click', handleNext);
+        hero.dataset.rotationReady = 'false';
+      };
+
+      document.addEventListener('astro:before-swap', cleanup, { once: true });
     });
   };
 
@@ -517,7 +435,7 @@ const speakerRecords = [
       let context: gsap.Context | null = null;
       let destroyed = false;
 
-      const setActive = (record: HTMLElement, animate = !reduceMotion.matches) => {
+      const setActive = (record: HTMLElement) => {
         records.forEach((item) => item.classList.toggle('is-active', item === record));
         const nextFrame = mediaFrames.find((frame) => frame.dataset.speakerMedia === record.dataset.speakerVisual);
         if (!nextFrame || nextFrame === activeFrame) return;
@@ -525,37 +443,13 @@ const speakerRecords = [
         const previousFrame = activeFrame;
         activeFrame = nextFrame;
         nextFrame.classList.add('is-active');
-
-        if (!animate) {
-          previousFrame.classList.remove('is-active');
-          return;
-        }
-
-        gsap.killTweensOf([previousFrame, nextFrame]);
-        gsap.timeline({ defaults: { ease: 'power2.out' } })
-          .to(previousFrame, { autoAlpha: 0, y: -10, duration: .24 })
-          .fromTo(nextFrame, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .48 }, '<.08')
-          .add(() => previousFrame.classList.remove('is-active'));
+        previousFrame.classList.remove('is-active');
       };
 
       records[0]?.classList.add('is-active');
+
       if (!reduceMotion.matches && desktop.matches) {
-        mediaFrames.forEach((frame) => {
-          gsap.set(frame, { autoAlpha: frame === activeFrame ? 1 : 0, y: frame === activeFrame ? 0 : 12 });
-        });
-
         context = gsap.context(() => {
-          gsap.fromTo(progress, { scaleY: 0 }, {
-            scaleY: 1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: trace,
-              start: 'top 72%',
-              end: 'bottom 28%',
-              scrub: .35,
-            },
-          });
-
           records.forEach((record) => {
             ScrollTrigger.create({
               trigger: record,
@@ -572,98 +466,19 @@ const speakerRecords = [
         if (destroyed) return;
         destroyed = true;
         context?.revert();
-        reduceMotion.removeEventListener('change', handleMotionChange);
-        desktop.removeEventListener('change', handleMotionChange);
         section.dataset.speakerReady = 'false';
       };
 
-      const handleMotionChange = () => {
-        cleanup();
-        requestAnimationFrame(initializeSpeakerEvidence);
-      };
-
-      reduceMotion.addEventListener('change', handleMotionChange);
-      desktop.addEventListener('change', handleMotionChange);
       document.addEventListener('astro:before-swap', cleanup, { once: true });
     });
   };
 
   initializeSpeakerEvidence();
   document.addEventListener('astro:page-load', initializeSpeakerEvidence);
-
-  const initializeChapterTransitions = () => {
-    const sections = document.querySelectorAll<HTMLElement>('[data-chapter-transition]');
-
-    sections.forEach((section) => {
-      if (section.dataset.chapterReady === 'true') return;
-
-      const lead = section.querySelector<HTMLElement>('[data-chapter-lead]');
-      const seam = section.querySelector<HTMLElement>('[data-chapter-seam]');
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const desktop = window.matchMedia('(min-width: 761px)');
-
-      if (!lead && !seam) return;
-
-      section.dataset.chapterReady = 'true';
-      let context: gsap.Context | null = null;
-      let destroyed = false;
-
-      if (!reduceMotion.matches && desktop.matches) {
-        context = gsap.context(() => {
-          if (lead) {
-            gsap.fromTo(lead, { y: 22 }, {
-              y: 0,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 86%',
-                end: 'top 62%',
-                scrub: .45,
-              },
-            });
-          }
-
-          if (seam) {
-            gsap.fromTo(seam, { scaleX: .08 }, {
-              scaleX: 1,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 92%',
-                end: 'top 66%',
-                scrub: .4,
-              },
-            });
-          }
-        }, section);
-      }
-
-      const cleanup = () => {
-        if (destroyed) return;
-        destroyed = true;
-        context?.revert();
-        reduceMotion.removeEventListener('change', handleMotionChange);
-        desktop.removeEventListener('change', handleMotionChange);
-        section.dataset.chapterReady = 'false';
-      };
-
-      const handleMotionChange = () => {
-        cleanup();
-        requestAnimationFrame(initializeChapterTransitions);
-      };
-
-      reduceMotion.addEventListener('change', handleMotionChange);
-      desktop.addEventListener('change', handleMotionChange);
-      document.addEventListener('astro:before-swap', cleanup, { once: true });
-    });
-  };
-
-  initializeChapterTransitions();
-  document.addEventListener('astro:page-load', initializeChapterTransitions);
 </script>
 
 <style>
-  .home-page { width: min(calc(100% - 2rem), 86rem); display: grid; gap: 1.15rem; margin-inline: auto; padding-block: .75rem 2.5rem; }
+  .home-page { width: min(calc(100% - 2rem), 86rem); display: grid; gap: 1.15rem; margin-inline: auto; padding-block: .75rem 2.5rem; overflow-x: clip; }
   .home-page h1, .home-page h2, .home-page h3 { text-wrap: balance; }
   .home-page p, .home-page li { text-wrap: pretty; }
 
@@ -672,10 +487,10 @@ const speakerRecords = [
   .home-hero::after { position: absolute; right: clamp(2rem, 4vw, 4rem); bottom: clamp(1.5rem, 2.5vw, 2.2rem); width: 4.8rem; height: 1px; content: ''; background: var(--accent); opacity: .42; }
   .home-hero__lede { grid-area: lede; align-self: start; position: relative; z-index: 2; min-width: 0; max-width: 42rem; text-align: left; }
   .home-hero h1 { max-width: none; margin: 0; color: var(--text-primary); font-family: var(--font-serif); font-size: clamp(2.85rem, 4.2vw, 4.25rem); font-weight: 700; letter-spacing: -.055em; line-height: 1.12; white-space: nowrap; text-align: left; }
-  .home-hero__statement { display: grid; justify-items: start; gap: .08em; min-height: 2.3em; margin: .75rem 0 0; color: var(--text-primary); font-family: var(--font-sans); font-size: clamp(1.35rem, 1.95vw, 1.85rem); font-weight: 700; letter-spacing: -.04em; line-height: 1.4; text-align: left; text-wrap: balance; }
+  .home-hero__statement { display: grid; justify-items: start; gap: .08em; min-height: 2.85em; margin: .75rem 0 0; color: var(--text-primary); font-family: var(--font-sans); font-size: clamp(1.35rem, 1.95vw, 1.85rem); font-weight: 700; letter-spacing: -.04em; line-height: 1.4; text-align: left; text-wrap: balance; }
   .home-hero__statement span { display: block; text-align: left; }
   .home-hero__body { grid-area: body; position: relative; z-index: 3; align-self: start; min-width: 0; max-width: 36rem; text-align: left; margin-top: .4rem; }
-  .home-hero__result { min-height: 3.2em; margin: 0; color: var(--text-primary); font-size: .98rem; font-weight: 500; line-height: 1.72; text-align: left; white-space: pre-line; text-wrap: pretty; }
+  .home-hero__result { min-height: 3.8em; margin: 0; color: var(--text-primary); font-size: .98rem; font-weight: 500; line-height: 1.72; text-align: left; white-space: pre-line; text-wrap: pretty; }
   .home-hero__rotation-meta { display: flex; min-height: 1.85rem; align-items: center; justify-content: flex-start; margin-top: .35rem; }
   .home-hero__rotation-controls { display: inline-grid; grid-template-columns: 1.8rem auto 1.8rem; gap: .3rem; align-items: center; }
   .home-hero__rotation-controls[hidden] { display: none; }
@@ -748,17 +563,15 @@ const speakerRecords = [
     text-transform: uppercase;
   }
   @media (prefers-reduced-motion: no-preference) {
-    .home-hero__statement, .home-hero__result { transition: opacity 220ms ease, transform 220ms ease; }
+    .home-hero__statement, .home-hero__result { transition: opacity 180ms ease; }
     .home-hero__statement.is-switching, .home-hero__result.is-switching { opacity: 0; }
-    .home-hero__statement.is-switching--next, .home-hero__result.is-switching--next { transform: translateX(-.45rem); }
-    .home-hero__statement.is-switching--previous, .home-hero__result.is-switching--previous { transform: translateX(.45rem); }
-    .hero-photo--primary { animation: hero-photo-primary-in 620ms cubic-bezier(.2, .72, .2, 1) both; }
-    .hero-photo--secondary { animation: hero-photo-secondary-in 680ms 90ms cubic-bezier(.2, .72, .2, 1) both; }
-    .home-hero__annotation { animation: hero-note-in 420ms 430ms cubic-bezier(.2, .72, .2, 1) both; }
+    .hero-photo--primary { animation: hero-photo-primary-in 500ms cubic-bezier(.2, .72, .2, 1) both; }
+    .hero-photo--secondary { animation: hero-photo-secondary-in 550ms 80ms cubic-bezier(.2, .72, .2, 1) both; }
+    .home-hero__annotation { animation: hero-note-in 380ms 300ms cubic-bezier(.2, .72, .2, 1) both; }
   }
-  @keyframes hero-photo-primary-in { from { opacity: 0; transform: translate3d(1.2rem, -1rem, 0) rotate(4.8deg); } to { opacity: 1; transform: translate3d(0, 0, 0) rotate(2.1deg); } }
-  @keyframes hero-photo-secondary-in { from { opacity: 0; transform: translate3d(-1.4rem, 1.2rem, 0) rotate(-7.5deg); } to { opacity: 1; transform: translate3d(0, 0, 0) rotate(-5.2deg); } }
-  @keyframes hero-note-in { from { opacity: 0; transform: translate3d(.6rem, .5rem, 0) rotate(1deg); } to { opacity: 1; transform: translate3d(0, 0, 0) rotate(-2.5deg); } }
+  @keyframes hero-photo-primary-in { from { opacity: 0; transform: scale(.96) rotate(4deg); } to { opacity: 1; transform: scale(1) rotate(2.1deg); } }
+  @keyframes hero-photo-secondary-in { from { opacity: 0; transform: scale(.96) rotate(-7deg); } to { opacity: 1; transform: scale(1) rotate(-5.2deg); } }
+  @keyframes hero-note-in { from { opacity: 0; transform: scale(.92) rotate(1deg); } to { opacity: 1; transform: scale(1) rotate(-3.2deg); } }
 
   /* 2. DIAGNOSTIC WORKBENCH SECTION */
   .diagnostic-stage { position: relative; padding: 0; }
