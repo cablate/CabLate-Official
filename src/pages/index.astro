@@ -668,15 +668,15 @@ const speakerRecords = [
   .home-page p, .home-page li { text-wrap: pretty; }
 
   /* 1. HERO SECTION */
-  .home-hero { position: relative; display: grid; grid-template-areas: 'lede portraits' 'body portraits'; grid-template-columns: minmax(0, 1.06fr) minmax(22rem, .94fr); grid-template-rows: 1fr auto; gap: 1.25rem clamp(1.75rem, 3.5vw, 3.5rem); min-height: 0; padding: clamp(2.2rem, 3.8vw, 3.2rem) clamp(1.75rem, 4vw, 3.8rem); overflow: hidden; touch-action: pan-y; }
+  .home-hero { position: relative; display: grid; grid-template-areas: 'lede portraits' 'body portraits'; grid-template-columns: minmax(0, 1.12fr) minmax(20rem, .88fr); grid-template-rows: auto auto; gap: 1.25rem clamp(1.75rem, 3.5vw, 3.5rem); min-height: 0; padding: clamp(2.2rem, 3.8vw, 3.2rem) clamp(1.75rem, 4vw, 3.8rem); overflow: hidden; touch-action: pan-y; }
   .home-hero::after { position: absolute; right: clamp(2rem, 4vw, 4rem); bottom: clamp(1.5rem, 2.5vw, 2.2rem); width: 4.8rem; height: 1px; content: ''; background: var(--accent); opacity: .42; }
-  .home-hero__lede { grid-area: lede; align-self: end; position: relative; z-index: 2; min-width: 0; max-width: 42rem; }
-  .home-hero h1 { max-width: none; margin: 0; color: var(--text-primary); font-family: var(--font-serif); font-size: clamp(2.85rem, 4.2vw, 4.25rem); font-weight: 700; letter-spacing: -.055em; line-height: 1.12; white-space: nowrap; }
-  .home-hero__statement { display: grid; gap: .08em; min-height: 2.3em; margin: .85rem 0 0; color: var(--text-primary); font-family: var(--font-sans); font-size: clamp(1.35rem, 1.95vw, 1.85rem); font-weight: 700; letter-spacing: -.04em; line-height: 1.4; text-align: center; text-wrap: balance; }
-  .home-hero__statement span { display: block; }
-  .home-hero__body { grid-area: body; position: relative; z-index: 3; align-self: start; min-width: 0; max-width: 36rem; }
-  .home-hero__result { min-height: 3.2em; margin: 0; color: var(--text-primary); font-size: .98rem; font-weight: 500; line-height: 1.72; text-align: center; white-space: pre-line; text-wrap: pretty; }
-  .home-hero__rotation-meta { display: flex; min-height: 1.85rem; align-items: center; justify-content: center; margin-top: .35rem; }
+  .home-hero__lede { grid-area: lede; align-self: start; position: relative; z-index: 2; min-width: 0; max-width: 42rem; text-align: left; }
+  .home-hero h1 { max-width: none; margin: 0; color: var(--text-primary); font-family: var(--font-serif); font-size: clamp(2.85rem, 4.2vw, 4.25rem); font-weight: 700; letter-spacing: -.055em; line-height: 1.12; white-space: nowrap; text-align: left; }
+  .home-hero__statement { display: grid; justify-items: start; gap: .08em; min-height: 2.3em; margin: .75rem 0 0; color: var(--text-primary); font-family: var(--font-sans); font-size: clamp(1.35rem, 1.95vw, 1.85rem); font-weight: 700; letter-spacing: -.04em; line-height: 1.4; text-align: left; text-wrap: balance; }
+  .home-hero__statement span { display: block; text-align: left; }
+  .home-hero__body { grid-area: body; position: relative; z-index: 3; align-self: start; min-width: 0; max-width: 36rem; text-align: left; margin-top: .4rem; }
+  .home-hero__result { min-height: 3.2em; margin: 0; color: var(--text-primary); font-size: .98rem; font-weight: 500; line-height: 1.72; text-align: left; white-space: pre-line; text-wrap: pretty; }
+  .home-hero__rotation-meta { display: flex; min-height: 1.85rem; align-items: center; justify-content: flex-start; margin-top: .35rem; }
   .home-hero__rotation-controls { display: inline-grid; grid-template-columns: 1.8rem auto 1.8rem; gap: .3rem; align-items: center; }
   .home-hero__rotation-controls[hidden] { display: none; }
   .home-hero__rotation-controls button { display: grid; width: 1.8rem; height: 1.8rem; padding: 0; place-items: center; border: 1px solid var(--border-strong); border-radius: 50%; background: color-mix(in srgb, var(--bg-soft) 88%, transparent); color: var(--text-secondary); cursor: pointer; transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease, transform 120ms ease; }
@@ -684,14 +684,14 @@ const speakerRecords = [
   .home-hero__rotation-controls button:active { transform: translateY(1px); }
   .home-hero__rotation-controls button:focus-visible { outline: 3px solid var(--accent); outline-offset: .2rem; }
   .rotation-controls__count { min-width: 2.8rem; color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .035em; text-align: center; }
-  .home-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.1rem; margin-top: .85rem; }
+  .home-hero__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: .75rem 1.1rem; margin-top: .85rem; }
   .hero-action { white-space: nowrap; }
   .home-hero__secondary-action { display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .95rem; border-radius: var(--radius-sm); border: 1px solid rgb(128 100 234 / .35); background: rgb(128 100 234 / .08); color: var(--accent-text); font-size: .84rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 6px rgb(128 100 234 / .08); transition: all 200ms cubic-bezier(.2, .8, .2, 1); }
   .home-hero__secondary-action:hover { background: var(--accent-subtle); border-color: var(--accent); color: var(--accent-hover); transform: translateY(-1px) translateX(2px); box-shadow: 0 4px 12px rgb(128 100 234 / .2); }
   .home-hero__secondary-action svg { animation: icon-ambient-nudge 4.2s ease-in-out infinite; transition: transform 200ms cubic-bezier(.34, 1.56, .64, 1); }
   .home-hero__secondary-action:hover svg { animation: none; transform: translateX(4px); }
   .home-hero__secondary-action:focus-visible { outline: 3px solid var(--accent); outline-offset: .25rem; }
-  .home-hero__pillars { display: flex; flex-wrap: wrap; gap: .4rem .55rem; margin-top: .95rem; }
+  .home-hero__pillars { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: .4rem .55rem; margin-top: .95rem; }
   .pillar-tag { display: inline-flex; align-items: center; gap: .35rem; padding: .22rem .55rem; border-radius: var(--radius-sm); background: rgb(128 100 234 / .08); border: 1px solid rgb(128 100 234 / .2); color: var(--accent-text); font-size: .72rem; font-weight: 700; font-family: var(--font-sans); }
   .pillar-dot { width: .34rem; height: .34rem; border-radius: 50%; background: var(--accent); }
   .home-hero__portraits { grid-area: portraits; align-self: stretch; position: relative; z-index: 1; min-height: 23rem; margin: 0; }
