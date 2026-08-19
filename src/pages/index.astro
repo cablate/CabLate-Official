@@ -1208,76 +1208,169 @@ const speakerRecords = [
     .cabai-section { grid-template-columns: 1fr; gap: 2rem; }
     .cabai-matrix { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
+
   @media (max-width: 760px) {
-    .home-page { width: min(calc(100% - 1rem), 86rem); gap: .85rem; padding-block: 0; }
-    .home-hero, .section-grid { grid-template-columns: 1fr; }
-    .identity-intro { gap: 1rem; }
-    .identity-section { padding: 2.5rem .75rem 2.25rem; background-size: auto 108%; }
-    .identity-section__seam { height: 2px; }
-    .identity-intro h2 { max-width: 20ch; font-size: clamp(1.85rem, 7.5vw, 2.65rem); line-height: 1.15; }
-    .identity-intro__copy { gap: .65rem; padding-top: 0; }
-    .identity-intro__lead { font-size: 1.1rem; line-height: 1.45; }
-    .home-hero { grid-template-areas: 'lede' 'portraits' 'body'; grid-template-rows: auto auto auto; gap: .55rem; min-height: 0; padding: 1.45rem .6rem 1.6rem; }
+    .home-page { width: min(calc(100% - 1.25rem), 86rem); gap: 1rem; padding-block: .5rem 2rem; }
+
+    /* 1. HERO MOBILE */
+    .home-hero {
+      grid-template-areas: 'lede' 'portraits' 'body';
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      gap: .75rem;
+      min-height: 0;
+      padding: 1.5rem 1rem 1.75rem;
+    }
     .home-hero::after { display: none; }
+    .home-hero__masthead { margin-bottom: .65rem; gap: .45rem .75rem; }
     .home-hero__lede { align-self: start; }
-    .home-hero h1 { font-size: clamp(1.65rem, 8.1vw, 2.3rem); letter-spacing: -.045em; line-height: 1.16; white-space: nowrap; }
-    .home-hero__statement { gap: .1em; margin-top: .65rem; font-size: clamp(1.22rem, 5.2vw, 1.45rem); line-height: 1.38; }
-    .home-hero__portraits { isolation: isolate; inline-size: 72%; block-size: clamp(10rem, 40vw, 18rem); min-height: 0; justify-self: center; margin: .2rem auto 0; overflow: clip; overflow-clip-margin: .8rem; }
+    .home-hero h1 {
+      font-size: clamp(1.85rem, 7.8vw, 2.5rem);
+      letter-spacing: -.045em;
+      line-height: 1.18;
+      white-space: normal;
+      text-wrap: balance;
+    }
+    .home-hero__statement {
+      gap: .1em;
+      margin-top: .65rem;
+      font-size: clamp(1.15rem, 4.8vw, 1.45rem);
+      line-height: 1.38;
+      text-align: left;
+    }
+    .home-hero__pillars { gap: .35rem .45rem; margin-top: .75rem; }
+    .pillar-tag { font-size: .68rem; padding: .2rem .48rem; }
+    .home-hero__portraits {
+      position: relative;
+      width: 100%;
+      max-width: 22rem;
+      height: 15.5rem;
+      min-height: 0;
+      margin: .85rem auto .4rem;
+      overflow: visible;
+    }
     .hero-photo { padding: .3rem; }
-    .hero-photo--primary { top: -.4rem; right: -.5rem; width: 68%; }
-    .hero-photo--secondary { bottom: .5rem; left: -.65rem; width: 52%; }
-    .home-hero__annotation { right: -.07rem; bottom: 2rem; padding: .48rem .6rem; font-size: .54rem; }
-    .home-hero__annotation span { font-size: .38rem; }
-    .home-hero__body { margin-top: 1.15rem; padding-top: 1.15rem; border-top: 1px solid var(--border-strong); }
-    .home-hero__result { min-height: 3.2em; font-size: .95rem; font-weight: 600; line-height: 1.7; }
-    .home-hero__rotation-meta { position: absolute; top: -1rem; right: .15rem; z-index: 4; min-height: 0; margin: 0; }
-    .home-hero__rotation-controls { gap: .24rem; padding: .16rem; border: 1px solid var(--border-strong); border-radius: 999px; background: var(--bg-soft); box-shadow: 0 .2rem .5rem rgb(58 48 38 / .1); }
-    .home-hero__rotation-controls button { width: 1.75rem; height: 1.75rem; border: 0; background: transparent; }
-    .rotation-controls__count { min-width: 2.65rem; font-size: .56rem; }
-    .home-hero__actions { display: grid; gap: .65rem; margin-top: 1rem; }
-    .hero-action { width: 100%; white-space: normal; }
-    .home-hero__secondary-action { width: fit-content; justify-self: center; }
-    .speaker-proof { grid-template-columns: 1fr; gap: 1.75rem; }
-    .speaker-trace { order: 1; }
-    .speaker-proof__side { order: 2; }
-    .speaker-media { position: relative; top: auto; display: grid; min-height: 0; }
-    .speaker-media__frame, .speaker-media__frame:first-child { grid-area: 1 / 1; opacity: 1; visibility: visible; transform: none; }
-    .speaker-media__frame:first-child { width: 100%; }
-    .speaker-media__frame:first-child img { height: clamp(14rem, 68vw, 20rem); max-height: none; aspect-ratio: 4 / 3; object-fit: cover; }
-    .speaker-media__frame[data-speaker-media='workshop'] { align-self: end; justify-self: end; width: 34%; margin: 0 .5rem .6rem 0; z-index: 1; transform: rotate(1.6deg); }
-    .speaker-media__frame[data-speaker-media='workshop'] img { height: clamp(7.5rem, 30vw, 10rem); max-height: none; aspect-ratio: 4 / 5; object-fit: cover; }
-    .speaker-media__frame + .speaker-media__frame { margin-top: 0; }
-  @media (max-width: 760px) {
-    .diagnostic-console { grid-template-columns: 1fr; }
-    .symptom-choices { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .symptom-choice + .symptom-choice { border-top: 0; border-left: 1px solid var(--surface-dark-border); }
-    .symptom-choice__surface { min-block-size: 7.5rem; padding: 1rem; }
-    .symptom-copy-line { display: block; }
-    .symptom-copy-line + .symptom-copy-line::before { content: none; }
-    .symptom-choice__surface > span:not(.symptom-choice__meta) { display: none; }
-  }
-  @media (max-width: 600px) {
-    .diagnostic-stage { padding: 2rem 1.2rem; }
-    .symptom-choices { grid-template-columns: 1fr; }
+    .hero-photo--primary { top: 0; right: 0; width: 62%; }
+    .hero-photo--secondary { bottom: 0; left: 0; width: 48%; }
+    .home-hero__annotation {
+      position: absolute;
+      right: -.25rem;
+      bottom: .65rem;
+      padding: .55rem .75rem .5rem;
+      font-size: .72rem;
+      max-width: 13.5rem;
+    }
+    .home-hero__annotation span { font-size: .5rem; }
+    .home-hero__body {
+      margin-top: .85rem;
+      padding-top: .85rem;
+      border-top: 1px solid var(--border-strong);
+    }
+    .home-hero__result {
+      min-height: 0;
+      font-size: .92rem;
+      line-height: 1.65;
+      text-align: left;
+    }
+    .home-hero__rotation-meta {
+      justify-content: flex-start;
+      margin-top: .45rem;
+      min-height: 0;
+    }
+    .home-hero__actions {
+      display: grid;
+      gap: .65rem;
+      margin-top: .95rem;
+      width: 100%;
+    }
+    .hero-action { width: 100%; justify-content: center; text-align: center; }
+    .home-hero__secondary-action { width: 100%; justify-content: center; text-align: center; }
+
+    /* 2. DIAGNOSTIC WORKBENCH MOBILE */
+    .diagnostic-chassis-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: .45rem;
+      padding: .85rem 1rem;
+    }
+    .diagnostic-chassis-title { font-size: 1.05rem; }
+    .diagnostic-chassis-coords { display: none; }
+    .diagnostic-workbench { grid-template-columns: 1fr; }
+    .symptom-choices {
+      grid-template-columns: 1fr;
+      border-right: 0;
+      border-bottom: 1px solid var(--surface-dark-border);
+    }
     .symptom-choice + .symptom-choice { border-top: 1px solid var(--surface-dark-border); border-left: 0; }
-    .symptom-choice__surface { min-block-size: 0; padding: .95rem 1.15rem; gap: .45rem; }
-    .symptom-copy-line { display: inline; }
-    .symptom-copy-line + .symptom-copy-line::before { content: ' '; }
-    .symptom-choice__surface > span:not(.symptom-choice__meta) { display: none; }
-    .route-item { grid-template-columns: 1fr; gap: .85rem; padding: 1.15rem 1rem; }
-    .route-item__action { justify-self: start; min-height: 2.2rem; padding-block: .25rem; }
-    .trace-panel { padding: 1.25rem 1.25rem 1.25rem 1.5rem; box-shadow: inset .24rem 0 var(--accent); }
-    .trace-panel__heading { grid-template-columns: 1fr; }
+    .symptom-choice__surface { min-block-size: 0; padding: .85rem 1rem; gap: .35rem; }
+    .symptom-choice__surface strong { font-size: .92rem; }
+    .symptom-choice__surface > span:not(.symptom-choice__meta) { font-size: .76rem; }
+    .trace-panels { border-left: 0; }
+    .trace-panel { padding: 1.25rem 1rem; box-shadow: inset .24rem 0 var(--accent); }
+    .trace-panel__heading { grid-template-columns: 1fr; gap: .65rem; align-items: flex-start; padding-bottom: .85rem; }
+    .trace-panel__heading h3 { font-size: 1.25rem; }
     .trace-panel__heading h3 span { display: block; }
     .trace-panel__heading h3 span + span::before { content: none; }
-    .diagnosis-stamp { width: max-content; grid-template-columns: auto auto; }
-    .trace-next { font-size: .82rem; }
-    .threads-proof { align-items: start; }
+    .diagnosis-stamp { width: fit-content; min-width: 0; padding: .45rem .75rem; font-size: .62rem; }
+    .trace-reading { gap: .75rem; padding-top: .85rem; }
+    .trace-diagnosis-card, .trace-next-card { padding: .65rem .85rem; }
+    .trace-diagnosis { font-size: .86rem; line-height: 1.65; }
+    .trace-next { font-size: .84rem; line-height: 1.55; }
+    .trace-action-btn { min-height: 2.85rem; padding: .55rem .85rem; font-size: .84rem; }
+
+    /* 3. ROUTE SECTION MOBILE */
+    .route-section { padding: 1.75rem 1rem 2rem; gap: 1rem; }
+    .route-heading h2 { font-size: clamp(1.65rem, 6.8vw, 2.25rem); }
+    .route-heading p { font-size: .88rem; }
+    .route-grid { grid-template-columns: 1fr; gap: .85rem; }
+    .route-card { padding: 1.15rem 1rem; gap: .75rem; }
+    .route-card__main h3 { font-size: 1.2rem; }
+    .route-card__desc { font-size: .84rem; }
+    .route-card__btn { min-height: 2.65rem; font-size: .84rem; }
+
+    /* 4. SPEAKER SECTION MOBILE */
+    .identity-section { padding: 2rem 1rem 2.25rem; }
+    .identity-intro { grid-template-columns: 1fr; gap: .85rem; }
+    .identity-intro h2 { font-size: clamp(1.65rem, 6.8vw, 2.25rem); }
+    .identity-intro__lead { font-size: 1.05rem; }
+    .speaker-proof { grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1.35rem; padding-top: 1.25rem; }
+    .speaker-trace__rail { left: .2rem; }
+    .speaker-record {
+      grid-template-columns: 1fr;
+      gap: .35rem;
+      padding: .25rem .5rem 1.25rem 1.1rem;
+    }
+    .speaker-record + .speaker-record { padding-top: 1.25rem; }
+    .speaker-record::before { left: -.05rem; margin-top: .2rem; }
+    .speaker-record__time { font-size: .66rem; }
+    .speaker-record__body h3 { font-size: 1.05rem; }
+    .speaker-record__body p { font-size: .84rem; line-height: 1.65; }
+    .speaker-media { position: static; min-height: 0; }
+    .speaker-media__frame { position: relative; opacity: 1; visibility: visible; transform: none !important; width: 100%; }
+    .speaker-media__frame[data-speaker-media='workshop'] { display: none; }
+    .speaker-media__frame img { height: auto; max-height: 13rem; aspect-ratio: 16 / 9; object-fit: cover; }
+    .threads-proof { padding: 1rem; gap: .65rem; }
+    .threads-proof__stat strong { font-size: 1.5rem; }
+    .threads-proof__cta { width: 100%; justify-content: center; text-align: center; }
+
+    /* 5. CABAI SECTION MOBILE */
+    .cabai-section {
+      grid-template-columns: 1fr;
+      gap: 1.35rem;
+      padding: 2rem 1rem 2.25rem;
+    }
+    .cabai-section__header h2 { font-size: clamp(1.65rem, 6.8vw, 2.25rem); }
+    .cabai-matrix { grid-template-columns: 1fr; gap: .85rem; margin-top: 1rem; }
+    .cabai-matrix-card { padding: 1.15rem 1rem; gap: .75rem; }
+
+    /* 6. NEWSLETTER MOBILE */
+    .newsletter-card { padding-block: 1.75rem; }
   }
+
   @media (prefers-reduced-motion: reduce) {
     .home-hero__rotation-controls button { transition: none; }
     .symptom-choice__surface { transition: none; }
-    .route-item__action svg { transition: none; }
     .trace-panel, .diagnosis-stamp, .trace-reading { animation: none; }
+    .speaker-record, .speaker-record::before, .speaker-media__frame, .threads-proof__cta svg { transition: none; }
   }
 </style>
