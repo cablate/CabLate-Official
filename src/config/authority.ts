@@ -194,7 +194,7 @@ export const primaryNavigationGroups = [
   {
     label: '關於',
     items: [
-      { label: '訂閱通訊', railLabel: '實戰驗證的工程與架構筆記', href: '/subscribe/' },
+      { label: '電子報', railLabel: '訂閱 CabLate 的電子報', href: '/subscribe/?shell=desk' },
       { label: '作品與經歷', railLabel: '公開工具、研究與實作紀錄', href: '/about/#public-output-title' },
       { label: '關於 Cab', railLabel: '從工程到 AI 應用', href: '/about/' },
     ],

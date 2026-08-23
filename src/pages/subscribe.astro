@@ -2,11 +2,17 @@
 /**
  * Subscribe Landing Page - 獨立 Email 訂閱專頁
  * 極簡聚焦：純粹的訂閱卡片
+ * - 外部連結分享：預設 shell="bare"（無左側菜單、無 Footer，極致乾淨）
+ * - 站內選單點入：支援 shell="desk"（維持一般全站邊框）
  */
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SEO from '../components/SEO.astro';
 import KitForm from '../components/common/KitForm.astro';
+import { ArrowLeft } from '@lucide/astro';
+
+const isFromMenu = Astro.url.searchParams.get('shell') === 'desk';
+const shell = isFromMenu ? 'desk' : 'bare';
 ---
 
 <BaseLayout
@@ -16,6 +22,7 @@ import KitForm from '../components/common/KitForm.astro';
   imageAlt="訂閱 CabLate 的電子報"
   imageWidth={1200}
   imageHeight={630}
+  shell={shell}
   noSEO={true}
 >
   <SEO
@@ -28,35 +35,91 @@ import KitForm from '../components/common/KitForm.astro';
     imageHeight={630}
   />
 
-  <main class="subscribe-page">
-    <section class="subscribe-card paper-card" aria-labelledby="subscribe-title">
-      <h1 id="subscribe-title">訂閱 CabLate 的電子報</h1>
-      <div class="subscribe-form">
-        <KitForm submitLabel="免費訂閱" successMessage="驗證信已送出！請到信箱點擊確認連結完成訂閱。" />
-      </div>
-    </section>
-  </main>
+  <div class:list={['subscribe-wrapper', { 'is-bare': shell === 'bare' }]}>
+    {shell === 'bare' && (
+      <nav class="subscribe-top-nav" aria-label="返回首頁">
+        <a href="/" class="subscribe-back-btn">
+          <ArrowLeft size={16} aria-hidden="true" />
+          <span>CabLate</span>
+        </a>
+      </nav>
+    )}
+
+    <main class="subscribe-main">
+      <section class="subscribe-card paper-card" aria-labelledby="subscribe-title">
+        <h1 id="subscribe-title">訂閱 CabLate 的電子報</h1>
+        <div class="subscribe-form">
+          <KitForm submitLabel="免費訂閱" successMessage="驗證信已送出！請到信箱點擊確認連結完成訂閱。" />
+        </div>
+      </section>
+    </main>
+  </div>
 </BaseLayout>
 
 <style>
-  .subscribe-page {
-    min-height: calc(100vh - 16rem);
+  .subscribe-wrapper {
+    width: 100%;
+    min-height: calc(100vh - 14rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+  }
+
+  .subscribe-wrapper.is-bare {
+    min-height: 90vh;
+    padding-top: 1rem;
+  }
+
+  .subscribe-top-nav {
+    width: min(100%, 36rem);
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .subscribe-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .4rem .75rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    font-weight: 700;
+    text-decoration: none;
+    background: rgb(0 0 0 / .03);
+    border: 1px solid var(--border);
+    transition: all 180ms ease;
+  }
+
+  .subscribe-back-btn:hover {
+    color: var(--accent-text);
+    background: var(--accent-subtle);
+    border-color: var(--accent);
+    transform: translateX(-2px);
+  }
+
+  .subscribe-main {
+    width: 100%;
     display: grid;
     place-items: center;
-    padding: clamp(2rem, 6vw, 4.5rem) 1rem;
-    overflow-x: clip;
   }
 
   .subscribe-card {
-    width: min(100%, 38rem);
+    width: min(100%, 36rem);
     display: grid;
     gap: 1.75rem;
-    padding: clamp(2.25rem, 5vw, 3.5rem) clamp(1.5rem, 4.5vw, 3rem);
+    padding: clamp(2.5rem, 5vw, 3.5rem) clamp(1.5rem, 4.5vw, 2.75rem);
     background: #fffdf8;
     background-image: var(--paper-white-image);
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-sm);
-    box-shadow: 0 8px 30px rgb(58 48 38 / .08);
+    box-shadow: 0 8px 32px rgb(58 48 38 / .08);
     text-align: center;
   }
 
@@ -64,7 +127,7 @@ import KitForm from '../components/common/KitForm.astro';
     margin: 0;
     color: var(--text-primary);
     font-family: var(--font-serif);
-    font-size: clamp(1.85rem, 4vw, 2.65rem);
+    font-size: clamp(1.85rem, 4.2vw, 2.45rem);
     font-weight: 700;
     letter-spacing: -.035em;
     line-height: 1.25;
@@ -77,16 +140,19 @@ import KitForm from '../components/common/KitForm.astro';
   }
 
   @media (max-width: 600px) {
-    .subscribe-page {
-      min-height: calc(100vh - 12rem);
-      padding-block: 2rem 3rem;
+    .subscribe-wrapper {
+      min-height: calc(100vh - 10rem);
+      padding: 1.5rem .75rem 2.5rem;
+    }
+    .subscribe-wrapper.is-bare {
+      min-height: 85vh;
     }
     .subscribe-card {
-      padding: 2rem 1.15rem;
+      padding: 2.25rem 1.15rem;
       gap: 1.35rem;
     }
     .subscribe-card h1 {
-      font-size: clamp(1.65rem, 6.8vw, 2.15rem);
+      font-size: clamp(1.65rem, 7.2vw, 2.1rem);
     }
   }
 </style>
