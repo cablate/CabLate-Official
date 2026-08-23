@@ -510,6 +510,14 @@ body.site-shell-desk #main-content:has(> .desk-page) {
   max-inline-size: 100%;
 }
 
+body.site-shell-bare #main-content {
+  width: 100%;
+  margin: 0;
+  padding: 1.5rem 1rem 3rem;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
 .footer {
   width: calc(100% - 12rem);
   margin: 0 1rem 1rem 11rem;
