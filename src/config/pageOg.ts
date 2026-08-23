@@ -135,16 +135,16 @@ export const pageOgEntries: PageOgEntry[] = [
   },
   {
     slug: 'subscribe',
-    label: 'CabLate Dispatch',
-    badge: '免費通訊訂閱',
-    eyebrow: '實戰驗證的工程筆記',
-    headline: ['在吵雜的 AI 浪潮裡，', '只收真正能落地的實戰筆記。'],
-    description: '專注 Agent 系統架構、Token 成本控制與工作方法標準化。零廢話、不洗版。',
-    footer: '9,000+ 開發者與技術決策者關注',
+    label: 'CabLate',
+    badge: '電子報',
+    eyebrow: '最新文章與實作筆記',
+    headline: ['訂閱 CabLate 的電子報'],
+    description: '整理 AI 應用、Agent 架構與產品開發的實戰筆記。',
+    footer: 'cablate.com',
     accent: '#6c4ccf',
     accentSoft: '#e6a56f',
     visual: { type: 'none' },
-    imageAlt: '訂閱 CabLate 通訊：在吵雜的 AI 浪潮裡，只收真正能落地的實戰筆記。',
+    imageAlt: '訂閱 CabLate 的電子報',
   },
 ];
 

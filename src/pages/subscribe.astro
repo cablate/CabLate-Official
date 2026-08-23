@@ -1,430 +1,92 @@
 ---
 /**
  * Subscribe Landing Page - 獨立 Email 訂閱專頁
- * 專為社群分享、外部分流與高轉換設計
+ * 極簡聚焦：純粹的訂閱卡片
  */
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SEO from '../components/SEO.astro';
 import KitForm from '../components/common/KitForm.astro';
-import { ArrowRight, CheckCircle2, ShieldCheck, Mail, Sparkles, Terminal, BookOpen, Layers } from '@lucide/astro';
-
-const topics = [
-  {
-    icon: Terminal,
-    tag: 'AGENT ARCHITECTURE',
-    title: 'Agent 系統設計與底層逆向',
-    desc: '深入探討主流工具與 SDK 底層運作機制，分析狀態管理、Tool Use、上下文窗口分配與長對話記憶的工程架構。',
-  },
-  {
-    icon: Sparkles,
-    tag: 'COST & PERFORMANCE',
-    title: 'Token 成本與 Prompt Caching 實戰',
-    desc: '分享真實商業環境下的優化數據，包含 Cache 邊界對齊、Context 壓縮技巧與防爆預算的工程防線。',
-  },
-  {
-    icon: Layers,
-    tag: 'WORKFLOW HARNESS',
-    title: '工作流程標準化與驗收',
-    desc: '如何設計清晰的約束條件與自動檢查機制，讓 AI 協作從「隨機碰運氣」轉化為「可重複交付」的穩定成果。',
-  },
-];
-
-const highlights = [
-  {
-    title: 'Claude Agent SDK 隱藏 Token 消耗逆向',
-    summary: '深入 SDK 內部機制，揪出每次請求重複載入 system-reminder 的消耗黑洞與優化解法。',
-  },
-  {
-    title: 'Prompt Caching 命中率實戰法則',
-    summary: '商業專案中如何透過嚴格的 Prefix 邊界設計，將重複呼叫的 API 成本壓低 80% 以上。',
-  },
-  {
-    title: '從 Prototype 到生產：可重複交付的 AI 標準',
-    summary: '如何定義清晰的驗收標準（Harness），讓團隊協作不再每次給出隨機答案。',
-  },
-];
 ---
 
 <BaseLayout
-  title="訂閱 CabLate 通訊｜專注 AI 應用、Agent 架構與實戰工程筆記"
-  description="不追逐浮誇概念，只收錄真正進入生產環境的 Agent 系統架構、Token 成本控制與工作方法拆解。零垃圾信，有實戰突破才發送。"
+  title="訂閱 CabLate 的電子報"
+  description="訂閱 CabLate 的電子報。"
   image="/og/pages/subscribe.png"
-  imageAlt="訂閱 CabLate 通訊：在吵雜的 AI 浪潮裡，只收真正能落地的實戰筆記。"
+  imageAlt="訂閱 CabLate 的電子報"
   imageWidth={1200}
   imageHeight={630}
   noSEO={true}
 >
   <SEO
     slot="head"
-    title="訂閱 CabLate 通訊｜專注 AI 應用、Agent 架構與實戰工程筆記"
-    description="不追逐浮誇概念，只收錄真正進入生產環境的 Agent 系統架構、Token 成本控制與工作方法拆解。零垃圾信，有實戰突破才發送。"
+    title="訂閱 CabLate 的電子報"
+    description="訂閱 CabLate 的電子報。"
     image="/og/pages/subscribe.png"
-    imageAlt="訂閱 CabLate 通訊：在吵雜的 AI 浪潮裡，只收真正能落地的實戰筆記。"
+    imageAlt="訂閱 CabLate 的電子報"
     imageWidth={1200}
     imageHeight={630}
   />
 
-  <div class="subscribe-page">
-    <!-- 1. HERO & DIRECT SUBSCRIPTION FORM -->
-    <section class="subscribe-hero paper-card" aria-labelledby="subscribe-title">
-      <header class="subscribe-hero__header">
-        <div class="subscribe-badge">
-          <span class="subscribe-badge__dot"></span>
-          <span>CABLATE DISPATCH // 免費通訊</span>
-        </div>
-        <h1 id="subscribe-title">在吵雜的 AI 浪潮裡，<br />只收經過實戰驗證的工程筆記。</h1>
-        <p class="subscribe-hero__lead">
-          我不定期寄出針對真實開發卡點的架構逆向、Token 成本控制策略，以及如何將 AI 穩定落地成可交付產品的工作方法。
-        </p>
-      </header>
-
-      <div class="subscribe-desk">
-        <div class="subscribe-desk__meta">
-          <span class="subscribe-desk__status">STATUS: OPEN FOR SUBSCRIPTION</span>
-          <span class="subscribe-desk__security"><ShieldCheck size={14} aria-hidden="true" /> 零垃圾信・隨時一鍵退訂</span>
-        </div>
-
-        <KitForm submitLabel="免費訂閱通訊" successMessage="驗證信已送出！請至信箱點擊確認連結，即可完成訂閱。" />
-
-        <ul class="subscribe-promises" aria-label="訂閱承諾">
-          <li><CheckCircle2 size={16} class="promise-icon" aria-hidden="true" /><span><strong>無概念廢話：</strong>每一期都來自真實專案、架構拆解或商業踩坑紀錄。</span></li>
-          <li><CheckCircle2 size={16} class="promise-icon" aria-hidden="true" /><span><strong>不頻繁洗版：</strong>只在有深度突破或工具重大更新時發送，不浪費你的注意力。</span></li>
-          <li><CheckCircle2 size={16} class="promise-icon" aria-hidden="true" /><span><strong>嚴格保護隱私：</strong>你的 Email 絕不轉作其他用途或外流，且信件末尾隨時可退訂。</span></li>
-        </ul>
+  <main class="subscribe-page">
+    <section class="subscribe-card paper-card" aria-labelledby="subscribe-title">
+      <h1 id="subscribe-title">訂閱 CabLate 的電子報</h1>
+      <div class="subscribe-form">
+        <KitForm submitLabel="免費訂閱" successMessage="驗證信已送出！請到信箱點擊確認連結完成訂閱。" />
       </div>
     </section>
-
-    <!-- 2. WHAT YOU WILL GET (PILLARS) -->
-    <section class="subscribe-topics" aria-labelledby="topics-title">
-      <div class="section-header">
-        <span class="section-label">CURATED TOPICS // 你會收到什麼</span>
-        <h2 id="topics-title">針對真實卡點的深度內容</h2>
-      </div>
-
-      <div class="topics-grid">
-        {topics.map((t) => {
-          const Icon = t.icon;
-          return (
-            <article class="topic-item">
-              <div class="topic-item__icon"><Icon size={20} aria-hidden="true" /></div>
-              <span class="topic-item__tag">{t.tag}</span>
-              <h3>{t.title}</h3>
-              <p>{t.desc}</p>
-            </article>
-          );
-        })}
-      </div>
-    </section>
-
-    <!-- 3. PAST HIGHLIGHTS -->
-    <section class="subscribe-highlights" aria-labelledby="highlights-title">
-      <div class="section-header">
-        <span class="section-label">PAST DISPATCHES // 往期探討主題</span>
-        <h2 id="highlights-title">過往研究與公開拆解精選</h2>
-      </div>
-
-      <div class="highlights-grid">
-        {highlights.map((h) => (
-          <article class="highlight-card">
-            <div class="highlight-card__bullet"><BookOpen size={16} aria-hidden="true" /></div>
-            <div class="highlight-card__content">
-              <h3>{h.title}</h3>
-              <p>{h.summary}</p>
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
-
-    <!-- 4. SOCIAL PROOF & BOTTOM CTA -->
-    <aside class="subscribe-proof paper-card">
-      <div class="subscribe-proof__body">
-        <span class="subscribe-proof__badge">COMMUNITY VERIFIED</span>
-        <h3>超過 9,000 位開發者與技術決策者的共同選擇</h3>
-        <p>我也持續在 Threads 與社群公開分享 AI 實作觀點。現在訂閱，第一時間掌握未公開的深度研究與方法論。</p>
-      </div>
-      <div class="subscribe-proof__action">
-        <a class="btn btn-primary" href="#subscribe-title">
-          <span>回到上方填寫 Email</span>
-          <ArrowRight size={16} aria-hidden="true" />
-        </a>
-      </div>
-    </aside>
-  </div>
+  </main>
 </BaseLayout>
 
 <style>
   .subscribe-page {
-    width: min(calc(100% - 2rem), 72rem);
+    min-height: calc(100vh - 16rem);
     display: grid;
-    gap: clamp(2.25rem, 4.5vw, 3.5rem);
-    margin-inline: auto;
-    padding-block: 1.25rem 4rem;
+    place-items: center;
+    padding: clamp(2rem, 6vw, 4.5rem) 1rem;
     overflow-x: clip;
   }
-  .subscribe-page h1, .subscribe-page h2, .subscribe-page h3 { text-wrap: balance; }
-  .subscribe-page p, .subscribe-page li { text-wrap: pretty; }
 
-  /* 1. HERO SECTION */
-  .subscribe-hero {
+  .subscribe-card {
+    width: min(100%, 38rem);
     display: grid;
     gap: 1.75rem;
-    padding: clamp(2.25rem, 4.5vw, 3.75rem) clamp(1.5rem, 4vw, 3.5rem);
+    padding: clamp(2.25rem, 5vw, 3.5rem) clamp(1.5rem, 4.5vw, 3rem);
     background: #fffdf8;
     background-image: var(--paper-white-image);
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-sm);
-    box-shadow: 0 4px 20px rgb(58 48 38 / .06);
-    overflow: hidden;
+    box-shadow: 0 8px 30px rgb(58 48 38 / .08);
+    text-align: center;
   }
-  .subscribe-hero__header {
-    display: grid;
-    gap: .95rem;
-    max-width: 46rem;
-  }
-  .subscribe-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: .45rem;
-    width: fit-content;
-    padding: .25rem .65rem;
-    border-radius: var(--radius-sm);
-    background: rgb(128 100 234 / .08);
-    border: 1px solid rgb(128 100 234 / .25);
-    color: var(--accent-text);
-    font-family: var(--font-mono);
-    font-size: .68rem;
-    font-weight: 700;
-    letter-spacing: .06em;
-  }
-  .subscribe-badge__dot {
-    width: .45rem;
-    height: .45rem;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 6px var(--accent);
-  }
-  .subscribe-hero h1 {
+
+  .subscribe-card h1 {
     margin: 0;
     color: var(--text-primary);
     font-family: var(--font-serif);
-    font-size: clamp(2.15rem, 4.2vw, 3.4rem);
+    font-size: clamp(1.85rem, 4vw, 2.65rem);
     font-weight: 700;
-    letter-spacing: -.045em;
-    line-height: 1.18;
-  }
-  .subscribe-hero__lead {
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: clamp(1.02rem, 1.7vw, 1.2rem);
-    line-height: 1.75;
+    letter-spacing: -.035em;
+    line-height: 1.25;
+    text-wrap: balance;
   }
 
-  /* SUBSCRIPTION DESK */
-  .subscribe-desk {
-    margin-top: .35rem;
-    padding: clamp(1.4rem, 3vw, 2.25rem);
-    border-radius: var(--radius-sm);
-    background: #fff;
-    border: 2px solid var(--border-strong);
-    box-shadow: 0 6px 20px rgb(58 48 38 / .08);
-  }
-  .subscribe-desk__meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: .75rem;
-    padding-bottom: 1rem;
-    margin-bottom: 1.15rem;
-    border-bottom: 1px dashed var(--border);
-    font-family: var(--font-mono);
-    font-size: .68rem;
-    font-weight: 700;
-    letter-spacing: .06em;
-  }
-  .subscribe-desk__status {
-    color: var(--accent-text);
-  }
-  .subscribe-desk__security {
-    display: inline-flex;
-    align-items: center;
-    gap: .35rem;
-    color: var(--text-muted);
-  }
-  .subscribe-promises {
-    display: grid;
-    gap: .65rem;
-    margin: 1.35rem 0 0;
-    padding: 1.15rem 0 0;
-    border-top: 1px solid var(--border);
-    list-style: none;
-  }
-  .subscribe-promises li {
-    display: flex;
-    align-items: baseline;
-    gap: .6rem;
-    color: var(--text-secondary);
-    font-size: .88rem;
-    line-height: 1.6;
-  }
-  .promise-icon {
-    flex-shrink: 0;
-    color: var(--accent);
-    transform: translateY(.2rem);
-  }
-
-  /* 2. TOPICS */
-  .section-header { display: grid; gap: .35rem; margin-bottom: 1.35rem; }
-  .section-header h2 { margin: 0; font-family: var(--font-serif); font-size: clamp(1.65rem, 3vw, 2.35rem); letter-spacing: -.035em; line-height: 1.25; }
-  .topics-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.15rem;
-  }
-  .topic-item {
-    display: grid;
-    grid-template-rows: auto auto auto 1fr;
-    gap: .65rem;
-    padding: 1.5rem 1.35rem;
-    border-radius: var(--radius-sm);
-    background: #fffdf8;
-    border: 1px solid var(--border);
-    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
-  }
-  .topic-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgb(58 48 38 / .08);
-    border-color: var(--accent);
-  }
-  .topic-item__icon {
-    display: grid;
-    place-items: center;
-    width: 2.35rem;
-    height: 2.35rem;
-    border-radius: var(--radius-sm);
-    background: var(--accent-subtle);
-    border: 1px solid rgb(128 100 234 / .2);
-    color: var(--accent-text);
-  }
-  .topic-item__tag {
-    font-family: var(--font-mono);
-    font-size: .62rem;
-    font-weight: 700;
-    letter-spacing: .08em;
-    color: var(--text-muted);
-  }
-  .topic-item h3 {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-size: 1.18rem;
-    letter-spacing: -.02em;
-    line-height: 1.35;
-  }
-  .topic-item p {
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: .88rem;
-    line-height: 1.68;
-  }
-
-  /* 3. HIGHLIGHTS */
-  .highlights-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.15rem;
-  }
-  .highlight-card {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: .85rem;
-    padding: 1.35rem 1.25rem;
-    border-radius: var(--radius-sm);
-    background: var(--surface-dark);
-    border: 1px solid var(--surface-dark-border);
-    color: var(--surface-dark-text);
-  }
-  .highlight-card__bullet {
-    display: grid;
-    place-items: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: var(--radius-sm);
-    background: rgb(255 255 255 / .06);
-    color: var(--accent-bright);
-    flex-shrink: 0;
-  }
-  .highlight-card__content h3 {
-    margin: 0 0 .35rem;
-    font-family: var(--font-serif);
-    font-size: 1.05rem;
-    line-height: 1.4;
-    color: #fff;
-  }
-  .highlight-card__content p {
-    margin: 0;
-    color: var(--surface-dark-muted);
-    font-size: .84rem;
-    line-height: 1.6;
-  }
-
-  /* 4. PROOF CALLOUT */
-  .subscribe-proof {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-    padding: clamp(1.6rem, 3vw, 2.25rem);
-    border-radius: var(--radius-sm);
-    background: linear-gradient(135deg, rgb(238 231 255 / .72), rgb(255 253 248 / .45) 75%);
-    border: 1px solid rgb(128 100 234 / .22);
-    box-shadow: 0 4px 16px rgb(58 48 38 / .06);
-  }
-  .subscribe-proof__body {
-    max-width: 38rem;
-    display: grid;
-    gap: .45rem;
-  }
-  .subscribe-proof__badge {
-    color: var(--accent-text);
-    font-family: var(--font-mono);
-    font-size: .65rem;
-    font-weight: 700;
-    letter-spacing: .08em;
-  }
-  .subscribe-proof__body h3 {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-size: clamp(1.2rem, 2vw, 1.65rem);
-    letter-spacing: -.025em;
-    line-height: 1.35;
-  }
-  .subscribe-proof__body p {
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: .9rem;
-    line-height: 1.65;
-  }
-  .subscribe-proof__action {
-    flex-shrink: 0;
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 860px) {
-    .topics-grid, .highlights-grid { grid-template-columns: 1fr; }
-    .subscribe-proof { flex-direction: column; align-items: flex-start; }
-    .subscribe-proof__action { width: 100%; }
-    .subscribe-proof__action .btn { width: 100%; justify-content: center; }
+  .subscribe-form {
+    width: 100%;
+    margin-top: .25rem;
   }
 
   @media (max-width: 600px) {
-    .subscribe-page { width: min(calc(100% - 1.25rem), 72rem); padding-block: 1rem 3rem; gap: 1.75rem; }
-    .subscribe-hero { padding: 1.5rem 1rem 1.75rem; gap: 1.15rem; }
-    .subscribe-hero h1 { font-size: clamp(1.85rem, 7.8vw, 2.45rem); }
-    .subscribe-hero__lead { font-size: .95rem; }
-    .subscribe-desk { padding: 1.15rem .95rem; }
-    .subscribe-promises li { font-size: .84rem; }
+    .subscribe-page {
+      min-height: calc(100vh - 12rem);
+      padding-block: 2rem 3rem;
+    }
+    .subscribe-card {
+      padding: 2rem 1.15rem;
+      gap: 1.35rem;
+    }
+    .subscribe-card h1 {
+      font-size: clamp(1.65rem, 6.8vw, 2.15rem);
+    }
   }
 </style>
