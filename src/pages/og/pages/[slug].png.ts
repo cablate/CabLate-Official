@@ -72,20 +72,24 @@ const makeTextLayer = async (entry: PageOgEntry) => {
                   props: {
                     style: { display: 'flex', flexDirection: 'column' },
                     children: [
-                      {
-                        type: 'div',
-                        props: {
-                          style: { color: entry.accent, fontSize: fullWidth ? '24px' : '18px', letterSpacing: '1px' },
-                          children: entry.eyebrow,
-                        },
-                      },
+                      ...(entry.eyebrow
+                        ? [
+                            {
+                              type: 'div',
+                              props: {
+                                style: { color: entry.accent, fontSize: fullWidth ? '24px' : '18px', letterSpacing: '1px' },
+                                children: entry.eyebrow,
+                              },
+                            },
+                          ]
+                        : []),
                       {
                         type: 'div',
                         props: {
                           style: {
                             display: 'flex',
                             flexDirection: 'column',
-                            marginTop: '15px',
+                            marginTop: entry.eyebrow ? '15px' : '0',
                             fontSize: fullWidth ? '70px' : '47px',
                             lineHeight: fullWidth ? 1.13 : 1.2,
                             letterSpacing: fullWidth ? '-2.6px' : '-1.8px',
@@ -99,19 +103,23 @@ const makeTextLayer = async (entry: PageOgEntry) => {
                           })),
                         },
                       },
-                      {
-                        type: 'div',
-                        props: {
-                          style: {
-                            width: fullWidth ? '940px' : '620px',
-                            marginTop: fullWidth ? '25px' : '22px',
-                            color: '#596174',
-                            fontSize: fullWidth ? '28px' : '21px',
-                            lineHeight: fullWidth ? 1.4 : 1.5,
-                          },
-                          children: entry.description,
-                        },
-                      },
+                      ...(entry.description
+                        ? [
+                            {
+                              type: 'div',
+                              props: {
+                                style: {
+                                  width: fullWidth ? '940px' : '620px',
+                                  marginTop: fullWidth ? '25px' : '22px',
+                                  color: '#596174',
+                                  fontSize: fullWidth ? '28px' : '21px',
+                                  lineHeight: fullWidth ? 1.4 : 1.5,
+                                },
+                                children: entry.description,
+                              },
+                            },
+                          ]
+                        : []),
                     ],
                   },
                 },
