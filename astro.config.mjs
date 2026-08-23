@@ -9,7 +9,13 @@ export default defineConfig({
     '/work': '/about/#public-output-title',
   },
   integrations: [
-    sitemap({ filter: (page) => !page.includes('/search/') && !page.includes('/work/') }),
+    sitemap({
+      filter: (page) =>
+        !page.includes('/search/') &&
+        !page.includes('/work/') &&
+        !page.includes('/confirm-subscription/') &&
+        !page.includes('/404'),
+    }),
   ],
   prefetch: {
     defaultStrategy: 'hover',
