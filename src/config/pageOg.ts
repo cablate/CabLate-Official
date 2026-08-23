@@ -140,7 +140,7 @@ export const pageOgEntries: PageOgEntry[] = [
     eyebrow: '',
     headline: ['訂閱 CabLate 的電子報'],
     description: '',
-    footer: 'cablate.com',
+    footer: '免費訂閱',
     accent: '#6c4ccf',
     accentSoft: '#e6a56f',
     visual: { type: 'none' },
