@@ -21,18 +21,18 @@ const notFoundSource = read('src/pages/404.astro');
 
 assert(count(homeSource, /<h1\b/g) === 1, 'home source must contain exactly one H1');
 assert(count(expertiseSource, /<h1\b/g) === 1, 'expertise source must contain exactly one H1');
-assert(homeSource.includes('aria-label="開始 AI 工作流健檢"') && homeSource.includes('href="/expertise/"'), 'home Hero CTA contract is missing');
-assert(expertiseSource.includes('aria-label="開始檢查一個真實 AI 工作任務"') && expertiseSource.includes('href="#workflow-check"'), 'expertise Hero CTA contract is missing');
+assert(homeSource.includes("href: '/expertise/'"), 'home self-check route to /expertise/ is missing');
+assert(expertiseSource.includes('aria-label="開始檢查一件 AI 做壞的事"') && expertiseSource.includes('href="#workflow-check"'), 'expertise Hero CTA contract is missing');
 assert(!homeSource.includes('給還在觀望的你'), 'retired anxiety section is still present');
 assert(!homeSource.includes('代表案例') && !homeSource.includes('stars／') && !homeSource.includes('位學員'), 'unapproved proof is rendered on home');
 
 const navBlock = navigationSource.match(/export const primaryNavigationGroups = \[([\s\S]*?)\] as const;/)?.[1] ?? '';
-assert(count(navBlock.replace(/^\s*\/\/.*$/gm, ''), /href:/g) === 8, 'primary navigation must contain exactly eight active destination links');
-for (const label of ['專業方法', '課程與手冊', '專案諮詢', 'AI 應用陪跑', '企業合作', '講師與內容', '作品與經歷', '關於 Cab']) {
+assert(count(navBlock.replace(/^\s*\/\/.*$/gm, ''), /href:/g) === 9, 'primary navigation must contain exactly nine active destination links');
+for (const label of ['免費健檢', '課程與手冊', '電子報', '專案諮詢', 'AI 應用陪跑', '企業合作', '講師與內容', '作品與經歷', '關於 Cab']) {
   assert(navBlock.includes(`label: '${label}'`), `navigation label missing: ${label}`);
 }
 assert(!headerSource.includes('site-rail__social'), 'header still renders external/social links');
-for (const label of ['專業方法', '學習', '合作', '關於', 'CabAI 學習平台', 'Email', 'Threads', 'GitHub', '隱私權政策']) assert(layoutSource.includes(label), `footer label missing: ${label}`);
+for (const label of ['免費健檢', '課程與手冊', '合作方式', '關於', 'CabAI 學習平台', 'Email', 'Threads', 'GitHub', '隱私權政策']) assert(layoutSource.includes(label), `footer label missing: ${label}`);
 assert(!layoutSource.includes('>RSS<') && !layoutSource.includes('>Articles<'), 'footer exposes a paused RSS or Articles entry');
 
 assert(count(worksheetSource, /<fieldset class="layer-check"/g) === 1 && worksheetSource.includes('diagnosticLayers.map'), 'worksheet must render the five data-driven fieldsets');

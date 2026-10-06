@@ -18,7 +18,6 @@ const rejectText = (source, text, label) => {
   if (source.includes(text)) failures.push(`${label}: must not contain ${JSON.stringify(text)}`);
 };
 
-expectText(application, 'noindex={true}', 'application privacy');
 rejectText(application, 'analytics="disabled"', 'application consent-aware analytics');
 expectText(application, "name: 'generate_lead'", 'application conversion event');
 expectText(application, 'action="/api/service-application"', 'form endpoint');

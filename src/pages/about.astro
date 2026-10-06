@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowRight, Github, AtSign } from '@lucide/astro';
-import { authorityProfile, deliveryExperienceProofs, openSourceProofs } from '../config/authority';
+import { authorityProfile, deliveryExperienceProofs, moreOpenSource, openSourceProofs } from '../config/authority';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
+import QuoteBand from '../components/common/QuoteBand.astro';
 
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
-  dateModified: '2026-07-13',
+  dateModified: '2026-10-06',
   mainEntity: {
     '@type': 'Person',
     '@id': `${authorityProfile.authorUrl}#person`,
@@ -22,37 +23,39 @@ const personJsonLd = {
 };
 
 const timeline = [
-  { time: '非本科轉職', title: '從前端開始，一路補到能把系統接起來', text: '我從前端進入工程，在實務專案裡補上後端、部署、系統整合與團隊協作。這段經歷讓我很早就知道，聽懂名詞和真的把事情完成，是兩回事。' },
-  { time: '工程實務期', title: '開始把資料、權限與失敗處理一起算進成果', text: '進入政府與企業系統後，我開始承接系統分析與設計工作。功能能跑還不夠，資料、權限、驗收、異常處理與交接都必須一起考慮。' },
-  { time: '2024', datetime: '2024', title: '把工程判斷帶進 AI 應用', text: '我開始把工程背景轉向 AI 應用，也協助外部團隊理解 AI 可以怎麼進入真實工作。原本只出現在工程專案裡的判斷方式，逐漸延伸到內容、教學與產品。' },
-  { time: '2025-06 至今', datetime: '2025-06', title: '全職投入 CabLate', text: '2025 年 6 月離開正職後，我全職投入 CabLate，陸續發展課程、講座、付費手冊、CabAI 平台與顧問服務。形式不同，但核心一直是同一件事：讓複雜的方法不只被看懂，也能真的被拿去使用。' },
+  { time: '非本科轉職', title: '從前端開始，一路補到後端和部署', text: '我不是資工本科，從前端開始做，在工作裡一路補上後端、部署和系統整合。那時候學到一件事：聽得懂名詞，跟真的把東西做出來，差很遠。' },
+  { time: '工程實務期', title: '一年內升到系統分析，接政府標案', text: '轉職一年內從前端升到系統分析與設計，負責政府標案系統。功能能跑還不夠，資料、權限、驗收、例外處理和交接，都要一起想清楚。' },
+  { time: '2024', datetime: '2024', title: '開始把工程經驗用在 AI 上', text: '我把工程背景轉到 AI 應用，也協助一間外商建立 AI 諮詢服務。以前只用在寫系統的判斷方式，開始用在內容、教學和產品上。' },
+  { time: '2025-06', datetime: '2025-06', title: '全職做 CabLate', text: '2025 年 6 月離職，全職做 CabLate。7 月第一次受邀分享，10 月自己辦了第一場講座，200 多人報名。' },
+  { time: '2026 至今', datetime: '2026', title: '在第一線教 AI', text: '這一年教過農會推廣人員、證券業的 PM 和 QA、外商工程團隊、物流與行銷團隊。每一場都用他們自己的工作當練習題。另外做了線上課程、Claude Code 手冊和 CabAI 平台，也接諮詢和陪跑。' },
 ];
 
 const [featuredOutput, ...supportingOutputs] = openSourceProofs;
 ---
 
-<BaseLayout title="關於 CabLate｜從全端工程到 AI 工作流程" description="CabLate 從全端工程與系統設計出發，持續研究 AI 應用、Claude Code、Agent 工作流程與數位產品落地，並透過課程、開源工具、公開研究與顧問合作分享實作方法。" image="/og/pages/about.png" imageAlt="關於 CabLate：我從工程出發，所以不把 AI 成功一次當成完成。" imageWidth={1200} imageHeight={630}>
+<BaseLayout title="關於 Cab｜從工程師到 AI 講師" description="Cab（CabLate）非本科轉職工程師，做過政府標案系統，現在研究 Claude Code、Agent 和 Skill，寫課、做開源工具，也接 AI 諮詢與企業內訓。" image="/og/pages/about.png" imageAlt="關於 Cab：AI 做出來一次之後，我會再問下次還做不做得出來。" imageWidth={1200} imageHeight={630}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
 
   <article class="about-page paper-page">
     <header class="about-hero page-paper paper-card">
       <div class="about-hero__topline">
-        <p class="about-kicker">關於 CabLate</p>
-        <span class="about-note">WORK NOTES / 01</span>
+        <p class="about-kicker">關於 Cab</p>
       </div>
       <div class="about-hero__grid">
         <div class="about-hero__headline">
-          <h1 class="display-heading"><span class="heading-phrase">我從工程出發，</span><span class="heading-phrase">所以不把「AI 成功一次」</span><span class="heading-phrase">當成完成。</span></h1>
+          <h1 class="display-heading"><span class="heading-phrase">AI 做出來一次，</span><span class="heading-phrase">我會再問：</span><span class="heading-phrase">下次還做得出來嗎？</span></h1>
+          <figure class="about-portrait">
+            <img src="/images/photos/cablate-portrait-real-v1.webp" alt="Cab 在講座上拿著麥克風講解" width="1400" height="1400" loading="eager" />
+          </figure>
         </div>
         <div class="about-hero__aside">
-          <p class="about-hero__lead">我是 CabLate，做過全端工程、系統設計與產品實作，現在把這些經驗用在 AI 教學、Agent 工作流程與數位產品上。</p>
-          <p>比起展示 AI 可以多快產出，我更在意它放進真實工作後會不會失控，以及別人接手時能不能看懂發生了什麼。</p>
+          <p class="about-hero__lead">我是 Cab，在第一線教 AI 落地的講師。工程師出身，做過政府標案系統，現在每天用 Claude Code 工作。</p>
+          <p>很多 AI 示範都在比誰做得快。我比較在意的是：放進每天的工作之後會不會出錯，別人接手看不看得懂。</p>
           <dl class="about-hero__facts">
-            <div><dt>我處理的問題</dt><dd>AI 應用、工作流程、產品實作與系統整合</dd></div>
-            <div><dt>我持續留下</dt><dd>開源工具、公開研究、課程與工程手冊</dd></div>
+            <div><dt>現在在做</dt><dd>企業內訓、講座、工作坊，也接 AI 諮詢和陪跑</dd></div>
+            <div><dt>公開留下</dt><dd>開源工具、研究筆記、課程和手冊</dd></div>
           </dl>
-          <p class="about-hero__referral">你可以先看我做過的東西，再決定這套判斷是否適合你。</p>
-          <a class="btn btn-ghost about-hero__action" href="#public-output-title">先看公開作品 <ArrowRight size={16} aria-hidden="true" /></a>
+          <a class="btn btn-ghost about-hero__action" href="#public-output-title">看我做過的東西 <ArrowRight size={16} aria-hidden="true" /></a>
         </div>
       </div>
     </header>
@@ -60,14 +63,14 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
     <section class="about-story page-paper paper-card" aria-labelledby="story-title">
       <div class="about-story__intro section-heading">
         <p class="about-kicker">我怎麼走到這裡</p>
-        <h2 id="story-title">工程經驗讓我學會，功能能跑只是開始</h2>
+        <h2 id="story-title">寫程式那幾年學到：功能能跑，只是開始</h2>
         <span class="about-story__mark" aria-hidden="true">↳</span>
       </div>
       <div class="about-story__body">
-        <p class="about-story__opening">剛開始做開發時，我也會把「功能寫完」當成完成。進入更複雜的系統後，才發現真正麻煩的往往發生在功能寫完之後。</p>
+        <p class="about-story__opening">剛開始寫程式時，我也以為功能寫完就是做完。後來進到比較大的系統，才發現麻煩的都在寫完之後。</p>
         <div class="about-story__copy">
-          <p>資料可能不一致、權限可能漏掉、需求可能在交接時變形。即使畫面看起來正常，只要沒有人知道怎麼驗收、出了問題該查哪裡，它就很難成為可靠的成果。</p>
-          <p>AI 把產出速度拉得更快，也把這些問題一起放大。現在做課程、產品或合作時，我仍然會回頭看：AI 拿到了什麼、用了什麼、做對的原因有沒有被留下，以及最後誰能確認它真的完成。</p>
+          <p>資料對不起來、權限漏了、需求在交接時走樣。畫面看起來都正常，可是沒人知道怎麼驗收、出事該查哪裡，這種東西沒辦法放心交出去。</p>
+          <p>AI 讓產出變快，這些問題也跟著更快出現。所以我現在做課、做產品、接合作，都會回頭問：AI 拿到了什麼資料？做對的那次，做法有沒有留下來？最後誰能確認它真的做完了？</p>
         </div>
       </div>
     </section>
@@ -75,8 +78,8 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
     <section class="turning-points page-paper paper-card paper-card--clip" aria-labelledby="timeline-title">
       <header class="turning-points__header">
         <div class="section-heading">
-          <p class="about-kicker">關鍵轉折</p>
-          <h2 id="timeline-title">這些判斷不是我一開始就會的。</h2>
+          <p class="about-kicker">經歷</p>
+          <h2 id="timeline-title">我是怎麼走到這裡的</h2>
         </div>
       </header>
       <ol class="timeline">
@@ -94,8 +97,8 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
       <section class="public-output" aria-labelledby="public-output-title">
         <header class="public-output__header section-heading">
           <p class="about-kicker">公開作品</p>
-          <h2 id="public-output-title">作品與經歷，都放在可以自己查的地方。</h2>
-          <p>我盡量把工具、研究與方法留在可以查證的地方。你可以直接看程式碼、文件與更新紀錄，而不是只看一段自我介紹。</p>
+          <h2 id="public-output-title">我做過的東西，都可以自己去查</h2>
+          <p>工具和研究都放在 GitHub，程式碼、文件和更新紀錄都看得到。星數是 GitHub 上的實際數字。</p>
         </header>
 
         <article class="public-output__featured">
@@ -104,8 +107,8 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
             <h3>{featuredOutput.headline}</h3>
           </div>
           <div class="public-output__featured-copy">
+            <p class="public-output__metric">{featuredOutput.metric}<small>截至 {featuredOutput.asOf}</small></p>
             <p>{featuredOutput.description}</p>
-            <p class="public-output__capability">{featuredOutput.capability}</p>
             <div class="public-output__source-row">
               <a class="public-output__source-link" href={featuredOutput.href} target="_blank" rel="noopener">
                 <span>{featuredOutput.sourceLabel}</span><span class="visually-hidden">：{featuredOutput.title}</span>
@@ -123,8 +126,8 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
                 <span>{output.title}</span>
               </div>
               <h3>{output.headline}</h3>
+              <p class="public-output__metric">{output.metric}<small>截至 {output.asOf}</small></p>
               <p>{output.description}</p>
-              <p class="public-output__capability">{output.capability}</p>
               <div class="public-output__source-row">
                 <a class="public-output__source-link" href={output.href} target="_blank" rel="noopener">
                   <span>{output.sourceLabel}</span><span class="visually-hidden">：{output.title}</span>
@@ -135,8 +138,14 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
           ))}
         </div>
 
+        <ul class="public-output__more" role="list" aria-label="其他開源專案">
+          {moreOpenSource.map((repo) => (
+            <li><a href={repo.href} target="_blank" rel="noopener"><strong>{repo.title}</strong><span>{repo.description}</span><em>{repo.metric}</em></a></li>
+          ))}
+        </ul>
+
         <div class="trust-evidence__channels" id="public-output-actions">
-          <p>繼續看公開輸出</p>
+          <p>想看更多</p>
           <ul role="list">
             <li><a class="btn btn-ghost" href={siteConfig.githubUrl} target="_blank" rel="noopener"><Github size={17} aria-hidden="true" /><span>GitHub 個人頁</span><ArrowRight size={15} aria-hidden="true" /></a></li>
             <li><a class="btn btn-ghost" href={siteConfig.threadsUrl} target="_blank" rel="noopener"><AtSign size={17} aria-hidden="true" /><span>Threads 帳號</span><ArrowRight size={15} aria-hidden="true" /></a></li>
@@ -147,8 +156,8 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
       <section class="delivery-experience" aria-labelledby="delivery-experience-title">
         <header class="delivery-experience__header section-heading">
           <p class="about-kicker">課程與內容</p>
-          <h2 id="delivery-experience-title">除了做工具，<br />我也把方法整理成別人可以學會的內容。</h2>
-          <p>課程、教材與內容平台是另一種成果。重點不只是講懂概念，而是讓學員知道下一步怎麼做，以及出錯時可以回到哪裡查。</p>
+          <h2 id="delivery-experience-title">也把做法寫成課和手冊</h2>
+          <p>上完課要知道下一步怎麼做，卡住的時候有地方可以查。</p>
         </header>
         <div class="delivery-experience__body">
           <div class="delivery-experience__list">
@@ -165,28 +174,42 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
           </div>
           <article class="platform-proof" id="cabai-platform">
             <div>
-              <p class="platform-proof__label">內容平台</p>
-              <h3>從免費試看到已購內容，都留在同一個 CabAI 帳號裡</h3>
-              <p>訪客可以先免費試看，購買後再用同一個帳號閱讀課程、手冊與後續更新。內容不會散落在不同信件、連結與平台裡。</p>
+              <p class="platform-proof__label">CabAI</p>
+              <h3>試看、購買、閱讀，都在同一個 CabAI 帳號</h3>
+              <p>先免費試看，買了之後用同一個帳號看課程、手冊和之後的更新，不用到處翻信找連結。</p>
             </div>
-            <a class="btn btn-ghost platform-proof__action" href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'about_platform')} target="_blank" rel="noopener">查看 CabAI 學習平台 <ArrowRight size={16} aria-hidden="true" /></a>
+            <a class="btn btn-ghost platform-proof__action" href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'about_platform')} target="_blank" rel="noopener">去 CabAI 看看 <ArrowRight size={16} aria-hidden="true" /></a>
           </article>
         </div>
       </section>
     </div>
 
+<section class="about-video page-paper paper-card" aria-labelledby="about-video-title">
+      <a class="about-video__thumb" href="https://youtu.be/rgyuQNXyYvc" target="_blank" rel="noopener">
+        <img src="https://i.ytimg.com/vi/rgyuQNXyYvc/hqdefault.jpg" alt="YouTube 影片：我們早就在接觸 Harness 了，誰跟你說這是新東西？" width="480" height="360" loading="lazy" />
+        <span aria-hidden="true">▶</span>
+      </a>
+      <div>
+        <p class="about-kicker">影片</p>
+        <h2 id="about-video-title">想先聽我講一次，可以看這支</h2>
+        <p>〈我們早就在接觸 Harness 了，誰跟你說這是新東西？〉在 YouTube 頻道 @CabLate。</p>
+        <a class="btn btn-ghost" href="https://youtu.be/rgyuQNXyYvc" target="_blank" rel="noopener">去 YouTube 看 <ArrowRight size={16} aria-hidden="true" /></a>
+      </div>
+    </section>
+
+    <QuoteBand title="我在 Threads 上的立場" lead="原文，沒有修過。" pick={[2, 4, 3]} />
+
     <section class="principles page-paper paper-card paper-card--clip paper-card--clip-left" aria-labelledby="principles-title">
       <div class="principles__grid">
         <div class="principles__intro section-heading">
           <p class="about-kicker">工作原則</p>
-          <h2 id="principles-title">這幾年工具一直換，但我做事有幾個習慣沒什麼變。</h2>
-        <p class="principles__note">不論做研究、教學、產品或合作，我都會用下面四個原則確認自己沒有被熱門名詞帶著走。</p>
+          <h2 id="principles-title">工具一直換，這幾個習慣沒變</h2>
         </div>
         <div class="principles__list">
-          <article><span>01</span><h3>沒有做過的，不假裝熟悉</h3><p>我會區分實際經驗、研究判斷與仍待驗證的想法，也會說清楚方法適用到哪裡。</p></article>
-          <article><span>02</span><h3>先讓東西被人用一次。</h3><p>讓使用者、限制與錯誤提早出現，再根據實際證據修正。</p></article>
-          <article><span>03</span><h3>先看問題，再決定要不要用 AI</h3><p>簡單方法已經能穩定解決，就不為了 Agent、MCP 或自動化硬加複雜度。</p></article>
-          <article><span>04</span><h3>做對一次，就把真正有效的原因留下來</h3><p>不只保存最後的 Prompt，也保存判斷、順序、例外與檢查方式。</p></article>
+          <article><span>01</span><h3>沒做過的，不裝熟</h3><p>我會分清楚：哪些是我實際做過的、哪些是研究後的判斷、哪些還沒驗證。</p></article>
+          <article><span>02</span><h3>先給人用一次</h3><p>讓真正要用的人早點用，問題早點冒出來，再照實際狀況改。</p></article>
+          <article><span>03</span><h3>先看問題，再決定要不要用 AI</h3><p>簡單的方法就能穩定解決，就不硬加 Agent、MCP 或自動化。</p></article>
+          <article><span>04</span><h3>做對一次，把做法留下來</h3><p>不只存最後的 Prompt，也把判斷、順序、例外和怎麼檢查一起記下來。</p></article>
         </div>
       </div>
     </section>
@@ -194,11 +217,11 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
     <section class="about-next page-paper paper-card paper-card--clip" id="next" aria-labelledby="next-title">
       <div>
         <p class="about-kicker">下一步</p>
-          <h2 id="next-title">想自己研究，可以從課程、手冊或公開內容開始；如果問題已經影響工作，也可以直接拿來跟我一起看。</h2>
+          <h2 id="next-title">想自己研究，從課程和手冊開始。已經卡到影響工作，直接找我。</h2>
       </div>
       <div class="about-next__links">
-        <a class="btn btn-primary about-next__primary" href="/services/">了解服務與合作方式 <ArrowRight size={18} aria-hidden="true" /></a>
-        <a class="btn btn-ghost about-next__secondary-action" href="/courses/">看學習內容 <ArrowRight size={18} aria-hidden="true" /></a>
+        <a class="btn btn-primary about-next__primary" href="/services/">看合作方式 <ArrowRight size={18} aria-hidden="true" /></a>
+        <a class="btn btn-ghost about-next__secondary-action" href="/courses/">看課程與手冊 <ArrowRight size={18} aria-hidden="true" /></a>
       </div>
     </section>
   </article>
@@ -208,13 +231,20 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
   .about-page { padding-top: 0; }
   .about-page > .page-paper { overflow: visible; }
   .about-kicker { margin: 0 0 1rem; color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .1em; }
-  .about-note { color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; }
   .about-hero { padding-block: clamp(3.25rem, 7vw, 6.5rem) !important; }
   .about-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.35rem; border-bottom: 1px solid var(--border); }
   .about-hero__topline p { margin: 0; }
   .about-hero__grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(16rem, .92fr); gap: clamp(2.5rem, 7vw, 7rem); align-items: end; padding-top: clamp(2.5rem, 5vw, 4.75rem); }
   .about-hero__headline { container-type: inline-size; }
   .about-hero h1 { max-width: none !important; margin: 0; font-family: var(--font-sans); font-size: clamp(2rem, 4vw, 3.25rem) !important; letter-spacing: -.07em !important; line-height: 1.3 !important; }
+  .about-portrait { width: min(100%, 18rem); margin: 2rem 0 0; padding: .45rem; border: 1px solid var(--border); background: #fff; box-shadow: var(--shadow-md); transform: rotate(-1.5deg); }
+  .about-portrait img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; object-position: 35% center; }
+  .about-video { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
+  .about-video h2 { margin: 0 0 .75rem; font-size: clamp(1.4rem, 2.4vw, 2rem); letter-spacing: -.04em; line-height: 1.3; }
+  .about-video p { margin: 0 0 1.25rem; color: var(--text-secondary); line-height: 1.8; }
+  .about-video__thumb { position: relative; display: block; overflow: hidden; border-radius: var(--radius-sm); box-shadow: var(--shadow-md); }
+  .about-video__thumb img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  .about-video__thumb span { position: absolute; inset: 50% auto auto 50%; display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; background: rgb(0 0 0 / .65); color: #fff; font-size: 1.2rem; transform: translate(-50%, -50%); }
   .about-hero__aside { max-width: 31rem; padding-bottom: .35rem; }
   .about-hero__aside p { margin: 0; color: var(--text-secondary); line-height: 1.85; }
   .about-hero__aside .about-hero__lead { margin-bottom: 1.2rem; color: var(--text-primary); font-size: 1.1rem; font-weight: 700; line-height: 1.65; }
@@ -222,10 +252,9 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
   .about-hero__facts div { display: grid; grid-template-columns: 5rem 1fr; gap: .8rem; }
   .about-hero__facts dt { color: var(--accent); font-size: .68rem; font-weight: 700; }
   .about-hero__facts dd { margin: 0; color: var(--text-secondary); font-size: .82rem; }
-  .about-hero__referral { margin-top: 1.2rem !important; font-size: .82rem; line-height: 1.75 !important; }
   .about-hero__action { margin-top: 1rem; }
   .about-story { display: grid; grid-template-columns: minmax(12rem, .72fr) minmax(0, 1.28fr); gap: clamp(2.5rem, 8vw, 8rem); padding-block: clamp(3.5rem, 8vw, 7rem) !important; }
-  .section-heading h2 { max-width: 16ch; margin: 0; font-size: clamp(1.6rem, 2.8vw, 2.4rem); letter-spacing: -.055em; line-height: 1.3; }
+  .section-heading h2 { max-width: 12em; margin: 0; font-size: clamp(1.6rem, 2.8vw, 2.4rem); letter-spacing: -.055em; line-height: 1.3; }
   .about-story__intro { position: relative; }
   .about-story__mark { position: absolute; right: 0; bottom: -.2rem; color: var(--accent); font-family: var(--font-serif); font-size: 3.2rem; line-height: 1; transform: rotate(-14deg); }
   .about-story__body { max-width: 45rem; }
@@ -254,9 +283,16 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
   .public-output__featured { display: grid; grid-template-columns: minmax(14rem, .82fr) minmax(0, 1.18fr); gap: clamp(2rem, 6vw, 5rem); padding: clamp(2rem, 4vw, 3.5rem) 0; border-top: 1px solid var(--border-strong); border-bottom: 1px solid var(--border); }
   .public-output__featured-title, .public-output__featured-copy { min-width: 0; }
   .public-output__category { margin: 0; color: var(--accent); font-size: .7rem; font-weight: 700; letter-spacing: .08em; }
-  .public-output__featured h3 { max-width: 18ch; margin: 1rem 0 0; font-family: var(--font-sans); font-size: clamp(1.4rem, 2.4vw, 2rem); letter-spacing: -.04em; line-height: 1.3; }
+  .public-output__featured h3 { max-width: 14em; margin: 1rem 0 0; font-family: var(--font-sans); font-size: clamp(1.4rem, 2.4vw, 2rem); letter-spacing: -.04em; line-height: 1.3; }
   .public-output__featured-copy > p:first-child { margin: 0; color: var(--text-primary); font-size: 1rem; line-height: 1.9; }
-  .public-output__capability { margin: 1.2rem 0 0; padding-left: 1rem; border-left: 2px solid var(--accent); color: var(--text-secondary); font-size: .82rem; line-height: 1.75; }
+  .public-output__metric { display: flex; align-items: baseline; gap: .6rem; margin: .9rem 0 .9rem !important; color: var(--text-primary) !important; font-family: var(--font-serif); font-size: 1.35rem !important; font-weight: 700; line-height: 1.3 !important; }
+  .public-output__metric small { color: var(--text-muted); font-family: var(--font-sans); font-size: .72rem; font-weight: 500; }
+  .public-output__more { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+  .public-output__more a { display: grid; grid-template-columns: 1fr auto; gap: .2rem 1rem; padding: .9rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-soft); color: inherit; text-decoration: none; transition: border-color 160ms ease; }
+  .public-output__more a:hover { border-color: var(--accent); }
+  .public-output__more strong { color: var(--text-primary); font-size: .95rem; }
+  .public-output__more span { grid-column: 1; color: var(--text-secondary); font-size: .82rem; line-height: 1.6; }
+  .public-output__more em { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--accent-text); font-style: normal; font-weight: 700; }
   .public-output__source-row { display: flex; align-items: end; justify-content: space-between; gap: 1.25rem; margin-top: 1.6rem; padding-top: 1.1rem; border-top: 1px solid var(--border); }
   .public-output__source-link { display: inline-flex; flex: 0 0 auto; align-items: center; gap: .45rem; min-height: 2.75rem; color: var(--accent-text); font-size: .76rem; font-weight: 700; }
   .public-output__source-link:hover { color: var(--accent); }
@@ -266,8 +302,8 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
   .public-output__supporting article:last-child { padding-left: clamp(1.5rem, 4vw, 3.25rem); }
   .public-output__identity { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .8rem; }
   .public-output__identity > span { color: var(--text-muted); font-family: var(--font-mono); font-size: .64rem; overflow-wrap: anywhere; }
-  .public-output__supporting h3 { max-width: 22ch; margin: 1.1rem 0 .8rem; font-size: clamp(1.2rem, 2vw, 1.55rem); letter-spacing: -.025em; line-height: 1.45; }
-  .public-output__supporting article > p:not(.public-output__category, .public-output__capability) { margin: 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.8; }
+  .public-output__supporting h3 { max-width: 17em; margin: 1.1rem 0 .8rem; font-size: clamp(1.2rem, 2vw, 1.55rem); letter-spacing: -.025em; line-height: 1.45; }
+  .public-output__supporting article > p:not(.public-output__category, .public-output__metric) { margin: 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.8; }
   .public-output__supporting .public-output__source-row { align-items: flex-start; flex-direction: column; gap: .45rem; }
   /* Public profile links stay visible as buttons without competing with the page's final CTA. */
   .trust-evidence__channels { box-sizing: border-box; display: grid; grid-template-columns: minmax(10rem, .55fr) minmax(0, 1.45fr); gap: clamp(1.5rem, 4vw, 3rem); align-items: center; margin-top: 2rem; padding: 1.25rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--accent) 3%, var(--bg-soft)); }
@@ -300,7 +336,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
   .principles article h3 { margin: 2.75rem 0 .65rem; font-size: 1.12rem; }
   .principles article p { margin: 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.75; }
   .about-next { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(15rem, .9fr); gap: clamp(2.5rem, 7vw, 7rem); padding-block: clamp(3.5rem, 7vw, 6rem) !important; }
-  .about-next h2 { max-width: 17ch; margin: 0; font-size: clamp(1.6rem, 2.8vw, 2.4rem); letter-spacing: -.055em; line-height: 1.3; }
+  .about-next h2 { max-width: 13em; margin: 0; font-size: clamp(1.6rem, 2.8vw, 2.4rem); letter-spacing: -.055em; line-height: 1.3; }
   .about-next__intro { max-width: 30rem; margin: 1.35rem 0 0; color: var(--text-secondary); line-height: 1.8; }
   .about-next__links { align-self: end; border-top: 1px solid var(--border-strong); }
   .about-next__links > a { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 3.25rem; width: 100%; padding: .75rem 1rem; border-bottom: 1px solid var(--border); font-weight: 700; }
@@ -321,6 +357,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
   .about-next__links > a.about-next__secondary-action { margin-top: .75rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: transparent; color: var(--text-primary); }
   .about-next__links > a.about-next__secondary-action:hover:not(:disabled):not([aria-disabled='true']) { border-color: var(--accent-text); background: var(--bg-soft); color: var(--accent-text); }
   @media (max-width: 800px) {
+    .about-video { grid-template-columns: 1fr; }
     .about-hero__grid, .about-story, .turning-points__header, .public-output__featured, .delivery-experience, .principles__grid, .about-next { grid-template-columns: 1fr; }
     .about-hero__grid { gap: 2.25rem; }
     .about-hero__aside { max-width: 38rem; }
@@ -339,7 +376,6 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
     .about-page .display-heading > .heading-phrase { white-space: normal; }
     .about-hero { padding-block: 2.4rem 3rem !important; }
     .about-hero__topline { padding-bottom: 1rem; }
-    .about-note { font-size: .55rem; }
     .about-hero__grid { padding-top: 2.15rem; }
     .about-hero h1 { font-size: clamp(1.9rem, 8vw, 2.6rem) !important; line-height: 1.3 !important; }
     .about-hero__aside .about-hero__lead { font-size: 1rem; }
@@ -365,6 +401,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
     .public-output__supporting article { padding: 1.75rem 0; }
     .public-output__supporting h3 { font-size: 1.18rem; }
     .trust-evidence__channels { grid-template-columns: 1fr; gap: 1rem; }
+    .public-output__more { grid-template-columns: 1fr; }
     .trust-evidence__channels ul { grid-template-columns: 1fr; }
     .delivery-experience { margin-top: 4rem; padding-top: 3rem; }
     .delivery-experience__list article { grid-template-columns: 1fr; gap: .7rem; padding: 1.45rem 0; }

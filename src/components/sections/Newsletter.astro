@@ -1,16 +1,17 @@
 ---
 import KitForm from '../common/KitForm.astro';
+import { siteConfig } from '../../config/siteConfig';
 ---
 
 <section class="newsletter-section" id="newsletter" aria-labelledby="newsletter-title">
   <div class="newsletter-text">
-    <h2 id="newsletter-title">有新內容，<br />再寄信告訴你</h2>
-    <p class="newsletter-copy">電子報、新課程、新活動會寄信給你。</p>
+    <h2 id="newsletter-title">每封信，<br />拆一個 AI 卡點</h2>
+    <p class="newsletter-copy">{siteConfig.newsletter.promise}{siteConfig.newsletter.cadence}</p>
   </div>
 
   <div class="newsletter-form">
-    <KitForm submitLabel="收到新內容通知" successMessage="資料已送出，請到信箱點擊確認連結，完成訂閱。" />
-    <p class="newsletter-note">送出後請到信箱完成確認。可以隨時退出；資料使用方式見<a href="/privacy/">隱私權政策</a></p>
+    <KitForm submitLabel="免費訂閱" successMessage="資料已送出，請到信箱點擊確認連結，完成訂閱。" />
+    <p class="newsletter-note">送出後到信箱點確認連結。隨時可以退訂；資料怎麼用寫在<a href="/privacy/">隱私權政策</a></p>
   </div>
 </section>
 

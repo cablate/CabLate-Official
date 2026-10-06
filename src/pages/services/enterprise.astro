@@ -2,138 +2,180 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
 import { getServiceApplicationHref } from '../../config/serviceApplication';
+import ProofStrip from '../../components/common/ProofStrip.astro';
+import QuoteBand from '../../components/common/QuoteBand.astro';
+import WhyDifferent from '../../components/common/WhyDifferent.astro';
+import { teachingFormats, teachingTopics } from '../../config/authority';
+
+const cases = [
+  {
+    label: '全國性協會・兩日班',
+    title: '非技術的推廣人員，兩天做出 23 個網站',
+    situation: '學員幾乎都沒寫過程式。兩天共 16 小時，從整理資料一路做到網站上線。',
+    result: '課堂上收到 23 個網站、28 份心得。心得裡最常提到的顧慮是：回去後能不能自己操作、額度費用、設備和資安。',
+  },
+  {
+    label: '證券業・非工程職內訓',
+    title: 'PM、QA、維運，各自做出業務用的 Agent',
+    situation: '原本規劃是教大家跟 AI 聊天。我改成用他們自己的業務案例，現場示範怎麼做一個自己業務用的 Agent。',
+    result: '線上 4 小時，平台上 28 位學員，課堂提交 76 次。',
+  },
+  {
+    label: '外商・技術團隊內訓',
+    title: '工程師混班，用實作取代簡報',
+    situation: '課前先收 31 筆需求，現場幾乎不用投影片，以實作、講評和問答為主。',
+    result: '29 人出席、19 份問卷，18 位表示會帶一項回工作試。也有約六成覺得節奏偏慢，下一次會依程度分班。',
+  },
+];
 import '../../styles/service-pages.css';
 
 const enterpriseApplicationHref = getServiceApplicationHref('enterprise', 'enterprise_page');
 
-const problemSignals = [
-  ['工具很多，做法不一致', '每個人用不同方式完成同一種工作，結果無法接手，也不知道出錯要查哪裡。'],
-  ['上過課，工作沒有改變', '學員知道名詞與功能，但回到真實任務時仍缺資料、權限、流程與驗收規則。'],
-  ['試點做得出來，無法導入', '原型靠少數人撐住，沒有內部負責人、維護方式、安全邊界與主管可觀察證據。'],
+
+const plans = [
+  { name: '講座', length: '1–2 小時', featured: false },
+  { name: '實作工作坊', length: '半日 4 小時或全日 6–7 小時', featured: true },
+  { name: '兩日班或導入陪跑', length: '16 小時，或分週進行', featured: false },
 ];
 
-const cooperationOptions = [
-  {
-    title: '團隊現況診斷',
-    fit: '還不知道問題在哪，就先把工作、角色與限制看清楚，最後整理出真正要處理的問題與建議順序。',
-    output: '需求摘要、主要問題、希望改變的行為、判斷依據與後續建議。',
-  },
-  {
-    title: '真實工作情境工作坊',
-    fit: '問題已經明確，需要一群人一起練、一起做，再用同一套方式檢查成果。',
-    output: '客製案例、實作任務、共用做法、練習成果與課後行動。',
-  },
-  {
-    title: '小規模導入試點',
-    fit: '已經有明確場景與內部負責人，就挑一小段實際跑一次，確認能不能安全接進工作。',
-    output: '一段可測試的流程、操作與檢查方式、交接文件和停止條件。',
-  },
+const planRows = [
+  ['適合', ['先讓全員或主管有共同的說法', '一個部門拿自己的工作來練', '要從零做到能用的成果，或挑一段流程試做']],
+  ['課中', ['示範為主，現場問答', '每人帶電腦實作，現場講評', '做出能上線或能接進工作的東西']],
+  ['建議人數', ['不限', '15–35 人', '依場地與目標']],
+  ['課後', ['簡報與延伸建議', '作品回收、改善建議', '心得回收、後續建議或試點交接']],
 ];
 
 const enterpriseProcess = [
-  ['提交情境', '先說清楚哪些人、哪一段工作、已試做法、限制與希望看到的改變。'],
-  ['釐清問題', '判斷主要是培訓、流程、工具或管理問題，或目前還不適合開始。'],
-  ['提出方案', '寫明希望改變什麼、會提供什麼、雙方責任、怎麼檢查與資料安全範圍。'],
-  ['實際執行', '用真實工作完成練習或試點，保留作品、觀察與檢查紀錄。'],
-  ['交接或停止', '整理誰負責維護與下一個決定。完成後結案，不會自動增加新的工作。'],
+  ['填表告訴我', '哪些人、哪一段工作、試過什麼、希望看到什麼改變。'],
+  ['一起看問題', '判斷是需要上課、改流程、換工具，還是現在還不適合開始。'],
+  ['給你方案', '寫清楚要做什麼、雙方各負責什麼、怎麼檢查、資料怎麼處理、費用多少。'],
+  ['實際上場', '用你們的真實工作練習或試做，現場留下成果。'],
+  ['交接', '講好之後誰維護、下一步誰決定。做完就結案，不會自動加新工作。'],
 ];
 
 const faq = [
-  ['可以直接提供課程菜單與報價嗎？', '我會先了解受眾、真實工作與希望改變的結果。如果課程適合，再依範圍提供課綱、內容、費用與條款；問題還不清楚時，不會先用固定時數套方案。'],
-  ['只有一場演講也能合作嗎？', '可以先提交情境，但要誠實區分演講能建立的認知，和流程導入需要的後續工作。一場分享不會被包裝成已完成組織改變。'],
-  ['會需要提供公司機密資料嗎？', '探索階段不需要提供密碼、Token 或機密原文。若後續必須使用真實資料，會先確認資料最小化、權限、使用範圍與保存方式。'],
-  ['何時會收到正式方案？', '確認問題與必要資訊後，才會提出包含工作內容、責任、時程、費用與停止條件的方案。提交需求本身不代表報價或合作成立。'],
+  ['可以直接給課程菜單和報價嗎？', '我會先了解學員是誰、平常做什麼、希望改變什麼，再依範圍給課綱和報價。問題還不清楚時，我不會先套一個固定時數的方案。'],
+  ['只辦一場演講可以嗎？', '可以。不過一場演講能做到的是讓大家有共同的理解，要真的改變工作方式，通常還需要後續的練習或試做。我會先講清楚這兩者的差別。'],
+  ['需要給公司機密資料嗎？', '一開始不需要，也請不要附密碼、Token 或機密原文。之後真的要用到資料，會先講好用多少、誰能看、怎麼保存。'],
+  ['什麼時候會收到正式方案？', '問題和必要資訊確認之後，我會給你包含工作內容、分工、時程、費用的方案。填表不代表已經報價或成立合作。'],
 ];
 ---
 
-<BaseLayout title="企業 AI 現況診斷、工作坊與導入" description="讓團隊不只會操作 AI，也知道怎麼把結果做穩、交接與檢查，再依現況安排診斷、工作坊或小規模導入。" image="/og/pages/enterprise.png" imageAlt="企業與團隊合作：讓團隊不只會用 AI，也知道怎麼把結果做穩。" imageWidth={1200} imageHeight={630}>
+<BaseLayout title="企業 AI 內訓、工作坊與導入" description="用團隊自己的工作當練習題。先看大家實際怎麼工作、卡在哪，再安排內訓、工作坊或小規模試做。" image="/og/pages/enterprise.png" imageAlt="企業合作：讓團隊用 AI 做出來的東西，別人接得住。" imageWidth={1200} imageHeight={630}>
   <article class="service-page paper-page">
     <nav class="service-shell service-back" aria-label="服務導覽"><a href="/services/"><ArrowLeft size={16} aria-hidden="true" />回到合作方式</a></nav>
 
     <header class="service-shell service-detail-hero service-enterprise-hero page-paper paper-card">
       <div class="service-detail-hero__copy">
         <p class="section-label">企業與團隊合作</p>
-        <h1 class="display-heading">讓團隊不只會用 AI，也知道怎麼把結果做穩。</h1>
-        <p class="service-lead">如果大家上完課還是各做各的、無法交接，或試點只能靠少數人撐，問題通常不只在工具。我會看工作、角色、資料、安全和驗收怎麼接，再安排課程、流程調整或小型試點。</p>
+        <h1 class="display-heading"><span class="heading-phrase">團隊用 AI 做出來的東西，</span><span class="heading-phrase">要別人接得住。</span></h1>
+        <p class="service-lead">上完課大家還是各做各的、做出來的東西沒人接得了，或試做只靠一兩個人撐，問題通常不只在工具。我會先看你們怎麼分工、資料在哪、誰來檢查，再決定要上課、改流程還是先試做一小段。</p>
         <div class="service-actions">
-          <a class="btn btn-primary" href="#enterprise-fit">先確認企業合作條件 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="btn btn-primary" href="#enterprise-fit">看看適不適合 <ArrowRight size={18} aria-hidden="true" /></a>
+          <span>需求先聊，不收費。</span>
         </div>
       </div>
       <figure class="service-detail-hero__visual service-detail-hero__visual--landscape">
-        <img src="/images/photos/cablate-speaking-ai-meetup-april.webp" alt="Cab 在 AI 聚會中向參與者說明實作方法" width="1920" height="1080" loading="eager" fetchpriority="high" />
+        <img src="/images/photos/cablate-speaking-ai-meetup-april.webp" alt="Cab 在 AI 聚會中向參與者說明實作方法" width="2000" height="1333" loading="eager" fetchpriority="high" />
       </figure>
     </header>
 
-    <section class="service-shell service-section service-enterprise-signals page-paper paper-card" aria-labelledby="enterprise-signals-title">
-      <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="enterprise-signals-title">如果上過課，工作方式還是沒變，通常不是再補一堂課就會好。</h2>
-        <p>有時是大家不知道怎麼用，有時是資料拿不到、流程接不起來，也可能根本沒有人負責檢查。這些狀況需要的做法不同。</p>
-      </header>
-      <dl>
-        {problemSignals.map(([title, body]) => <div><dt>{title}</dt><dd>{body}</dd></div>)}
-      </dl>
-    </section>
+    <ProofStrip label="一些數字" class="service-shell service-proof" />
 
-    <section class="service-shell service-section service-enterprise-options page-paper paper-card" aria-labelledby="enterprise-options-title">
+    <WhyDifferent class="service-shell service-why" />
+
+    <section class="service-shell service-section page-paper paper-card" aria-labelledby="enterprise-topics-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <p class="section-label">可能的合作方式</p>
-        <h2 id="enterprise-options-title">我不會先拿一張課程菜單請你選。</h2>
-        <p>這三種方式可以單獨進行，也可能分階段安排。實際內容會在需求確認後提出。</p>
+        <p class="section-label">可以上的主題</p>
+        <h2 id="enterprise-topics-title">這些主題都實際教過，內容會依你們的工作改</h2>
       </header>
-      <ol>
-        {cooperationOptions.map((item, index) => (
-          <li>
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <div><h3>{item.title}</h3><p>{item.fit}</p></div>
-            <p><strong>可能提供：</strong>{item.output}</p>
-          </li>
-        ))}
-      </ol>
+      <div class="service-deliverables enterprise-topics">
+        {teachingTopics.map((topic) => <article><h3>{topic.title}</h3><p><strong>{topic.fit}</strong>・{topic.note}</p></article>)}
+      </div>
+      <ul class="enterprise-formats" aria-label="授課形式">
+        {teachingFormats.map((format) => <li>{format}</li>)}
+      </ul>
     </section>
 
     <section class="service-shell service-section service-enterprise-evidence page-paper paper-card" aria-labelledby="enterprise-evidence-title">
       <div>
-        <h2 id="enterprise-evidence-title">如果合作結束後只剩一份投影片，通常沒有太大意義。</h2>
+        <p class="section-label">做過的例子</p>
+        <h2 id="enterprise-evidence-title">最近三場內訓，發生了什麼</h2>
+        <p>公司名稱不公開，只寫產業和職能。數字是課堂上實際收到的。</p>
       </div>
-      <div>
-        <p>合作結束前，至少要留下：</p>
-        <ul>
-          <li>團隊共同看見的問題。</li>
-          <li>現場做出的成果。</li>
-          <li>可以沿用的規則或檢查方式。</li>
-          <li>主管看得到的變化與未解問題。</li>
-          <li>接下來由誰接手。</li>
-        </ul>
+      <div class="enterprise-cases">
+        {cases.map((item) => (
+          <article>
+            <p class="enterprise-cases__label">{item.label}</p>
+            <h3>{item.title}</h3>
+            <p>{item.situation}</p>
+            <p class="enterprise-cases__result">{item.result}</p>
+          </article>
+        ))}
       </div>
     </section>
+    <QuoteBand class="service-shell" title="我對企業導入的看法" lead="Threads 原文，沒有修過。" pick={[0, 1, 4]} />
+
+    <section class="service-shell service-section service-enterprise-options page-paper paper-card" aria-labelledby="enterprise-options-title">
+      <header class="service-section__intro service-section__intro--stacked">
+        <p class="section-label">合作方案</p>
+        <h2 id="enterprise-options-title">三種方案，<br />看人數和想做到哪裡</h2>
+        <p>多數團隊從一場工作坊開始，用起來了再往下做。費用依人數、時數、地點和客製程度報價，先聊需求不收費。</p>
+      </header>
+      <div class="plan-table-wrap">
+        <table class="plan-table">
+          <thead>
+            <tr><th scope="col"><span class="visually-hidden">項目</span></th>{plans.map((plan) => <th scope="col" class:list={[plan.featured && 'is-featured']}>{plan.featured && <small>最多團隊選</small>}<strong>{plan.name}</strong><span>{plan.length}</span></th>)}</tr>
+          </thead>
+          <tbody>
+            {planRows.map(([label, values]) => (
+              <tr><th scope="row">{label}</th>{(values as string[]).map((value, index) => <td class:list={[plans[index].featured && 'is-featured']}>{value}</td>)}</tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <ul class="plan-cards" aria-label="三種方案">
+        {plans.map((plan, index) => (
+          <li class:list={[plan.featured && 'is-featured']}>
+            {plan.featured && <small>最多團隊選</small>}
+            <strong>{plan.name}</strong>
+            <span>{plan.length}</span>
+            <dl>{planRows.map(([label, values]) => <div><dt>{label}</dt><dd>{(values as string[])[index]}</dd></div>)}</dl>
+          </li>
+        ))}
+      </ul>
+      <a class="btn btn-primary plan-table__cta" href={enterpriseApplicationHref} data-analytics-placement="enterprise_plans">告訴我人數和想解決的事 <ArrowRight size={18} aria-hidden="true" /></a>
+    </section>
+
+
 
     <section id="enterprise-fit" class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="enterprise-fit-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="enterprise-fit-title">企業合作要做得下去，至少要有人知道：誰在做、哪裡出問題、最後由誰決定。</h2>
+        <h2 id="enterprise-fit-title">什麼樣的團隊適合找我</h2>
       </header>
       <div class="service-fit-column">
-        <h3><Check size={19} aria-hidden="true" />適合提出需求，如果</h3>
+        <h3><Check size={19} aria-hidden="true" />適合，如果</h3>
         <ul>
-          <li>能指出哪一群人在完成哪一種工作。</li>
-          <li>有真實情境、內部負責人與決策人。</li>
-          <li>願意一起定義完成後要看到的行為或成果。</li>
-          <li>能遵守公司資料、安全與採購要求。</li>
+          <li>說得出是哪一群人、在做哪一種工作。</li>
+          <li>有內部窗口，也有能拍板的人。</li>
+          <li>願意一起講好，做完之後要看到什麼改變。</li>
+          <li>可以照公司的資料、安全和採購規定走。</li>
         </ul>
       </div>
       <div class="service-fit-column service-fit-column--muted">
-        <h3><X size={19} aria-hidden="true" />這可能不適合，如果</h3>
+        <h3><X size={19} aria-hidden="true" />可能不適合，如果</h3>
         <ul>
-          <li>只想用一次演講取代流程與管理改變。</li>
-          <li>無法提供情境，也沒有任何驗收人。</li>
-          <li>要求使用未授權資料或規避安全政策。</li>
-          <li>範圍未知時就要求保證營收、效率或採用率。</li>
+          <li>希望一場演講就改變整個團隊的工作方式。</li>
+          <li>給不出實際的工作情境，也沒人負責驗收。</li>
+          <li>需要用未授權的資料，或繞過公司安全規定。</li>
+          <li>範圍還不清楚，就要保證營收、效率或使用率。</li>
         </ul>
       </div>
     </section>
 
     <section class="service-shell service-section service-process service-process--five page-paper paper-card" aria-labelledby="enterprise-process-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="enterprise-process-title">方案要回答：誰負責、怎麼驗證、什麼時候該停。</h2>
+        <h2 id="enterprise-process-title">從填表到交接，大概是這樣</h2>
       </header>
       <ol>
         {enterpriseProcess.map(([title, body], index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{title}</h3><p>{body}</p></div></li>)}
@@ -142,18 +184,18 @@ const faq = [
 
     <section class="service-shell service-section service-faq page-paper paper-card" aria-labelledby="enterprise-faq-title">
       <header class="service-section__intro service-section__intro--stacked">
-        <h2 id="enterprise-faq-title">企業合作常見的四個問題。</h2>
+        <h2 id="enterprise-faq-title">常被問的問題</h2>
       </header>
       <div>{faq.map(([question, answer]) => <details><summary>{question}</summary><p>{answer}</p></details>)}</div>
     </section>
 
     <section class="service-shell service-final-cta page-paper paper-card" aria-labelledby="enterprise-cta-title">
       <div>
-        <p class="section-label">提出企業需求</p>
-        <h2 id="enterprise-cta-title">不用先做完整標案。告訴我哪一群人正在做什麼、現在最麻煩的是哪一段就可以。</h2>
-        <p>不必先整理成完整標案。請勿附密碼、Token 或機密原文；確認適合後，才會進一步討論工作內容、費用與條款。</p>
+        <p class="section-label">下一步</p>
+        <h2 id="enterprise-cta-title">不用寫完整需求書，告訴我哪群人在做什麼、哪段最麻煩就好</h2>
+        <p>請不要附密碼、Token 或機密原文。確認適合之後，再談工作內容和費用。</p>
       </div>
-      <a class="btn btn-primary" href={enterpriseApplicationHref} data-analytics-placement="enterprise_final">提交企業合作情境 <ArrowRight size={18} aria-hidden="true" /></a>
+      <a class="btn btn-primary" href={enterpriseApplicationHref} data-analytics-placement="enterprise_final">填寫企業合作需求 <ArrowRight size={18} aria-hidden="true" /></a>
     </section>
   </article>
 </BaseLayout>

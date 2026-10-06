@@ -37,7 +37,7 @@
 }
 
 .archive-hero h1 {
-  max-width: 17ch;
+  max-width: 13em;
   margin: clamp(2.75rem, 5vw, 4.5rem) 0 0;
   font-size: clamp(3rem, 5.8vw, 5.6rem);
 }
@@ -60,7 +60,7 @@
 }
 
 .archive-section__header h2 {
-  max-width: 19ch;
+  max-width: 15em;
   margin: 0;
   font-size: clamp(2rem, 3.8vw, 3.4rem);
   letter-spacing: -.05em;

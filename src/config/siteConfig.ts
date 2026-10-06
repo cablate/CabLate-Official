@@ -26,6 +26,13 @@ export const siteConfig = {
     accountUrl: 'https://cabai.cablate.com/login?callbackUrl=%2Fdashboard',
   },
 
+  /** 電子報對外說法；訂閱頁、確認頁、隱私權政策都引用這裡 */
+  newsletter: {
+    promise: '每封拆一個真實的 AI 卡點：我怎麼判斷、哪裡容易出錯、什麼時候不該用 AI。',
+    cadence: '有值得寫的才寄，不會天天寄。新課程和講座開放時也會通知你。',
+    privacyUse: '寄送電子報內容，以及新課程、手冊更新或公開活動的通知',
+  },
+
   // External service IDs
   ga4Id: 'G-HY45BRFPS6',
   gscVerification: 'JtR8mljV6TbefiOMzYMBg5Lgkv2GLkOkTH9FP5-ZDTA',

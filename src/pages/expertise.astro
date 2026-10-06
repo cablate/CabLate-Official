@@ -6,32 +6,32 @@ import { ArrowDown } from '@lucide/astro';
 
 <BaseLayout
   title="AI 工作流健檢"
-  description="拿一個真的失敗、重做或不敢交付的 AI 任務，依序檢查題目、資料、工具、狀態與驗收，找出最值得先修的一層。"
+  description="免費的 AI 工作流健檢。拿一件最近 AI 做壞的事，照五個問題檢查題目、資料、工具、進度和驗收，找出先修哪一層。"
   image="/og/pages/expertise.png"
   imageAlt="AI 工作流健檢：AI 一直鬼打牆，先找出最值得修的一層。"
   imageWidth={1200}
   imageHeight={630}
 >
-  <article class="expertise-page" data-content-state="testing">
+  <article class="expertise-page">
     <header class="diagnostic-hero" aria-labelledby="expertise-title">
       <div class="diagnostic-hero__index" aria-hidden="true">
-        <span>AI WORKFLOW</span>
+        <span>免費健檢</span>
         <strong>05</strong>
-        <span>LAYERS</span>
+        <span>個問題</span>
       </div>
       <div class="diagnostic-hero__content">
         <p class="section-label">AI 工作流健檢</p>
-        <h1 id="expertise-title">AI 一直鬼打牆，<br />先別只改 Prompt。</h1>
-        <p>拿一個最近真的失敗過、重做過，或不敢直接交付的任務。依序檢查題目、資料、工具、狀態與驗收，先找出最值得修的一層。</p>
+        <h1 id="expertise-title">AI 一直鬼打牆，<br />先別急著改 Prompt。</h1>
+        <p>拿一件最近 AI 做壞、重做過，或你不敢直接交出去的事。照順序問五個問題：題目、資料、工具、進度、驗收，看先修哪一層最划算。</p>
         <a
           class="btn btn-primary diagnostic-start"
           href="#workflow-check"
-          aria-label="開始檢查一個真實 AI 工作任務"
+          aria-label="開始檢查一件 AI 做壞的事"
           data-diagnostic-start
         >
-          開始檢查一個真實任務 <ArrowDown size={18} aria-hidden="true" />
+          開始檢查 <ArrowDown size={18} aria-hidden="true" />
         </a>
-        <small>這份健檢提供排查方向，不會自動替你完成個案診斷，也不保證單次修改能解決所有問題。</small>
+        <small>這份健檢幫你找出先修哪一層，不會替你判斷個案。填的內容只留在你的瀏覽器。</small>
       </div>
     </header>
 
@@ -88,7 +88,7 @@ import { ArrowDown } from '@lucide/astro';
   }
 
   .diagnostic-hero h1 {
-    max-width: 14ch;
+    max-width: 11em;
     margin: 0;
     font-family: var(--font-serif);
     font-size: clamp(2.5rem, 6vw, 5.2rem);

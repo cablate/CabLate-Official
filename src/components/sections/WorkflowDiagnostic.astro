@@ -5,9 +5,9 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
 
 <section class="workflow-check" id="workflow-check" aria-labelledby="workflow-check-title" data-workflow-diagnostic>
   <header class="worksheet-heading">
-    <p class="section-label">01 / 準備一個真實任務</p>
-    <h2 id="workflow-check-title" tabindex="-1">先選一件事，不要檢查整個人生或整間公司。</h2>
-    <p>所有內容只留在這個瀏覽器分頁。重新整理或離開後不會保存，也不會送到任何伺服器。</p>
+    <p class="section-label">第 1 步・挑一件事</p>
+    <h2 id="workflow-check-title" tabindex="-1">挑一件最近 AI 做壞的事就好</h2>
+    <p>你填的內容只留在這個分頁。重新整理或離開就會清掉，不會送到任何伺服器。</p>
   </header>
 
   <div class="task-sheet" aria-label="任務現況">
@@ -44,9 +44,9 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
 
   <section class="first-layer" aria-labelledby="first-layer-title">
     <div>
-      <p class="section-label">02 / 決定第一步</p>
+      <p class="section-label">第 2 步・選先修哪一層</p>
       <h2 id="first-layer-title">哪一層最值得先修？</h2>
-      <p>這不是自動判分。回看你標成「不確定」或「尚未做到」的地方，選一個最有直接證據、也最可能阻礙交付的層次。一次先修一層。</p>
+      <p>這裡不會自動算分。回頭看你選「不確定」或「沒有」的地方，挑一個你最有把握、也最影響交件的。一次只修一層。</p>
     </div>
     <fieldset class="layer-selector">
       <legend class="visually-hidden">選擇最值得先修的層次</legend>
@@ -61,14 +61,14 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
 
   <section class="result-builder" aria-labelledby="result-builder-title">
     <header>
-      <p class="section-label">03 / 留下一個可執行修正</p>
-      <h2 id="result-builder-title">把這次學到的東西留下來，讓下次不用重猜。</h2>
+      <p class="section-label">第 3 步・寫下要怎麼修</p>
+      <h2 id="result-builder-title">把這次查到的寫下來，下次不用重猜</h2>
     </header>
     <div class="result-fields">
-      <label>我看見的證據<textarea rows="3" data-field="evidence" autocomplete="off"></textarea></label>
+      <label>我看到的問題<textarea rows="3" data-field="evidence" autocomplete="off"></textarea></label>
       <label>我先做的一個修正<textarea rows="3" data-field="correction" autocomplete="off"></textarea></label>
-      <label>修正後要看到的行為<textarea rows="3" data-field="expected" autocomplete="off"></textarea></label>
-      <label>如果沒有改善，下一層要檢查<textarea rows="3" data-field="next" autocomplete="off"></textarea></label>
+      <label>修好之後應該看到什麼<textarea rows="3" data-field="expected" autocomplete="off"></textarea></label>
+      <label>如果沒變好，下一個要查的是<textarea rows="3" data-field="next" autocomplete="off"></textarea></label>
     </div>
     <p class="validation-message" data-validation-message role="alert" hidden></p>
     <button class="btn btn-primary generate-result" type="button" data-generate-result>
@@ -78,7 +78,7 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
 
   <section class="result-panel" aria-labelledby="result-title" data-result-panel hidden>
     <div class="result-panel__paper">
-      <p class="section-label">你的本機結果</p>
+      <p class="section-label">你的結果（只存在這個分頁）</p>
       <h2 id="result-title">我的 AI 工作流健檢結果</h2>
       <pre tabindex="0" data-result-text></pre>
       <div class="result-actions">
@@ -93,7 +93,7 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
         <h3 id="result-next-title" data-result-layer-title></h3>
         <p data-result-explanation></p>
         <a class="btn btn-primary" data-result-cta target="_blank" rel="noopener"></a>
-        <a class="result-service-link" href="/services/#contact">已經查出問題，卻不知道怎麼修？把你查到的結果交給我看。</a>
+        <a class="result-service-link" href="/services/consulting/">查出問題但不知道怎麼修？帶著這份結果來找我。</a>
       </div>
     </aside>
   </section>
@@ -104,10 +104,10 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
       <h2 id="noscript-result-title">我的 AI 工作流健檢結果</h2>
       <pre>任務：＿＿＿＿
 最主要失效層：題目／Context 與資料／工具與權限／Memory 與狀態／驗收與復原
-我看見的證據：＿＿＿＿
+我看到的問題：＿＿＿＿
 我先做的一個修正：＿＿＿＿
-修正後要看到的行為：＿＿＿＿
-如果沒有改善，下一層要檢查：＿＿＿＿</pre>
+修好之後應該看到：＿＿＿＿
+如果沒變好，下一個要查：＿＿＿＿</pre>
     </section>
   </noscript>
 </section>
@@ -175,10 +175,10 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
 
         const required = [
           ['task', '請先寫下這次要檢查的任務。'],
-          ['evidence', '請補上一個你實際看見的證據。'],
-          ['correction', '請寫下這次只先做哪一個修正。'],
-          ['expected', '請寫下修正後要看見的行為。'],
-          ['next', '請決定沒有改善時，下一層要檢查什麼。'],
+          ['evidence', '請寫下你實際看到的問題。'],
+          ['correction', '請寫下這次先修哪一個地方。'],
+          ['expected', '請寫下修好之後應該看到什麼。'],
+          ['next', '請寫下如果沒變好，下一個要查什麼。'],
         ] as const;
         for (const [key, message] of required) {
           if (!value(key)) {
@@ -195,10 +195,10 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
           '',
           `任務：${value('task')}`,
           `最主要失效層：${layer.title}`,
-          `我看見的證據：${value('evidence')}`,
+          `我看到的問題：${value('evidence')}`,
           `我先做的一個修正：${value('correction')}`,
-          `修正後要看到的行為：${value('expected')}`,
-          `如果沒有改善，下一層要檢查：${value('next')}`,
+          `修好之後應該看到：${value('expected')}`,
+          `如果沒變好，下一個要查：${value('next')}`,
         ].join('\n');
         resultLayerTitle.textContent = layer.title;
         resultExplanation.textContent = layer.result;

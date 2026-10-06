@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowRight } from '@lucide/astro';
 import { formatDate } from '../../utils/format';
+import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
 
 const allArticles = await getCollection('articles');
 const publishedArticles = allArticles
@@ -60,17 +61,16 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
       <div class="articles-container">
         <header class="articles-hero">
           <div class="articles-hero__topline">
-            <p class="section-label">研究與實作筆記</p>
-            <span>FIELD NOTES / 01</span>
+            <p class="section-label">早期的實作筆記</p>
           </div>
-          <h1 class="display-heading"><span class="heading-phrase">先找到</span><span class="heading-phrase">最接近你問題的</span><span class="heading-phrase">那篇文章。</span></h1>
-          <p>文章按問題整理，不按發布順序排列。從你現在遇到的情況開始，再沿著相關主題讀下去。</p>
+          <h1 class="display-heading"><span class="heading-phrase">挑一個</span><span class="heading-phrase">跟你問題最像的</span><span class="heading-phrase">開始讀。</span></h1>
+          <p>這裡是 2026 年 2 到 3 月寫的 {publishedArticles.length} 篇實作筆記，照問題排，不照時間排。之後的新文章都放在 <a href={withCabAiAttribution(siteConfig.cabAi.libraryUrl, 'articles_hero')} target="_blank" rel="noopener">CabAI 文章區</a>，免費看。</p>
         </header>
 
         <section class="reading-routes" aria-labelledby="routes-title">
           <header>
             <p class="section-label">依問題開始</p>
-            <h2 id="routes-title">選一題開始。</h2>
+            <h2 id="routes-title">你遇到的是哪一個？</h2>
           </header>
           <ol>
             {readingRoutes.map((route, index) => (
@@ -82,7 +82,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
                     <h3>{route.title}</h3>
                     <p>{route.description}</p>
                   </div>
-                  <span class="reading-route__action">開始閱讀 <ArrowRight size={16} aria-hidden="true" /></span>
+                  <span class="reading-route__action">讀這篇 <ArrowRight size={16} aria-hidden="true" /></span>
                 </a>
               </li>
             ))}
@@ -93,7 +93,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
           <nav class="topic-index" aria-label="文章主題索引">
             <header>
               <p class="section-label">主題索引</p>
-              <h2>想繼續讀同一個主題，就從索引選一條。</h2>
+              <h2>照主題找</h2>
             </header>
             <div class="topic-index__list">
               {categoryCounts.map(({ category, count }) => (
@@ -107,8 +107,8 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
         {otherArticles.length > 0 && (
           <section class="other-articles" aria-labelledby="other-articles-title">
             <header>
-              <p class="section-label">其他實作筆記</p>
-              <h2 id="other-articles-title">找不到完全相同的問題？從其他實作筆記開始。</h2>
+              <p class="section-label">其他筆記</p>
+              <h2 id="other-articles-title">其他幾篇</h2>
             </header>
             <div class="article-list">
               {otherArticles.map((entry) => (
@@ -136,13 +136,13 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
   .articles-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-inline-size: 0; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
   .articles-hero__topline .section-label { margin: 0; }
   .articles-hero__topline > span { min-inline-size: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; text-align: end; text-wrap: pretty; }
-  .articles-hero h1 { max-width: 17ch; margin: clamp(2.75rem, 5vw, 4.5rem) 0 0; font-size: clamp(3rem, 5.8vw, 5.6rem); }
+  .articles-hero h1 { max-width: 13em; margin: clamp(2.75rem, 5vw, 4.5rem) 0 0; font-size: clamp(3rem, 5.8vw, 5.6rem); }
   .articles-hero > p { max-width: 48rem; margin: 2rem 0 0; color: var(--text-secondary); font-size: 1.08rem; line-height: 1.85; }
   .articles-page a:focus-visible { outline: 2px solid var(--accent); outline-offset: .3rem; }
 
   .reading-routes { margin-top: clamp(4rem, 8vw, 7rem); }
   .reading-routes > header, .topic-index > header, .other-articles > header { max-width: 52rem; margin-bottom: 2.5rem; }
-  .reading-routes h2, .topic-index h2, .other-articles h2 { max-width: 19ch; margin: 0; font-size: clamp(2rem, 3.8vw, 3.4rem); letter-spacing: -.05em; line-height: 1.06; }
+  .reading-routes h2, .topic-index h2, .other-articles h2 { max-width: 15em; margin: 0; font-size: clamp(2rem, 3.8vw, 3.4rem); letter-spacing: -.05em; line-height: 1.06; }
   .reading-routes ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
   .reading-routes li { border-bottom: 1px solid var(--border); }
   .reading-routes a { display: grid; grid-template-columns: 4rem minmax(0, 1fr) auto; gap: 2rem; align-items: start; min-inline-size: 0; padding: 1.8rem 0; }

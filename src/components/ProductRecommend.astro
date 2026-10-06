@@ -17,15 +17,15 @@ const { category, tags } = Astro.props;
 // 分類 → 推薦產品對應
 const recommendMap: Record<string, { title: string; url: string; desc: string }[]> = {
     'AI工具實戰': [
-        { title: '把有效做法整理成可重複使用的 Skill', url: withCabAiAttribution(siteConfig.cabAi.agentSkillUrl, 'article_agentskill'), desc: '前往 CabAI 查看 AgentSkill 課程、免費試看、完整內容與適合對象。' },
+        { title: '把有效做法整理成可重複使用的 Skill', url: withCabAiAttribution(siteConfig.cabAi.agentSkillUrl, 'article_agentskill'), desc: 'AgentSkill 課程，200 多人買過，評價 4.6 / 5，有免費試看。' },
     ],
 };
 
 // 根據標籤的推薦邏輯
 const tagBased: { match: string[]; rec: { title: string; url: string; desc: string } }[] = [
-    { match: ['Claude Code', 'Claude Agent SDK', 'Agent SDK', 'Context Engineering', 'Harness Engineering', 'Harness', 'Memory', 'prompt caching', 'token 成本優化', 'system-reminder'], rec: { title: '繼續看 Agent 深度工程手冊', url: withCabAiAttribution(siteConfig.cabAi.handbookUrl, 'article_handbook'), desc: '前往 CabAI 查看免費試看片段、完整章節與適合處理的失效問題。' } },
-    { match: ['AI Agent', 'Agent 架構', 'AI 協作', 'OpenClaw', '自動化'], rec: { title: '把協作方法整理成 AgentSkill', url: withCabAiAttribution(siteConfig.cabAi.agentSkillUrl, 'article_agentskill'), desc: '前往 CabAI 查看課程如何從觀念、案例走到一套能重複使用的 Skill。' } },
-    { match: ['金流', 'Payment', 'payment', 'Portaly'], rec: { title: '查看目前可取得的學習內容', url: withCabAiAttribution(siteConfig.cabAi.productsUrl, 'article_learning'), desc: '前往 CabAI 比較目前已開放的課程、工程手冊與免費試看。' } },
+    { match: ['Claude Code', 'Claude Agent SDK', 'Agent SDK', 'Context Engineering', 'Harness Engineering', 'Harness', 'Memory', 'prompt caching', 'token 成本優化', 'system-reminder'], rec: { title: '繼續看 Claude Code 深度工程手冊', url: withCabAiAttribution(siteConfig.cabAi.handbookUrl, 'article_handbook'), desc: '18 章、46 堂，遇到問題翻對應章節。有免費試看。' } },
+    { match: ['AI Agent', 'Agent 架構', 'AI 協作', 'OpenClaw', '自動化'], rec: { title: '把協作方法整理成 AgentSkill', url: withCabAiAttribution(siteConfig.cabAi.agentSkillUrl, 'article_agentskill'), desc: '從觀念、案例一路做到一套能重複用的 Skill。有免費試看。' } },
+    { match: ['金流', 'Payment', 'payment', 'Portaly'], rec: { title: '看看 CabAI 上有哪些課', url: withCabAiAttribution(siteConfig.cabAi.productsUrl, 'article_learning'), desc: '課程、手冊和免費試看都在這裡。' } },
 ];
 
 // 決定推薦

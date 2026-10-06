@@ -44,6 +44,7 @@ const breadcrumbJsonLd = {
 <BaseLayout
   title={`${category} | 文章分類`}
   description={`CabLate 的 ${category} 相關文章，共 ${articles.length} 篇`}
+  noindex={true}
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
   <div class="archive-page paper-page">

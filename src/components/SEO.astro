@@ -194,7 +194,7 @@ const ogType = type === 'article' || type === 'course' ? 'article' : 'website';
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
-{noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow" />}
+{noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow" />}
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />

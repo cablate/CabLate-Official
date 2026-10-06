@@ -52,7 +52,7 @@
 
 .service-hero h1,
 .service-detail-hero h1 {
-  max-width: 16ch;
+  max-width: 12em;
   margin: 1.1rem 0 0;
   font-size: clamp(2.35rem, 5vw, 4.6rem);
   line-height: 1.12;
@@ -61,7 +61,7 @@
 }
 
 .service-detail-hero h1 {
-  max-width: 11ch;
+  max-width: 9em;
   font-size: clamp(2.4rem, 4.25vw, 3.85rem);
   line-height: 1.1;
 }
@@ -208,7 +208,7 @@
 .service-principle h2,
 .service-secondary h2,
 .service-final-cta h2 {
-  max-width: 22ch;
+  max-width: 17em;
   margin: 0;
   font-size: clamp(1.7rem, 3vw, 2.75rem);
   line-height: 1.32;
@@ -347,7 +347,7 @@
 }
 
 .service-organization__routes h3 {
-  max-width: 18ch;
+  max-width: 14em;
   margin: 1rem 0 0;
   font-size: clamp(1.45rem, 2.6vw, 2.15rem);
   line-height: 1.35;
@@ -542,7 +542,7 @@
 }
 
 .service-decision-example h3 {
-  max-width: 19ch;
+  max-width: 15em;
   font-size: clamp(1.25rem, 2vw, 1.65rem);
   line-height: 1.4;
 }
@@ -990,7 +990,7 @@
 
 .service-enterprise-evidence h2,
 .service-partnership-brief h2 {
-  max-width: 22ch;
+  max-width: 17em;
   margin: 0;
   font-size: clamp(1.7rem, 3vw, 2.75rem);
   line-height: 1.32;
@@ -1050,7 +1050,7 @@
 }
 
 .service-partnership-types__grid h3 {
-  max-width: 18ch;
+  max-width: 14em;
   margin: 1rem 0 0;
   font-size: clamp(1.35rem, 2.4vw, 2.1rem);
   line-height: 1.35;
@@ -1326,7 +1326,7 @@
   }
 
   .service-coaching-sticky span {
-    max-width: 20ch;
+    max-width: 15em;
     font-size: 0.64rem;
   }
 
@@ -1352,5 +1352,328 @@
 
   .service-coaching-sticky {
     border: 2px solid CanvasText;
+  }
+}
+
+/* 2026-10 services: price-first three paths */
+.service-why {
+  margin-block: 1.25rem;
+}
+
+.service-proof {
+  margin-block: 1.25rem;
+}
+
+.service-paths--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.service-path > p:first-child {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  letter-spacing: 0;
+}
+
+.service-path__price {
+  display: grid;
+  gap: 0.2rem;
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--accent);
+  background: var(--bg-soft);
+}
+
+.service-path__price strong {
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.service-path__price span {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.service-paths--three .service-path > p:nth-of-type(2) {
+  min-height: 7.5rem;
+}
+
+@media (max-width: 980px) {
+  .service-paths--three {
+    grid-template-columns: 1fr;
+  }
+
+  .service-paths--three .service-path {
+    border-right: 0;
+  }
+
+  .service-paths--three .service-path > p:nth-of-type(2) {
+    min-height: 0;
+  }
+}
+
+/* 2026-10 enterprise: cases, topics, formats */
+.service-enterprise-evidence:has(.enterprise-cases) {
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.service-enterprise-evidence:has(.enterprise-cases) > div:first-child > p:last-child {
+  max-width: 40rem;
+  margin: 0.75rem 0 0;
+  color: var(--text-secondary);
+}
+
+.enterprise-cases {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.enterprise-cases article {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+}
+
+.enterprise-cases h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.45;
+}
+
+.enterprise-cases p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.75;
+}
+
+.enterprise-cases__label {
+  color: var(--accent-text) !important;
+  font-size: 0.8rem !important;
+  font-weight: 700;
+}
+
+.enterprise-cases__result {
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border);
+  color: var(--text-primary) !important;
+}
+
+.enterprise-topics strong {
+  color: var(--accent-text);
+}
+
+.enterprise-formats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.enterprise-formats li {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .enterprise-cases {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 2026-10 partnerships: session list */
+.session-table {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--border-strong);
+  list-style: none;
+}
+
+.session-table li {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 1rem 2rem;
+  align-items: baseline;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.session-table time {
+  color: var(--accent-text);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.session-table div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.session-table strong {
+  color: var(--text-primary);
+}
+
+.session-table span,
+.session-table p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 760px) {
+  .session-table li {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+}
+
+/* 2026-10 enterprise: plan comparison table */
+.plan-table-wrap {
+  overflow-x: auto;
+}
+
+.plan-table {
+  width: 100%;
+  min-width: 40rem;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.plan-table th,
+.plan-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.65;
+}
+
+.plan-table thead th {
+  border-bottom: 2px solid var(--text-primary);
+}
+
+.plan-table thead th strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 1.15rem;
+}
+
+.plan-table thead th span {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.plan-table thead th small {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--accent-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.plan-table tbody th {
+  width: 7rem;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.plan-table td {
+  color: var(--text-secondary);
+}
+
+.plan-table .is-featured {
+  background: var(--accent-subtle);
+}
+
+.plan-table__cta {
+  margin-top: 1.75rem;
+}
+
+.plan-cards {
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 760px) {
+  .plan-table-wrap {
+    display: none;
+  }
+
+  .plan-cards {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .plan-cards li {
+    display: grid;
+    gap: 0.3rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: #fff;
+  }
+
+  .plan-cards li.is-featured {
+    border: 2px solid var(--accent);
+    background: var(--accent-subtle);
+  }
+
+  .plan-cards small {
+    color: var(--accent-text);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .plan-cards strong {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+  }
+
+  .plan-cards > li > span {
+    color: var(--accent-text);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .plan-cards dl {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0.6rem 0 0;
+  }
+
+  .plan-cards dl div {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .plan-cards dt {
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+
+  .plan-cards dd {
+    margin: 0;
+    color: var(--text-secondary);
   }
 }

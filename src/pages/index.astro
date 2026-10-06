@@ -1,21 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Newsletter from '../components/sections/Newsletter.astro';
+import ProofStrip from '../components/common/ProofStrip.astro';
+import QuoteBand from '../components/common/QuoteBand.astro';
+import WhyDifferent from '../components/common/WhyDifferent.astro';
 import { ArrowLeft, ArrowRight, Braces, Database, GitBranch } from '@lucide/astro';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
+import { audienceTypes, proofPoints, teachingSessions } from '../config/authority';
 
 const heroMessages = [
   {
-    statement: ['我研究 AI、Agent', '與真實工作流程'],
-    result: '找到做法也知道怎麼檢查\n用 AI 改善你的工作流程',
-  },
-  {
-    statement: ['我把工程上的拆解與驗證', '帶進 AI 應用'],
-    result: '把問題拆開也把判斷留下\n下一次不必再從頭猜',
-  },
-  {
-    statement: ['我熟悉 AI 應用', '也親手把方法做成產品'],
-    result: '看得出 AI 卡在哪裡\n把結果修到能驗收也能交接',
+    statement: ['我是 Cab，在第一線教 AI 落地，', '從農會推廣人員教到外商工程團隊'],
+    result: '我教的是判斷：AI 該不該用、怎麼用才划算。\n我自己也每天用 Claude Code 工作。',
   },
 ];
 
@@ -24,78 +20,71 @@ const diagnosticCases = [
     code: 'context',
     icon: Database,
     term: 'Context',
-    title: '資訊脈絡',
+    title: '它看到了什麼',
     question: ['它這次到底', '看到了哪些資料'],
-    symptom: ['講了很多次', 'AI 表現還是很差'],
-    description: '你以為交代過了，下一次它卻像從沒看過。',
-    diagnosis: ['你以為它知道的背景', '不一定真的進到這次任務裡'],
+    symptom: ['講了很多次', 'AI 還是做不好'],
+    description: '你以為交代過了，下一次它又像沒聽過。',
+    diagnosis: ['你以為它知道的背景', '這次可能根本沒傳給它'],
     next: ['挑一個明顯答錯的地方', '對照它當時實際讀到的資料'],
-    cta: { label: '專案諮詢：60 分鐘先把資訊輸入與卡點看清楚', href: '/services/consulting/' },
+    cta: { label: '60 分鐘專案諮詢：一起找出它漏看了什麼', href: '/services/consulting/' },
   },
   {
     code: 'skill',
     icon: Braces,
     term: 'Skill',
-    title: '可重複方法',
+    title: '做法有沒有留下來',
     question: ['上次做對的關鍵', '有沒有被留下來'],
-    symptom: ['這次明明做出成果', '下次又得重來'],
-    description: '結果留下了，真正有用的做法卻沒有。',
-    diagnosis: ['留下成果不等於留下做法', '關鍵判斷沒保存，下次還是得重講'],
-    next: ['找一個每次都得重講的判斷', '把它整理成下次能直接照做的步驟'],
-    cta: { label: 'AI 應用陪跑：把做法固化為團隊可執行的流程', href: '/services/coaching/' },
+    symptom: ['這次明明做出來了', '下次又要重來'],
+    description: '結果留下了，做對的方法沒留下。',
+    diagnosis: ['你存了成品，沒存做法', '關鍵的判斷下次還是要重講'],
+    next: ['找一個每次都要重講的判斷', '寫成下次能直接照做的步驟'],
+    cta: { label: '五週陪跑：把做對的那一次變成固定做法', href: '/services/coaching/' },
   },
   {
     code: 'harness',
     icon: GitBranch,
     term: 'Harness',
-    title: '執行環境',
+    title: '流程從哪裡斷掉',
     question: ['流程是從哪一步', '開始斷掉的'],
-    symptom: ['只要一步出錯', '整個流程就卡住'],
-    description: '前面明明都成功了，一出錯還是只能從頭開始。',
-    diagnosis: ['流程如果只記得從頭開始', '前面做對再多，出錯也接不回去'],
-    next: ['找到失敗前最後完成的步驟', '讓流程直接從那裡繼續'],
-    cta: { label: '企業合作與工作坊：重構端到端工作流程導入', href: '/services/enterprise/' },
+    symptom: ['只要一步出錯', '整條流程就卡住'],
+    description: '前面都做對了，一出錯還是只能從頭來。',
+    diagnosis: ['流程只會從頭跑', '前面做對再多，出錯也接不回去'],
+    next: ['找到出錯前最後完成的那一步', '讓流程能從那裡接著做'],
+    cta: { label: '團隊導入：把流程改成出錯也接得回去', href: '/services/enterprise/' },
   },
 ];
 
 const routes = [
-  { title: '先自己研究看看', description: '從課程和整理好的內容開始', label: '看學習內容', href: '/courses/' },
-  { title: '找我一起看', description: '帶著實際情境，一起排出下一步', label: '查看合作方式', href: '/services/' },
+  { title: '先自己檢查一個任務', description: '拿一件最近做壞的事，照五個問題檢查，看先修哪一層。', price: '免費', label: '開始健檢', href: '/expertise/' },
+  { title: '自己學', description: 'AgentSkill 課程和 Claude Code 手冊，每一門都有免費試看。', price: 'NT$1,500 起', label: '看課程與手冊', href: '/courses/' },
+  { title: '找我一起看', description: '60 分鐘諮詢或五週陪跑。先填表，我會親自看過再回你。', price: 'NT$5,000 起', label: '看合作方式', href: '/services/' },
 ];
 
-const speakerRecords = [
-  {
-    id: 'invited-talk',
-    time: '2025.07',
-    title: '從第一次受邀講座開始',
-    description: '先從研討會與開發者社群分享開始，把 AI 怎麼進入真實工作講給現場的人聽。',
-    tags: ['開發者社群', '實務經驗分享'],
-    visual: 'meetup',
-  },
-  {
-    id: 'hosted-talk',
-    time: '2025.10',
-    title: '接著主辦第一場講座',
-    description: '網站資安入門，200 人報名。',
-    tags: ['200+ 人講座', '工程防禦實戰'],
-    visual: 'workshop',
-  },
-  {
-    id: 'delivery',
-    time: '目前',
-    title: '企業內訓與工作坊持續交付',
-    description: '依團隊情境做需求與受眾盤點，設計課綱、示範案例和實作題目，課後再留下改善建議與學習方向。',
-    tags: ['痛點受眾盤點', '客製課綱示範', '實作題目驗收', '課後改善路徑'],
-    visual: 'workshop',
-  },
-] as const;
+const speakerRecords = teachingSessions.map((session, index) => ({
+  id: session.id,
+  time: session.time,
+  title: session.title,
+  audience: session.audience,
+  format: session.format,
+  description: session.detail,
+  tags: session.tags,
+  visual: index % 2 === 0 ? 'meetup' : 'workshop',
+}));
+
+const planEntries = [
+  { name: '講座', length: '1–2 小時', fit: '先讓全員或主管有共同的說法。', href: '/services/partnerships/', featured: false },
+  { name: '實作工作坊', length: '半日或全日', fit: '一個部門拿自己的工作來練，每人帶電腦做。', href: '/services/enterprise/#enterprise-options-title', featured: true },
+  { name: '兩日班或導入陪跑', length: '16 小時或分週', fit: '從零做到能用的成果，或挑一段流程試做。', href: '/services/enterprise/#enterprise-options-title', featured: false },
+];
+
+const threadsProof = proofPoints.find((point) => point.label.includes('Threads')) ?? proofPoints[0];
 ---
 
-<BaseLayout title="CabLate｜AI 應用、Agent 與產品實作" description="CabLate 的個人網站。從全端工程與系統設計出發，持續製作 AI 產品、研究 Agent，也整理文章、課程與工作方法。" image="/og/pages/home.png" imageAlt="CabLate：從工程走進 AI，持續做產品、寫研究與整理工作方法。" imageWidth={1200} imageHeight={630}>
-  <div class="home-page" data-content-state="testing">
+<BaseLayout title="CabLate｜AI 企業內訓、講座與 Claude Code" description="Cab 在第一線教 AI 落地：從農會推廣人員教到外商工程團隊，自己每天用 Claude Code 工作。提供企業內訓、講座、工作坊，也接 AI 諮詢與陪跑。" image="/og/pages/home.png" imageAlt="CabLate：我在第一線教 AI 落地，自己也每天用它工作。" imageWidth={1200} imageHeight={630}>
+  <div class="home-page">
     <section class="home-hero paper-card" aria-labelledby="home-title" data-hero-copy-rotation data-messages={JSON.stringify(heroMessages)}>
       <header class="home-hero__lede">
-        <h1 id="home-title">嗨，我是 CabLate</h1>
+        <h1 id="home-title"><span>AI 課上完，</span><span>大家有真的用進工作嗎？</span></h1>
         <p class="home-hero__statement" id="home-hero-statement" data-hero-statement aria-live="off">
           {heroMessages[0].statement.map((line) => <span data-hero-statement-line>{line}</span>)}
         </p>
@@ -120,7 +109,7 @@ const speakerRecords = [
             fetchpriority="low"
           />
         </div>
-        <p class="home-hero__annotation"><span>WORK NOTE</span>做出來之後呢？</p>
+        <p class="home-hero__annotation"><span>我最常問的一句</span>做出來之後，誰來檢查？</p>
       </figure>
 
       <div class="home-hero__body">
@@ -134,26 +123,104 @@ const speakerRecords = [
           <span class="visually-hidden" data-hero-rotation-status aria-live="polite" aria-atomic="true"></span>
         </div>
         <div class="home-hero__actions">
-          <a class="btn btn-primary hero-action" href="/about/#public-output-title">先看我做過的東西 <ArrowRight size={18} aria-hidden="true" /></a>
-          <a class="home-hero__secondary-action" href="#diagnostic-title">有個 AI 卡點？從這裡開始 <ArrowRight size={16} aria-hidden="true" /></a>
+          <a class="btn btn-primary hero-action" href="/services/enterprise/">邀請我上課或內訓 <ArrowRight size={18} aria-hidden="true" /></a>
+          <a class="home-hero__secondary-action" href="#identity-title">看我教過誰 <ArrowRight size={16} aria-hidden="true" /></a>
         </div>
-        <div class="home-hero__pillars" aria-label="核心能力">
-          <span class="pillar-tag"><span class="pillar-dot"></span>Agent 系統設計與逆向</span>
-          <span class="pillar-tag"><span class="pillar-dot"></span>工作流程標準化 (Harness)</span>
-          <span class="pillar-tag"><span class="pillar-dot"></span>企業內訓與實戰工作坊</span>
+        <p class="home-hero__free-note">需求先聊，不收費。</p>
+      </div>
+    </section>
+
+    <ProofStrip label="目前的數字" />
+
+    <WhyDifferent />
+
+    <section class="identity-section speaker-section" aria-labelledby="identity-title" data-speaker-section data-chapter-transition>
+      <span class="identity-section__seam" aria-hidden="true"><span data-chapter-seam></span></span>
+      <div class="identity-intro section-grid" data-chapter-lead>
+        <header><h2 id="identity-title">這一年，<span class="identity-intro__nowrap">我教過這些人</span></h2></header>
+        <div class="identity-intro__copy">
+          <p class="identity-intro__lead">有沒寫過程式的推廣人員，也有天天寫程式的工程師。</p>
+          <ul class="audience-chips" aria-label="教過的對象">
+            {audienceTypes.map((type) => <li>{type}</li>)}
+          </ul>
+          <a class="text-action" href="/services/enterprise/">看可以上的主題和形式 <ArrowRight size={16} aria-hidden="true" /></a>
+        </div>
+      </div>
+      <div class="speaker-proof">
+        <div class="speaker-trace" data-speaker-trace>
+          <div class="speaker-trace__rail" aria-hidden="true"><span data-speaker-progress></span></div>
+          <ol class="speaker-records">
+            {speakerRecords.map((record) => (
+              <li class="speaker-record" data-speaker-record={record.id} data-speaker-visual={record.visual}>
+                <div class="speaker-record__time"><span>{record.time}</span></div>
+                <div class="speaker-record__body">
+                  <h3>{record.title}</h3>
+                  {'audience' in record && <p class="speaker-record__audience">{record.audience}・{record.format}</p>}
+                  <p>{record.description}</p>
+                  {'tags' in record && record.tags && (
+                    <ul class="speaker-record__tags" aria-label="重點">
+                      {record.tags.map((tag: string) => <li>{tag}</li>)}
+                    </ul>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div class="speaker-proof__side">
+          <figure class="speaker-media" aria-label="講座與工作坊現場照片">
+            <div class="speaker-media__frame" data-speaker-media="meetup">
+              <img src="/images/photos/cablate-speaking-ai-meetup-april.webp" alt="Cab 在 AI 小聚現場拿著麥克風分享" width="2000" height="1333" loading="lazy" />
+              <figcaption>AI 小聚分享</figcaption>
+            </div>
+            <div class="speaker-media__frame" data-speaker-media="workshop">
+              <img src="/images/photos/cablate-speaking-workshop-0627.webp" alt="Cab 在工作坊現場與學員一起拆解問題" width="1970" height="1970" loading="lazy" />
+              <figcaption>工作坊實作</figcaption>
+            </div>
+          </figure>
+          <figure class="threads-proof" id="threads-proof">
+            <div class="threads-proof__header">
+              <span class="threads-proof__badge">Threads @cab_late</span>
+              <div class="threads-proof__stat"><strong>{threadsProof.value}</strong><span>人追蹤</span></div>
+            </div>
+            <div class="threads-proof__content">
+              <p>平常在 Threads 寫 AI 協作、Claude Code 拆解和工作方法。</p>
+              <a class="threads-proof__cta" href={siteConfig.threadsUrl} target="_blank" rel="noopener">去 Threads 看看 <ArrowRight size={14} aria-hidden="true" /></a>
+            </div>
+          </figure>
         </div>
       </div>
     </section>
+
+    <section class="plan-entry" aria-labelledby="plan-entry-title">
+      <header>
+        <p class="section-label">合作方案</p>
+        <h2 id="plan-entry-title">三種方案，<br />看人數和想做到哪裡</h2>
+      </header>
+      <div class="plan-entry__grid">
+        {planEntries.map((plan) => (
+          <a class:list={['plan-entry__card', plan.featured && 'is-featured']} href={plan.href}>
+            {plan.featured && <small>最多團隊選</small>}
+            <strong>{plan.name}</strong>
+            <span class="plan-entry__length">{plan.length}</span>
+            <p>{plan.fit}</p>
+            <span class="plan-entry__more">看細節 <ArrowRight size={15} aria-hidden="true" /></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <QuoteBand title="我常講的幾句話" lead="Threads 原文，沒有修過。" pick={[0, 1, 3]} tone="light" />
 
     <section class="diagnostic-stage" aria-labelledby="diagnostic-title">
       <div class="diagnostic-console">
         <div class="diagnostic-chassis-bar" aria-hidden="true">
           <div class="diagnostic-chassis-status">
             <span class="chassis-led"></span>
-            <span class="chassis-label">BENCH DIAGNOSTIC // READY</span>
+            <span class="chassis-label">選一個最像你的</span>
           </div>
-          <h2 class="diagnostic-chassis-title" id="diagnostic-title">你是不是也遇過這幾種情況？</h2>
-          <div class="diagnostic-chassis-coords">SEC // 02</div>
+          <h2 class="diagnostic-chassis-title" id="diagnostic-title">AI 用到一半卡住，通常是這三種</h2>
+          <div class="diagnostic-chassis-coords" aria-hidden="true"></div>
         </div>
 
         <div class="diagnostic-workbench">
@@ -183,11 +250,11 @@ const speakerRecords = [
                 </header>
                 <div class="trace-reading">
                   <div class="trace-diagnosis-card">
-                    <span class="trace-subheading">癥結所在</span>
+                    <span class="trace-subheading">問題多半在這</span>
                     <p class="trace-diagnosis">{item.diagnosis.map((line) => <span>{line}</span>)}</p>
                   </div>
                   <div class="trace-next-card">
-                    <span class="trace-subheading trace-subheading--action">排錯建議</span>
+                    <span class="trace-subheading trace-subheading--action">先試這一步</span>
                     <p class="trace-next"><span class="trace-next__arrow" aria-hidden="true">→</span><strong>{item.next.map((line) => <span>{line}</span>)}</strong></p>
                   </div>
                   <div class="trace-action-card">
@@ -208,23 +275,22 @@ const speakerRecords = [
 
     <section class="route-section" aria-labelledby="route-title" data-chapter-transition>
       <header class="route-heading" data-chapter-lead>
-        <span class="section-label">NEXT STEPS // 決策路徑</span>
-        <h2 id="route-title">接下來怎麼走？</h2>
-        <p>依據你目前的階段與資源，選擇最適合的推進方式。</p>
+        <span class="section-label">下一步</span>
+        <h2 id="route-title">個人想把 AI 用好？從這裡開始</h2>
       </header>
       <div class="route-grid">
         {routes.map((route, index) => (
-          <article class:list={['route-card', index === 0 ? 'route-card--self' : 'route-card--collab']}>
+          <article class:list={['route-card', index === routes.length - 1 ? 'route-card--collab' : 'route-card--self']}>
             <div class="route-card__top">
-              <span class="route-card__tag">{index === 0 ? 'PATH 01 // 自學手冊' : 'PATH 02 // 諮詢協同'}</span>
-              <span class="route-card__status">{index === 0 ? 'OPEN ACCESS' : 'DIRECT COLLAB'}</span>
+              <span class="route-card__tag">{String(index + 1).padStart(2, '0')}</span>
+              <span class="route-card__status">{route.price}</span>
             </div>
             <div class="route-card__main">
               <h3>{route.title}</h3>
               <p class="route-card__desc">{route.description}</p>
             </div>
             <div class="route-card__action-wrap">
-              <a class:list={['route-card__btn', index === 0 ? 'btn-ghost' : 'btn-primary']} href={route.href}>
+              <a class:list={['route-card__btn', index === routes.length - 1 ? 'btn-primary' : 'btn-ghost']} href={route.href}>
                 <span>{route.label}</span>
                 <ArrowRight size={16} aria-hidden="true" />
               </a>
@@ -234,98 +300,53 @@ const speakerRecords = [
       </div>
     </section>
 
-    <section class="identity-section speaker-section" aria-labelledby="identity-title" data-speaker-section data-chapter-transition>
-      <span class="identity-section__seam" aria-hidden="true"><span data-chapter-seam></span></span>
-      <div class="identity-intro section-grid" data-chapter-lead>
-        <header><h2 id="identity-title">這一年，<span class="identity-intro__nowrap">教學成了</span>我工作的一部分</h2></header>
-        <div class="identity-intro__copy">
-          <p class="identity-intro__lead">從受邀分享，到舉辦講座、工作坊和企業內訓</p>
-          <a class="text-action" href="/about/#delivery-experience-title">看完整經歷 <ArrowRight size={16} aria-hidden="true" /></a>
-        </div>
-      </div>
-      <div class="speaker-proof">
-        <div class="speaker-trace" data-speaker-trace>
-          <div class="speaker-trace__rail" aria-hidden="true"><span data-speaker-progress></span></div>
-          <ol class="speaker-records">
-            {speakerRecords.map((record) => (
-              <li class="speaker-record" data-speaker-record={record.id} data-speaker-visual={record.visual}>
-                <div class="speaker-record__time"><span>{record.time}</span></div>
-                <div class="speaker-record__body">
-                  <h3>{record.title}</h3>
-                  <p>{record.description}</p>
-                  {'tags' in record && record.tags && (
-                    <ul class="speaker-record__tags" aria-label="交付重點">
-                      {record.tags.map((tag: string) => <li>{tag}</li>)}
-                    </ul>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-        <div class="speaker-proof__side">
-          <figure class="speaker-media" aria-label="講座與工作坊現場照片">
-            <div class="speaker-media__frame" data-speaker-media="meetup">
-              <img src="/images/photos/cablate-speaking-ai-meetup-april.webp" alt="Cab 在 AI 小聚現場拿著麥克風分享" width="2048" height="1365" loading="lazy" />
-              <figcaption>AI 小聚現場 // 2025.04</figcaption>
-            </div>
-            <div class="speaker-media__frame" data-speaker-media="workshop">
-              <img src="/images/photos/cablate-speaking-workshop-0627.webp" alt="Cab 在工作坊現場與學員一起拆解問題" width="2048" height="2731" loading="lazy" />
-              <figcaption>工作坊實戰拆解 // 2025.06</figcaption>
-            </div>
-          </figure>
-          <figure class="threads-proof" id="threads-proof">
-            <div class="threads-proof__header">
-              <span class="threads-proof__badge">COMMUNITY // THREADS</span>
-              <div class="threads-proof__stat"><strong>9,163</strong><span>位追蹤者</span></div>
-            </div>
-            <div class="threads-proof__content">
-              <p>持續公開分享 AI 協作、架構逆向與工作方法拆解。</p>
-              <a class="threads-proof__cta" href={siteConfig.threadsUrl} target="_blank" rel="noopener">去 Threads 看最近在寫什麼 <ArrowRight size={14} aria-hidden="true" /></a>
-            </div>
-          </figure>
-        </div>
-      </div>
-    </section>
-
     <section class="cabai-section" aria-labelledby="cabai-title" data-chapter-transition>
       <div class="cabai-section__header" data-chapter-lead>
-        <span class="section-label">DIGITAL LAB // 知識庫體系</span>
+        <span class="section-label">CabAI</span>
         <h2 id="cabai-title">課程和文章，<br />都放在 CabAI</h2>
-        <p class="cabai-section__lead">除了諮詢與內訓，所有可公開的研究筆記與系統化課程體系，收錄並持續更新在 CabAI。</p>
+        <p class="cabai-section__lead">公開文章、課程和手冊都在 CabAI，同一個帳號就能看。</p>
       </div>
       <div class="cabai-section__body">
         <div class="cabai-matrix" aria-label="CabAI 內容索引">
           <a class="cabai-matrix-card cabai-matrix-card--library" href={withCabAiAttribution(siteConfig.cabAi.libraryUrl, 'home_cabai_library')} target="_blank" rel="noopener">
             <div class="cabai-matrix-card__head">
-              <span class="cabai-matrix-card__badge">LIBRARY // 免費文庫</span>
+              <span class="cabai-matrix-card__badge">免費</span>
               <span class="cabai-matrix-card__icon"><Database size={17} aria-hidden="true" /></span>
             </div>
             <div class="cabai-matrix-card__body">
               <strong>公開文章與筆記</strong>
-              <p>先找一篇現在用得上的內容，包含架構逆向、實戰排錯與工程思考。</p>
+              <p>Claude Code 拆解、排錯紀錄和工程筆記，不用登入就能看。</p>
             </div>
             <div class="cabai-matrix-card__footer">
-              <span>前往 Library 閱讀</span>
+              <span>去看文章</span>
               <ArrowRight size={15} aria-hidden="true" />
             </div>
           </a>
           <a class="cabai-matrix-card cabai-matrix-card--courses" href={withCabAiAttribution(siteConfig.cabAi.productsUrl, 'home_cabai_courses')} target="_blank" rel="noopener">
             <div class="cabai-matrix-card__head">
-              <span class="cabai-matrix-card__badge cabai-matrix-card__badge--courses">COURSES // 實作路徑</span>
+              <span class="cabai-matrix-card__badge cabai-matrix-card__badge--courses">課程</span>
               <span class="cabai-matrix-card__icon"><Braces size={17} aria-hidden="true" /></span>
             </div>
             <div class="cabai-matrix-card__body">
-              <strong>體系化課程平台</strong>
-              <p>照著一條完整路徑實作，從全端基礎到 Agent 系統，皆有可重複的驗收標準。</p>
+              <strong>課程與手冊</strong>
+              <p>AgentSkill 課程、Claude Code 深度工程手冊，每一門都有免費試看。</p>
             </div>
             <div class="cabai-matrix-card__footer">
-              <span>查看課程路徑</span>
+              <span>看有哪些課</span>
               <ArrowRight size={15} aria-hidden="true" />
             </div>
           </a>
         </div>
       </div>
+    </section>
+
+    <section class="two-door" aria-labelledby="two-door-title">
+      <h2 id="two-door-title">先從一場講座開始，<br />還是直接談一個部門的工作坊？</h2>
+      <div class="two-door__actions">
+        <a class="btn btn-ghost" href="/services/partnerships/">邀請演講或講座 <ArrowRight size={17} aria-hidden="true" /></a>
+        <a class="btn btn-primary" href="/services/enterprise/">談企業內訓或工作坊 <ArrowRight size={17} aria-hidden="true" /></a>
+      </div>
+      <p>需求先聊，不收費。填表後我會親自回覆。</p>
     </section>
 
     <div class="newsletter-card"><Newsletter /></div>
@@ -486,7 +507,9 @@ const speakerRecords = [
   .home-hero { position: relative; display: grid; grid-template-areas: 'lede portraits' 'body portraits'; grid-template-columns: minmax(0, 1.12fr) minmax(20rem, .88fr); grid-template-rows: auto auto; gap: 1.25rem clamp(1.75rem, 3.5vw, 3.5rem); min-height: 0; padding: clamp(2.2rem, 3.8vw, 3.2rem) clamp(1.75rem, 4vw, 3.8rem); overflow: hidden; touch-action: pan-y; }
   .home-hero::after { position: absolute; right: clamp(2rem, 4vw, 4rem); bottom: clamp(1.5rem, 2.5vw, 2.2rem); width: 4.8rem; height: 1px; content: ''; background: var(--accent); opacity: .42; }
   .home-hero__lede { grid-area: lede; align-self: start; position: relative; z-index: 2; min-width: 0; max-width: 42rem; text-align: left; }
-  .home-hero h1 { max-width: none; margin: 0; color: var(--text-primary); font-family: var(--font-serif); font-size: clamp(2.85rem, 4.2vw, 4.25rem); font-weight: 700; letter-spacing: -.055em; line-height: 1.12; white-space: nowrap; text-align: left; }
+  .home-hero h1 { max-width: none; margin: 0; color: var(--text-primary); font-family: var(--font-serif); font-size: clamp(2.2rem, 3.2vw, 3.2rem); font-weight: 700; letter-spacing: -.045em; line-height: 1.2; text-align: left; }
+  .home-hero h1 span { display: block; white-space: nowrap; }
+  .home-hero__free-note { margin: .75rem 0 0; color: var(--text-secondary); font-size: .85rem; }
   .home-hero__statement { display: grid; justify-items: start; gap: .08em; min-height: 2.85em; margin: .75rem 0 0; color: var(--text-primary); font-family: var(--font-sans); font-size: clamp(1.35rem, 1.95vw, 1.85rem); font-weight: 700; letter-spacing: -.04em; line-height: 1.4; text-align: left; text-wrap: balance; }
   .home-hero__statement span { display: block; text-align: left; }
   .home-hero__body { grid-area: body; position: relative; z-index: 3; align-self: start; min-width: 0; max-width: 36rem; text-align: left; margin-top: .4rem; }
@@ -506,9 +529,6 @@ const speakerRecords = [
   .home-hero__secondary-action svg { animation: icon-ambient-nudge 4.2s ease-in-out infinite; transition: transform 200ms cubic-bezier(.34, 1.56, .64, 1); }
   .home-hero__secondary-action:hover svg { animation: none; transform: translateX(4px); }
   .home-hero__secondary-action:focus-visible { outline: 3px solid var(--accent); outline-offset: .25rem; }
-  .home-hero__pillars { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: .4rem .55rem; margin-top: .95rem; }
-  .pillar-tag { display: inline-flex; align-items: center; gap: .35rem; padding: .22rem .55rem; border-radius: var(--radius-sm); background: rgb(128 100 234 / .08); border: 1px solid rgb(128 100 234 / .2); color: var(--accent-text); font-size: .72rem; font-weight: 700; font-family: var(--font-sans); }
-  .pillar-dot { width: .34rem; height: .34rem; border-radius: 50%; background: var(--accent); }
   .home-hero__portraits { grid-area: portraits; align-self: stretch; position: relative; z-index: 1; min-height: 23rem; margin: 0; }
   .hero-photo { position: absolute; padding: .42rem; border: 1px solid rgb(66 56 82 / .2); background: #fffdf8; box-shadow: 0 .8rem 1.5rem rgb(58 48 38 / .14); transition: transform 260ms ease, box-shadow 260ms ease; }
   .hero-photo:hover { box-shadow: 0 1.1rem 2rem rgb(58 48 38 / .18); }
@@ -794,7 +814,7 @@ const speakerRecords = [
   .route-heading p { margin: 0; color: var(--text-secondary); font-size: .95rem; line-height: 1.65; }
   .route-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(1rem, 2vw, 1.5rem);
   }
   .route-card {
@@ -841,8 +861,8 @@ const speakerRecords = [
   }
   .route-card--self .route-card__top { border-color: var(--border); color: var(--accent-text); }
   .route-card--collab .route-card__top { border-color: rgb(255 255 255 / .15); color: var(--accent-bright); }
-  .route-card__status { padding: .12rem .42rem; border-radius: var(--radius-sm); font-size: .6rem; }
-  .route-card--self .route-card__status { background: rgb(0 0 0 / .04); color: var(--text-muted); }
+  .route-card__status { padding: .15rem .5rem; border-radius: var(--radius-sm); font-family: var(--font-sans); font-size: .8rem; letter-spacing: 0; }
+  .route-card--self .route-card__status { background: var(--accent-subtle); color: var(--accent-text); }
   .route-card--collab .route-card__status { background: rgb(255 255 255 / .12); color: #fff; }
   .route-card__main h3 { margin: 0; font-family: var(--font-serif); font-size: clamp(1.25rem, 1.8vw, 1.65rem); letter-spacing: -.03em; line-height: 1.3; }
   .route-card--self h3 { color: var(--text-primary); }
@@ -859,8 +879,29 @@ const speakerRecords = [
   .identity-section__seam span { display: block; width: 100%; height: 100%; background: var(--text-primary); transform-origin: left center; }
   .section-grid { display: grid; grid-template-columns: minmax(0, .82fr) minmax(20rem, 1.18fr); gap: clamp(2rem, 5vw, 4rem); }
   .identity-intro { grid-template-columns: minmax(0, 1.1fr) minmax(18rem, .9fr); align-items: start; gap: clamp(2rem, 5vw, 4.5rem); }
-  .identity-intro h2 { max-width: 18ch; font-family: var(--font-serif); font-size: clamp(1.85rem, 3.5vw, 2.85rem); letter-spacing: -.045em; line-height: 1.15; text-wrap: balance; }
+  .identity-intro h2 { max-width: 14em; font-family: var(--font-serif); font-size: clamp(1.85rem, 3.5vw, 2.85rem); letter-spacing: -.045em; line-height: 1.15; text-wrap: balance; }
   .identity-intro__nowrap { white-space: nowrap; }
+  .threads-proof__stat span { white-space: nowrap; }
+  .plan-entry { display: grid; gap: 1.5rem; padding: clamp(2.2rem, 3.8vw, 3.2rem) clamp(1.5rem, 3.5vw, 3.2rem); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: #fffdf8; }
+  .plan-entry header h2 { margin: .35rem 0 0; font-family: var(--font-serif); font-size: clamp(1.7rem, 2.8vw, 2.4rem); letter-spacing: -.035em; }
+  .plan-entry__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .plan-entry__card { display: grid; align-content: start; gap: .45rem; padding: 1.5rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: #fff; color: inherit; text-decoration: none; transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease; }
+  .plan-entry__card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: var(--shadow-md); }
+  .plan-entry__card.is-featured { border: 2px solid var(--accent); background: var(--accent-subtle); }
+  .plan-entry__card small { color: var(--accent-text); font-size: .75rem; font-weight: 700; }
+  .plan-entry__card strong { color: var(--text-primary); font-size: 1.35rem; }
+  .plan-entry__length { color: var(--accent-text); font-size: .85rem; font-weight: 600; }
+  .plan-entry__card p { margin: .35rem 0 .5rem; color: var(--text-secondary); font-size: .9rem; line-height: 1.7; }
+  .plan-entry__more { display: inline-flex; align-items: center; gap: .3rem; color: var(--text-primary); font-size: .85rem; font-weight: 700; }
+  .two-door { display: grid; justify-items: center; gap: 1.25rem; padding: clamp(2.5rem, 5vw, 4rem) 1.5rem; border-radius: var(--radius-sm); background: var(--surface-ink); color: #fff; text-align: center; }
+  .two-door h2 { margin: 0; color: #fff; font-family: var(--font-serif); font-size: clamp(1.6rem, 2.8vw, 2.4rem); letter-spacing: -.035em; line-height: 1.35; }
+  .two-door__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; }
+  .two-door .btn-ghost { border-color: rgb(255 255 255 / .4); background: transparent; color: #fff; }
+  .two-door .btn-primary { background: #fff; color: var(--surface-ink); }
+  .two-door p { margin: 0; color: rgb(255 255 255 / .72); font-size: .88rem; }
+  .audience-chips { display: flex; flex-wrap: wrap; gap: .45rem; margin: .35rem 0 .25rem; padding: 0; list-style: none; }
+  .audience-chips li { padding: .3rem .7rem; border: 1px solid var(--accent-border); border-radius: var(--radius-full); background: var(--accent-subtle); color: var(--accent-text); font-size: .82rem; font-weight: 600; }
+  .speaker-record__audience { margin: .15rem 0 .35rem !important; color: var(--accent-text) !important; font-size: .82rem !important; font-weight: 600; }
   .identity-intro__copy { display: grid; align-content: start; gap: .65rem; padding-top: .25rem; }
   .identity-intro__copy > p { max-width: 34rem; margin: 0; }
   .identity-intro__lead { color: var(--text-primary); font-size: clamp(1.05rem, 1.7vw, 1.35rem); letter-spacing: -.02em; line-height: 1.5; text-wrap: balance; }
@@ -880,7 +921,7 @@ const speakerRecords = [
   .speaker-record:not(.is-active) { color: var(--text-secondary); }
   .speaker-record__time { color: var(--accent-text); font-family: var(--font-mono); font-size: .7rem; font-weight: 700; line-height: 1.55; }
   .speaker-record__body { min-width: 0; }
-  .speaker-record__body h3 { max-width: 22ch; margin: 0; color: var(--text-primary); font-size: clamp(1.05rem, 1.7vw, 1.35rem); letter-spacing: -.025em; line-height: 1.4; }
+  .speaker-record__body h3 { max-width: 17em; margin: 0; color: var(--text-primary); font-size: clamp(1.05rem, 1.7vw, 1.35rem); letter-spacing: -.025em; line-height: 1.4; }
   .speaker-record__body p { max-width: 38rem; margin: .55rem 0 0; color: var(--text-secondary); font-size: .88rem; line-height: 1.7; }
   .speaker-record__tags { display: flex; flex-wrap: wrap; gap: .3rem .45rem; margin: .65rem 0 0; padding: 0; list-style: none; }
   .speaker-record__tags li { padding: .12rem .45rem; border-radius: var(--radius-sm); background: rgb(0 0 0 / .04); border: 1px solid rgb(0 0 0 / .07); color: var(--text-secondary); font-size: .7rem; font-weight: 600; font-family: var(--font-sans); }
@@ -931,7 +972,7 @@ const speakerRecords = [
     border-radius: var(--radius-sm);
   }
   .cabai-section :is(h2, p) { color: inherit; }
-  .cabai-section__header h2 { max-width: 15ch; margin: 0; font-family: var(--font-serif); font-size: clamp(1.85rem, 3.5vw, 2.85rem); letter-spacing: -.045em; line-height: 1.15; text-wrap: balance; }
+  .cabai-section__header h2 { max-width: 12em; margin: 0; font-family: var(--font-serif); font-size: clamp(1.85rem, 3.5vw, 2.85rem); letter-spacing: -.045em; line-height: 1.15; text-wrap: balance; }
   .cabai-section__lead { max-width: 32rem; margin: .85rem 0 0; color: var(--surface-dark-muted); line-height: 1.75; font-size: .95rem; }
   .cabai-matrix {
     display: grid;
@@ -1006,7 +1047,7 @@ const speakerRecords = [
   /* RESPONSIVE STYLES */
   @media (max-width: 980px) {
     .home-hero { grid-template-columns: minmax(0, 1fr) minmax(18rem, .82fr); gap: 1.15rem 1.75rem; padding-inline: clamp(1.5rem, 3.5vw, 2.5rem); }
-    .home-hero h1 { font-size: clamp(2.45rem, 4.5vw, 3.25rem); }
+    .home-hero h1 { font-size: clamp(2.1rem, 4vw, 2.8rem); }
     .home-hero__statement { font-size: clamp(1.25rem, 2.2vw, 1.55rem); }
     .route-grid { grid-template-columns: 1fr; }
     .cabai-section { grid-template-columns: 1fr; gap: 2rem; }
@@ -1041,8 +1082,6 @@ const speakerRecords = [
       line-height: 1.38;
       text-align: left;
     }
-    .home-hero__pillars { gap: .35rem .45rem; margin-top: .75rem; }
-    .pillar-tag { font-size: .68rem; padding: .2rem .48rem; }
     .home-hero__portraits {
       position: relative;
       width: 100%;
@@ -1126,6 +1165,8 @@ const speakerRecords = [
     .route-heading h2 { font-size: clamp(1.65rem, 6.8vw, 2.25rem); }
     .route-heading p { font-size: .88rem; }
     .route-grid { grid-template-columns: 1fr; gap: .85rem; }
+    .plan-entry__grid { grid-template-columns: 1fr; }
+    .home-hero h1 span { white-space: normal; }
     .route-card { padding: 1.15rem 1rem; gap: .75rem; }
     .route-card__main h3 { font-size: 1.2rem; }
     .route-card__desc { font-size: .84rem; }

@@ -38,6 +38,7 @@ const breadcrumbJsonLd = {
 <BaseLayout
   title="文章標籤"
   description={`瀏覽 CabLate 所有文章標籤，共 ${tags.length} 個標籤、${published.length} 篇文章`}
+  noindex={true}
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
   <div class="archive-page paper-page">

@@ -44,7 +44,7 @@ export const serviceApplicationOptions = [
     applicationCopy: {
       heroLabel: '五週一對一陪跑申請',
       heroTitle: '先讓我看看，我們適不適合一起做。',
-      heroDescription: '簡單告訴我你想完成甚麼、目前做到哪裡。我會親自看，再邀請適合的人免費聊 30 分鐘。',
+      heroDescription: '簡單告訴我你想完成什麼、目前做到哪裡。我會親自看，再邀請適合的人免費聊 30 分鐘。',
       nextTitle: '我收到後會怎麼做',
       nextFirstStep: '先看你正在做什麼、目前卡在哪裡。',
       formLabel: '',

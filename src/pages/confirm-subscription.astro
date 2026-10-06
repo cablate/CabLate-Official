@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/siteConfig';
 
 const description = '完成 Kit 訂閱確認後的 CabLate 返回頁，提供首頁與課程手冊入口。';
 ---
@@ -12,14 +13,14 @@ const description = '完成 Kit 訂閱確認後的 CabLate 返回頁，提供首
 
   <div class="confirmation-page paper-page">
     <section class="confirmation-card page-paper paper-card paper-card--clip" aria-labelledby="confirmation-title">
-      <p class="section-label">EMAIL UPDATES</p>
-      <h1 id="confirmation-title">訂閱確認完成</h1>
+      <p class="section-label">電子報</p>
+      <h1 id="confirmation-title">訂閱好了，謝謝你</h1>
       <p class="confirmation-copy">
-        如果你是從 Kit 的確認信來到這裡，你的訂閱已完成。接下來只會收到新課程、手冊更新、公開活動與其他重要消息；不需要時可以隨時取消訂閱。
+        如果你是從確認信點進來的，訂閱已經完成。{siteConfig.newsletter.promise}{siteConfig.newsletter.cadence}不想收了，每封信最下面都能一鍵退訂。
       </p>
       <nav class="confirmation-actions" aria-label="訂閱完成後的下一步">
         <a class="confirmation-link confirmation-link--primary" href="/">回到首頁</a>
-        <a class="confirmation-link confirmation-link--secondary" href="/courses/">看看課程手冊</a>
+        <a class="confirmation-link confirmation-link--secondary" href="/courses/">看課程與手冊</a>
       </nav>
     </section>
   </div>
@@ -41,7 +42,7 @@ const description = '完成 Kit 訂閱確認後的 CabLate 返回頁，提供首
   }
 
   .confirmation-card h1 {
-    max-width: 12ch;
+    max-width: 9em;
     margin: 1rem 0 0;
     font-family: 'Noto Serif TC', serif;
     font-size: clamp(2.6rem, 7vw, 5.2rem);

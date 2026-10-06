@@ -39,7 +39,7 @@
 }
 
 .application-hero h1 {
-  max-width: 13ch;
+  max-width: 10em;
   margin: 1rem 0 0;
   font-size: clamp(2rem, 3.4vw, 3.15rem);
   line-height: 1.16;
@@ -713,7 +713,7 @@
   }
 
   .application-hero h1 {
-    max-width: 18ch;
+    max-width: 14em;
     margin-top: 0.65rem;
     font-size: clamp(1.7rem, 7vw, 2rem);
   }

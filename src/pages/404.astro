@@ -12,13 +12,15 @@ const reportHref = `mailto:${siteConfig.contactEmail}?subject=${encodeURICompone
     <section class="not-found-card paper-card paper-card--clip" aria-labelledby="not-found-title">
       <div class="not-found-code" aria-hidden="true">404</div>
       <div class="paper-card__inner">
-        <p class="section-label">PAGE NOT FOUND</p>
-        <h1 id="not-found-title">這個頁面目前不存在。</h1>
-        <p>如果你是從舊課程、商品或文章連結進來，可能是內容已移動或暫停公開。你可以先回到工作流健檢、學習內容，或聯絡我們回報這個連結。</p>
-        <a class="btn btn-primary" href="/expertise/">先做工作流健檢</a>
+        <p class="section-label">找不到頁面</p>
+        <h1 id="not-found-title">這一頁不見了</h1>
+        <p>如果你是從舊的課程、商品或文章連結進來，內容可能搬家了或暫時下架。可以先回首頁看看，或告訴我是哪個連結壞了。</p>
+        <a class="btn btn-primary" href="/">回首頁</a>
         <nav aria-label="其他選擇">
           <span>其他選擇：</span>
-          <a href="/courses/">查看學習內容</a>
+          <a href="/expertise/">免費 AI 健檢</a>
+          <span aria-hidden="true">｜</span>
+          <a href="/courses/">課程與手冊</a>
           <span aria-hidden="true">｜</span>
           <a href={reportHref} data-broken-link-report>回報失效連結</a>
         </nav>
@@ -45,7 +47,7 @@ const reportHref = `mailto:${siteConfig.contactEmail}?subject=${encodeURICompone
   .not-found-card { display: grid; grid-template-columns: minmax(8rem, .35fr) minmax(0, 1fr); min-height: min(68vh, 42rem); }
   .not-found-code { display: grid; place-items: center; border-right: 1px solid var(--border); color: var(--accent); font-family: var(--font-serif); font-size: clamp(4rem, 10vw, 8rem); writing-mode: vertical-rl; }
   .not-found-card .paper-card__inner { display: grid; align-content: center; justify-items: start; padding: clamp(2rem, 7vw, 5rem); }
-  .not-found-card h1 { max-width: 12ch; margin: 0; font-family: var(--font-serif); font-size: clamp(2.25rem, 5vw, 4.4rem); letter-spacing: -.045em; line-height: 1.2; }
+  .not-found-card h1 { max-width: 9em; margin: 0; font-family: var(--font-serif); font-size: clamp(2.25rem, 5vw, 4.4rem); letter-spacing: -.045em; line-height: 1.2; }
   .not-found-card p:not(.section-label) { max-width: 42rem; margin: 1.4rem 0; color: var(--text-secondary); line-height: 1.85; }
   .not-found-card nav { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: 1.25rem; color: var(--text-muted); font-size: .82rem; }
   .not-found-card nav a { color: var(--accent-text); text-decoration: underline; text-underline-offset: .2em; }

@@ -147,7 +147,7 @@ body {
 }
 
 .paper-page > header.page-paper h1 {
-  max-width: 17ch !important;
+  max-width: 13em !important;
   font-family: var(--font-sans) !important;
   font-size: clamp(2.6rem, 4.4vw, 4.65rem) !important;
   letter-spacing: -0.045em !important;
@@ -1140,5 +1140,12 @@ main .lp-inner {
 @media (max-width: 420px) {
   .footer-links {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .display-heading > .heading-phrase,
+  .display-heading .heading-phrase {
+    white-space: normal;
   }
 }
