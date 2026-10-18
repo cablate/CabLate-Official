@@ -5,7 +5,7 @@ export const authorityProfile = {
   alternateName: 'Cab',
   claim: '判斷力比執行力值錢。',
   shortBio: '在第一線教 AI 落地的講師：從農會推廣人員教到外商工程團隊。工程師出身，每天用 Claude Code 工作，也做有人在用的開源工具。',
-  humanBio: '我教的是判斷：AI 該不該用、怎麼用才划算。教過非技術團隊，也教過工程團隊。',
+  humanBio: '我教的是判斷，也就是 AI 該不該用、怎麼用才划算。教過非技術團隊，也教過工程團隊。',
   authorUrl: 'https://cablate.com/about/',
   sameAs: [
     siteConfig.threadsUrl,
@@ -96,7 +96,7 @@ export const openSourceProofs = [
     kind: '資料型產品',
     title: 'banini-tracker',
     headline: '抓社群貼文、AI 分析，再對照後來的股價。',
-    description: '一條流程串起貼文抓取、AI 分析、Telegram／Discord／LINE 推播和後續股價驗證。分析完不是就結束，之後真的漲跌也會記下來對照。',
+    description: '一條流程串起貼文抓取、AI 分析、Telegram／Discord／LINE 推播和後續股價驗證。之後真的漲跌也會記下來對照。',
     capability: '資料抓取、AI 分析、通知和事後驗證怎麼接在一起。',
     metric: '375 stars／55 forks',
     asOf: '2026-10-06',
