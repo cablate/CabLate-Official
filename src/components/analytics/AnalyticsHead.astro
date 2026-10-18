@@ -14,7 +14,7 @@ const { ga4Id } = Astro.props;
     const STORAGE_KEY = 'cablate_analytics_consent_v1';
     const PRODUCTION_HOSTS = new Set(['cablate.com', 'www.cablate.com']);
     const SERVICES = new Set(['consulting', 'coaching', 'enterprise', 'partnerships']);
-    const SOURCES = new Set(['direct', 'coaching_page', 'consulting_page', 'enterprise_page', 'partnerships_page', 'services_page']);
+    const SOURCES = new Set(['direct', 'coaching_page', 'consulting_page', 'enterprise_page', 'partnerships_page', 'services_page', 'courses_team', 'expertise_next']);
     const EVENT_KEYS = {
       service_hub_view: [],
       service_page_view: ['service'],
@@ -32,6 +32,7 @@ const { ga4Id } = Astro.props;
       diagnostic_result_layer: ['layer'],
       primary_cta_click: ['layer', 'placement', 'destination'],
       article_scroll: ['percent'],
+      newsletter_confirm: [],
     } as const;
     type RuntimeEventName = keyof typeof EVENT_KEYS;
     const VALUE_PATTERN = /^[A-Za-z0-9._~/-]{1,80}$/;
@@ -146,6 +147,8 @@ const { ga4Id } = Astro.props;
         track('service_page_view', { service: currentService() });
       } else if (/^\/services\/apply\/?$/.test(window.location.pathname)) {
         track('application_view', { service: currentService(), source: currentSource() });
+      } else if (/^\/confirm-subscription\/?$/.test(window.location.pathname)) {
+        track('newsletter_confirm');
       }
     };
     const persist = (value: 'granted' | 'denied') => {

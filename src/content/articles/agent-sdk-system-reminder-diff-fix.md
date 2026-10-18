@@ -5,25 +5,13 @@ publishDate: 2026-03-10T14:00:00+08:00
 updatedDate: 2026-04-04
 category: 技術觀點
 tags: [Agent SDK, Claude Code, system-reminder, token 消耗, JSONL]
-featured: false
 readingTime: 8
 draft: false
-excerpt: "Agent SDK 每次都注入 diff 的問題，我找到解法了——逆向 C26 函數找到根因，用 JSONL 預處理在 resume 前修掉它，附完整 TypeScript 實作。"
+excerpt: "逆向 C26 函數找出 Agent SDK 每次重送 diff 的原因，在 resume 前預處理 JSONL 繞開注入，附 TypeScript 實作。"
 ogImage: "/images/articles/agent-sdk-system-reminder-diff-fix.webp"
-faq:
-  - question: "為什麼 Agent SDK 每輪都會注入 diff，跟 CLI 不一樣？"
-    answer: "因為 Agent SDK 的 readFileState 不是 class property，而是每次 submitMessage() 都從 JSONL 重建的區域變數（C26 函數）。每次重建的 entry 都沒有 offset 狀態，必然觸發注入。"
-  - question: "什麼樣的檔案操作會被 readFileState 追蹤？"
-    answer: "Edit 和 Write 操作（offset=undefined）會被追蹤。Read 工具預設傳 offset=1，反而不會被 C26 收進追蹤表。CLAUDE.md 和 MEMORY.md 是預設載入，也是永遠追蹤的對象。"
-  - question: "JSONL 預處理的修復原理是什麼？"
-    answer: "C26 收集 Read（無 offset）和 Write（有 file_path + content）的 tool_use。預處理時對所有 Read 加上 offset=1，對所有 Write 移除 content，讓 C26 建不出有效的追蹤 entry，就不會觸發注入。"
-  - question: "這個修復方法有什麼代價？"
-    answer: "需要在每次 resume 前修改 JSONL 檔案（有備份）。方法依賴對 C26 邏輯的逆向假設，若 Anthropic 修改 C26 的實作，這個 fix 可能失效。"
-  - question: "如何找到 Agent SDK 對應的 JSONL 檔案路徑？"
-    answer: "JSONL 路徑是 ~/.claude/projects/{project-hash}/{session-id}.jsonl，project-hash 是把工作目錄路徑的所有非英數字元替換成 -（超過 200 字元則截斷加 hash）。"
 ---
 
-[前篇](/articles/claude-code-token-drain-system-reminder)說的是：我逆向了 Claude Code v2.1.71，找到 system-reminder 瘋狂注入 diff 的根因。
+[前篇](/articles/claude-code-token-drain-system-reminder/)寫了我逆向 Claude Code v2.1.71、找出 system-reminder 重複注入 diff 的過程。
 
 結論是 Agent SDK 用戶幾乎無解。官方 GitHub issue 開了半年沒動靜。
 
@@ -33,11 +21,11 @@ faq:
 
 ## Agent SDK 的 readFileState 為什麼跟 CLI 不一樣
 
-在 CLI 裡，Edit 之後做一次 Read，下一輪就不會再注入——因為 Read 更新了 readFileState 的 Offset 狀態，讓後續對話認為已同步。
+在 CLI 裡，Edit 之後做一次 Read，下一輪就不會再注入，因為 Read 更新了 readFileState 的 Offset 狀態，後續對話就會視為已同步。
 
 在 Agent SDK 裡，這個方法完全沒用。
 
-原因是：**readFileState 不是 class property，是區域變數。**
+**因為 readFileState 在這裡是區域變數，每次都會重新建立，沒有存成 class property。**
 
 每次 `submitMessage()` 被呼叫，Claude Code 就會跑一個叫 C26 的函數，從 JSONL 重建整張 readFileState 表：
 
@@ -57,7 +45,7 @@ CLI 用戶的 readFileState 活在 process 的生命週期裡，修一次就好�
 
 ## C26 實際上只收集哪些檔案
 
-搞清楚為什麼修不了之後，下一步是搞清楚 C26 建表時的邏輯——它到底從 JSONL 裡收集什麼。
+知道為什麼修不了之後，下一步是看 C26 建表時到底從 JSONL 裡收集什麼。
 
 C26 從 tool_use 裡收集兩種東西：
 
@@ -66,11 +54,11 @@ C26 從 tool_use 裡收集兩種東西：
 | Read tool | `input.offset === undefined && input.limit === undefined` |
 | Write tool | `input.file_path && input.content` |
 
-Edit tool 不在收集範圍——C26 不處理 Edit。
+Edit tool 不在收集範圍內，C26 不處理 Edit。
 
 這裡有個反直覺的發現：**Read 工具預設傳 `offset=1`，所以它幾乎永遠不會被 C26 收進追蹤表。**
 
-真正會被追蹤的是：
+實際會進入追蹤表的只有兩種情況：
 
 | 來源 | offset | limit | 是否被追蹤 |
 |------|--------|-------|-----------|
@@ -127,7 +115,7 @@ function getJsonlPath(cwd: string, sessionId: string): string {
 }
 ```
 
-### 第二步：sanitizeJsonl — 破壞 C26 的收集條件
+### 第二步：sanitizeJsonl（破壞 C26 的收集條件）
 
 ```typescript
 import { readFileSync, writeFileSync, copyFileSync } from 'fs';
@@ -194,7 +182,7 @@ const result = query({
 
 說清楚：這是在動 JSONL 原始檔案。
 
-備份是有的，改壞了可以還原。但這個 fix 的根本假設是「C26 的收集邏輯不變」——如果 Anthropic 哪天改了 C26 的實作，這個 fix 就失效了，而且不一定會立刻發現（還是會注入，不會噴 error）。
+備份是有的，改壞了可以還原。不過這個做法建立在「C26 收集邏輯不變」的前提上；如果 Anthropic 哪天改了 C26 的實作，它就會失效，而且不會噴 error，只會悄悄恢復注入。
 
 這不是優雅的解法。這是在[用 Claude Code 建構自動化系統](/articles/claude-code-workflow/)的過程中，官方沒在動、但問題實際影響開發效率，所以自己能做的事。
 

@@ -7,12 +7,9 @@ import type { CollectionEntry } from 'astro:content';
 import type { MarkdownHeading } from 'astro';
 import BaseLayout from './BaseLayout.astro';
 import SEO from '../components/SEO.astro';
-import RelatedArticles from '../components/RelatedArticles.astro';
 import ArticleNav from '../components/ArticleNav.astro';
-import ShareButtons from '../components/ShareButtons.astro';
+import ArticleEnd from '../components/ArticleEnd.astro';
 import TableOfContents from '../components/TableOfContents.astro';
-import NewsletterCTA from '../components/NewsletterCTA.astro';
-import ProductRecommend from '../components/ProductRecommend.astro';
 import { formatDate } from '../utils/format';
 
 interface Props {
@@ -22,8 +19,8 @@ interface Props {
 
 const { entry, headings } = Astro.props;
 const { Content } = await entry.render();
+const h2Headings = headings.filter((h) => h.depth === 2);
 
-// BreadcrumbList 結構化資料
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -33,20 +30,6 @@ const breadcrumbJsonLd = {
     { '@type': 'ListItem', position: 3, name: entry.data.title, item: `https://cablate.com/articles/${entry.slug}/` }
   ]
 };
-
-// FAQ 結構化資料（若有）
-const faqJsonLd = entry.data.faq?.length ? {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: entry.data.faq.map(item => ({
-    '@type': 'Question',
-    name: item.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: item.answer,
-    }
-  }))
-} : null;
 ---
 
 <BaseLayout title={entry.data.title} noSEO={true}>
@@ -54,174 +37,133 @@ const faqJsonLd = entry.data.faq?.length ? {
     slot="head"
     title={`${entry.data.title} | CabLate`}
     description={entry.data.description}
-    image={entry.data.ogImage || `/og/${entry.slug}.png`}
+    image={`/og/${entry.slug}.png`}
+    imageAlt={entry.data.title}
+    imageWidth={1200}
+    imageHeight={630}
     type="article"
     publishDate={entry.data.publishDate}
     modifiedDate={entry.data.updatedDate}
     tags={entry.data.tags}
   />
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
-  {faqJsonLd && (
-    <script slot="head" type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
-  )}
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
 
-  <nav class="breadcrumb" aria-label="麵包屑導覽">
-    <ol>
-      <li><a href="/">首頁</a></li>
-      <li><a href="/articles/">文章</a></li>
-      <li aria-current="page">{entry.data.title}</li>
-    </ol>
-  </nav>
+  <div class="article-page paper-page">
+    <article class="article-container page-paper">
+      <div class="article-shell">
+        <nav class="breadcrumb" aria-label="麵包屑導覽">
+          <ol>
+            <li><a href="/">首頁</a></li>
+            <li><a href="/articles/">文章</a></li>
+            <li aria-current="page">{entry.data.title}</li>
+          </ol>
+        </nav>
 
-  <article class="article-container section section-light">
-    <div class="container">
-      <!-- 文章標頭 -->
-      <header class="article-header">
-        <div class="article-meta">
-          <span class="article-category">{entry.data.category}</span>
-          <time class="article-date" datetime={entry.data.publishDate.toISOString()}>
-            {formatDate(entry.data.publishDate)}
-          </time>
-          {entry.data.updatedDate && (
-            <span class="article-updated">
-              （更新於 {formatDate(entry.data.updatedDate)}）
-            </span>
-          )}
-          {entry.data.readingTime && (
-            <span class="article-reading-time">{entry.data.readingTime} 分鐘閱讀</span>
-          )}
-        </div>
-
-        <h1 class="article-title">{entry.data.title}</h1>
-
-        {entry.data.excerpt && (
-          <p class="article-excerpt">{entry.data.excerpt}</p>
-        )}
-
-        {entry.data.tags.length > 0 && (
-          <div class="article-footer-meta">
-            <div class="article-tags">
-              {entry.data.tags.map(tag => (
-                <a href={`/articles/tag/${tag}/`} class="tag">#{tag}</a>
-              ))}
-            </div>
-          </div>
-        )}
-      </header>
-
-      <!-- 封面圖 -->
-      {entry.data.ogImage && (
-        <figure class="article-banner">
-          <img src={entry.data.ogImage} alt={entry.data.title} loading="eager" />
-        </figure>
-      )}
-
-      <!-- 文章內容 + TOC sidebar -->
-      <div class="article-body-layout">
-        <div class="article-body-main">
-          <div class="article-content">
-            <Content />
+        <header class="article-header">
+          <div class="article-meta">
+            <span class="article-category">{entry.data.category}</span>
+            <time class="article-date" datetime={entry.data.publishDate.toISOString()}>
+              {formatDate(entry.data.publishDate)}
+            </time>
+            {entry.data.updatedDate && (
+              <span class="article-updated">
+                更新於 {formatDate(entry.data.updatedDate)}
+              </span>
+            )}
+            {entry.data.readingTime && (
+              <span class="article-reading-time">{entry.data.readingTime} 分鐘閱讀</span>
+            )}
           </div>
 
-          <!-- 重要更新通知 CTA -->
-          <NewsletterCTA />
+          <h1 class="article-title">{entry.data.title}</h1>
 
-          <!-- 產品推薦 -->
-          <ProductRecommend category={entry.data.category} tags={entry.data.tags} />
-
-          <!-- FAQ 區塊 -->
-          {(entry.data.faq?.length ?? 0) > 0 && (
-            <div class="article-faq">
-              <h2>常見問題</h2>
-              <dl class="faq-list">
-                {entry.data.faq!.map(item => (
-                  <div class="faq-item">
-                    <dt>{item.question}</dt>
-                    <dd>{item.answer}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
+          {entry.data.excerpt && (
+            <p class="article-excerpt">{entry.data.excerpt}</p>
           )}
+        </header>
 
-          <ShareButtons title={entry.data.title} url={`https://cablate.com/articles/${entry.slug}/`} />
+        {entry.data.ogImage && (
+          <figure class="article-banner">
+            <img src={entry.data.ogImage} alt="" width="1200" height="630" loading="eager" fetchpriority="high" />
+          </figure>
+        )}
+
+        <div class="article-body-layout">
+          <div class="article-body-main">
+            {h2Headings.length >= 2 && (
+              <details class="article-toc-mobile">
+                <summary>這篇的段落（{h2Headings.length}）</summary>
+                <ol>
+                  {h2Headings.map((h) => (
+                    <li><a href={`#${h.slug}`}>{h.text}</a></li>
+                  ))}
+                </ol>
+              </details>
+            )}
+
+            <div class="article-content">
+              <Content />
+            </div>
+
+            <ArticleEnd />
+            <ArticleNav currentSlug={entry.slug} />
+          </div>
+
+          <aside class="article-toc-sidebar">
+            <TableOfContents headings={headings} />
+          </aside>
         </div>
-
-        <aside class="article-toc-sidebar">
-          <TableOfContents headings={headings} />
-        </aside>
       </div>
-    </div>
-  </article>
-
-  <RelatedArticles
-    currentSlug={entry.slug}
-    category={entry.data.category}
-    tags={entry.data.tags}
-  />
-
-  <ArticleNav currentSlug={entry.slug} />
-
-  <section class="article-comments" id="comments">
-    <div class="comments-container">
-      <h2>留言討論</h2>
-      <script is:inline
-        src="https://giscus.app/client.js"
-        data-repo="cablate/CabLate-Official"
-        data-repo-id="R_kgDOQ6xyCA"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOQ6xyCM4C7unz"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="light"
-        data-lang="zh-TW"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
-      </script>
-    </div>
-  </section>
-
-  <nav class="article-back">
-    <a href="/articles/">&larr; 所有文章</a>
-  </nav>
+    </article>
+  </div>
 </BaseLayout>
 
 <style>
   :global(html) {
-    scroll-padding-top: 6rem;
+    scroll-padding-top: 3rem;
+  }
+
+  .article-page > .article-container {
+    background-color: var(--bg-soft) !important;
+    background-image: none !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: var(--radius-sm) !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+
+  .article-shell {
+    max-width: 66rem;
+    margin-inline: auto;
   }
 
   .breadcrumb {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 1rem 1rem 0;
+    padding-bottom: 1.15rem;
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+    border-bottom: 1px solid var(--border);
   }
 
   .breadcrumb ol {
     display: flex;
-    gap: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.45rem;
     list-style: none;
     padding: 0;
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     color: var(--text-muted);
   }
 
   .breadcrumb li + li::before {
     content: '/';
-    margin-right: 0.5rem;
-    color: var(--border);
+    margin-right: 0.45rem;
+    color: var(--border-strong);
   }
 
   .breadcrumb li:last-child {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: min(300px, 60vw);
+    max-width: min(26rem, 65vw);
   }
 
   .breadcrumb a {
@@ -230,272 +172,269 @@ const faqJsonLd = entry.data.faq?.length ? {
   }
 
   .breadcrumb a:hover {
-    color: var(--text-secondary);
-  }
-
-  .article-container {
-    padding: 1rem 0;
-    color: var(--text-primary, #1a1a2e);
-  }
-
-  .article-container > .container {
-    width: min(100%, 82rem);
-    margin-inline: auto;
-    padding: clamp(1.5rem, 4vw, 3.5rem);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    background: rgb(255 253 248 / .96);
-    box-shadow: var(--shadow-sm);
+    color: var(--text-primary);
   }
 
   .article-header {
-    max-width: 900px;
-    margin: 0 auto 3rem;
-    text-align: center;
+    max-width: 48rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
 
   .article-meta {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
-    color: var(--text-muted, #94a3b8);
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.88rem;
+    color: var(--text-muted);
   }
 
   .article-category {
-    color: var(--accent, #6d28d9);
-    font-weight: 600;
+    color: var(--accent-text);
+    font-weight: 700;
   }
 
-  .article-updated {
-    font-size: 0.85rem;
-    color: var(--text-muted, #94a3b8);
-  }
-
+  .article-updated,
   .article-reading-time {
-    font-size: 0.9rem;
-    color: var(--text-muted, #94a3b8);
+    font-size: 0.86rem;
+    color: var(--text-muted);
   }
 
   .article-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-family: var(--font-serif);
+    font-size: clamp(1.85rem, 4.2vw, 2.75rem);
     font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 1.5rem;
-    color: var(--text-primary, #1a1a2e);
+    line-height: 1.32;
+    margin: 0 0 1.25rem;
+    color: var(--text-primary);
+    text-wrap: pretty;
   }
 
   .article-excerpt {
-    font-size: 1.2rem;
-    color: var(--text-secondary, #64748b);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-  }
-
-  .article-footer-meta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border, #e2e8f0);
-  }
-
-
-  .article-tags {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    padding: 0.25rem 0.75rem;
-    background: var(--accent-subtle, #f5f3ff);
-    border: 1px solid var(--accent-border, #e9e5f5);
-    border-radius: var(--radius-full);
-    font-size: 0.8rem;
-    color: var(--accent, #6d28d9);
-    text-decoration: none;
-    transition: all 0.15s ease;
-  }
-
-  .tag:hover {
-    background: var(--accent-border, #e9e5f5);
-    color: var(--accent, #6d28d9);
+    font-size: 1.12rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin: 0;
+    padding-left: 1rem;
+    border-left: 2px solid var(--border-strong);
   }
 
   .article-banner {
-    max-width: 900px;
-    margin: 0 auto 3rem;
-    padding: 0 1rem;
+    margin: 0 0 clamp(2.25rem, 4vw, 3.25rem);
   }
 
   .article-banner img {
+    display: block;
     width: 100%;
     height: auto;
     border-radius: var(--radius-md);
-    border: 1px solid var(--border, #e2e8f0);
+    border: 1px solid var(--border);
   }
 
-  /* TOC sidebar layout */
   .article-body-layout {
+    --article-measure: 42rem;
     display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 2rem;
-    max-width: 1100px;
-    margin: 0 auto;
+    grid-template-columns: minmax(0, var(--article-measure)) 13.5rem;
+    justify-content: space-between;
+    gap: 2.5rem;
     align-items: start;
   }
 
   .article-body-main {
-    min-width: 0; /* prevent grid blowout */
+    min-width: 0;
+    max-width: var(--article-measure);
   }
 
   .article-toc-sidebar {
     display: block;
   }
 
+  .article-toc-mobile {
+    display: none;
+    margin: 0 0 2rem;
+    padding: 0.9rem 1.15rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: rgb(255 253 248 / 0.7);
+  }
+
+  .article-toc-mobile summary {
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .article-toc-mobile ol {
+    margin: 0.75rem 0 0;
+    padding-left: 1.25rem;
+    display: grid;
+    gap: 0.4rem;
+    font-size: 0.88rem;
+  }
+
+  .article-toc-mobile a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .article-toc-mobile a:hover {
+    color: var(--accent-text);
+  }
+
   @media (max-width: 1024px) {
     .article-body-layout {
       grid-template-columns: 1fr;
-      max-width: 820px;
     }
 
     .article-toc-sidebar {
       display: none;
     }
+
+    .article-toc-mobile {
+      display: block;
+    }
   }
 
   .article-content {
-    max-width: 820px;
-    margin: 0 auto;
     font-size: 1.1rem;
-    line-height: 1.8;
-    color: var(--text-primary, #1a1a2e);
+    line-height: 1.85;
+    color: var(--text-primary);
   }
 
   .article-content :global(h2) {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 1.8rem;
+    font-family: var(--font-serif);
+    font-size: clamp(1.45rem, 2.6vw, 1.75rem);
+    line-height: 1.38;
     margin-top: 3rem;
-    margin-bottom: 1.5rem;
-    color: var(--text-primary, #1a1a2e);
+    margin-bottom: 1.15rem;
+    color: var(--text-primary);
+  }
+
+  .article-content :global(hr + h2) {
+    margin-top: 0;
   }
 
   .article-content :global(h3) {
-    font-size: 1.4rem;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: var(--text-primary, #1a1a2e);
+    font-size: clamp(1.18rem, 2vw, 1.35rem);
+    line-height: 1.45;
+    margin-top: 2.25rem;
+    margin-bottom: 0.85rem;
+    color: var(--text-primary);
   }
 
   .article-content :global(p) {
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-    color: var(--text-secondary, #64748b);
-  }
-
-  .article-content :global(p + p) {
-    margin-top: 1.5rem;
+    margin: 0 0 1.45rem;
   }
 
   .article-content :global(strong) {
-    color: var(--text-primary, #1a1a2e);
-    font-weight: 600;
+    color: var(--text-primary);
+    font-weight: 700;
   }
 
   .article-content :global(code) {
-    padding: 0.2rem 0.4rem;
-    background: var(--accent-subtle, #f5f3ff);
+    padding: 0.15rem 0.4rem;
+    background: var(--accent-subtle);
     border-radius: 4px;
-    font-family: 'Consolas', monospace;
-    font-size: 0.9em;
-    color: var(--accent, #6d28d9);
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    color: var(--accent-text);
+    overflow-wrap: break-word;
   }
 
   .article-content :global(pre) {
-    padding: 1.5rem;
-    background: var(--bg-muted, #f1f5f9) !important;
+    padding: 1.25rem 1.4rem;
+    background: #f5f2ea !important;
     border-radius: var(--radius-sm);
     overflow-x: auto;
     max-width: 100%;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--border, #e2e8f0);
+    margin: 0 0 1.65rem;
+    border: 1px solid var(--border);
+    font-size: 0.9rem;
+    line-height: 1.65;
   }
 
   .article-content :global(pre code) {
     background: transparent;
     padding: 0;
-    color: var(--text-primary, #1a1a2e);
+    color: var(--text-primary);
+    font-size: inherit;
+    overflow-wrap: normal;
   }
 
   .article-content :global(ul),
   .article-content :global(ol) {
-    margin-bottom: 1.5rem;
-    padding-left: 2rem;
-    color: var(--text-secondary, #64748b);
+    margin: 0 0 1.5rem;
+    padding-left: 1.4rem;
   }
 
   .article-content :global(li) {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.45rem;
   }
 
   .article-content :global(a) {
-    color: var(--accent, #6d28d9);
+    color: var(--accent-text);
     text-decoration: underline;
+    text-underline-offset: 0.18em;
   }
 
   .article-content :global(a:hover) {
-    color: var(--accent-light, #8b5cf6);
+    color: var(--accent-hover);
   }
 
   .article-content :global(table) {
-    display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    width: 100%;
     border-collapse: collapse;
-    margin-bottom: 1.5rem;
-    font-size: 0.95rem;
-    white-space: nowrap;
+    margin: 1.75rem 0;
+    font-size: 0.94rem;
+    line-height: 1.65;
   }
 
   .article-content :global(th) {
-    background: var(--bg-muted, #f1f5f9);
-    padding: 0.75rem 1rem;
+    background: #f5f2ea;
+    padding: 0.7rem 0.9rem;
     text-align: left;
-    font-weight: 600;
-    color: var(--text-primary, #1a1a2e);
-    border-bottom: 2px solid var(--border, #e2e8f0);
+    font-weight: 700;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-strong);
   }
 
   .article-content :global(td) {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border, #e2e8f0);
-    color: var(--text-secondary, #64748b);
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    vertical-align: top;
+  }
+
+  .article-content :global(th:first-child),
+  .article-content :global(td:first-child) {
+    min-width: 5.5rem;
   }
 
   .article-content :global(hr) {
     border: none;
     height: 1px;
-    background: var(--border, #e2e8f0);
-    margin: 3rem 0;
+    background: var(--border);
+    margin: 2.75rem 0;
   }
 
   .article-content :global(blockquote) {
-    border-left: 3px solid var(--accent, #6d28d9);
-    padding-left: 1.5rem;
-    margin: 1.5rem 0;
-    color: var(--text-secondary, #64748b);
-    font-style: italic;
+    border-left: 3px solid var(--accent-text);
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    margin: 1.65rem 0;
+    color: var(--text-secondary);
+  }
+
+  .article-content :global(blockquote p:last-child) {
+    margin-bottom: 0;
   }
 
   .article-content :global(img) {
     max-width: 100%;
     height: auto;
     border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
     margin: 2rem auto;
     display: block;
   }
@@ -511,151 +450,32 @@ const faqJsonLd = entry.data.faq?.length ? {
 
   .article-content :global(figcaption) {
     font-size: 0.85rem;
-    color: var(--text-muted, #94a3b8);
+    color: var(--text-muted);
     line-height: 1.5;
   }
 
-  /* FAQ 區塊 */
-  .article-faq {
-    max-width: 820px;
-    margin: 3rem auto 0;
-    padding-top: 3rem;
-    border-top: 1px solid var(--border, #e2e8f0);
-  }
-
-  .article-faq h2 {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-primary, #1a1a2e);
-    margin-bottom: 1.5rem;
-  }
-
-  .faq-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .faq-item {
-    padding: 1.25rem 1.5rem;
-    background: var(--bg-muted, #f1f5f9);
-    border-radius: var(--radius-md);
-  }
-
-  .faq-item dt {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary, #1a1a2e);
-    margin-bottom: 0.5rem;
-  }
-
-  .faq-item dd {
-    font-size: 0.95rem;
-    color: var(--text-secondary, #64748b);
-    line-height: 1.7;
-    margin: 0;
-  }
-
-  .article-comments {
-    max-width: 820px;
-    margin: 0 auto;
-    padding: 1rem 0 0;
-  }
-
-  .comments-container {
-    padding: 1.5rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    background: var(--bg-soft);
-  }
-
-  .comments-container h2 {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--text-primary, #1a1a2e);
-    margin-bottom: 1.5rem;
-  }
-
-  .article-back {
-    max-width: 820px;
-    margin: 0 auto;
-    padding: 1.5rem 0 2rem;
-  }
-
-  .article-back a {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.2s ease;
-  }
-
-  .article-back a:hover {
-    color: var(--text-primary);
-  }
-
   @media (max-width: 768px) {
-    .breadcrumb {
-      padding: .25rem .75rem 0;
-    }
-
-    .article-container {
-      padding: .75rem 0;
-    }
-
-    .article-container .container {
-      padding: 1.25rem;
-    }
-
-    .article-header {
-      padding: 0;
-      margin-bottom: 2rem;
-    }
-
-    .article-meta {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
     .article-title {
-      font-size: clamp(1.5rem, 6vw, 2rem);
-      text-align: left;
+      font-size: clamp(1.55rem, 6vw, 2.05rem);
     }
 
     .article-excerpt {
       font-size: 1rem;
-      text-align: left;
-    }
-
-    .article-footer-meta {
-      justify-content: flex-start;
-    }
-
-    .article-tags {
-      justify-content: flex-start;
-    }
-
-    .article-banner {
-      margin-bottom: 2rem;
-      padding: 0;
     }
 
     .article-content {
-      padding: 0;
-      font-size: 1rem;
-      overflow-x: visible;
+      font-size: 1.0625rem;
     }
 
     .article-content :global(h2) {
-      font-size: 1.4rem;
-      margin-top: 2.5rem;
-      margin-bottom: 1rem;
+      font-size: 1.35rem;
+      margin-top: 2.25rem;
+      margin-bottom: 0.9rem;
     }
 
     .article-content :global(h3) {
       font-size: 1.15rem;
-      margin-top: 1.5rem;
+      margin-top: 1.75rem;
     }
 
     .article-content :global(p) {
@@ -664,69 +484,24 @@ const faqJsonLd = entry.data.faq?.length ? {
 
     .article-content :global(pre) {
       padding: 1rem;
-      font-size: 0.8rem;
-      margin-left: -0.75rem;
-      margin-right: -0.75rem;
-      border-radius: 0;
-      border-left: none;
-      border-right: none;
+      font-size: 0.82rem;
     }
 
     .article-content :global(table) {
-      font-size: 0.85rem;
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      font-size: 0.86rem;
     }
 
     .article-content :global(th),
     .article-content :global(td) {
-      padding: 0.5rem 0.75rem;
-    }
-
-    .article-content :global(code) {
-      font-size: 0.85em;
-      word-break: break-all;
-    }
-
-    .article-content :global(pre code) {
-      word-break: normal;
-    }
-
-    .article-content :global(hr) {
-      margin: 2rem 0;
+      padding: 0.55rem 0.75rem;
+      min-width: 7rem;
     }
 
     .article-content :global(img) {
       margin: 1.5rem auto;
-      border-radius: 6px;
-    }
-
-    .article-faq {
-      padding: 0;
-      padding-top: 2rem;
-      margin-top: 2rem;
-    }
-
-    .article-faq h2 {
-      font-size: 1.3rem;
-    }
-
-    .faq-item {
-      padding: 1rem 1.25rem;
-    }
-
-    .faq-item dt {
-      font-size: 0.95rem;
-    }
-
-    .faq-item dd {
-      font-size: 0.9rem;
-    }
-
-    .article-comments {
-      padding: 1.5rem 0.75rem 0;
-    }
-
-    .article-back {
-      padding: 1.5rem 0 3rem;
     }
   }
 </style>

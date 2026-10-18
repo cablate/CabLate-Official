@@ -5,12 +5,22 @@ export const authorityProfile = {
   alternateName: 'Cab',
   claim: '判斷力比執行力值錢。',
   shortBio: '在第一線教 AI 落地的講師：從農會推廣人員教到外商工程團隊。工程師出身，每天用 Claude Code 工作，也做有人在用的開源工具。',
-  humanBio: '我教的是判斷：AI 該不該用、怎麼用才划算。教過非技術團隊，也教過工程團隊。',
+  humanBio: '我教的是怎麼判斷 AI 該不該用、怎麼用才划算。教過非技術團隊，也教過工程團隊。',
   authorUrl: 'https://cablate.com/about/',
   sameAs: [
     siteConfig.threadsUrl,
     siteConfig.githubUrl,
   ],
+} as const;
+
+/** 全站唯一的作者實體；Article author、ProfilePage mainEntity、Service provider 都用它 */
+export const personEntity = {
+  '@type': 'Person',
+  '@id': `${authorityProfile.authorUrl}#person`,
+  name: 'Cab',
+  alternateName: 'CabLate',
+  url: authorityProfile.authorUrl,
+  sameAs: authorityProfile.sameAs,
 } as const;
 
 /** 首頁、服務頁與 About 共用的證據數字；更新時連日期一起改 */
@@ -86,7 +96,7 @@ export const openSourceProofs = [
     kind: '資料型產品',
     title: 'banini-tracker',
     headline: '抓社群貼文、AI 分析，再對照後來的股價。',
-    description: '一條流程串起貼文抓取、AI 分析、Telegram／Discord／LINE 推播和後續股價驗證。分析完不是就結束，之後真的漲跌也會記下來對照。',
+    description: '一條流程串起貼文抓取、AI 分析、Telegram／Discord／LINE 推播和後續股價驗證。之後真的漲跌也會記下來對照。',
     capability: '資料抓取、AI 分析、通知和事後驗證怎麼接在一起。',
     metric: '375 stars／55 forks',
     asOf: '2026-10-06',
@@ -242,7 +252,6 @@ export const serviceTracks = [
 ] as const;
 
 export const primaryNavigationGroups = [
-  // Exploration routes are temporarily hidden from the primary navigation.
   {
     label: '合作方式',
     overviewHref: '/services/',
@@ -258,7 +267,8 @@ export const primaryNavigationGroups = [
     items: [
       { label: '免費健檢', railLabel: '五個問題找出 AI 卡在哪', href: '/expertise/' },
       { label: '課程與手冊', railLabel: 'AgentSkill、Claude Code 手冊', href: '/courses/' },
-      { label: '電子報', railLabel: '每封拆一個 AI 卡點', href: '/subscribe/?shell=desk' },
+      { label: '文章', railLabel: '實際卡過的問題和判斷', href: '/articles/' },
+      { label: '電子報', railLabel: '每封拆一個 AI 卡點', href: '/newsletter/' },
     ],
   },
   {

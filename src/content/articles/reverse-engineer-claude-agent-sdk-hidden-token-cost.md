@@ -5,23 +5,9 @@ publishDate: 2026-03-25
 updatedDate: 2026-04-04
 category: 技術觀點
 tags: [Claude Agent SDK, prompt caching, 逆向工程, token 成本優化, Claude Code]
-featured: false
 readingTime: 15
 draft: false
 excerpt: "SDK 每則訊息吃 2-3% 額度，逆向 cli.js 找到根因，用 V2 persistent session 解決。"
-faq:
-  - question: "為什麼 Claude Agent SDK 的 token 成本比 CLI 高這麼多？"
-    answer: "SDK 的 V1 API 每次呼叫都 spawn 新的 cli.js process，runtime 注入的 system-reminder 內容無法 byte-for-byte 一致，導致 prompt cache 每次都 miss，45k tokens 以 125% 費率重寫。"
-  - question: "什麼是 system-reminder 注入？"
-    answer: "Claude Code 在每次組裝 API request 時，會在 messages 中動態插入隱藏內容（檔案 diff、git status、memory 等），用 isMeta 標記讓 UI 看不到，也不存進對話歷史。"
-  - question: "怎麼解決 Agent SDK 的 cache miss 問題？"
-    answer: "使用 V2 unstable_v2_createSession() API 讓 cli.js process 持續存活，搭配 5 個 patch 補齊硬編碼的選項。實測 cache efficiency 從 25% 升到 84%。"
-  - question: "V2 persistent session 穩定嗎？"
-    answer: "V2 API 還在 alpha 階段，需要 patch sdk.mjs 才能用在 production。建議搭配 V1 作為 fallback，等官方正式化後移除 patch。"
-  - question: "Claude Code CLI 的 resume 也會吃額度嗎？"
-    answer: "會。CLI 做 close 再 resume 時，第一則訊息一樣要重建 prompt cache，對話越長重建成本越高。差別是 CLI 重建一次之後 process 持續存活，後續訊息就能命中 cache。所以盡量不要在長對話中頻繁 close & resume。"
-  - question: "有什麼方式可以降低 Claude Code 的額度消耗？"
-    answer: "幾個實用做法：避免不必要的 close & resume（每次都要付 cache 重建成本）、完成一個階段就開新 session 避免 context 過長、監控 cache efficiency 低於 50% 就該檢查原因、如果用 Agent SDK 則優先使用 V2 persistent session 讓 cache 跨訊息累積。"
 ---
 
 用 Claude Agent SDK 跑多代理系統，每則訊息吃掉 2-3% 的 5 小時額度，訊息內容只有幾個字，成本卻跟寫一整段程式碼差不多。
@@ -44,7 +30,7 @@ SDK 提供一個 `query()` 函數（V1 API），你傳入 prompt 跟選項，它
 4. 組裝完整的 API request（system prompt + tools + messages）發給 Anthropic API
 5. 回傳結果後，子程序結束
 
-重點是：**每次 `query()` 都 spawn 一個全新的 process。**
+**問題出在每次 `query()` 都會 spawn 一個全新的 process。**
 
 ```
 你的程式 → sdk.mjs（薄 wrapper）→ spawn node cli.js → Anthropic API
@@ -81,9 +67,9 @@ CLI 互動模式不一樣，你打開終端機之後同一個 cli.js process 會
 
 ## 逆向 12MB minified cli.js：找到 system-reminder 注入機制
 
-cli.js 是一個 12MB 的 minified JavaScript 檔案，所有變數名都被混淆成無意義的短名。我透過字串常量來定位關鍵函數，比如搜尋 `"was modified, either by the user"` 就能找到檔案變更注入的函數。
+cli.js 是一個 12MB 的 minified JavaScript 檔案，所有變數名都被混淆成無意義的短名。我透過字串常量來定位對應函數，比如搜尋 `"was modified, either by the user"` 就能找到檔案變更注入的函數。
 
-以下是我逆向出來的關鍵機制。先說結論：system-reminder 注入本身不是成本問題的主因（多注入幾百 tokens 不會讓你每則訊息吃 2-3%），但它是導致 prompt cache 失效的機制，而 cache 失效才是真正吃額度的元兇。理解注入機制是為了理解 cache 為什麼會壞。
+整理逆向出來的機制前先講重點，system-reminder 注入本身（多幾百 tokens）並不會讓每則訊息吃掉 2-3% 額度，但它會破壞 prompt cache 的前綴一致性；真正吃掉額度的是隨之而來的 cache 失效。先看懂注入機制，才看得出 cache 為什麼會壞。
 
 ### system-reminder 到底是什麼
 
@@ -146,11 +132,11 @@ for (let block of assistantMessage.content) {
 
 ## 隱藏注入如何導致 prompt cache 失效
 
-這裡是整篇文章的重點。光是注入一些額外內容，不應該造成 2-3% 的額度消耗，多幾百 tokens 的 system-reminder 不是問題。真正的問題是：每次 spawn 新 process → runtime 注入內容重組 → 跟上一次不完全一樣 → 整段 messages 的 prompt cache 失效 → 45k tokens 以 125% 費率重寫。是 cache 失效在燒錢，不是注入本身。
+光是注入幾百 tokens 的 system-reminder，還不至於每則訊息吃掉 2-3% 額度。真正把額度燒掉的來自下面這一連串連鎖反應：每次 spawn 新 process → runtime 注入內容重組 → 跟上一次存在細微差異 → 整段 messages 的 prompt cache 失效 → 45k tokens 全部以 125% 費率重寫。
 
 Anthropic API 有 prompt caching 機制：如果兩次 request 的前綴（system prompt + messages）byte-for-byte 完全一致，API 會走 cache read（只收 10% 費用）。如果不一致，就要 cache write（收 125% 費用）。
 
-cli.js 的 cache 策略是：
+cli.js 的 cache 策略如下：
 - System prompt 的靜態部分加上 `cache_control`，可以跨 session 共用
 - Messages 只在最後 1-2 則加 `cache_control`（滑動窗口）
 
@@ -158,7 +144,7 @@ cli.js 的 cache 策略是：
 
 SDK 每次 spawn 新 process 時，這些 runtime 注入會被重新組裝。即使語義上一樣（同一天、同樣的 CLAUDE.md），序列化出來的內容可能有微小差異，memory 檔案的 mtime 時間戳、task 列表的順序、git status 的結果等等。只要有一個 byte 不一樣，整段 messages（約 45k tokens）就全部 cache miss，以 125% 費率重新寫入。
 
-所以實際的成本結構是：
+實際算下來的成本結構如下：
 
 | 部分 | 大小 | V1 SDK 每次 | CLI 第二次起 |
 |------|------|-------------|-------------|
@@ -200,7 +186,7 @@ cli.js 在取 git status 時會檢查這個環境變數，設為 1 就跳過。g
 
 cacheRead 穩定在 ~15k（system prompt 的 cache 有命中），但 cacheCreation 穩定在 ~45k（messages 每次都 miss）。即使間隔只有 11 秒，efficiency 也沒有上升。
 
-**結論：消除個別注入源不夠。** 根本原因是每次 spawn 新 process 後，runtime 注入的重組無法保證 byte-for-byte 一致。只要 messages 的任何位置有差異，整段就 cache miss。
+**光靠消除個別注入源還是不夠。** 每次 spawn 新 process 後，runtime 注入的重組無法保證 byte-for-byte 一致。只要 messages 的任何位置有差異，整段就 cache miss。
 
 ![Phase 1 A/B 測試結果，cache efficiency 始終在 15-25% 之間，沒有改善.](/images/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/ab-test-results.webp)
 
@@ -293,7 +279,7 @@ Phase 1 的 JSONL 預處理對 cache efficiency 改善有限（前面 A/B 數據
 
 ## 現況：等官方解法，先用 patch 頂著
 
-如果你在用 V1 `query()` + `resume`，你的每則訊息都在 cache miss。這不是你的 code 有問題，是 SDK 的架構決定的，每次 spawn 新 process，runtime 注入就會重組，cache prefix 就會斷。
+如果你在用 V1 `query()` + `resume`，每則訊息都會遇到 cache miss。這是 SDK V1 每次 spawn 新 process 的架構限制：只要重啟 process，runtime 注入就會重組，cache prefix 就會從頭斷開。
 
 V2 persistent session 是目前唯一有效的解法，但它還在 alpha，需要 patch 才能用在 production。
 
@@ -307,5 +293,5 @@ V2 persistent session 是目前唯一有效的解法，但它還在 alpha，需�
 
 ## 延伸閱讀
 
-- [我逆向了 Claude Code v2.1.71，找到 token 消耗暴增的根因](/articles/claude-code-token-drain-system-reminder/) — system-reminder diff 注入機制的首次發現
-- [Agent SDK diff 注入修復：逆向 C26 函數用 JSONL 預處理解決](/articles/agent-sdk-system-reminder-diff-fix/) — 針對 diff 重複注入的 JSONL 預處理修復方案
+- [我逆向了 Claude Code v2.1.71，找到 token 消耗暴增的根因](/articles/claude-code-token-drain-system-reminder/)：system-reminder diff 注入機制的首次紀錄
+- [Agent SDK 的 diff 注入怎麼繞過：逆向 C26 函數與 JSONL 預處理](/articles/agent-sdk-system-reminder-diff-fix/)：針對 diff 重複注入的 JSONL 預處理做法

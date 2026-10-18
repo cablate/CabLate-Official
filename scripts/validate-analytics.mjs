@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const root = process.cwd();
@@ -43,9 +43,22 @@ for (const forbiddenKey of ['applicant_name', 'email_address', 'free_text', 'lea
 for (const page of servicePages) {
   assert(!read(page).includes('analytics="disabled"'), `${page} still disables analytics`);
 }
+assert(head.includes("track('newsletter_confirm')") && client.includes("name: 'newsletter_confirm'"), 'newsletter confirmation is not tracked');
 assert(application.includes("name: 'form_start'") && application.includes("name: 'generate_lead'"), 'application funnel events are not connected');
 for (const page of servicePages.slice(0, 5)) {
   assert(read(page).includes('data-analytics-placement'), `${page} has no attributed service CTA or route`);
+}
+
+const sourceAllowlist = head.match(/const SOURCES = new Set\(\[([^\]]*)\]\)/)?.[1] ?? '';
+const listSourceFiles = (dir) => readdirSync(join(root, dir), { withFileTypes: true }).flatMap((entry) => {
+  const path = `${dir}/${entry.name}`;
+  if (entry.isDirectory()) return listSourceFiles(path);
+  return /\.(astro|ts)$/.test(entry.name) ? [path] : [];
+});
+for (const path of listSourceFiles('src')) {
+  for (const [, source] of read(path).matchAll(/getServiceApplicationHref\(\s*'[^']+'\s*,\s*'([^']+)'/g)) {
+    assert(sourceAllowlist.includes(`'${source}'`), `${path} sends application source '${source}' that the runtime SOURCES allowlist drops`);
+  }
 }
 
 if (process.argv.includes('--built')) {

@@ -1,0 +1,39 @@
+---
+import { ArrowRight } from '@lucide/astro';
+import { authorityProfile } from '../../config/authority';
+
+interface Props {
+  label?: string;
+  class?: string;
+}
+
+const { label = '寫這些的人', class: className } = Astro.props;
+---
+
+<aside class:list={['author-card', 'page-paper', 'paper-card', className]} aria-label={label}>
+  <img src="/images/photos/cablate-portrait-real-v1.webp" alt="Cab 在講座上拿著麥克風講解" width="1400" height="1400" loading="lazy" decoding="async" />
+  <div>
+    <p class="section-label">{label}</p>
+    <h2>Cab，第一線教 AI 落地的講師</h2>
+    <p>{authorityProfile.shortBio}</p>
+    <nav aria-label="認識 Cab">
+      <a href="/about/">我是誰 <ArrowRight size={15} aria-hidden="true" /></a>
+      <a href="/services/enterprise/" data-analytics-placement="author_card">找我上課或內訓 <ArrowRight size={15} aria-hidden="true" /></a>
+    </nav>
+  </div>
+</aside>
+
+<style>
+  .author-card { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: clamp(1.25rem, 3vw, 2rem); align-items: center; padding: clamp(1.4rem, 3vw, 2rem); }
+  .author-card img { width: 7.5rem; height: 7.5rem; border-radius: 50%; object-fit: cover; object-position: 35% center; }
+  .author-card .section-label { margin: 0 0 .4rem; }
+  .author-card h2 { margin: 0; font-size: clamp(1.15rem, 2vw, 1.4rem); line-height: 1.4; }
+  .author-card p:not(.section-label) { max-width: 46rem; margin: .5rem 0 0; color: var(--text-secondary); line-height: 1.8; }
+  .author-card nav { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: .9rem; }
+  .author-card a { display: inline-flex; align-items: center; gap: .35rem; color: var(--accent-text); font-weight: 700; }
+  .author-card a:hover { color: var(--accent-hover); }
+  @media (max-width: 560px) {
+    .author-card { grid-template-columns: 4.5rem minmax(0, 1fr); align-items: start; }
+    .author-card img { width: 4.5rem; height: 4.5rem; }
+  }
+</style>

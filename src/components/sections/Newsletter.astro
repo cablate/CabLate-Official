@@ -10,7 +10,7 @@ import { siteConfig } from '../../config/siteConfig';
   </div>
 
   <div class="newsletter-form">
-    <KitForm submitLabel="免費訂閱" successMessage="資料已送出，請到信箱點擊確認連結，完成訂閱。" />
+    <KitForm />
     <p class="newsletter-note">送出後到信箱點確認連結。隨時可以退訂；資料怎麼用寫在<a href="/privacy/">隱私權政策</a></p>
   </div>
 </section>
@@ -26,7 +26,7 @@ import { siteConfig } from '../../config/siteConfig';
 
   .newsletter-text h2 {
     margin: 0;
-    font-family: 'Noto Serif TC', serif;
+    font-family: var(--font-serif);
     color: var(--text-primary, #253047);
     font-size: clamp(2rem, 3.4vw, 3rem);
     line-height: 1.35;
@@ -44,18 +44,6 @@ import { siteConfig } from '../../config/siteConfig';
 
   .newsletter-form {
     margin-top: 0;
-  }
-
-  .newsletter-form :global(.kit-form-wrapper .formkit-fields) {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto;
-    max-width: none;
-    align-items: end;
-  }
-
-  .newsletter-form :global(.kit-form-wrapper .formkit-submit) {
-    min-width: 10.5rem;
-    min-height: 3.15rem;
   }
 
   .newsletter-note {
@@ -78,16 +66,6 @@ import { siteConfig } from '../../config/siteConfig';
 
     .newsletter-text h2 {
       font-size: clamp(1.9rem, 9vw, 2.65rem);
-    }
-
-    .newsletter-form :global(.kit-form-wrapper .formkit-fields) {
-      grid-template-columns: minmax(0, 1fr);
-      align-items: stretch;
-    }
-
-    .newsletter-form :global(.kit-form-wrapper .formkit-submit) {
-      width: 100%;
-      min-width: 0;
     }
   }
 </style>

@@ -16,7 +16,8 @@ export type AnalyticsEvent =
   | { name: 'diagnostic_complete'; properties: { page: '/expertise/'; version: 'b20-v1' } }
   | { name: 'diagnostic_result_layer'; properties: { layer: string } }
   | { name: 'primary_cta_click'; properties: { layer: string; placement: 'diagnostic_result'; destination: 'agentskill' | 'handbook' } }
-  | { name: 'article_scroll'; properties: { percent: 25 | 50 | 75 | 100 } };
+  | { name: 'article_scroll'; properties: { percent: 25 | 50 | 75 | 100 } }
+  | { name: 'newsletter_confirm'; properties?: Record<string, never> };
 
 declare global {
   interface Window {

@@ -5,29 +5,17 @@ publishDate: 2026-03-10T10:00:00+08:00
 updatedDate: 2026-04-04
 category: 技術觀點
 tags: [Claude Code, token 消耗, system-reminder, Agent SDK, AI 工具, 逆向工程, readFileState]
-featured: false
 readingTime: 7
 draft: false
-excerpt: "逆向 Claude Code v2.1.71 原始碼後找到根因——system-reminder 每次都在偷偷注入 diff，吃掉你看不見的 token，Agent SDK 用戶情況更慘。"
+excerpt: "逆向 Claude Code v2.1.71 原始碼後發現，system-reminder 會在背景重複注入檔案 diff 吃掉額度，Agent SDK 用戶受影響最大。"
 ogImage: "/images/articles/claude-code-token-drain-system-reminder.webp"
-faq:
-  - question: "為什麼 Claude Code 的 token 消耗比預期快很多？"
-    answer: "Claude Code 會在每次對話中透過 system-reminder 注入被編輯過的檔案 diff，這些注入不會出現在 JSONL 紀錄中，導致你以為沒有消耗多少，實際上每次對話都在吃額度。"
-  - question: "Claude Code 的 readFileState 是什麼？"
-    answer: "readFileState 是 Claude Code 內部的追蹤表，記錄「我知道的檔案長什麼樣」。每次你發訊息，Claude Code 會比對表中的檔案是否有變動，有的話就把 diff 注入進 system-reminder。"
-  - question: "如何減少 Claude Code token 被 diff 注入消耗？"
-    answer: "每次 Edit 或 Update 之後，主動做一次 Read，觸發 readFileState 的狀態更新，讓後續對話不會繼續注入同一個 diff。這個方法適用於 Claude Code CLI，Agent SDK 目前無解。"
-  - question: "Agent SDK 用戶的 token 消耗問題更嚴重嗎？"
-    answer: "是的。Agent SDK 的持續對話以 resume 為主，每次送訊息都會重建 readFileState，導致每次都重新注入所有追蹤中的檔案 diff，加上快取機制失效和 TTL 設定問題，情況比 CLI 用戶嚴重許多。"
-  - question: "Claude Code system-reminder 注入的內容會顯示在 JSONL 裡嗎？"
-    answer: "不會。這是這個問題最坑爹的地方——所有 system-reminder 注入的內容，包括完整 diff，都不會出現在 JSONL 對話紀錄中，你沒有辦法直接觀測到底注入了什麼、注入了多少。"
 ---
 
 這個月 token 額度燒得特別快。
 
 我有注意到，但一直說服自己是因為最近做的事情比較多。直到上週開始認真懷疑，仔細回想又沒多做什麼事情，才決定認真查這件事。
 
-查完之後，我的結論是：不是你的錯覺，也不是你真的多做了多少事，是 Claude Code 的 system-reminder 在坑你。
+查完之後發現，額度會燒這麼快，問題出在 Claude Code 的 system-reminder 注入機制。
 
 以下分析是基於 Claude Code **v2.1.71** 的逆向結果，不同版本行為可能有差異，之後的版本可能修了，也可能沒有。
 
@@ -42,9 +30,9 @@ faq:
 - Skill 和 Plugin 的 metadata 每次對話都會重新注入
 - 以上所有內容，**不會出現在 JSONL 裡**，你沒辦法直接觀測
 
-最後一點是關鍵。你以為的對話成本只有你看得到的那些，實際上每次背後還夾帶著你看不到的東西——而且 Claude 被明確要求不要主動告訴你。
+最麻煩的是最後一點。你以為對話成本只有畫面上的文字，實際上每次請求背後都夾帶了一大段隱藏內容，而且系統提示還要求 Claude 不要主動提起。
 
-結果就是：根本沒聊多少內容，但只要編輯過任何檔案，哪怕只是一句簡單的請求與回應，就直接吃掉 2%-3% 的五小時額度。
+結果根本沒聊多少內容，只要編輯過任何檔案，就算只送一句簡單的請求與回應，也會直接吃掉 2%-3% 的五小時額度。
 
 翻了一下 GitHub，這個狀況半年前就有災情了。
 
@@ -59,7 +47,7 @@ faq:
 
 逆向出來的結果，印證了先前的猜測。
 
-逆向出來是這樣的：Claude Code 內部有一張叫 `readFileState` 的表，記錄「我知道的每個檔案長什麼樣」。
+逆向程式碼後可以看到，Claude Code 內部有一張叫 `readFileState` 的表，記錄「我知道的每個檔案長什麼樣」。
 
 每次你發訊息，Claude Code 會遍歷這張表裡的每個檔案，走一套判斷流程：
 
@@ -82,7 +70,7 @@ Resume 一段對話之後，Claude Code 會從 JSONL 把這張表還原出來。
 
 沒有 Offset 狀態，回到第 4 條：觸發注入。
 
-照理說應該是這樣的流程：Resume 後的第一句話觸發注入，注入完畢更新狀態，後續對話就正常了。消耗一次，之後沒事。
+照理說 Resume 後的第一句話觸發注入，注入完畢更新狀態，後續對話就該恢復正常。消耗一次，之後沒事。
 
 但問題在這張表是用**路徑字串當 key** 的。
 
@@ -98,13 +86,13 @@ Resume 一段對話之後，Claude Code 會從 JSONL 把這張表還原出來。
 
 另外，**避免頻繁 Resume**。每次 Resume 都會重建這張表，觸發一輪注入。如果不需要接續之前的對話脈絡，直接開新的 Session 更划算。
 
-最後，**整理你的 `CLAUDE.md`**。`CLAUDE.md` 和 `MEMORY.md` 這類基礎設定檔是預設永遠追蹤的，每次都在清單裡沒辦法跳過。官方後來越來越強調「CLAUDE.md 不要塞太多東西」，我現在終於理解原因了——不是設計哲學，是 token 成本。如果你在用 [Claude Code 建站或管理專案](/articles/claude-code-workflow/)，這點格外重要。
+最後，**整理你的 `CLAUDE.md`**。`CLAUDE.md` 和 `MEMORY.md` 這類基礎設定檔是預設永遠追蹤的，每次都在清單裡沒辦法跳過。官方後來越來越強調「CLAUDE.md 不要塞太多東西」，看過這段機制就懂了，這直接關係到每輪對話的 token 成本。如果你在用 [Claude Code 建站或管理專案](/articles/claude-code-workflow/)，這點格外重要。
 
 ## Agent SDK 用戶的 token 問題為什麼特別嚴重
 
 CLI 用戶至少有緩解方法，[用 Agent SDK 搭建自動化流程](/articles/blog-writing-openclaw/)的用戶是另一個等級的問題。
 
-Agent SDK 的架構決定了持續對話必須以 Resume 為主。每次送一筆訊息進去，就是走一次 Resume——重建 readFileState、判斷哪些檔案要注入、注入、送訊息。
+Agent SDK 的架構決定了持續對話必須以 Resume 為主。每次送一筆訊息進去，都會重走一次 Resume：重建 readFileState、比對檔案變動、注入 diff、最後才送出訊息。
 
 然後下一筆訊息，再來一次。
 
@@ -128,6 +116,6 @@ GitHub 上的相關 issue 已經存在半年了。
 
 我自己是 Agent SDK 的用戶，這個問題對我的影響直接。研究完這些之後，大概得自己去動 source code 來緩解，等官方修是等不住的。
 
-如果你用 Claude Code 有遇到類似的額度問題，或是對 system-reminder 的注入機制有更多觀察，歡迎留言。
+如果你用 Claude Code 有遇到類似的額度問題，或是對 system-reminder 的注入機制有更多觀察，歡迎到 [Threads](https://www.threads.net/@cab_late) 跟我說。
 
-如果你遇到的不是額度異常，而是 Windows 版 Codex 在切換對話、送出訊息或載入紀錄時反覆凍結，可以接著看 CabAI 整理的 [Windows 版 Codex 卡頓原因與暫時處理方式](https://cabai.cablate.com/library/windows-codex-lag-troubleshooting-20260718?utm_source=cablate&utm_medium=article&utm_campaign=claude_code_troubleshooting)。
+如果你遇到的是 Windows 版 Codex 在切換對話、送出訊息或載入紀錄時反覆凍結，可以接著看 CabAI 整理的 [Windows 版 Codex 卡頓原因與暫時處理方式](https://cabai.cablate.com/library/windows-codex-lag-troubleshooting-20260718?utm_source=cablate&utm_medium=article&utm_campaign=claude_code_troubleshooting)。

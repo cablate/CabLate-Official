@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { ArrowRight, Github, AtSign } from '@lucide/astro';
-import { authorityProfile, deliveryExperienceProofs, moreOpenSource, openSourceProofs } from '../config/authority';
+import { ArrowRight, FolderGit2, AtSign } from '@lucide/astro';
+import { authorityProfile, deliveryExperienceProofs, moreOpenSource, openSourceProofs, personEntity } from '../config/authority';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 import QuoteBand from '../components/common/QuoteBand.astro';
 
@@ -10,20 +10,15 @@ const personJsonLd = {
   '@type': 'ProfilePage',
   dateModified: '2026-10-06',
   mainEntity: {
-    '@type': 'Person',
-    '@id': `${authorityProfile.authorUrl}#person`,
-    name: authorityProfile.publicName,
-    alternateName: authorityProfile.alternateName,
-    url: authorityProfile.authorUrl,
+    ...personEntity,
     jobTitle: 'AI 應用講師／全端工程師',
     description: authorityProfile.shortBio,
-    sameAs: authorityProfile.sameAs,
     knowsAbout: ['AI Agent', 'Claude Code', 'Vibe Coding', 'Context Engineering', 'Harness Engineering', 'Skill Design'],
   },
 };
 
 const timeline = [
-  { time: '非本科轉職', title: '從前端開始，一路補到後端和部署', text: '我不是資工本科，從前端開始做，在工作裡一路補上後端、部署和系統整合。那時候學到一件事：聽得懂名詞，跟真的把東西做出來，差很遠。' },
+  { time: '非本科轉職', title: '從前端開始，一路補到後端和部署', text: '我不是資工本科，從前端開始做，在工作裡一路補上後端、部署和系統整合。那時候才知道，聽得懂名詞跟真的把東西做出來，差很遠。' },
   { time: '工程實務期', title: '一年內升到系統分析，接政府標案', text: '轉職一年內從前端升到系統分析與設計，負責政府標案系統。功能能跑還不夠，資料、權限、驗收、例外處理和交接，都要一起想清楚。' },
   { time: '2024', datetime: '2024', title: '開始把工程經驗用在 AI 上', text: '我把工程背景轉到 AI 應用，也協助一間外商建立 AI 諮詢服務。以前只用在寫系統的判斷方式，開始用在內容、教學和產品上。' },
   { time: '2025-06', datetime: '2025-06', title: '全職做 CabLate', text: '2025 年 6 月離職，全職做 CabLate。7 月第一次受邀分享，10 月自己辦了第一場講座，200 多人報名。' },
@@ -34,7 +29,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
 ---
 
 <BaseLayout title="關於 Cab｜從工程師到 AI 講師" description="Cab（CabLate）非本科轉職工程師，做過政府標案系統，現在研究 Claude Code、Agent 和 Skill，寫課、做開源工具，也接 AI 諮詢與企業內訓。" image="/og/pages/about.png" imageAlt="關於 Cab：AI 做出來一次之後，我會再問下次還做不做得出來。" imageWidth={1200} imageHeight={630}>
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(personJsonLd)} />
 
   <article class="about-page paper-page">
     <header class="about-hero page-paper paper-card">
@@ -50,7 +45,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
         </div>
         <div class="about-hero__aside">
           <p class="about-hero__lead">我是 Cab，在第一線教 AI 落地的講師。工程師出身，做過政府標案系統，現在每天用 Claude Code 工作。</p>
-          <p>很多 AI 示範都在比誰做得快。我比較在意的是：放進每天的工作之後會不會出錯，別人接手看不看得懂。</p>
+          <p>很多 AI 示範都在比誰做得快。我比較在意放進每天的工作之後會不會出錯，別人接手看不看得懂。</p>
           <dl class="about-hero__facts">
             <div><dt>現在在做</dt><dd>企業內訓、講座、工作坊，也接 AI 諮詢和陪跑</dd></div>
             <div><dt>公開留下</dt><dd>開源工具、研究筆記、課程和手冊</dd></div>
@@ -63,7 +58,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
     <section class="about-story page-paper paper-card" aria-labelledby="story-title">
       <div class="about-story__intro section-heading">
         <p class="about-kicker">我怎麼走到這裡</p>
-        <h2 id="story-title">寫程式那幾年學到：功能能跑，只是開始</h2>
+        <h2 id="story-title">寫程式那幾年才知道，功能能跑只是開始</h2>
         <span class="about-story__mark" aria-hidden="true">↳</span>
       </div>
       <div class="about-story__body">
@@ -147,7 +142,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
         <div class="trust-evidence__channels" id="public-output-actions">
           <p>想看更多</p>
           <ul role="list">
-            <li><a class="btn btn-ghost" href={siteConfig.githubUrl} target="_blank" rel="noopener"><Github size={17} aria-hidden="true" /><span>GitHub 個人頁</span><ArrowRight size={15} aria-hidden="true" /></a></li>
+            <li><a class="btn btn-ghost" href={siteConfig.githubUrl} target="_blank" rel="noopener"><FolderGit2 size={17} aria-hidden="true" /><span>GitHub 個人頁</span><ArrowRight size={15} aria-hidden="true" /></a></li>
             <li><a class="btn btn-ghost" href={siteConfig.threadsUrl} target="_blank" rel="noopener"><AtSign size={17} aria-hidden="true" /><span>Threads 帳號</span><ArrowRight size={15} aria-hidden="true" /></a></li>
           </ul>
         </div>
@@ -209,7 +204,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
           <article><span>01</span><h3>沒做過的，不裝熟</h3><p>我會分清楚：哪些是我實際做過的、哪些是研究後的判斷、哪些還沒驗證。</p></article>
           <article><span>02</span><h3>先給人用一次</h3><p>讓真正要用的人早點用，問題早點冒出來，再照實際狀況改。</p></article>
           <article><span>03</span><h3>先看問題，再決定要不要用 AI</h3><p>簡單的方法就能穩定解決，就不硬加 Agent、MCP 或自動化。</p></article>
-          <article><span>04</span><h3>做對一次，把做法留下來</h3><p>不只存最後的 Prompt，也把判斷、順序、例外和怎麼檢查一起記下來。</p></article>
+          <article><span>04</span><h3>做對一次，把做法留下來</h3><p>最後的 Prompt 要存，判斷、順序、例外和怎麼檢查也一起記下來。</p></article>
         </div>
       </div>
     </section>

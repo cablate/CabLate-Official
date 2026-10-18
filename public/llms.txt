@@ -14,7 +14,7 @@
 
 - [免費 AI 工作流健檢](https://cablate.com/expertise/): 用五個問題找出 AI 卡在哪一層
 - [課程與手冊](https://cablate.com/courses/): AgentSkill 課程、Claude Code 深度工程手冊
-- [電子報](https://cablate.com/subscribe/): 每封拆一個 AI 卡點
+- [電子報](https://cablate.com/newsletter/): 每封拆一個 AI 卡點
 
 ## 關於
 

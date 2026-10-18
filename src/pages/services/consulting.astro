@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
 import { getServiceApplicationHref } from '../../config/serviceApplication';
+import ProofStrip from '../../components/common/ProofStrip.astro';
+import QuoteBand from '../../components/common/QuoteBand.astro';
 import '../../styles/service-pages.css';
 
 const consultingApplicationHref = getServiceApplicationHref('consulting', 'consulting_page');
@@ -13,10 +15,16 @@ const deliverables = [
   ['一頁行動卡', '留下優先三步、先不做什麼、還缺哪些資訊，以及何時回頭檢查。'],
 ];
 
+const priceReasons = [
+  ['先看過，適合才收費', '你先提交情境，我判斷這是不是 60 分鐘處理得了的問題。不適合，收費前就直接說。'],
+  ['處理的是你的真實專案', '我看你做過什麼、卡在哪，判斷該繼續、縮小還是換方向。'],
+  ['留下能照著做的東西', '最後整理成一頁行動卡。之後若 14 天內加入五週陪跑，諮詢費全額折抵。'],
+];
+
 const faq = [
   ['會不會只得到很大的方向？', '不會只丟一句「建議你再想清楚」。資訊夠，我會排出接下來先做什麼；資訊不夠，我也會明確告訴你還缺哪一塊。'],
   ['不是做 AI 或工程專案，也適合嗎？', '可以。工作、事業、產品、內容或流程都可以；重點是你有一個真實題目與可描述的結果。'],
-  ['諮詢會直接幫我開發嗎？', '不包含代開發。這 60 分鐘先找出真正問題、該不該做與先做什麼。需要一起實作時，再另外確認陪跑是否適合。'],
+  ['諮詢會直接幫我開發嗎？', '不包含代開發。這 60 分鐘先找出問題在哪、該不該做、先做什麼。需要一起實作時，再另外確認陪跑是否適合。'],
   ['費用與時段怎麼確認？', '費用是 NT$5,000。先提交情境，確認這種方式適合後，我會提供可選時段與完整條款；完成付款才保留時段。'],
 ];
 ---
@@ -40,6 +48,8 @@ const faq = [
       </figure>
     </header>
 
+    <ProofStrip label="一些數字" class="service-shell service-proof" />
+
     <section class="service-shell service-section page-paper paper-card" aria-labelledby="outcomes-title">
       <header class="service-section__intro">
         <p class="section-label">你會帶走</p>
@@ -51,20 +61,33 @@ const faq = [
       </div>
       <aside class="service-decision-example" aria-labelledby="decision-example-title">
         <div><p class="section-label">常見的例子</p><h3 id="decision-example-title">一直換工具，問題常常不在工具。</h3></div>
-        <p><strong>看到的症狀：</strong>做法一直換，結果仍然需要重做。<br /><strong>可能的卡點：</strong>真正要完成什麼、怎樣算完成，還沒有說清楚。<br /><strong>這次要做的事：</strong>把題目縮成一個能測的輸出，再決定工具要不要換。</p>
+        <p><strong>看到的症狀：</strong>做法一直換，結果仍然需要重做。<br /><strong>可能的卡點：</strong>要完成什麼、怎樣算完成，還沒有說清楚。<br /><strong>這次要做的事：</strong>把題目縮成一個能測的輸出，再決定工具要不要換。</p>
       </aside>
     </section>
+
+    <section class="service-shell service-section page-paper paper-card" aria-labelledby="price-title">
+      <header class="service-section__intro">
+        <p class="section-label">費用</p>
+        <h2 id="price-title">NT$5,000 買的是判斷</h2>
+        <p>一小時內針對你這個專案，排出取捨和先後順序。</p>
+      </header>
+      <div class="service-deliverables">
+        {priceReasons.map(([title, body]) => <article><h3>{title}</h3><p>{body}</p></article>)}
+      </div>
+    </section>
+
+    <QuoteBand class="service-shell" title="我看問題的方式" lead="Threads 原文，沒有修過。" pick={[3, 0, 1]} />
 
     <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="fit-title">
       <header class="service-section__intro service-section__intro--compact">
         <p class="section-label">先確認是否適合</p>
-        <h2 id="fit-title">前提是：你手上要有東西可以看</h2>
+        <h2 id="fit-title">前提是你手上要有東西可以看</h2>
       </header>
       <div class="service-fit-column">
         <h3><Check size={19} aria-hidden="true" />適合你，如果</h3>
         <ul>
           <li>你正在做一個真實專案、工作流程、產品或內容。</li>
-          <li>你已經試過一些方法，卻還不知道真正瓶頸。</li>
+          <li>你已經試過一些方法，卻還不知道瓶頸在哪。</li>
           <li>問題已經造成重做、延誤、成本或決策壓力。</li>
           <li>你願意提供必要資訊，並親自做最後決定。</li>
         </ul>

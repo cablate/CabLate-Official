@@ -1,0 +1,79 @@
+---
+/**
+ * ArticleEnd - 文章結尾唯一的行動區：電子報為主，作者與企業內訓各一行
+ */
+
+import KitForm from './common/KitForm.astro';
+import { siteConfig } from '../config/siteConfig';
+---
+
+<section class="article-end" aria-labelledby="article-end-title">
+  <h2 id="article-end-title">下一個 AI 卡點，寄到你信箱</h2>
+  <p>{siteConfig.newsletter.promise}{siteConfig.newsletter.cadence}</p>
+  <KitForm />
+  <p class="article-end__fine">隨時一鍵退訂・<a href="/privacy/">資料怎麼用</a></p>
+
+  <div class="article-end__author">
+    <img src="/images/photos/cablate-portrait-real-v1.webp" alt="" width="1400" height="1400" loading="lazy" decoding="async" />
+    <p>寫這篇的是 Cab，在第一線教 AI 落地，從農會推廣人員教到外商工程團隊。<a href="/about/">我的經歷</a>・團隊想導入，看<a href="/services/enterprise/" data-analytics-placement="article_end">企業內訓</a>。</p>
+  </div>
+</section>
+
+<style>
+  .article-end {
+    display: grid;
+    gap: 1rem;
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border-strong);
+  }
+
+  .article-end h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(1.3rem, 3vw, 1.6rem);
+    line-height: 1.4;
+  }
+
+  .article-end > p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  .article-end .article-end__fine {
+    font-size: .85rem;
+    color: var(--text-muted);
+  }
+
+  .article-end__author {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  .article-end__author img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 35% center;
+  }
+
+  .article-end__author p {
+    margin: 0;
+    font-size: .92rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .article-end a {
+    color: var(--accent-text);
+    font-weight: 700;
+  }
+</style>

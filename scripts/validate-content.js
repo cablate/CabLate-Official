@@ -1,64 +1,58 @@
 /**
  * Content Validation Script
  *
- * Scans non-draft course markdown files for:
+ * Scans non-draft article markdown files for:
  * 1. [TEST] markers — placeholder content that should not ship
  * 2. Unicode replacement characters (U+FFFD) — source corruption
+ * 3. Date-times without a timezone offset — YAML reads them as UTC and shifts the published time
+ * 4. ogImage paths that do not exist under public/
  *
  * Usage: node scripts/validate-content.js
  * Exit code: 1 if violations found, 0 if clean.
  */
 
-import { readFileSync, readdirSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
-const COURSES_DIR = join(process.cwd(), 'src', 'content', 'courses');
+const ARTICLES_DIR = join(process.cwd(), 'src', 'content', 'articles');
+const PUBLIC_DIR = join(process.cwd(), 'public');
 
 const FORBIDDEN_PATTERNS = [
   { pattern: /\[TEST(?:\s+DATA)?\]/gi, label: '[TEST] marker' },
   { pattern: /�/g, label: 'Unicode replacement character (U+FFFD)' },
 ];
+const DATE_FIELD = /^(publishDate|updatedDate):\s*["']?([^"'\s]+)/gm;
+const DATE_TIME_WITHOUT_OFFSET = /T\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/;
 
-let violations = 0;
+const failures = [];
 
-let files;
-try {
-  files = readdirSync(COURSES_DIR).filter(f => f.endsWith('.md'));
-} catch {
-  // No courses directory yet — nothing to validate
-  console.log('[validate-content] No courses directory found, skipping.');
-  process.exit(0);
-}
-
-for (const file of files) {
-  const filePath = join(COURSES_DIR, file);
-  const content = readFileSync(filePath, 'utf-8');
-
-  // Parse draft status from frontmatter
-  const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
-  if (!frontmatterMatch) continue;
-
-  const frontmatter = frontmatterMatch[1];
-  const isDraft = /^draft:\s*true/m.test(frontmatter);
-
-  if (isDraft) {
-    // Draft files are allowed to have test content
+for (const file of readdirSync(ARTICLES_DIR).filter((f) => f.endsWith('.md'))) {
+  const content = readFileSync(join(ARTICLES_DIR, file), 'utf-8').replace(/\r\n/g, '\n');
+  const frontmatter = content.match(/^---\n([\s\S]*?)\n---/)?.[1];
+  if (!frontmatter) {
+    failures.push(`${file}: missing frontmatter`);
     continue;
   }
+  if (/^draft:\s*true/m.test(frontmatter)) continue;
 
-  // Check non-draft files for forbidden patterns
   for (const { pattern, label } of FORBIDDEN_PATTERNS) {
     const matches = content.match(pattern);
-    if (matches) {
-      console.error(`  FAIL  ${file}: found ${matches.length}x ${label}`);
-      violations += matches.length;
-    }
+    if (matches) failures.push(`${file}: found ${matches.length}x ${label}`);
+  }
+
+  for (const [, field, value] of frontmatter.matchAll(DATE_FIELD)) {
+    if (DATE_TIME_WITHOUT_OFFSET.test(value)) failures.push(`${file}: ${field} ${value} has a time but no timezone offset (use +08:00)`);
+  }
+
+  const ogImage = frontmatter.match(/^ogImage:\s*["']?([^"'\n]+)/m)?.[1]?.trim();
+  if (ogImage && !ogImage.startsWith('http') && !existsSync(join(PUBLIC_DIR, ogImage))) {
+    failures.push(`${file}: ogImage ${ogImage} does not exist under public/`);
   }
 }
 
-if (violations > 0) {
-  console.error(`\n[validate-content] ${violations} violation(s) found. Set draft: true or replace placeholders.`);
+if (failures.length > 0) {
+  failures.forEach((failure) => console.error(`  FAIL  ${failure}`));
+  console.error(`\n[validate-content] ${failures.length} violation(s) found.`);
   process.exit(1);
-} else {
-  console.log('[validate-content] All published course content is clean.');
 }
+console.log('[validate-content] All published article content is clean.');

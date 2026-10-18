@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
   build:
@@ -19,19 +19,15 @@ jobs:
 
       - run: npm ci
 
-      - name: Build
-        run: npx astro build
+      - name: Type check
+        run: npx astro check
 
-      - name: Generate search index
-        run: npx pagefind --site dist --glob "**/*.html"
+      - name: Build with content and analytics validation
+        run: npm run build
 
-      - name: Check HTML output
+      - name: Validate built output
         run: |
-          echo "Build output:"
-          ls -la dist/
-          echo ""
-          echo "Pages built:"
-          find dist -name "*.html" | wc -l
-          echo ""
-          echo "Sitemap check:"
-          cat dist/sitemap.xml | head -20
+          node scripts/validate-entry-surfaces.mjs
+          npm run validate:service-application
+          npm run validate:seo
+          npm run lint:copy -- --strict

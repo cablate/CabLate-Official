@@ -11,10 +11,8 @@ interface Props {
 
 const { headings } = Astro.props;
 
-// 只保留 h2 和 h3
 const filtered = headings.filter(h => h.depth === 2 || h.depth === 3);
 
-// 建立巢狀結構：h2 帶有 children（h3[]）
 interface TocItem {
   depth: number;
   slug: string;
@@ -29,7 +27,6 @@ for (const heading of filtered) {
   } else if (heading.depth === 3 && nested.length > 0) {
     nested[nested.length - 1].children.push(heading);
   } else {
-    // h3 without a parent h2 — treat as top-level
     nested.push({ ...heading, children: [] });
   }
 }
@@ -37,7 +34,7 @@ for (const heading of filtered) {
 
 {filtered.length > 0 && (
   <nav class="toc" aria-label="目錄">
-    <h2 class="toc-title">目錄</h2>
+    <p class="toc-title">這篇的段落</p>
     <ul class="toc-list">
       {nested.map(item => (
         <li>
@@ -62,119 +59,105 @@ for (const heading of filtered) {
 )}
 
 <script is:inline>
-  // Scroll-spy：用 IntersectionObserver 追蹤目前可見的 heading
   (function () {
-    const tocLinks = document.querySelectorAll('.toc-link');
-    if (!tocLinks.length) return;
+    let cleanup;
+    function initToc() {
+      if (cleanup) cleanup();
+      const tocLinks = document.querySelectorAll('.toc-link');
+      if (!tocLinks.length) return;
 
-    const slugs = Array.from(tocLinks).map(a => a.getAttribute('data-slug'));
-    const headingEls = slugs
-      .map(slug => document.getElementById(slug))
-      .filter(Boolean);
+      const slugs = Array.from(tocLinks).map(a => a.getAttribute('data-slug'));
+      const headingEls = slugs.map(slug => document.getElementById(slug)).filter(Boolean);
+      if (!headingEls.length) return;
 
-    if (!headingEls.length) return;
+      let currentSlug = '';
+      function setActive(slug) {
+        if (slug === currentSlug) return;
+        currentSlug = slug;
+        tocLinks.forEach(link => {
+          link.classList.toggle('toc-active', link.getAttribute('data-slug') === slug);
+        });
+      }
 
-    let currentSlug = '';
+      const observer = new IntersectionObserver(
+        entries => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              setActive(entry.target.id);
+              return;
+            }
+          }
+        },
+        { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
+      );
 
-    function setActive(slug) {
-      if (slug === currentSlug) return;
-      currentSlug = slug;
-      tocLinks.forEach(link => {
-        if (link.getAttribute('data-slug') === slug) {
-          link.classList.add('toc-active');
-        } else {
-          link.classList.remove('toc-active');
-        }
-      });
+      headingEls.forEach(el => observer.observe(el));
+      cleanup = () => observer.disconnect();
     }
 
-    const observer = new IntersectionObserver(
-      entries => {
-        // 找到第一個進入視口的 heading
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id);
-            return;
-          }
-        }
-      },
-      {
-        rootMargin: '-80px 0px -60% 0px',
-        threshold: 0,
-      }
-    );
-
-    headingEls.forEach(el => observer.observe(el));
+    initToc();
+    document.addEventListener('astro:page-load', initToc);
   })();
 </script>
 
 <style>
   .toc {
     position: sticky;
-    top: 100px;
-    max-height: calc(100vh - 140px);
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
     overflow-y: auto;
-    padding: 1.25rem;
-    border-left: 2px solid var(--border, #e2e8f0);
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    border-left: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+
+  .toc::-webkit-scrollbar {
+    width: 0;
   }
 
   .toc-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 0.9rem;
+    margin: 0 0 0.75rem;
+    font-size: 0.78rem;
     font-weight: 700;
-    color: var(--text-primary, #1e293b);
-    margin-bottom: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
   }
 
-  .toc-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
+  .toc-list,
   .toc-sublist {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.3rem;
+  }
+
+  .toc-sublist {
     margin-top: 0.25rem;
   }
 
   .toc-link {
     display: block;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     line-height: 1.5;
-    color: var(--text-muted, #94a3b8);
+    color: var(--text-muted);
     text-decoration: none;
-    padding: 0.2rem 0;
-    transition: color var(--transition-fast, 0.15s ease);
+    padding: 0.15rem 0;
+    transition: color var(--transition-fast);
   }
 
   .toc-link:hover {
-    color: var(--text-primary, #1e293b);
+    color: var(--text-primary);
   }
 
   .toc-link-sub {
-    padding-left: 1rem;
-    font-size: 0.75rem;
+    padding-left: 0.85rem;
+    font-size: 0.78rem;
   }
 
   .toc-link.toc-active {
-    color: var(--accent, #8b5cf6);
-    font-weight: 600;
-  }
-
-  /* 隱藏 scrollbar（保留滾動能力） */
-  .toc::-webkit-scrollbar {
-    width: 0;
-  }
-
-  .toc {
-    scrollbar-width: none;
+    color: var(--accent-text);
+    font-weight: 700;
   }
 </style>

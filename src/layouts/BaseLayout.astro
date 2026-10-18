@@ -12,17 +12,12 @@ interface Props {
   analytics?: 'default' | 'disabled';
 }
 
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import SEO from '../components/SEO.astro';
 import ArchiveNavigation from '../components/ArchiveNavigation.astro';
 import AnalyticsHead from '../components/analytics/AnalyticsHead.astro';
 import AnalyticsConsent from '../components/analytics/AnalyticsConsent.astro';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
-import '@fontsource/noto-sans-tc/400.css';
-import '@fontsource/noto-sans-tc/500.css';
-import '@fontsource/noto-sans-tc/700.css';
-import '@fontsource/noto-serif-tc/400.css';
-import '@fontsource/noto-serif-tc/700.css';
 
 const {
   title,
@@ -45,6 +40,8 @@ const currentYear = new Date().getFullYear();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preload" as="image" href="/images/paper-ui/paper-white-1x.webp" media="(max-width: 768px)" fetchpriority="high">
+    <link rel="preload" as="image" href="/images/paper-ui/paper-white-1x.webp" imagesrcset="/images/paper-ui/paper-white-1x.webp 1x, /images/paper-ui/paper-white-2x.webp 2x" media="(min-width: 769px)" fetchpriority="high">
     {!noSEO && (
       <SEO
         title={seoTitle}
@@ -58,10 +55,10 @@ const currentYear = new Date().getFullYear();
     )}
     {/* noSEO 模式：title 由子 layout 透過 slot="head" 的 SEO 元件提供 */}
     <slot name="head" />
-    <ViewTransitions />
+    <ClientRouter />
     <link rel="icon" type="image/webp" href="/favicon.webp">
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32">
-    <!-- Articles inbound links paused: RSS endpoint 保留，但暫不在全站主動曝光。 -->
+    <link rel="alternate" type="application/rss+xml" title="CabLate 文章" href="/rss.xml">
 
     <!-- Google Search Console 驗證 -->
     <meta name="google-site-verification" content={siteConfig.gscVerification} />
@@ -148,11 +145,11 @@ const currentYear = new Date().getFullYear();
           <div class="footer-links">
             <nav aria-label="內容與服務">
               <strong>探索</strong>
-              {/* Articles and expertise inbound links paused. */}<a href="/expertise/">免費健檢</a><a href="/courses/">課程與手冊</a><a href="/services/">合作方式</a><a href="/subscribe/?shell=desk">電子報</a><a href="/about/#public-output-title">作品與經歷</a><a href="/about/">關於</a>
+              <a href="/expertise/">免費健檢</a><a href="/courses/">課程與手冊</a><a href="/articles/">文章</a><a href="/services/">合作方式</a><a href="/newsletter/">電子報</a><a href="/about/#public-output-title">作品與經歷</a><a href="/about/">關於</a>
             </nav>
             <nav aria-label="外部連結">
               <strong>連結</strong>
-              <a href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'site_navigation')} target="_blank" rel="noopener">CabAI 學習平台</a><a href={`mailto:${siteConfig.contactEmail}`}>Email</a><a href={siteConfig.threadsUrl} target="_blank" rel="noopener">Threads</a><a href={siteConfig.githubUrl} target="_blank" rel="noopener">GitHub</a>{/* Articles inbound links paused: RSS 入口暫停。 */}
+              <a href={withCabAiAttribution(siteConfig.cabAi.homeUrl, 'site_navigation')} target="_blank" rel="noopener">CabAI 學習平台</a><a href={`mailto:${siteConfig.contactEmail}`}>Email</a><a href={siteConfig.threadsUrl} target="_blank" rel="noopener">Threads</a><a href={siteConfig.githubUrl} target="_blank" rel="noopener">GitHub</a><a href="/rss.xml">RSS</a>
             </nav>
           </div>
           <div class="footer-meta"><p>&copy; {currentYear} CabLate</p><a href="/privacy/">隱私權政策</a>{analytics === 'default' && <button type="button" data-analytics-settings>分析設定</button>}</div>
@@ -161,41 +158,6 @@ const currentYear = new Date().getFullYear();
 
     {analytics === 'default' && <AnalyticsConsent />}
 
-    <!-- Scroll Reveal Observer -->
-    <script is:inline>
-      (function initReveal() {
-        const selectors = '.reveal';
-        const els = document.querySelectorAll(selectors);
-        if (!els.length) return;
-
-        if (!('IntersectionObserver' in window)) {
-          // Fallback：不支援的瀏覽器直接顯示
-          els.forEach(el => el.classList.add('visible'));
-          return;
-        }
-
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-        els.forEach(el => observer.observe(el));
-
-        // ViewTransitions：頁面切換後重新觀察
-        document.addEventListener('astro:after-swap', () => {
-          const newEls = document.querySelectorAll(selectors);
-          newEls.forEach(el => {
-            if (!el.classList.contains('visible')) {
-              observer.observe(el);
-            }
-          });
-        });
-      })();
-    </script>
     {analytics === 'default' && (
       <script is:inline>
         document.addEventListener('click', (event) => {
@@ -212,7 +174,6 @@ const currentYear = new Date().getFullYear();
     @import '../styles/base.css';       /* CSS Variables + Reset + Typography */
     @import '../styles/utilities.css';  /* Layout + Section + Reveal */
     @import '../styles/global.css';     /* 元件樣式（待 Phase 2 遷移） */
-    @import '../styles/article-archive.css'; /* 文章分類與標籤索引 */
 
     /* Accessibility: Skip Link */
     .skip-link {

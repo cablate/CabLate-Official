@@ -1,36 +1,22 @@
 ---
 /**
- * Subscribe Landing Page - 獨立 Email 訂閱專頁
- * 極簡聚焦：純粹的訂閱卡片
- * - 外部連結分享：預設 shell="bare"（無左側菜單、無 Footer，極致乾淨）
- * - 站內選單點入：支援 shell="desk"（維持一般全站邊框）
+ * Subscribe Landing Page - 站外分享用的無邊框訂閱頁
+ * 站內導覽與頁尾走 /newsletter/；本頁 canonical 指回 /newsletter/。
  */
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SEO from '../components/SEO.astro';
-import KitForm from '../components/common/KitForm.astro';
-import { ArrowLeft, Check } from '@lucide/astro';
+import NewsletterCard from '../components/common/NewsletterCard.astro';
+import { ArrowLeft } from '@lucide/astro';
 import { siteConfig } from '../config/siteConfig';
 
 const pageDescription = `Cab 的電子報。${siteConfig.newsletter.promise}`;
-const takeaways = [
-  '我實際遇到的 AI 卡點，和我怎麼判斷',
-  '哪裡容易出錯，什麼時候乾脆不要用 AI',
-  '新課程、講座開放時，先寄給你',
-];
-
-const isFromMenu = Astro.url.searchParams.get('shell') === 'desk';
-const shell = isFromMenu ? 'desk' : 'bare';
 ---
 
 <BaseLayout
   title="訂閱 Cab 的電子報"
   description={pageDescription}
-  image="/og/pages/subscribe.png"
-  imageAlt="訂閱 Cab 的電子報：每封拆一個 AI 卡點"
-  imageWidth={1200}
-  imageHeight={630}
-  shell={shell}
+  shell="bare"
   noSEO={true}
 >
   <SEO
@@ -41,57 +27,32 @@ const shell = isFromMenu ? 'desk' : 'bare';
     imageAlt="訂閱 Cab 的電子報：每封拆一個 AI 卡點"
     imageWidth={1200}
     imageHeight={630}
+    canonicalPath="/newsletter/"
   />
 
-  <div class:list={['subscribe-wrapper', { 'is-bare': shell === 'bare' }]}>
-    {shell === 'bare' && (
-      <nav class="subscribe-top-nav" aria-label="返回首頁">
-        <a href="/" class="subscribe-back-btn">
-          <ArrowLeft size={16} aria-hidden="true" />
-          <span>CabLate</span>
-        </a>
-      </nav>
-    )}
-
-    <main class="subscribe-main">
-      <section class="subscribe-card paper-card paper-card--clip" aria-labelledby="subscribe-title">
-        <div class="paper-card__inner subscribe-card__inner">
-          <h1 id="subscribe-title">每封信，拆一個 AI 卡點</h1>
-          <ul class="subscribe-takeaways" aria-label="你會收到">
-            {takeaways.map((item) => <li><Check size={16} aria-hidden="true" />{item}</li>)}
-          </ul>
-          <div class="subscribe-form">
-            <KitForm submitLabel="免費訂閱" successMessage="驗證信已送出！請到信箱點擊確認連結完成訂閱。" />
-          </div>
-          <p class="subscribe-reassurance">有值得寫的才寄・隨時一鍵退訂</p>
-        </div>
-      </section>
-    </main>
+  <div class="subscribe-wrapper">
+    <nav class="subscribe-top-nav" aria-label="返回首頁">
+      <a href="/" class="subscribe-back-btn">
+        <ArrowLeft size={16} aria-hidden="true" />
+        <span>CabLate</span>
+      </a>
+    </nav>
+    <NewsletterCard />
   </div>
 </BaseLayout>
 
 <style>
   .subscribe-wrapper {
-    width: 100%;
-    min-height: calc(100vh - 14rem);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
-    padding: 2rem 1rem;
-    box-sizing: border-box;
-  }
-
-  .subscribe-wrapper.is-bare {
     min-height: 88vh;
-    padding-top: 1.5rem;
+    padding: 1.5rem 1rem 2rem;
   }
 
   .subscribe-top-nav {
     width: min(100%, 36rem);
-    display: flex;
-    justify-content: flex-start;
     margin-bottom: 1.5rem;
   }
 
@@ -100,170 +61,28 @@ const shell = isFromMenu ? 'desk' : 'bare';
     align-items: center;
     gap: .4rem;
     padding: .4rem .75rem;
+    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--bg-soft) 85%, transparent);
     color: var(--text-secondary);
     font-family: var(--font-mono);
     font-size: .78rem;
     font-weight: 700;
     text-decoration: none;
-    background: color-mix(in srgb, var(--bg-soft) 85%, transparent);
-    border: 1px solid var(--border);
-    backdrop-filter: blur(4px);
-    transition: all 180ms ease;
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
   }
 
   .subscribe-back-btn:hover {
-    color: var(--accent-text);
-    background: var(--accent-subtle);
     border-color: var(--accent);
-    transform: translateX(-2px);
-  }
-
-  .subscribe-main {
-    width: 100%;
-    display: grid;
-    place-items: center;
-  }
-
-  .subscribe-card {
-    width: min(100%, 36rem);
-    text-align: center;
-  }
-
-  .subscribe-card__inner {
-    display: grid;
-    gap: 1.5rem;
-    padding: clamp(2.5rem, 5.5vw, 3.75rem) clamp(1.5rem, 4.5vw, 2.75rem);
-    text-align: center;
-  }
-
-  .subscribe-takeaways {
-    display: grid;
-    gap: .55rem;
-    width: fit-content;
-    margin: 0 auto;
-    padding: 0;
-    list-style: none;
-    text-align: left;
-  }
-  .subscribe-takeaways li {
-    display: flex;
-    align-items: flex-start;
-    gap: .5rem;
-    color: var(--text-secondary);
-    font-size: .95rem;
-    line-height: 1.6;
-  }
-  .subscribe-takeaways :global(svg) {
-    flex: none;
-    margin-top: .3rem;
+    background: var(--accent-subtle);
     color: var(--accent-text);
-  }
-  .subscribe-card h1 {
-    margin: 0;
-    color: var(--text-primary);
-    font-family: var(--font-serif);
-    font-size: clamp(1.85rem, 4.2vw, 2.45rem);
-    font-weight: 700;
-    letter-spacing: -.035em;
-    line-height: 1.25;
-    text-wrap: balance;
-  }
-
-  .subscribe-form {
-    width: 100%;
-  }
-
-  /* Form alignment override for clean single-line inline form */
-  :global(.subscribe-form .formkit-label) {
-    display: none !important;
-  }
-
-  :global(.subscribe-form .formkit-fields) {
-    display: flex !important;
-    align-items: stretch !important;
-    gap: .65rem !important;
-    max-width: 100% !important;
-  }
-
-  :global(.subscribe-form .formkit-field) {
-    flex: 1 !important;
-    display: flex !important;
-  }
-
-  :global(.subscribe-form .formkit-input) {
-    min-height: 2.85rem !important;
-    height: 2.85rem !important;
-    background: #fff !important;
-    border: 1px solid var(--border-strong) !important;
-    box-shadow: inset 0 1px 2px rgb(0 0 0 / .04) !important;
-  }
-
-  :global(.subscribe-form .formkit-submit) {
-    min-height: 2.85rem !important;
-    height: 2.85rem !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding-inline: 1.5rem !important;
-  }
-
-  .subscribe-reassurance {
-    margin: 0;
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-    font-size: .74rem;
-    font-weight: 500;
-    letter-spacing: .04em;
-    opacity: .85;
+    transform: translateX(-2px);
   }
 
   @media (max-width: 600px) {
     .subscribe-wrapper {
-      min-height: calc(100vh - 10rem);
-      padding: 1.5rem .75rem 2.5rem;
-    }
-    .subscribe-wrapper.is-bare {
       min-height: 82vh;
-    }
-    .subscribe-card__inner {
-      padding: 2.25rem 1.15rem;
-      gap: 1.25rem;
-    }
-    .subscribe-takeaways {
-    display: grid;
-    gap: .55rem;
-    width: fit-content;
-    margin: 0 auto;
-    padding: 0;
-    list-style: none;
-    text-align: left;
-  }
-  .subscribe-takeaways li {
-    display: flex;
-    align-items: flex-start;
-    gap: .5rem;
-    color: var(--text-secondary);
-    font-size: .95rem;
-    line-height: 1.6;
-  }
-  .subscribe-takeaways :global(svg) {
-    flex: none;
-    margin-top: .3rem;
-    color: var(--accent-text);
-  }
-  .subscribe-card h1 {
-      font-size: clamp(1.65rem, 7.2vw, 2.05rem);
-    }
-    :global(.subscribe-form .formkit-fields) {
-      flex-direction: column !important;
-      gap: .75rem !important;
-    }
-    :global(.subscribe-form .formkit-input),
-    :global(.subscribe-form .formkit-submit) {
-      width: 100% !important;
-      min-height: 3.1rem !important;
-      height: 3.1rem !important;
+      padding: 1.5rem .75rem 2.5rem;
     }
   }
 </style>

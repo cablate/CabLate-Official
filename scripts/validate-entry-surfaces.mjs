@@ -1,5 +1,5 @@
-import { readFileSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { join, relative } from 'node:path';
 
 const root = process.cwd();
 const read = (path) => readFileSync(join(root, path), 'utf8');
@@ -18,6 +18,11 @@ const navigationSource = read('src/config/authority.ts');
 const headerSource = read('src/components/ArchiveNavigation.astro');
 const layoutSource = read('src/layouts/BaseLayout.astro');
 const notFoundSource = read('src/pages/404.astro');
+const kitFormId = read('src/config/siteConfig.ts').match(/formId: '(\d+)'/)?.[1];
+const walk = (dir) => readdirSync(dir).flatMap((name) => {
+  const path = join(dir, name);
+  return statSync(path).isDirectory() ? walk(path) : [path];
+});
 
 assert(count(homeSource, /<h1\b/g) === 1, 'home source must contain exactly one H1');
 assert(count(expertiseSource, /<h1\b/g) === 1, 'expertise source must contain exactly one H1');
@@ -27,13 +32,13 @@ assert(!homeSource.includes('給還在觀望的你'), 'retired anxiety section i
 assert(!homeSource.includes('代表案例') && !homeSource.includes('stars／') && !homeSource.includes('位學員'), 'unapproved proof is rendered on home');
 
 const navBlock = navigationSource.match(/export const primaryNavigationGroups = \[([\s\S]*?)\] as const;/)?.[1] ?? '';
-assert(count(navBlock.replace(/^\s*\/\/.*$/gm, ''), /href:/g) === 9, 'primary navigation must contain exactly nine active destination links');
-for (const label of ['免費健檢', '課程與手冊', '電子報', '專案諮詢', 'AI 應用陪跑', '企業合作', '講師與內容', '作品與經歷', '關於 Cab']) {
+assert(count(navBlock.replace(/^\s*\/\/.*$/gm, ''), /href:/g) === 10, 'primary navigation must contain exactly ten active destination links');
+for (const label of ['免費健檢', '課程與手冊', '文章', '電子報', '專案諮詢', 'AI 應用陪跑', '企業合作', '講師與內容', '作品與經歷', '關於 Cab']) {
   assert(navBlock.includes(`label: '${label}'`), `navigation label missing: ${label}`);
 }
 assert(!headerSource.includes('site-rail__social'), 'header still renders external/social links');
 for (const label of ['免費健檢', '課程與手冊', '合作方式', '關於', 'CabAI 學習平台', 'Email', 'Threads', 'GitHub', '隱私權政策']) assert(layoutSource.includes(label), `footer label missing: ${label}`);
-assert(!layoutSource.includes('>RSS<') && !layoutSource.includes('>Articles<'), 'footer exposes a paused RSS or Articles entry');
+assert(layoutSource.includes('href="/articles/"') && layoutSource.includes('href="/rss.xml"'), 'footer must link to articles and RSS (decision D1)');
 
 assert(count(worksheetSource, /<fieldset class="layer-check"/g) === 1 && worksheetSource.includes('diagnosticLayers.map'), 'worksheet must render the five data-driven fieldsets');
 for (const code of ['task_contract', 'context_data', 'tools_permissions', 'memory_state', 'acceptance_recovery']) assert(layerSource.includes(`code: '${code}'`), `diagnostic result code missing: ${code}`);
@@ -57,10 +62,27 @@ if (existsSync(join(root, 'dist'))) {
   assert(count(expertiseHtml, /<fieldset class="layer-check"/g) === 5, 'built expertise must contain five check fieldsets');
   assert(!/<script[^>]+src=["']https:\/\/www\.googletagmanager\.com/i.test(expertiseHtml), 'built expertise eagerly loads an outbound analytics script');
   assert(notFoundHtml.includes('noindex, follow'), 'built 404 robots contract is missing');
-  for (const route of ['', 'expertise', 'courses', 'services', 'about', 'privacy']) {
+  for (const route of ['', 'expertise', 'courses', 'services', 'about', 'privacy', 'newsletter']) {
     const path = route ? join(root, 'dist', route, 'index.html') : join(root, 'dist', 'index.html');
     assert(existsSync(path), `built internal route is missing: /${route}`);
   }
+
+  for (const file of walk(join(root, 'dist')).filter((path) => path.endsWith('.html'))) {
+    const route = relative(join(root, 'dist'), file).replaceAll('\\', '/');
+    const html = readFileSync(file, 'utf8');
+    assert(html.split('src="https://f.convertkit.com/ckjs/ck.5.js"').length <= 2, `${route}: ck.5.js must load at most once`);
+    for (const [, formId] of html.matchAll(/data-sv-form="([^"]*)"/g)) {
+      assert(formId === kitFormId, `${route}: newsletter form ${formId} does not match siteConfig formId ${kitFormId}`);
+    }
+    for (const [, action] of html.matchAll(/action="(https:\/\/app\.kit\.com\/forms\/[^"]*)"/g)) {
+      assert(action === `https://app.kit.com/forms/${kitFormId}/subscriptions`, `${route}: newsletter form posts to ${action}`);
+    }
+  }
+  const newsletterHtml = read('dist/newsletter/index.html');
+  const subscribeHtml = read('dist/subscribe/index.html');
+  assert(newsletterHtml.includes('class="site-shell-desk"'), 'built /newsletter/ must use the desk shell');
+  assert(subscribeHtml.includes('class="site-shell-bare"'), 'built /subscribe/ must use the bare shell');
+  assert(subscribeHtml.includes('<link rel="canonical" href="https://cablate.com/newsletter/"'), 'built /subscribe/ canonical must point to /newsletter/');
 }
 
 if (failures.length) {
