@@ -10,6 +10,7 @@ interface Props {
   noindex?: boolean;
   shell?: 'desk' | 'bare';
   analytics?: 'default' | 'disabled';
+  faq?: { question: string; answer: string }[];
 }
 
 import { ClientRouter } from 'astro:transitions';
@@ -30,6 +31,7 @@ const {
   noindex = false,
   shell = 'desk',
   analytics = 'default',
+  faq,
 } = Astro.props;
 const seoTitle = title.includes('CabLate') ? title : `${title} | CabLate`;
 const currentYear = new Date().getFullYear();
@@ -65,6 +67,7 @@ const currentYear = new Date().getFullYear();
         imageWidth={imageWidth}
         imageHeight={imageHeight}
         noindex={noindex}
+        faq={faq}
       />
     )}
     {/* noSEO 模式：title 由子 layout 透過 slot="head" 的 SEO 元件提供 */}

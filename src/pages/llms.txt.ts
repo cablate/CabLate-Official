@@ -1,4 +1,17 @@
-# CabLate
+import type { APIRoute } from 'astro';
+import { getCollection } from 'astro:content';
+
+export const GET: APIRoute = async () => {
+  const publishedArticles = (await getCollection('articles'))
+    .filter((a) => !a.data.draft)
+    .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+  const articleLines = publishedArticles.map(
+    (a) =>
+      `- [${a.data.title}](https://cablate.com/articles/${a.slug}/)：${a.data.description}${a.data.ogHighlight ? `（實測數據：${a.data.ogHighlight.label} ${a.data.ogHighlight.before} → ${a.data.ogHighlight.after}）` : ''}`,
+  );
+
+  const body = `# CabLate
 
 > Cab（CabLate）的個人網站。工程師出身，研究 Claude Code、AI Agent 和 Skill 設計，寫課程與手冊、做開源工具，也提供 AI 諮詢、一對一陪跑與企業內訓。
 
@@ -22,3 +35,13 @@
 - [CabAI](https://cabai.cablate.com/): 課程、手冊與免費文章
 - [GitHub](https://github.com/cablate)
 - [Threads](https://www.threads.net/@cab_late)
+
+## 技術與實作拆解文章（Articles）
+
+${articleLines.join('\n')}
+`;
+
+  return new Response(body, {
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+  });
+};

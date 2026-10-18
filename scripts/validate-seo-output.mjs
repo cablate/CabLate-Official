@@ -60,6 +60,45 @@ const apply = readFileSync(join(dist, 'services/apply/index.html'), 'utf8');
 assert(/<meta name="robots" content="noindex/i.test(apply), 'services/apply: form page must be noindex');
 assert(!sitemap.includes('/services/apply/'), 'services/apply: form page must not be in the sitemap');
 
+const jsonLdTypes = (html) => {
+  const found = new Set();
+  const visit = (node) => {
+    if (Array.isArray(node)) node.forEach(visit);
+    else if (node && typeof node === 'object') {
+      const type = node['@type'];
+      if (typeof type === 'string') found.add(type);
+      else if (Array.isArray(type)) type.forEach((t) => found.add(t));
+      Object.values(node).forEach(visit);
+    }
+  };
+  visit(jsonLdNodes(html));
+  return found;
+};
+
+const expectJsonLdTypes = (route, expected) => {
+  const path = join(dist, route);
+  if (!existsSync(path)) {
+    assert(false, `${route}: expected a built page for JSON-LD checks, but it is missing from dist`);
+    return;
+  }
+  const found = jsonLdTypes(readFileSync(path, 'utf8'));
+  for (const type of expected) {
+    assert(found.has(type), `${route}: expected JSON-LD type "${type}", found [${[...found].sort().join(', ')}]`);
+  }
+};
+
+expectJsonLdTypes('services/consulting/index.html', ['Service', 'FAQPage', 'BreadcrumbList']);
+expectJsonLdTypes('services/enterprise/index.html', ['Service', 'FAQPage', 'BreadcrumbList']);
+expectJsonLdTypes('services/partnerships/index.html', ['Service', 'FAQPage', 'BreadcrumbList']);
+expectJsonLdTypes('courses/index.html', ['BreadcrumbList', 'ItemList']);
+expectJsonLdTypes('services/index.html', ['BreadcrumbList', 'ItemList']);
+
+const llmsPath = join(dist, 'llms.txt');
+const llms = existsSync(llmsPath) ? readFileSync(llmsPath, 'utf8') : '';
+assert(llms.length > 0, 'llms.txt: dynamic endpoint output must exist in dist');
+assert(llms.includes('/articles/ai-tests-false-safety-six-phase-overhaul/'), 'llms.txt: must list /articles/ai-tests-false-safety-six-phase-overhaul/');
+assert(llms.includes('/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/'), 'llms.txt: must list /articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/');
+
 const robots = readFileSync(join(dist, 'robots.txt'), 'utf8');
 for (const line of robots.split(/\r?\n/)) {
   const trimmed = line.trim();

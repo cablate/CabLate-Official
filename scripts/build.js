@@ -1,5 +1,5 @@
 import { execSync } from 'child_process';
-import { existsSync, readdirSync, statSync, unlinkSync } from 'fs';
+import { existsSync, readdirSync, readFileSync, statSync, unlinkSync } from 'fs';
 import { join } from 'path';
 
 const isProductionDeploy = process.env.CF_PAGES === '1' && process.env.CF_PAGES_BRANCH === 'master';
@@ -48,7 +48,10 @@ async function submitIndexNow() {
   const KEY_LOCATION = `https://${SITE}/indexnow-key.txt`;
   const DIST = join(process.cwd(), 'dist');
 
-  // Walk dist/ and collect all HTML file paths → URLs
+  // Pages that must never reach IndexNow even if their HTML signals drift.
+  const INDEX_NOW_BLOCKED = ['/services/apply/', '/confirm-subscription/', '/subscribe/', '/404'];
+
+  // Walk dist/ and collect all indexable HTML file paths → URLs
   function collectHtmlFiles(dir, baseDir) {
     const entries = readdirSync(dir);
     const urls = [];
@@ -62,6 +65,19 @@ async function submitIndexNow() {
           .replace(baseDir, '')
           .replace(/\\/g, '/')
           .replace(/\/index\.html$/, '/');
+        if (INDEX_NOW_BLOCKED.some((blocked) => relative.startsWith(blocked))) continue;
+
+        // Content guard: skip redirect stubs, noindex pages, and pages whose
+        // canonical points elsewhere (e.g. /subscribe/ → /newsletter/).
+        const html = readFileSync(fullPath, 'utf8');
+        if (/<meta[^>]+http-equiv=["']refresh["']/i.test(html)) continue;
+        const robotsMeta = html.match(/<meta[^>]+name=["']robots["'][^>]*>/i)?.[0] ?? '';
+        if (/noindex/i.test(robotsMeta)) continue;
+        const canonicalHref = html
+          .match(/<link[^>]+rel=["']canonical["'][^>]*>/i)?.[0]
+          ?.match(/href=["']([^"']+)["']/i)?.[1];
+        if (canonicalHref && new URL(canonicalHref, `https://${SITE}/`).pathname !== relative) continue;
+
         const url = `https://${SITE}${relative || '/'}`;
         urls.push(url);
       }

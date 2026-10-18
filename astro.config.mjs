@@ -32,7 +32,10 @@ export default defineConfig({
         !page.includes('/404'),
       serialize: (item) => {
         const lastmod = articleLastmod.get(item.url);
-        return lastmod ? { ...item, lastmod } : item;
+        // Articles keep their real edit date; core pages (services, courses,
+        // about…) have no article date, so fall back to build time — every
+        // sitemap entry still carries a valid lastmod.
+        return { ...item, lastmod: lastmod || new Date().toISOString() };
       },
     }),
   ],

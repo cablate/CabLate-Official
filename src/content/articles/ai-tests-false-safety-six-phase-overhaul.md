@@ -2,6 +2,7 @@
 title: "AI 幫你寫的測試全綠，為什麼上線還是壞掉？"
 description: "871 支測試全綠，核心流程卻斷了兩天。拆解 AI 最常寫出的假測試、如何用破壞驗證抓出漏網之魚、把預檢從十幾分鐘壓到 20 秒內，文末附可直接貼給 AI 的體檢 Prompt。"
 publishDate: 2026-10-18
+updatedDate: 2026-10-19
 category: 技術觀點
 tags: [AI 工程實戰, 測試策略, CI/CD, TypeScript, Claude Code]
 readingTime: 10
@@ -326,3 +327,5 @@ expect(source).toMatch(/reset_project_data_v2/);
 - 零碎版面測試整併為共用單一 Worker Page、以路由切換畫面；剩餘全部依實測
   耗時均衡分配進 PR CI 平行分片，加守門測試確保 0 孤兒。
 ```
+
+這份指令交出去只是第一步：每一階段的刪除清單要你親自確認，破壞驗證要親眼看到紅燈再還原。如果還不確定自己的專案最該先修哪一層，可以先做[免費的 AI 工作流五層健檢](/expertise/)，拿一件最近 AI 做壞的事，照題目、資料、工具、進度、驗收五個問題找出最划算的修法；想看一份完整的實作紀錄，我在[用 Claude Code 做完一整個網站的工作流](/articles/claude-code-workflow/)裡，整理了哪些關卡交給工具、哪些地方必須自己把關。

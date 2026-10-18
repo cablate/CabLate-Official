@@ -9,9 +9,32 @@ import QuoteBand from '../../components/common/QuoteBand.astro';
 
 const enterpriseHref = getServiceApplicationHref('enterprise', 'courses_team');
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://cablate.com/' },
+    { '@type': 'ListItem', position: 2, name: '課程與手冊', item: 'https://cablate.com/courses/' },
+  ],
+};
+
+const coursesItemListJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'CabLate 課程與手冊學習路徑',
+  itemListElement: learningPath.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.title,
+    description: item.outcome,
+    url: item.href.startsWith('http') ? item.href.split('?')[0] : `https://cablate.com${item.href}`,
+  })),
+};
 ---
 
 <BaseLayout title="課程與手冊" description="免費 AI 工作流健檢、講座、AgentSkill 課程（200+ 人購買，4.6 / 5）和 Claude Code 深度工程手冊（18 章 46 堂）。看你現在卡在哪，挑一個開始。" image="/og/pages/courses.png" imageAlt="CabLate 課程與手冊：卡在哪，就先補哪一塊。" imageWidth={1200} imageHeight={630}>
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(coursesItemListJsonLd)} />
   <article class="learn-page paper-page">
     <header class="learn-hero page-paper paper-card">
       <div class="learn-hero__topline">
@@ -77,6 +100,14 @@ const enterpriseHref = getServiceApplicationHref('enterprise', 'courses_team');
       </div>
       <div class="cabai-onboarding__body">
         <p>用 Google 帳號登入 CabAI，就能看免費試看、買過的課程和手冊，之後的更新也會自動出現。在個人資料頁連結 Discord，還可以加入免費社群，跟其他人交流 AI 和開發的問題。</p>
+        <div class="cabai-onboarding__readings" aria-label="延伸實作文章">
+          <span>還沒決定要不要買課，也可以先讀這幾篇免費拆解</span>
+          <ul>
+            <li><a href="/articles/ai-tests-false-safety-six-phase-overhaul/">AI 寫了幾百個測試全綠，為什麼還是不能信？</a></li>
+            <li><a href="/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/">Claude Agent SDK 逆向：省下 73% Token</a></li>
+            <li><a href="/articles/claude-code-workflow/">Claude Code 完整工作流拆解</a></li>
+          </ul>
+        </div>
         <div class="cabai-onboarding__actions">
           <a class="learn-hero__cta" href={withCabAiAttribution(siteConfig.cabAi.accountUrl, 'courses_account')} target="_blank" rel="noopener">免費註冊 CabAI <ArrowRight size={17} aria-hidden="true" /></a>
         </div>
@@ -147,6 +178,11 @@ const enterpriseHref = getServiceApplicationHref('enterprise', 'courses_team');
   .cabai-onboarding h2 { max-width: 15em; margin: 0; font-family: var(--font-serif); font-size: clamp(1.55rem, 2.5vw, 2.1rem); letter-spacing: -.02em; line-height: 1.32; }
   .cabai-onboarding__body { align-self: end; }
   .cabai-onboarding__body > p { max-width: 38rem; margin: 0; color: var(--text-secondary); font-size: .95rem; line-height: 1.78; }
+  .cabai-onboarding__readings { margin-top: 1rem; padding-top: .9rem; border-top: 1px dashed var(--border); font-size: .88rem; }
+  .cabai-onboarding__readings > span { display: block; color: var(--text-muted); margin-bottom: .45rem; }
+  .cabai-onboarding__readings ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .3rem; color: var(--text-secondary); }
+  .cabai-onboarding__readings a { color: var(--accent-text); text-decoration: underline; text-underline-offset: .18em; }
+  .cabai-onboarding__readings a:hover { color: var(--accent-hover); }
   .cabai-onboarding__actions { display: grid; justify-items: start; gap: .9rem; margin-top: 1.25rem; }
 
   @media (max-width: 760px) {
