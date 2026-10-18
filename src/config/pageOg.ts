@@ -35,7 +35,7 @@ export const pageOgEntries: PageOgEntry[] = [
     badge: 'AI 協作・工作流程設計',
     eyebrow: '嗨，我是 Cab',
     headline: ['我在第一線教 AI 落地，', '自己也每天用它工作。'],
-    description: '從農會推廣人員教到外商工程團隊。教的是判斷：AI 該不該用、怎麼用才划算。',
+    description: '從農會推廣人員教到外商工程團隊。教的是判斷，也就是 AI 該不該用、怎麼用才划算。',
     footer: '企業內訓・講座・工作坊',
     accent: '#6c4ccf',
     accentSoft: '#e6a56f',

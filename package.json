@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "build": "node scripts/build.js",
     "check": "astro check",
+    "lint:copy": "node scripts/lint-copy.mjs",
     "validate:content": "node scripts/validate-content.js",
     "validate:service-application": "node scripts/validate-service-application.js && node scripts/test-service-application-function.js",
     "validate:analytics": "node scripts/validate-analytics.mjs",
