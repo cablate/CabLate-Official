@@ -43,6 +43,7 @@ for (const forbiddenKey of ['applicant_name', 'email_address', 'free_text', 'lea
 for (const page of servicePages) {
   assert(!read(page).includes('analytics="disabled"'), `${page} still disables analytics`);
 }
+assert(head.includes("track('newsletter_confirm')") && client.includes("name: 'newsletter_confirm'"), 'newsletter confirmation is not tracked');
 assert(application.includes("name: 'form_start'") && application.includes("name: 'generate_lead'"), 'application funnel events are not connected');
 for (const page of servicePages.slice(0, 5)) {
   assert(read(page).includes('data-analytics-placement'), `${page} has no attributed service CTA or route`);
