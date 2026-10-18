@@ -16,6 +16,9 @@ excerpt: "SDK 每則訊息吃 2-3% 額度，逆向 cli.js 找到根因，用 V2 
 
 我花了幾天逆向 SDK 的 12MB minified 原始碼，找到根因，試了一個失敗的修法，最後用另一個方式解決。以下是完整過程。
 
+> [!WARNING] 版本前提
+> 本文的 SDK 行為以 `@anthropic-ai/claude-agent-sdk` v0.2.76 實測，CLI 端以 Claude Code v2.1.71 逆向。不同版本可能已有差異。
+
 ![Agent SDK 與 CLI 互動模式的每訊息 token 消耗對比，SDK 每則 2-3%，CLI 第二則起低於 1%.](/images/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/token-cost-comparison.webp)
 
 ---
@@ -32,7 +35,7 @@ SDK 提供一個 `query()` 函數（V1 API），你傳入 prompt 跟選項，它
 
 **問題出在每次 `query()` 都會 spawn 一個全新的 process。**
 
-```
+```text
 你的程式 → sdk.mjs（薄 wrapper）→ spawn node cli.js → Anthropic API
                                     ↑ 每次都是新的 process
 ```
@@ -153,7 +156,42 @@ SDK 每次 spawn 新 process 時，這些 runtime 注入會被重新組裝。即
 
 這就是為什麼 SDK 每次 2-3%，CLI 只有 <1%。
 
-![SDK V1 的完整流程與 cache 斷裂點，messages[0] 的注入內容每次略有不同導致整段 cache miss.](/images/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/cache-prefix-break.webp)
+<figure class="article-diagram">
+  <div class="article-diagram__scroll">
+    <svg viewBox="0 0 720 310" role="img" aria-labelledby="cacheBreakTitle">
+      <title id="cacheBreakTitle">SDK 每次 spawn 重組 messages[0]，導致 prompt cache 前綴從這個位置斷裂</title>
+      <text x="24" y="30" font-size="13" font-weight="700" fill="#5f687a">API request 組裝（每次 spawn 重組一次）</text>
+      <rect x="24" y="44" width="336" height="48" rx="8" fill="#eef7f1" stroke="#aed7be"/>
+      <text x="40" y="66" font-size="14" font-weight="700" fill="#26734f">System Prompt · ~15k tokens</text>
+      <text x="40" y="84" font-size="12.5" fill="#5f687a">靜態內容 · 掛 cache_control，跨 session 命中</text>
+      <rect x="24" y="100" width="336" height="48" rx="8" fill="#eef7f1" stroke="#aed7be"/>
+      <text x="40" y="122" font-size="14" font-weight="700" fill="#26734f">Tools 定義</text>
+      <text x="40" y="140" font-size="12.5" fill="#5f687a">靜態內容 · 跟著 system prompt 一起命中</text>
+      <rect class="flow-edge" x="24" y="156" width="336" height="66" rx="8" fill="#fff1ef" stroke="#b4352f" stroke-width="1.5"/>
+      <text x="40" y="178" font-size="14" font-weight="700" fill="#b4352f">messages[0] · runtime 注入</text>
+      <text x="40" y="196" font-size="12.5" fill="#5f687a">claudeMd + 當前日期 + system-reminder</text>
+      <text x="40" y="214" font-size="12.5" fill="#b4352f">每次重新序列化 · 內容有微小差異</text>
+      <rect x="24" y="230" width="336" height="48" rx="8" fill="#f8f5ed" stroke="#d7d1c6"/>
+      <text x="40" y="252" font-size="14" font-weight="700" fill="#253047">messages[1..n] · ~45k tokens</text>
+      <text x="40" y="270" font-size="12.5" fill="#5f687a">對話內容相同也救不回來</text>
+      <path class="flow-edge" d="M364 189 H392" stroke="#b4352f" stroke-width="2" fill="none"/>
+      <path d="M392 183 L404 189 L392 195 Z" fill="#b4352f"/>
+      <rect x="410" y="60" width="288" height="62" rx="8" fill="#fffdf8" stroke="#253047"/>
+      <text x="426" y="84" font-size="14" font-weight="700" fill="#253047">Prompt cache 前綴比對</text>
+      <text x="426" y="104" font-size="12.5" fill="#5f687a">從第一個 byte 開始要求完全一致</text>
+      <path d="M554 122 V146" stroke="#b4352f" stroke-width="2" fill="none"/>
+      <path d="M548 146 L554 156 L560 146 Z" fill="#b4352f"/>
+      <rect class="pulse-node" x="410" y="158" width="288" height="76" rx="8" fill="#fff1ef" stroke="#b4352f" stroke-width="1.5"/>
+      <text x="426" y="182" font-size="14" font-weight="700" fill="#b4352f">✕ 從 messages[0] 起 cache miss</text>
+      <text x="426" y="202" font-size="12.5" fill="#5f687a">後面 ~45k tokens 全部無法沿用</text>
+      <text x="426" y="222" font-size="12.5" fill="#b4352f">以 125% 費率重新寫入 cache</text>
+      <rect x="410" y="246" width="288" height="52" rx="8" fill="#eef7f1" stroke="#aed7be"/>
+      <text x="426" y="268" font-size="13" font-weight="700" fill="#26734f">CLI 互動模式：同一 process，注入不重組</text>
+      <text x="426" y="286" font-size="12.5" fill="#5f687a">前綴一致 → 命中 cache read（10% 費率）</text>
+    </svg>
+  </div>
+  <figcaption>SDK V1 的 cache 斷裂點：紅框的 messages[0] 是 runtime 每次重新組裝的注入位置，只要差一個 byte，它之後的 45k tokens 就全部 miss。手機上可左右滑動看完整圖。</figcaption>
+</figure>
 
 ---
 
@@ -186,7 +224,8 @@ cli.js 在取 git status 時會檢查這個環境變數，設為 1 就跳過。g
 
 cacheRead 穩定在 ~15k（system prompt 的 cache 有命中），但 cacheCreation 穩定在 ~45k（messages 每次都 miss）。即使間隔只有 11 秒，efficiency 也沒有上升。
 
-**光靠消除個別注入源還是不夠。** 每次 spawn 新 process 後，runtime 注入的重組無法保證 byte-for-byte 一致。只要 messages 的任何位置有差異，整段就 cache miss。
+> [!NOTE] 階段結論
+> 光靠消除個別注入源還不夠。每次 spawn 新 process 後，runtime 注入的重組無法保證 byte-for-byte 一致。只要 messages 的任何位置有差異，整段就 cache miss。
 
 ![Phase 1 A/B 測試結果，cache efficiency 始終在 15-25% 之間，沒有改善.](/images/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/ab-test-results.webp)
 
@@ -234,7 +273,76 @@ const anchor = 'settingSources:[]';
 const replacement = 'settingSources:Q.settingSources??[]';
 ```
 
-![V1 query() 與 V2 persistent session 的架構對比，V1 每次 spawn 新 process 導致 cache miss，V2 process 持續存活讓 cache 累積.](/images/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/v1-vs-v2-architecture.webp)
+<figure class="article-diagram" data-diagram>
+  <div class="article-diagram__head">
+    <button type="button" class="diagram-mode" data-mode="cli">CLI 互動模式</button>
+    <button type="button" class="diagram-mode is-active" data-mode="v1">SDK V1 query()</button>
+    <button type="button" class="diagram-mode" data-mode="v2">SDK V2 persistent</button>
+  </div>
+  <div class="article-diagram__scroll">
+    <svg viewBox="0 0 720 300" role="img" aria-labelledby="archCompareTitle">
+      <title id="archCompareTitle">CLI 互動模式、SDK V1 與 V2 的 process 生命週期與 cache 行為對比</title>
+      <g data-pane="cli" style="display:none">
+        <rect x="24" y="96" width="128" height="64" rx="8" fill="#f8f5ed" stroke="#253047"/>
+        <text x="88" y="122" text-anchor="middle" font-size="14" font-weight="700" fill="#253047">你的程式</text>
+        <text x="88" y="142" text-anchor="middle" font-size="12" fill="#5f687a">終端機互動</text>
+        <path d="M156 128 H196" stroke="#5f687a" stroke-width="1.5" fill="none"/>
+        <path d="M196 122 L208 128 L196 134 Z" fill="#5f687a"/>
+        <rect x="216" y="88" width="296" height="80" rx="8" fill="#eef7f1" stroke="#26734f" stroke-width="1.5"/>
+        <text x="364" y="116" text-anchor="middle" font-size="14" font-weight="700" fill="#26734f">同一個 cli.js process 常駐</text>
+        <text x="364" y="138" text-anchor="middle" font-size="12.5" fill="#5f687a">追蹤表只建一次 · runtime 注入不重組</text>
+        <text x="364" y="156" text-anchor="middle" font-size="12" fill="#5f687a">（close 再 resume 才會重建）</text>
+        <path d="M520 128 H560" stroke="#5f687a" stroke-width="1.5" fill="none"/>
+        <path d="M560 122 L572 128 L560 134 Z" fill="#5f687a"/>
+        <rect x="580" y="96" width="116" height="64" rx="8" fill="#f8f5ed" stroke="#253047"/>
+        <text x="638" y="132" text-anchor="middle" font-size="14" font-weight="700" fill="#253047">Anthropic API</text>
+        <rect x="24" y="248" width="672" height="40" rx="8" fill="#eef7f1" stroke="#aed7be"/>
+        <text x="360" y="273" text-anchor="middle" font-size="13.5" font-weight="700" fill="#26734f">resume 後第 2 則起 <1% 額度 · cache 持續命中（10% 讀取費率）</text>
+      </g>
+      <g data-pane="v1">
+        <rect x="24" y="96" width="128" height="64" rx="8" fill="#f8f5ed" stroke="#253047"/>
+        <text x="88" y="122" text-anchor="middle" font-size="14" font-weight="700" fill="#253047">你的程式</text>
+        <text x="88" y="142" text-anchor="middle" font-size="12" fill="#5f687a">SDK query()</text>
+        <path d="M156 128 H196" stroke="#5f687a" stroke-width="1.5" fill="none"/>
+        <path d="M196 122 L208 128 L196 134 Z" fill="#5f687a"/>
+        <rect x="216" y="36" width="296" height="52" rx="8" fill="#ffffff" stroke="#b4352f" stroke-dasharray="5 4"/>
+        <text x="232" y="58" font-size="13" font-weight="700" fill="#253047">cli.js process #1</text>
+        <text x="232" y="76" font-size="12" fill="#5f687a">spawn → 組 request → 結束</text>
+        <rect x="216" y="100" width="296" height="52" rx="8" fill="#ffffff" stroke="#b4352f" stroke-dasharray="5 4"/>
+        <text x="232" y="122" font-size="13" font-weight="700" fill="#253047">cli.js process #2</text>
+        <text x="232" y="140" font-size="12" fill="#5f687a">spawn → 組 request → 結束</text>
+        <rect x="216" y="164" width="296" height="52" rx="8" fill="#ffffff" stroke="#b4352f" stroke-dasharray="5 4"/>
+        <text x="232" y="186" font-size="13" font-weight="700" fill="#253047">cli.js process #3</text>
+        <text x="232" y="204" font-size="12" fill="#5f687a">spawn → 組 request → 結束</text>
+        <text x="364" y="238" text-anchor="middle" font-size="13" font-weight="700" fill="#b4352f">每次 query() 都 spawn 新 process · 注入重組</text>
+        <path d="M520 128 H560" stroke="#5f687a" stroke-width="1.5" fill="none"/>
+        <path d="M560 122 L572 128 L560 134 Z" fill="#5f687a"/>
+        <rect x="580" y="96" width="116" height="64" rx="8" fill="#f8f5ed" stroke="#253047"/>
+        <text x="638" y="132" text-anchor="middle" font-size="14" font-weight="700" fill="#253047">Anthropic API</text>
+        <rect x="24" y="248" width="672" height="40" rx="8" fill="#fff1ef" stroke="#efb4ae"/>
+        <text x="360" y="273" text-anchor="middle" font-size="13.5" font-weight="700" fill="#b4352f">每則訊息 2-3% 額度 · messages cache 全 miss（實測 15-25%）</text>
+      </g>
+      <g data-pane="v2" style="display:none">
+        <rect x="24" y="96" width="128" height="64" rx="8" fill="#f8f5ed" stroke="#253047"/>
+        <text x="88" y="122" text-anchor="middle" font-size="14" font-weight="700" fill="#253047">你的程式</text>
+        <text x="88" y="142" text-anchor="middle" font-size="12" fill="#5f687a">V2 createSession()</text>
+        <path d="M156 128 H196" stroke="#5f687a" stroke-width="1.5" fill="none"/>
+        <path d="M196 122 L208 128 L196 134 Z" fill="#5f687a"/>
+        <rect x="216" y="88" width="296" height="80" rx="8" fill="#f1edff" stroke="#6248c8" stroke-width="1.5"/>
+        <text x="364" y="114" text-anchor="middle" font-size="14" font-weight="700" fill="#6248c8">V2 session · 單一 process 常駐</text>
+        <text x="364" y="136" text-anchor="middle" font-size="12.5" fill="#5f687a">stdin / stdout 通訊，不重新 spawn</text>
+        <text x="364" y="154" text-anchor="middle" font-size="12" fill="#5f687a">（5 個硬編碼選項需 patch，見上文）</text>
+        <path d="M520 128 H560" stroke="#5f687a" stroke-width="1.5" fill="none"/>
+        <path d="M560 122 L572 128 L560 134 Z" fill="#5f687a"/>
+        <rect x="580" y="96" width="116" height="64" rx="8" fill="#f8f5ed" stroke="#253047"/>
+        <text x="638" y="132" text-anchor="middle" font-size="14" font-weight="700" fill="#253047">Anthropic API</text>
+        <rect x="24" y="248" width="672" height="40" rx="8" fill="#eef7f1" stroke="#aed7be"/>
+        <text x="360" y="273" text-anchor="middle" font-size="13.5" font-weight="700" fill="#26734f">第 2 則起 <1% 額度 · cache 逐則累積（實測第 4 則 84%）</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption>三種呼叫方式的 process 生命週期對比，點上方的按鈕切換。手機上可左右滑動看完整圖。</figcaption>
+</figure>
 
 ### V2 實測：cache efficiency 從 20% 升到 84%
 
@@ -249,7 +357,8 @@ V2 session 保持 cli.js process 存活，cache 跨訊息持續累積：
 
 第一則訊息跟 V1 一樣要建立 cache（20%），但從第二則起 cache 開始命中，到第四則已經 84%。對比 V1 永遠卡在 25%。
 
-每訊息成本從 ~1-3% 額度降到穩態 <0.5%。
+> [!NOTE] 最終成果
+> 每則訊息成本從 2-3% 額度降到穩態 <0.5%，cache efficiency 從固定 25% 一路累積到 84%。
 
 ![V2 persistent session 的 cache efficiency 逐訊息攀升，對比 V1 永遠卡在 25% 的紅色基線.](/images/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/v2-cache-efficiency.webp)
 

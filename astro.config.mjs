@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { readdirSync, readFileSync } from 'node:fs';
+import { rehypeArticleEnhance } from './src/plugins/rehype-article-enhance.mjs';
 
 /** Article URL → last real edit, so sitemap lastmod reflects content instead of build time. */
 const articleLastmod = new Map(
@@ -43,5 +44,6 @@ export default defineConfig({
     shikiConfig: {
       theme: 'github-light',
     },
+    rehypePlugins: [rehypeArticleEnhance],
   },
 });

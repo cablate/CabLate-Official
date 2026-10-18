@@ -48,6 +48,8 @@ const breadcrumbJsonLd = {
   />
   <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
 
+  <div class="reading-progress" aria-hidden="true"><span data-reading-progress></span></div>
+
   <div class="article-page paper-page">
     <article class="article-container page-paper">
       <div class="article-shell">
@@ -111,6 +113,127 @@ const breadcrumbJsonLd = {
       </div>
     </article>
   </div>
+
+  <dialog class="article-lightbox" data-lightbox aria-label="圖片放大檢視">
+    <img alt="" decoding="async" />
+    <button type="button" data-lightbox-close>關閉</button>
+  </dialog>
+
+  <script is:inline>
+    (function () {
+      var progressBound = false;
+
+      function bindProgressOnce() {
+        if (progressBound) return;
+        progressBound = true;
+        var ticking = false;
+        var update = function () {
+          ticking = false;
+          var bar = document.querySelector('[data-reading-progress]');
+          var content = document.querySelector('.article-content');
+          if (!bar || !content) return;
+          var rect = content.getBoundingClientRect();
+          var total = rect.height - window.innerHeight;
+          var done = total <= 40 ? 1 : Math.min(1, Math.max(0, -rect.top / total));
+          bar.style.transform = 'scaleX(' + done + ')';
+        };
+        var request = function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+        window.addEventListener('scroll', request, { passive: true });
+        window.addEventListener('resize', request, { passive: true });
+        request();
+      }
+
+      function initArticleEnhancements() {
+        var root = document.querySelector('.article-page');
+        if (!root) return;
+        bindProgressOnce();
+        var progressNow = document.querySelector('[data-reading-progress]');
+        if (progressNow) progressNow.style.transform = 'scaleX(0)';
+
+        root.querySelectorAll('.article-code__copy').forEach(function (btn) {
+          if (btn.dataset.ready) return;
+          btn.dataset.ready = '1';
+          btn.addEventListener('click', function () {
+            var pre = btn.closest('.article-code') && btn.closest('.article-code').querySelector('pre');
+            if (!pre) return;
+            var original = btn.textContent;
+            navigator.clipboard.writeText(pre.innerText).then(function () {
+              btn.textContent = '已複製 ✓';
+              btn.classList.add('is-copied');
+            }).catch(function () {
+              btn.textContent = '複製失敗';
+            });
+            setTimeout(function () { btn.textContent = original; btn.classList.remove('is-copied'); }, 2000);
+          });
+        });
+
+        var lightbox = root.querySelector('[data-lightbox]');
+        var lightboxImg = lightbox && lightbox.querySelector('img');
+        root.querySelectorAll('.article-figure > img').forEach(function (img) {
+          if (img.dataset.ready) return;
+          img.dataset.ready = '1';
+          img.addEventListener('click', function () {
+            if (!lightbox || typeof lightbox.showModal !== 'function') return;
+            lightboxImg.src = img.currentSrc || img.src;
+            lightboxImg.alt = img.alt || '';
+            lightbox.showModal();
+          });
+        });
+        if (lightbox && !lightbox.dataset.ready) {
+          lightbox.dataset.ready = '1';
+          lightbox.addEventListener('click', function (event) {
+            if (event.target === lightbox || event.target.hasAttribute('data-lightbox-close')) lightbox.close();
+          });
+        }
+
+        var tocDetails = root.querySelector('.article-toc-mobile');
+        if (tocDetails) {
+          tocDetails.querySelectorAll('a[href^="#"]').forEach(function (link) {
+            if (link.dataset.ready) return;
+            link.dataset.ready = '1';
+            link.addEventListener('click', function () { tocDetails.removeAttribute('open'); });
+          });
+        }
+
+        root.querySelectorAll('.article-content h2[id], .article-content h3[id]').forEach(function (heading) {
+          if (heading.querySelector('.anchor-link')) return;
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'anchor-link';
+          btn.setAttribute('aria-label', '複製這個段落的連結');
+          btn.textContent = '#';
+          btn.addEventListener('click', function () {
+            var url = location.origin + location.pathname + '#' + heading.id;
+            navigator.clipboard.writeText(url).then(function () {
+              btn.classList.add('is-copied');
+              setTimeout(function () { btn.classList.remove('is-copied'); }, 1500);
+            }).catch(function () {});
+          });
+          heading.appendChild(btn);
+        });
+
+        root.querySelectorAll('[data-diagram]').forEach(function (diagram) {
+          var buttons = diagram.querySelectorAll('[data-mode]');
+          var apply = function (mode) {
+            buttons.forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-mode') === mode); });
+            diagram.querySelectorAll('[data-pane]').forEach(function (pane) {
+              pane.style.display = pane.getAttribute('data-pane') === mode ? '' : 'none';
+            });
+          };
+          buttons.forEach(function (btn) {
+            if (btn.dataset.ready) return;
+            btn.dataset.ready = '1';
+            btn.addEventListener('click', function () { apply(btn.getAttribute('data-mode')); });
+          });
+          var active = diagram.querySelector('[data-mode].is-active');
+          if (active) apply(active.getAttribute('data-mode'));
+        });
+      }
+
+      initArticleEnhancements();
+      document.addEventListener('astro:page-load', initArticleEnhancements);
+    })();
+  </script>
 </BaseLayout>
 
 <style>
@@ -444,6 +567,323 @@ const breadcrumbJsonLd = {
     margin: 2rem 0;
   }
 
+  /* Reading progress bar */
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 1200;
+    pointer-events: none;
+  }
+
+  .reading-progress span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-text));
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    will-change: transform;
+  }
+
+  /* Semantic callouts ([!NOTE] / [!TIP] / [!WARNING]) */
+  .article-content :global(.article-callout) {
+    margin: 1.35rem 0;
+    padding: 0.8rem 1.05rem;
+    border-left: 3px solid var(--border-strong);
+    border-radius: 0 6px 6px 0;
+  }
+
+  .article-content :global(.article-callout__title) {
+    margin: 0 0 0.3rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  .article-content :global(.article-callout p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .article-content :global(.article-callout--note) {
+    border-left-color: var(--accent-text);
+    background: #f1edff;
+  }
+
+  .article-content :global(.article-callout--note .article-callout__title) {
+    color: var(--accent-text);
+  }
+
+  .article-content :global(.article-callout--tip) {
+    border-left-color: #26734f;
+    background: #eef7f1;
+  }
+
+  .article-content :global(.article-callout--tip .article-callout__title) {
+    color: #26734f;
+  }
+
+  .article-content :global(.article-callout--warning) {
+    border-left-color: #9b6017;
+    background: #fff7e8;
+  }
+
+  .article-content :global(.article-callout--warning .article-callout__title) {
+    color: #9b6017;
+  }
+
+  /* Figures with captions + lightbox */
+  .article-content :global(.article-figure) {
+    margin: 1.6rem 0;
+  }
+
+  .article-content :global(.article-figure img) {
+    cursor: zoom-in;
+  }
+
+  .article-content :global(.article-figure__caption) {
+    margin-top: 0.55rem;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  .article-lightbox {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .article-lightbox::backdrop {
+    background: rgb(23 24 22 / 0.84);
+  }
+
+  .article-lightbox img {
+    display: block;
+    max-width: 92vw;
+    max-height: 84vh;
+    margin: 8vh auto 0;
+    border-radius: 6px;
+  }
+
+  .article-lightbox button {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    min-height: 2.6rem;
+    padding: 0.5rem 1.1rem;
+    border: 1px solid rgb(255 255 255 / 0.4);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.12);
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* Code block chrome (language label + copy button) */
+  .article-content :global(.article-code) {
+    margin: 0 0 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f5f2ea;
+  }
+
+  .article-content :global(.article-code__head) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem 0.55rem 0.4rem 0.95rem;
+    border-bottom: 1px solid var(--border);
+    background: #ece7d9;
+  }
+
+  .article-content :global(.article-code__lang) {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .article-content :global(.article-code__copy) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.9rem;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 5px;
+    background: var(--bg-soft);
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .article-content :global(.article-code__copy:hover) {
+    border-color: var(--accent-text);
+    color: var(--accent-text);
+  }
+
+  .article-content :global(.article-code__copy.is-copied) {
+    border-color: #26734f;
+    background: #eef7f1;
+    color: #26734f;
+  }
+
+  .article-content :global(.article-code pre) {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  /* Scrollable table region */
+  .article-content :global(.article-table-wrap) {
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .article-content :global(.article-table-wrap table) {
+    margin: 0;
+    border: 0;
+  }
+
+  .article-content :global(.article-table-wrap th),
+  .article-content :global(.article-table-wrap td) {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .article-content :global(.article-table-wrap:focus-visible) {
+    outline: 3px solid var(--accent-text);
+    outline-offset: 2px;
+  }
+
+  /* Heading anchor copy buttons */
+  .article-content :global(h2[id]),
+  .article-content :global(h3[id]) {
+    position: relative;
+  }
+
+  .article-content :global(.anchor-link) {
+    margin-left: 0.4rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--border-strong);
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    font-weight: 700;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity var(--transition-fast), color var(--transition-fast);
+  }
+
+  .article-content :global(h2:hover .anchor-link),
+  .article-content :global(h3:hover .anchor-link),
+  .article-content :global(.anchor-link:focus-visible),
+  .article-content :global(.anchor-link.is-copied) {
+    opacity: 1;
+  }
+
+  .article-content :global(.anchor-link.is-copied) {
+    color: #26734f;
+  }
+
+  /* Interactive / animated SVG diagram container */
+  .article-content :global(.article-diagram) {
+    margin: 1.6rem 0;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fffdf8;
+  }
+
+  .article-content :global(.article-diagram__head) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+    padding: 0.65rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    background: #f3efe5;
+  }
+
+  .article-content :global(.diagram-mode) {
+    min-height: 2.1rem;
+    padding: 0.35rem 0.85rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: var(--bg-soft);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .article-content :global(.diagram-mode:hover) {
+    border-color: var(--accent-text);
+  }
+
+  .article-content :global(.diagram-mode.is-active) {
+    border-color: var(--accent-text);
+    background: var(--accent-subtle);
+    color: var(--accent-text);
+  }
+
+  .article-content :global(.article-diagram__scroll) {
+    overflow-x: auto;
+    padding: 0.9rem 0.8rem 0.4rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .article-content :global(.article-diagram__scroll svg) {
+    display: block;
+    width: 100%;
+    min-width: 620px;
+    height: auto;
+    margin-inline: auto;
+  }
+
+  .article-content :global(.article-diagram figcaption) {
+    padding: 0.55rem 0.95rem 0.7rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .article-content :global(.flow-edge) {
+      stroke-dasharray: 6 6;
+      animation: diagram-dash 1.6s linear infinite;
+    }
+
+    .article-content :global(.pulse-node) {
+      animation: diagram-pulse 2.8s ease-in-out infinite;
+    }
+  }
+
+  @keyframes diagram-dash {
+    to { stroke-dashoffset: -24; }
+  }
+
+  @keyframes diagram-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
   .article-content :global(blockquote) {
     border-left: 3px solid var(--accent-text);
     padding: 0.5rem 1rem;
@@ -531,9 +971,6 @@ const breadcrumbJsonLd = {
     }
 
     .article-content :global(table) {
-      display: block;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
       font-size: 0.86rem;
     }
 
