@@ -18,11 +18,6 @@ import ArchiveNavigation from '../components/ArchiveNavigation.astro';
 import AnalyticsHead from '../components/analytics/AnalyticsHead.astro';
 import AnalyticsConsent from '../components/analytics/AnalyticsConsent.astro';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
-import '@fontsource/noto-sans-tc/400.css';
-import '@fontsource/noto-sans-tc/500.css';
-import '@fontsource/noto-sans-tc/700.css';
-import '@fontsource/noto-serif-tc/400.css';
-import '@fontsource/noto-serif-tc/700.css';
 
 const {
   title,
@@ -45,6 +40,7 @@ const currentYear = new Date().getFullYear();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preload" href="/fonts/cablate-serif-700.woff2" as="font" type="font/woff2" crossorigin>
     {!noSEO && (
       <SEO
         title={seoTitle}

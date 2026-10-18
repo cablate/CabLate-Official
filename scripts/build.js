@@ -11,6 +11,7 @@ execSync('node scripts/validate-analytics.mjs', { stdio: 'inherit' });
 // 1. Astro build
 execSync('npx astro build', { stdio: 'inherit' });
 execSync('node scripts/validate-analytics.mjs --built', { stdio: 'inherit' });
+execSync('node scripts/subset-serif-font.mjs', { stdio: 'inherit' });
 
 // 2. IndexNow — only for the Cloudflare Pages production build, never previews or GitHub CI
 async function submitIndexNow() {
