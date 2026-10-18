@@ -30,3 +30,4 @@ jobs:
           node scripts/validate-entry-surfaces.mjs
           npm run validate:service-application
           npm run validate:seo
+          npm run lint:copy -- --strict

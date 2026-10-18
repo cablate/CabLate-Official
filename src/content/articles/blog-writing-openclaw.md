@@ -5,27 +5,15 @@ publishDate: 2026-02-24T10:00:00+08:00
 updatedDate: 2026-04-04
 category: "AI工具實戰"
 tags: ["AI Agent", "自動化", "OpenClaw", "Claude Code", "排程", "CLI 工具"]
-featured: false
 readingTime: 5
 draft: false
 excerpt: "大部分人對龍蝦的需求，其實就只是自動化。殺雞用牛刀，不如先搞清楚自己要什麼。"
-faq:
-  - question: "自動化和 AI Agent 有什麼差別？"
-    answer: "自動化的核心是可預期的固定流程，設定好就不用管；AI Agent 的核心是動態決策，需要根據情境即時判斷下一步。重複性排程任務屬於自動化，不需要 Agent。"
-  - question: "OpenClaw 適合什麼使用場景？"
-    answer: "OpenClaw 適合需要即時互動、多分支動態決策、邊跑邊介入的場景，例如透過 Telegram 對話即時查資料做判斷。單純定期排程不需要它。"
-  - question: "不用 Agent 框架怎麼做 AI 自動化？"
-    answer: "用 Claude Code 或 Gemini CLI 等命令列工具，預裝 Plugin 擴充能力、寫好提示詞規則固定行為，再用 cron job 或 Windows 工作排程器定期執行即可。"
-  - question: "怎麼判斷自己需要自動化還是 Agent？"
-    answer: "問自己一個問題：任務需要 AI 在過程中做判斷嗎？需要就用 Agent 框架，不需要就用 CLI 工具加排程，省時省力。"
 ogImage: "/images/articles/blog-writing-openclaw.webp"
 ---
 
 最近跟不少人聊到 OpenClaw，發現一個很有趣的現象：大部分人對龍蝦的需求，其實就只是「自動化」。
 
-不是即時溝通，不是多 Agent 協作，不是什麼複雜的工作流編排。就只是「我希望某件事定期自動跑完」。
-
-說白了，殺雞用牛刀。
+大家要的往往只是「某件事定期自動跑完」，並不需要即時溝通或多 Agent 協作。為了固定排程去架一整套 Agent，其實是殺雞用牛刀。
 
 ## 自動化和 Agent 為什麼會搞混？
 
@@ -35,9 +23,9 @@ ogImage: "/images/articles/blog-writing-openclaw.webp"
 
 但「自動化」和「Agent」其實是兩件事。
 
-**自動化的核心是「可預期」**：你知道輸入是什麼、流程是什麼、輸出是什麼。設定好就不用管了。
+**自動化追求「可預期」**，你知道輸入是什麼、流程是什麼、輸出是什麼，設定好就不用管了。
 
-**Agent 的核心是「不可預期」**：它需要根據當下的情境做判斷，可能走 A 路線也可能走 B 路線，甚至會主動決定下一步要做什麼。
+**Agent 處理「不可預期」**，它需要根據當下的情境做判斷，可能走 A 路線也可能走 B 路線，甚至主動決定下一步要做什麼。
 
 如果你的需求是前者，那根本不需要後者的架構。裝一隻龍蝦來跑排程任務，就像買一台越野車來通勤上班。能開嗎？能。但你多花的時間和力氣，換來的功能你根本用不到。
 
@@ -47,9 +35,9 @@ ogImage: "/images/articles/blog-writing-openclaw.webp"
 
 做法很直覺：
 
-1. **預裝好 Plugin** — 擴充工具能力，像是讀寫檔案、呼叫 API、操作資料庫
-2. **寫好提示詞規則** — 把你的 SOP 寫成 AI 能理解的指令，固定行為模式
-3. **設定工作流程規範** — 加上驗證機制，確保產出品質不會亂飄
+1. **預裝好 Plugin**：擴充讀寫檔案、呼叫 API、操作資料庫等能力
+2. **寫好提示詞規則**：把 SOP 寫成明確指令，固定行為模式
+3. **設定工作流程規範**：加上驗證機制，確保產出品質穩定
 
 確認下指令後它能如期完成任務，接著在作業系統設定排程定期跑就完事了。Windows 用工作排程器，Mac 和 Linux 用 cron job。
 
@@ -75,9 +63,7 @@ OpenClaw 的核心價值不在排程，而在「即時互動」和「動態決�
 
 ## 選工具前，先搞清楚需求
 
-這不只是龍蝦的問題。
-
-對有些人來說，看到一個新工具火了，第一反應是「我要裝起來」，而不是「我需要它解決什麼問題」。結果花了時間裝好，才發現自己的需求用更簡單的方式就能搞定。
+每次有新工具爆紅都會看到類似情況：很多人第一反應是先裝起來試，裝好才發現自己的需求用既有工具就能解決。
 
 不是說龍蝦不好。三四十萬人在用，它確實解決了一群人的問題。但如果你的問題本身不複雜，解決方案也不需要複雜。
 
@@ -92,8 +78,8 @@ OpenClaw 的核心價值不在排程，而在「即時互動」和「動態決�
 
 但目前網路上有兩份我覺得蠻新手向的資源，推薦給有興趣的人：
 
-- **@cw.lin_ 的安裝手冊** — [OpenClaw 安裝手冊](https://portaly.cc/cwl/product/2ZeDjb6hkj8er65KlTTj?code=Claw)（輸入 Claw 邀請碼免費取得，零工程背景可執行，含常見踩雷 FAQ）
-- **@pan_0709 的教學影片** — [YouTube 教學](https://youtu.be/QF7xkCo236g?si=2Peht_ZIgSEfkGte)
+- **@cw.lin_ 的安裝手冊**：[OpenClaw 安裝手冊](https://portaly.cc/cwl/product/2ZeDjb6hkj8er65KlTTj?code=Claw)（輸入 Claw 邀請碼免費取得，零工程背景可執行，含常見踩雷 FAQ）
+- **@pan_0709 的教學影片**：[YouTube 教學](https://youtu.be/QF7xkCo236g?si=2Peht_ZIgSEfkGte)
 
 目前盡量參考安裝的部分就好，模型串接請避免用 Antigravity 或 Claude Code 這類訂閱型的服務，會被鎖。
 

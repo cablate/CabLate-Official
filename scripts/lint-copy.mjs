@@ -1,4 +1,4 @@
-// Counts AI-tell patterns in the marketing copy surfaces.
+// Counts AI-tell patterns in site copy and published articles.
 // Usage: node scripts/lint-copy.mjs [--strict] [--quiet]
 // Exits 1 only with --strict and at least one hit.
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
@@ -20,10 +20,12 @@ const files = [
   ...['index', 'about', 'services', 'expertise', '404', 'confirm-subscription', 'newsletter', 'privacy'].map((n) => `src/pages/${n}.astro`),
   ...dirFiles('src/pages/services', ['.astro']),
   'src/pages/courses/index.astro',
+  'src/pages/articles/index.astro',
   ...dirFiles('src/config', ['.ts']),
   ...dirFiles('src/components/common', ['.astro']),
   ...dirFiles('src/components/sections', ['.astro']),
   'src/components/ArticleEnd.astro',
+  ...dirFiles('src/content/articles', ['.md']),
 ].filter((file) => existsSync(join(root, file)));
 
 // A sentence never crosses 。！？ or a line break, so contrast patterns stay inside one sentence.
@@ -35,12 +37,12 @@ const patterns = [
   { name: '不只是', re: /不只是/g },
   { name: '不只/不僅…更', re: new RegExp(`(?:不只|不僅|不單)${S}更`, 'g') },
   { name: '真正的', re: /真正的/g },
-  { name: '關鍵', re: /關鍵/g },
+  { name: '關鍵', re: /關鍵(?!字|詞|指令)/g },
   { name: '說白了', re: /說白了/g },
   { name: 'colon reveal', re: /(?:答案|重點|關鍵|結論|差別|原因|核心|真相)(?:是|在於)?[：:]/g },
   { name: 'colon connector（…是：／學到：／一件事：）', re: /(?:是[^，。！？：:\n]{0,8}|學到|一件事)[：:]/g },
   { name: '打造/賦能/無縫/一站式', re: /打造|賦能|無縫|一站式/g },
-  { name: '全方位/深度/極致', re: /全方位|深度(?!工程手冊)|極致/g },
+  { name: '全方位/深度/極致', re: /全方位|深度(?!工程手冊|理解)|極致/g },
 ];
 
 const hits = new Map(patterns.map((p) => [p.name, []]));
@@ -48,9 +50,11 @@ const hits = new Map(patterns.map((p) => [p.name, []]));
 for (const file of files) {
   const lines = readFileSync(join(root, file), 'utf8').split(/\r?\n/);
   let inStyle = false;
+  let inCode = false;
   lines.forEach((line, index) => {
     if (/<style\b/.test(line)) inStyle = true;
-    const skip = inStyle;
+    if (line.trim().startsWith('```')) { inCode = !inCode; return; }
+    const skip = inStyle || inCode || /^-\s+\[#\d+\]/.test(line.trim());
     if (/<\/style>/.test(line)) inStyle = false;
     if (skip) return;
     for (const { name, re } of patterns) {

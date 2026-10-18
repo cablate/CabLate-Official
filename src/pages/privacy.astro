@@ -4,109 +4,123 @@ import { siteConfig } from '../config/siteConfig';
 ---
 
 <BaseLayout title="隱私權政策" description="CabLate 隱私權政策：本站怎麼收集和使用訪客資料。">
-    <article class="privacy-page">
-        <div class="privacy-container">
-            <h1>隱私權政策</h1>
-            <p class="privacy-updated">最後更新：2026 年 10 月</p>
+  <div class="privacy-page paper-page">
+    <article class="privacy-sheet page-paper paper-card">
+      <div class="privacy-container">
+        <header class="privacy-header">
+          <p class="section-label">資料與隱私</p>
+          <h1>隱私權政策</h1>
+          <p class="privacy-updated">最後更新：2026 年 10 月</p>
+        </header>
 
-            <section>
-                <h2>資料收集</h2>
-                <p>只有在你選擇「允許網站分析」後，本站才會載入 Google Analytics 4（GA4）。分析資料包括不含網址參數的頁面路徑、服務類型、進行到哪個流程階段，以及 GA4 提供的裝置與大致地區資料。這些資料只用來判斷哪些內容有幫助、申請流程卡在哪裡。</p>
-                <p>姓名、Email、表單自由文字、申請編號與你貼上的連結不會送進 GA4。你也可以在每一頁頁尾點選「分析設定」，隨時允許或停用網站分析。</p>
-            </section>
+        <section>
+          <h2>資料收集</h2>
+          <p>只有在你選擇「允許網站分析」後，本站才會載入 Google Analytics 4（GA4）。分析資料包括不含網址參數的頁面路徑、服務類型、進行到哪個流程階段，以及 GA4 提供的裝置與大致地區資料。這些資料只用來判斷哪些內容有幫助、申請流程卡在哪裡。</p>
+          <p>姓名、Email、表單自由文字、申請編號與你貼上的連結不會送進 GA4。你也可以在每一頁頁尾點選「分析設定」，隨時允許或停用網站分析。</p>
+        </section>
 
-            <section>
-                <h2>服務申請與 Email</h2>
-                <p>服務申請頁會收集你主動提供的姓名、Email、想推進的事情、目前卡點，以及選填的公司名稱、時間與公開參考連結。這些資料會先經 Cloudflare Turnstile 驗證是否為正常訪客，再由 Cloudflare Pages Function 透過 Resend 寄到 CabLate 的服務信箱。</p>
-                <p>這些資料只用於判斷合作是否適合、準備會談、回覆申請與後續服務聯絡，不會因此自動加入電子報，也不會在未取得另外同意前公開成案例。CabLate 網站目前不另建服務申請資料庫；信件會依信箱與服務紀錄的必要期間保存。你可以隨時聯絡我要求查詢、更正或刪除。請勿提交密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
-            </section>
+        <section>
+          <h2>服務申請與 Email</h2>
+          <p>服務申請頁會收集你主動提供的姓名、Email、想推進的事情、目前卡點，以及選填的公司名稱、時間與公開參考連結。這些資料會先經 Cloudflare Turnstile 驗證是否為正常訪客，再由 Cloudflare Pages Function 透過 Resend 寄到 CabLate 的服務信箱。</p>
+          <p>這些資料只用於判斷合作是否適合、準備會談、回覆申請與後續服務聯絡，不會因此自動加入電子報，也不會在未取得另外同意前公開成案例。CabLate 網站目前不另建服務申請資料庫；信件會依信箱與服務紀錄的必要期間保存。你可以隨時聯絡我要求查詢、更正或刪除。請勿提交密碼、Token、未遮蔽的客戶資料或公司機密原文。</p>
+        </section>
 
-            <section>
-                <h2>Cookie 使用</h2>
-                <p>在你允許網站分析前，本站不會載入 GA4，也不會建立 GA4 的分析 Cookie。若你之後改為停用，本站會更新同意狀態並清除可由本站移除的 GA4 第一方 Cookie。停用分析不會影響網站內容或服務申請功能。</p>
-            </section>
+        <section>
+          <h2>Cookie 使用</h2>
+          <p>在你允許網站分析前，本站不會載入 GA4，也不會建立 GA4 的分析 Cookie。若你之後改為停用，本站會更新同意狀態並清除可由本站移除的 GA4 第一方 Cookie。停用分析不會影響網站內容或服務申請功能。</p>
+        </section>
 
-            <section>
-                <h2>第三方服務</h2>
-                <p>本站使用以下第三方服務：</p>
-                <ul>
-                    <li><strong>Google Analytics 4</strong>：取得同意後才載入的網站與申請流程分析</li>
-                    <li><strong>Cloudflare Pages</strong>：網站託管與 CDN</li>
-                    <li><strong>Cloudflare Turnstile</strong>：服務申請的人機驗證</li>
-                    <li><strong>Resend</strong>：將服務申請寄送到 CabLate 信箱</li>
-                    <li><strong>自託管字體 (Fontsource)</strong>：字型載入（不向第三方伺服器請求）</li>
-                    <li><strong>CabLate 使用的 Email 服務</strong>：接收、保存與回覆服務申請信件</li>
-                </ul>
-                <p>這些服務各有其隱私權政策，建議參閱其官方說明。</p>
-            </section>
+        <section>
+          <h2>第三方服務</h2>
+          <p>本站使用以下第三方服務：</p>
+          <ul>
+            <li><strong>Google Analytics 4</strong>：取得同意後才載入的網站與申請流程分析</li>
+            <li><strong>Cloudflare Pages</strong>：網站託管與 CDN</li>
+            <li><strong>Cloudflare Turnstile</strong>：服務申請的人機驗證</li>
+            <li><strong>Resend</strong>：將服務申請寄送到 CabLate 信箱</li>
+            <li><strong>Kit（ConvertKit）</strong>：電子報訂閱確認與信件寄送</li>
+            <li><strong>CabLate 使用的 Email 服務</strong>：接收、保存與回覆服務申請信件</li>
+          </ul>
+          <p>這些服務各有其隱私權政策，建議參閱其官方說明。本站字型採系統字型與自託管子集字型，不向第三方字型伺服器發送請求。</p>
+        </section>
 
-            <section>
-                <h2>電子報</h2>
-                <p>如果你訂閱電子報，我會收集你提供的 Email 地址，只用於{siteConfig.newsletter.privacyUse}。這個 Email 不會自動成為合作聯絡資料、CabAI 帳號或 Discord 身分。每封信都可以一鍵退訂。</p>
-            </section>
+        <section>
+          <h2>電子報</h2>
+          <p>如果你訂閱電子報，我會收集你提供的 Email 地址，只用於{siteConfig.newsletter.privacyUse}。這個 Email 不會自動成為合作聯絡資料、CabAI 帳號或 Discord 身分。每封信都可以一鍵退訂。</p>
+        </section>
 
-            <section>
-                <h2>聯絡方式</h2>
-                <p>對隱私權政策、個人資料使用、更正或刪除申請有疑問，可以寄信到 <a href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>，也可以透過 <a href={siteConfig.threadsUrl} target="_blank" rel="noopener">Threads</a> 聯絡我。</p>
-            </section>
-        </div>
+        <section>
+          <h2>聯絡方式</h2>
+          <p>對隱私權政策、個人資料使用、更正或刪除申請有疑問，可以寄信到 <a href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>，也可以透過 <a href={siteConfig.threadsUrl} target="_blank" rel="noopener">Threads</a> 聯絡我。</p>
+        </section>
+      </div>
     </article>
+  </div>
 </BaseLayout>
 
 <style>
-    .privacy-page {
-        padding: 1rem 0;
-    }
+  .privacy-container {
+    max-width: 44rem;
+    margin-inline: auto;
+  }
 
-    .privacy-container {
-        max-width: 760px;
-        margin: 0 auto;
-        padding: clamp(1.5rem, 4vw, 3rem);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-md);
-        background: var(--bg-soft);
-        box-shadow: var(--shadow-sm);
-    }
+  .privacy-header {
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
 
-    .privacy-container h1 {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
-    }
+  .privacy-header .section-label {
+    margin: 0 0 0.5rem;
+  }
 
-    .privacy-updated {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        margin-bottom: 2rem;
-    }
+  .privacy-container h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.85rem, 4vw, 2.5rem);
+    margin: 0 0 0.5rem;
+  }
 
-    .privacy-container h2 {
-        font-size: 1.3rem;
-        margin-top: 2rem;
-        margin-bottom: 0.8rem;
-    }
+  .privacy-updated {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+  }
 
-    .privacy-container p {
-        line-height: 1.8;
-        margin-bottom: 0.8rem;
-        color: var(--text-primary);
-    }
+  .privacy-container section + section {
+    margin-top: 2.25rem;
+  }
 
-    .privacy-container ul {
-        list-style: none;
-        padding: 0;
-    }
+  .privacy-container h2 {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    margin: 0 0 0.75rem;
+  }
 
-    .privacy-container li {
-        padding: 0.3rem 0;
-        line-height: 1.6;
-    }
+  .privacy-container p {
+    line-height: 1.85;
+    margin: 0 0 0.9rem;
+    color: var(--text-primary);
+  }
 
-    .privacy-container a {
-        color: var(--accent);
-        text-decoration: none;
-    }
+  .privacy-container ul {
+    margin: 0 0 1rem;
+    padding-left: 1.25rem;
+  }
 
-    .privacy-container a:hover {
-        text-decoration: underline;
-    }
+  .privacy-container li {
+    padding: 0.25rem 0;
+    line-height: 1.75;
+    color: var(--text-primary);
+  }
+
+  .privacy-container a {
+    color: var(--accent-text);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .privacy-container a:hover {
+    color: var(--accent-hover);
+  }
 </style>
