@@ -252,7 +252,6 @@ export const serviceTracks = [
 ] as const;
 
 export const primaryNavigationGroups = [
-  // Exploration routes are temporarily hidden from the primary navigation.
   {
     label: '合作方式',
     overviewHref: '/services/',
@@ -268,6 +267,7 @@ export const primaryNavigationGroups = [
     items: [
       { label: '免費健檢', railLabel: '五個問題找出 AI 卡在哪', href: '/expertise/' },
       { label: '課程與手冊', railLabel: 'AgentSkill、Claude Code 手冊', href: '/courses/' },
+      { label: '文章', railLabel: '實際卡過的問題和判斷', href: '/articles/' },
       { label: '電子報', railLabel: '每封拆一個 AI 卡點', href: '/newsletter/' },
     ],
   },

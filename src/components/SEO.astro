@@ -71,6 +71,8 @@ if (type === 'article') {
     headline: jsonLdHeadline,
     description,
     url: fullUrl.href,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': fullUrl.href },
+    inLanguage: 'zh-TW',
     image: fullImageUrl,
     author: personEntity,
     publisher: {

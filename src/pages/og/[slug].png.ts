@@ -18,6 +18,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // Load font once, reuse across all OG image generations
 const fontData = fs.readFileSync(path.join(process.cwd(), 'assets', 'fonts', 'NotoSansTC-Bold.ttf'));
 
+// Same paper palette as the site and the page OG cards (src/styles/base.css)
+const ink = '#17233d';
+const muted = '#5f687a';
+const accent = '#6248c8';
+
 export const GET: APIRoute = async ({ props }) => {
   const { title, category } = props as { title: string; category: string };
 
@@ -31,10 +36,8 @@ export const GET: APIRoute = async ({ props }) => {
           height: '100%',
           width: '100%',
           display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          padding: '60px',
-          background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+          padding: '38px 40px',
+          background: '#eeeae2',
           fontFamily: 'Noto Sans TC',
         },
         children: [
@@ -42,48 +45,42 @@ export const GET: APIRoute = async ({ props }) => {
             type: 'div',
             props: {
               style: {
-                color: '#a78bfa',
-                fontSize: '24px',
-                fontWeight: 700,
-                marginBottom: '16px',
-              },
-              children: category || 'CabLate',
-            },
-          },
-          {
-            type: 'div',
-            props: {
-              style: {
-                color: '#ffffff',
-                fontSize: title.length > 30 ? '48px' : '56px',
-                fontWeight: 700,
-                lineHeight: 1.3,
-                marginBottom: '40px',
-              },
-              children: title,
-            },
-          },
-          {
-            type: 'div',
-            props: {
-              style: {
+                flex: 1,
                 display: 'flex',
-                alignItems: 'center',
+                flexDirection: 'column',
                 justifyContent: 'space-between',
+                padding: '48px 56px 40px',
+                borderRadius: '30px',
+                border: '2px solid #b8afc9',
+                background: '#fffdf8',
               },
               children: [
                 {
                   type: 'div',
                   props: {
-                    style: { color: '#94a3b8', fontSize: '20px' },
-                    children: 'cablate.com',
+                    style: { color: accent, fontSize: '26px' },
+                    children: category || '文章',
                   },
                 },
                 {
                   type: 'div',
                   props: {
-                    style: { color: '#6d28d9', fontSize: '24px', fontWeight: 700 },
-                    children: 'CabLate',
+                    style: {
+                      color: ink,
+                      fontSize: title.length > 30 ? '52px' : '60px',
+                      lineHeight: 1.3,
+                    },
+                    children: title,
+                  },
+                },
+                {
+                  type: 'div',
+                  props: {
+                    style: { display: 'flex', justifyContent: 'space-between', color: muted, fontSize: '22px' },
+                    children: [
+                      { type: 'div', props: { children: 'Cab 的實作筆記' } },
+                      { type: 'div', props: { children: 'cablate.com' } },
+                    ],
                   },
                 },
               ],
