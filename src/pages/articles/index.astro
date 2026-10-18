@@ -10,6 +10,10 @@ const publishedArticles = allArticles
   .filter((entry) => !entry.data.draft)
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
+const featuredSlug = 'reverse-engineer-claude-agent-sdk-hidden-token-cost';
+const featuredArticle = publishedArticles.find((entry) => entry.slug === featuredSlug) ?? publishedArticles[0];
+const restArticles = publishedArticles.filter((entry) => entry.slug !== featuredArticle?.slug);
+
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -51,12 +55,34 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
           <p>記錄我用 Claude Code、Agent SDK 做事時實際卡住的地方，以及後來的拆解與做法。</p>
         </header>
 
+        {featuredArticle && (
+          <a href={`/articles/${featuredArticle.slug}/`} class="featured-card">
+            <div class="featured-card__meta">
+              <span class="meta-category">{featuredArticle.data.category}</span>
+              <time datetime={featuredArticle.data.publishDate.toISOString()}>{formatDate(featuredArticle.data.publishDate)}</time>
+              {featuredArticle.data.readingTime && <span>{featuredArticle.data.readingTime} 分鐘閱讀</span>}
+            </div>
+            <h2>{featuredArticle.data.title}</h2>
+            <p>{featuredArticle.data.description}</p>
+            <span class="featured-card__cta">閱讀完整拆解 <ArrowRight size={16} aria-hidden="true" /></span>
+          </a>
+        )}
+
         <div class="article-feed">
-          {publishedArticles.map((entry) => (
+          {restArticles.map((entry) => (
             <a href={`/articles/${entry.slug}/`} class="article-item">
-              <time datetime={entry.data.publishDate.toISOString()}>{formatDate(entry.data.publishDate)}</time>
-              <h2>{entry.data.title}</h2>
-              <p>{entry.data.description}</p>
+              <div class="article-item__main">
+                <div class="article-item__meta">
+                  <span class="meta-category">{entry.data.category}</span>
+                  <time datetime={entry.data.publishDate.toISOString()}>{formatDate(entry.data.publishDate)}</time>
+                  {entry.data.readingTime && <span>{entry.data.readingTime} 分鐘閱讀</span>}
+                </div>
+                <h2>{entry.data.title}</h2>
+                <p>{entry.data.description}</p>
+              </div>
+              <span class="article-item__arrow" aria-hidden="true">
+                <ArrowRight size={18} />
+              </span>
             </a>
           ))}
         </div>
@@ -86,12 +112,12 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
   }
 
   .articles-container {
-    max-width: 44rem;
+    max-width: 46rem;
     margin-inline: auto;
   }
 
   .articles-hero {
-    padding-bottom: 1.25rem;
+    padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border);
   }
 
@@ -121,26 +147,95 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
     line-height: 1.68;
   }
 
+  .featured-card {
+    display: block;
+    margin-top: 1.5rem;
+    padding: 1.35rem 1.5rem 1.4rem;
+    border: 1px solid var(--border-strong);
+    border-left: 3px solid var(--accent-text);
+    border-radius: var(--radius-md);
+    background: linear-gradient(180deg, #faf6ee 0%, #f5f0e5 100%);
+    text-decoration: none;
+    transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .featured-card:hover {
+    border-color: var(--accent-text);
+    box-shadow: 0 6px 20px rgb(37 48 71 / 0.08);
+    transform: translateY(-1px);
+  }
+
+  .article-item__meta,
+  .featured-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.75rem;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+  }
+
+  .meta-category {
+    color: var(--accent-text);
+    font-weight: 700;
+  }
+
+  .featured-card h2 {
+    margin: 0.55rem 0 0.5rem;
+    font-family: var(--font-sans);
+    font-size: clamp(1.18rem, 2vw, 1.38rem);
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--text-primary);
+  }
+
+  .featured-card:hover h2 {
+    color: var(--accent-text);
+  }
+
+  .featured-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.68;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .featured-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.9rem;
+    color: var(--accent-text);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
   .article-feed {
-    display: grid;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--border);
   }
 
   .article-item {
     display: grid;
-    gap: 0.3rem;
-    padding: 1.1rem 0.25rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.25rem;
+    align-items: center;
+    padding: 1.15rem 0.25rem;
     border-bottom: 1px solid var(--border);
     text-decoration: none;
   }
 
-  .article-item time {
-    color: var(--text-muted);
-    font-size: 0.82rem;
-    letter-spacing: 0.02em;
+  .article-item__main {
+    min-width: 0;
   }
 
   .article-item h2 {
-    margin: 0;
+    margin: 0.38rem 0 0.4rem;
     font-family: var(--font-sans);
     font-size: clamp(1.08rem, 1.65vw, 1.2rem);
     font-weight: 700;
@@ -153,16 +248,33 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
     margin: 0;
     color: var(--text-secondary);
     font-size: 0.93rem;
-    line-height: 1.6;
+    line-height: 1.65;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    line-clamp: 1;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
     overflow: hidden;
+  }
+
+  .article-item__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    color: var(--text-muted);
+    transition: color var(--transition-fast), transform var(--transition-fast), background-color var(--transition-fast);
   }
 
   .article-item:hover h2 {
     color: var(--accent-text);
+  }
+
+  .article-item:hover .article-item__arrow {
+    color: var(--accent-text);
+    background: var(--accent-subtle);
+    transform: translateX(2px);
   }
 
   .empty-state {
@@ -177,7 +289,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
     align-items: center;
     justify-content: space-between;
     gap: 1rem 1.5rem;
-    margin-top: 1.75rem;
+    margin-top: 2rem;
     padding: 1.25rem 1.5rem;
     border-radius: var(--radius-md);
     border: 1px solid var(--border);
@@ -219,8 +331,18 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
       padding: 1.25rem 1.1rem !important;
     }
 
+    .featured-card {
+      padding: 1.1rem 1.15rem 1.2rem;
+    }
+
     .article-item {
-      padding: 1rem 0;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.5rem;
+      padding: 1.05rem 0;
+    }
+
+    .article-item__arrow {
+      display: none;
     }
 
     .articles-footer {
