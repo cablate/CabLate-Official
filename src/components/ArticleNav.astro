@@ -17,18 +17,32 @@ const sorted = allArticles
   .filter(a => !a.data.draft)
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
-const currentIndex = sorted.findIndex(a => a.slug === currentSlug);
+const currentArticle = sorted.find(a => a.slug === currentSlug);
+const currentTags = new Set(currentArticle?.data.tags ?? []);
+const currentCategory = currentArticle?.data.category ?? '';
 
-const prevArticle = currentIndex < sorted.length - 1 ? sorted[currentIndex + 1] : null;
-const nextArticle = currentIndex > 0 ? sorted[currentIndex - 1] : null;
+const related = sorted
+  .filter(a => a.slug !== currentSlug)
+  .map(a => {
+    const sharedTags = (a.data.tags ?? []).filter(t => currentTags.has(t)).length;
+    const sameCategory = a.data.category === currentCategory ? 1 : 0;
+    return {
+      entry: a,
+      score: sharedTags * 10 + sameCategory * 3,
+    };
+  })
+  .sort((a, b) => b.score - a.score || b.entry.data.publishDate.valueOf() - a.entry.data.publishDate.valueOf());
+
+const prevArticle = related[0]?.entry ?? null;
+const nextArticle = related[1]?.entry ?? null;
 ---
 
 {(prevArticle || nextArticle) && (
-  <nav class="article-nav" aria-label="文章導航">
+  <nav class="article-nav" aria-label="延伸拆解文章">
     <div class="article-nav-inner">
       {prevArticle ? (
         <a href={`/articles/${prevArticle.slug}/`} class="article-nav-item article-nav-prev">
-          <span class="article-nav-label">&larr; 上一篇</span>
+          <span class="article-nav-label">延伸拆解 · {prevArticle.data.category}</span>
           <span class="article-nav-title">{prevArticle.data.title}</span>
         </a>
       ) : (
@@ -36,7 +50,7 @@ const nextArticle = currentIndex > 0 ? sorted[currentIndex - 1] : null;
       )}
       {nextArticle ? (
         <a href={`/articles/${nextArticle.slug}/`} class="article-nav-item article-nav-next">
-          <span class="article-nav-label">下一篇 &rarr;</span>
+          <span class="article-nav-label">延伸拆解 · {nextArticle.data.category}</span>
           <span class="article-nav-title">{nextArticle.data.title}</span>
         </a>
       ) : (

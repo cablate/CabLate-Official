@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 import Newsletter from '../components/sections/Newsletter.astro';
 import ProofStrip from '../components/common/ProofStrip.astro';
 import QuoteBand from '../components/common/QuoteBand.astro';
@@ -7,6 +8,12 @@ import WhyDifferent from '../components/common/WhyDifferent.astro';
 import { ArrowRight, Braces, Database, GitBranch } from '@lucide/astro';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 import { audienceTypes, proofPoints, teachingSessions } from '../config/authority';
+import { formatDate } from '../utils/format';
+
+const publishedArticles = (await getCollection('articles'))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+const [featuredArticle, ...recentArticles] = publishedArticles.slice(0, 3);
 
 const heroMessages = [
   {
@@ -291,6 +298,62 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
         ))}
       </div>
     </section>
+
+    {featuredArticle && (
+      <section class="home-writing" aria-labelledby="home-writing-title">
+        <header class="home-writing__header">
+          <div>
+            <p class="section-label">實作拆解</p>
+            <h2 id="home-writing-title">最近卡過的問題與逆向筆記</h2>
+          </div>
+          <a class="text-link" href="/articles/">看全部 {publishedArticles.length} 篇文章 <ArrowRight size={15} aria-hidden="true" /></a>
+        </header>
+
+        <div class="home-writing__grid">
+          <a class="home-writing__featured" href={`/articles/${featuredArticle.slug}/`}>
+            <div class="home-writing__meta">
+              <span class="home-writing__category">{featuredArticle.data.category}</span>
+              <time datetime={featuredArticle.data.publishDate.toISOString()}>{formatDate(featuredArticle.data.publishDate)}</time>
+              {featuredArticle.data.readingTime && <span>{featuredArticle.data.readingTime} 分鐘閱讀</span>}
+            </div>
+            <h3>{featuredArticle.data.title}</h3>
+            <p>{featuredArticle.data.description}</p>
+            {featuredArticle.data.ogHighlight && (
+              <div class="home-writing__highlight">
+                <span>{featuredArticle.data.ogHighlight.label}</span>
+                <s>{featuredArticle.data.ogHighlight.before}</s>
+                <span aria-hidden="true">→</span>
+                <strong>{featuredArticle.data.ogHighlight.after}</strong>
+              </div>
+            )}
+            <span class="home-writing__cta">閱讀完整拆解 <ArrowRight size={15} aria-hidden="true" /></span>
+          </a>
+
+          <div class="home-writing__side">
+            {recentArticles.map((article) => (
+              <a class="home-writing__item" href={`/articles/${article.slug}/`}>
+                <div class="home-writing__meta">
+                  <span class="home-writing__category">{article.data.category}</span>
+                  <time datetime={article.data.publishDate.toISOString()}>{formatDate(article.data.publishDate)}</time>
+                  {article.data.readingTime && <span>{article.data.readingTime} 分鐘閱讀</span>}
+                </div>
+                <h3>{article.data.title}</h3>
+                {article.data.ogHighlight ? (
+                  <div class="home-writing__highlight">
+                    <span>{article.data.ogHighlight.label}</span>
+                    <s>{article.data.ogHighlight.before}</s>
+                    <span aria-hidden="true">→</span>
+                    <strong>{article.data.ogHighlight.after}</strong>
+                  </div>
+                ) : (
+                  <p>{article.data.description}</p>
+                )}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
 
     <section class="cabai-section" aria-labelledby="cabai-title" data-chapter-transition>
       <div class="cabai-section__header" data-chapter-lead>
@@ -763,6 +826,149 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
   .threads-proof__cta svg { transition: transform var(--transition-fast); }
   .threads-proof__cta:hover svg { transform: translateX(3px); }
   .threads-proof__cta:active { transform: translateY(0); }
+
+  /* 4.5 FEATURED WRITING SECTION */
+  .home-writing {
+    display: grid;
+    gap: 1.5rem;
+    padding: clamp(2.5rem, 4.5vw, 3.5rem) 0 0;
+    border-top: 1px solid var(--border);
+  }
+  .home-writing__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+  }
+  .home-writing__header h2 {
+    margin: .2rem 0 0;
+    font-family: var(--font-serif);
+    font-size: clamp(1.65rem, 2.6vw, 2.2rem);
+    letter-spacing: -.025em;
+    line-height: 1.28;
+  }
+  .home-writing__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+  .home-writing__featured {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: .85rem;
+    padding: clamp(1.6rem, 3vw, 2.25rem);
+    border: 1px solid var(--border-strong);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius-md);
+    background: var(--surface-elevated);
+    box-shadow: var(--shadow-md);
+    text-decoration: none;
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  .home-writing__featured:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: var(--shadow-lg);
+  }
+  .home-writing__featured h3 {
+    margin: .2rem 0 0;
+    color: var(--text-primary);
+    font-family: var(--font-serif);
+    font-size: clamp(1.28rem, 2vw, 1.58rem);
+    line-height: 1.36;
+  }
+  .home-writing__featured p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: .95rem;
+    line-height: 1.72;
+  }
+  .home-writing__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .35rem .75rem;
+    color: var(--text-muted);
+    font-size: .82rem;
+  }
+  .home-writing__category {
+    color: var(--accent-text);
+    font-weight: 700;
+  }
+  .home-writing__highlight {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4rem .55rem;
+    width: fit-content;
+    padding: .38rem .75rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface-subtle);
+    border: 1px solid var(--border);
+    font-size: .82rem;
+    color: var(--text-secondary);
+  }
+  .home-writing__highlight s {
+    color: var(--text-muted);
+    text-decoration-color: rgb(184 50 44 / .55);
+  }
+  .home-writing__highlight strong {
+    color: var(--status-success);
+    font-weight: 700;
+  }
+  .home-writing__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    margin-top: .25rem;
+    color: var(--accent-text);
+    font-size: .9rem;
+    font-weight: 700;
+  }
+  .home-writing__side {
+    display: grid;
+    gap: 1rem;
+  }
+  .home-writing__item {
+    display: grid;
+    align-content: space-between;
+    gap: .55rem;
+    padding: 1.35rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface-elevated);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  .home-writing__item:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-border);
+    box-shadow: var(--shadow-md);
+  }
+  .home-writing__item h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 1.06rem;
+    line-height: 1.42;
+  }
+  .home-writing__item p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: .88rem;
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  @media (max-width: 980px) {
+    .home-writing__grid { grid-template-columns: 1fr; }
+  }
 
   /* 5. CABAI DIGITAL LAB SECTION */
   .cabai-section {

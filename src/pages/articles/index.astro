@@ -12,6 +12,11 @@ const publishedArticles = allArticles
 
 const featuredArticle = publishedArticles[0];
 const restArticles = publishedArticles.filter((entry) => entry.slug !== featuredArticle?.slug);
+const categoryCounts = publishedArticles.reduce<Record<string, number>>((acc, entry) => {
+  acc[entry.data.category] = (acc[entry.data.category] ?? 0) + 1;
+  return acc;
+}, {});
+const categories = Object.keys(categoryCounts);
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
@@ -52,10 +57,22 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
           <p class="articles-hero__eyebrow">文章 · 共 {publishedArticles.length} 篇</p>
           <h1>AI 工具實作與逆向筆記</h1>
           <p>記錄我用 Claude Code、Agent SDK 做事時實際卡住的地方，以及後來的拆解與做法。</p>
+          {categories.length > 1 && (
+            <div class="articles-filters" role="group" aria-label="依主題篩選文章">
+              <button type="button" class="filter-pill is-active" data-category-filter="all" aria-pressed="true">
+                全部 <span>{publishedArticles.length}</span>
+              </button>
+              {categories.map((category) => (
+                <button type="button" class="filter-pill" data-category-filter={category} aria-pressed="false">
+                  {category} <span>{categoryCounts[category]}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </header>
 
         {featuredArticle && (
-          <a href={`/articles/${featuredArticle.slug}/`} class="featured-card">
+          <a href={`/articles/${featuredArticle.slug}/`} class="featured-card" data-article-category={featuredArticle.data.category}>
             <div class="featured-card__meta">
               <span class="meta-category">{featuredArticle.data.category}</span>
               <time datetime={featuredArticle.data.publishDate.toISOString()}>{formatDate(featuredArticle.data.publishDate)}</time>
@@ -63,13 +80,21 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
             </div>
             <h2>{featuredArticle.data.title}</h2>
             <p>{featuredArticle.data.description}</p>
+            {featuredArticle.data.ogHighlight && (
+              <div class="article-highlight">
+                <span class="article-highlight__label">{featuredArticle.data.ogHighlight.label}</span>
+                <s class="article-highlight__before">{featuredArticle.data.ogHighlight.before}</s>
+                <span class="article-highlight__arrow" aria-hidden="true">→</span>
+                <strong class="article-highlight__after">{featuredArticle.data.ogHighlight.after}</strong>
+              </div>
+            )}
             <span class="featured-card__cta">閱讀完整拆解 <ArrowRight size={16} aria-hidden="true" /></span>
           </a>
         )}
 
         <div class="article-feed">
           {restArticles.map((entry) => (
-            <a href={`/articles/${entry.slug}/`} class="article-item">
+            <a href={`/articles/${entry.slug}/`} class="article-item" data-article-category={entry.data.category}>
               <div class="article-item__main">
                 <div class="article-item__meta">
                   <span class="meta-category">{entry.data.category}</span>
@@ -78,6 +103,14 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
                 </div>
                 <h2>{entry.data.title}</h2>
                 <p>{entry.data.description}</p>
+                {entry.data.ogHighlight && (
+                  <div class="article-highlight">
+                    <span class="article-highlight__label">{entry.data.ogHighlight.label}</span>
+                    <s class="article-highlight__before">{entry.data.ogHighlight.before}</s>
+                    <span class="article-highlight__arrow" aria-hidden="true">→</span>
+                    <strong class="article-highlight__after">{entry.data.ogHighlight.after}</strong>
+                  </div>
+                )}
               </div>
               <span class="article-item__arrow" aria-hidden="true">
                 <ArrowRight size={18} />
@@ -98,6 +131,37 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
       </div>
     </section>
   </div>
+
+  <script is:inline>
+    (function () {
+      function initArticleFilter() {
+        var filterRoot = document.querySelector('.articles-filters');
+        if (!filterRoot || filterRoot.dataset.ready === '1') return;
+        filterRoot.dataset.ready = '1';
+
+        var buttons = Array.from(filterRoot.querySelectorAll('[data-category-filter]'));
+        var items = Array.from(document.querySelectorAll('[data-article-category]'));
+
+        buttons.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var selected = btn.getAttribute('data-category-filter') || 'all';
+            buttons.forEach(function (b) {
+              var active = b === btn;
+              b.classList.toggle('is-active', active);
+              b.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+            items.forEach(function (item) {
+              var cat = item.getAttribute('data-article-category');
+              item.hidden = selected !== 'all' && cat !== selected;
+            });
+          });
+        });
+      }
+
+      initArticleFilter();
+      document.addEventListener('astro:page-load', initArticleFilter);
+    })();
+  </script>
 </BaseLayout>
 
 <style>
@@ -143,6 +207,85 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
     color: var(--text-secondary);
     font-size: 0.98rem;
     line-height: 1.72;
+  }
+
+  .articles-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.38rem 0.85rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-strong);
+    background: var(--surface-elevated);
+    color: var(--text-secondary);
+    font-size: 0.84rem;
+    font-weight: 600;
+    transition: all var(--transition-fast);
+  }
+
+  .filter-pill span {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    opacity: 0.78;
+  }
+
+  .filter-pill:hover {
+    border-color: var(--accent-border);
+    color: var(--text-primary);
+  }
+
+  .filter-pill.is-active {
+    border-color: var(--accent);
+    background: var(--accent-subtle);
+    color: var(--accent-text);
+    font-weight: 700;
+  }
+
+  .article-highlight {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.55rem;
+    width: fit-content;
+    margin-top: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface-subtle);
+    border: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+
+  .article-highlight__label {
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .article-highlight__before {
+    color: var(--text-muted);
+    text-decoration-color: rgb(184 50 44 / 0.55);
+  }
+
+  .article-highlight__arrow {
+    color: var(--accent-text);
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  .article-highlight__after {
+    color: var(--status-success);
+    font-weight: 700;
+  }
+
+  [data-article-category][hidden] {
+    display: none !important;
   }
 
   .featured-card {

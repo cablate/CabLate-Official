@@ -5,6 +5,22 @@
 
 import KitForm from './common/KitForm.astro';
 import { siteConfig } from '../config/siteConfig';
+
+interface Props {
+  category?: string;
+  tags?: string[];
+}
+
+const { category = '', tags = [] } = Astro.props;
+const topicBlob = `${category} ${tags.join(' ')}`.toLowerCase();
+const isClaudeOrHarness =
+  topicBlob.includes('claude') ||
+  topicBlob.includes('harness') ||
+  topicBlob.includes('sdk') ||
+  topicBlob.includes('context');
+const courseLabel = isClaudeOrHarness
+  ? '看 Claude Code 深度工程手冊（免費試看）'
+  : '看 AgentSkill 課程與 Claude Code 手冊';
 ---
 
 <section class="article-end" aria-labelledby="article-end-title">
@@ -14,6 +30,12 @@ import { siteConfig } from '../config/siteConfig';
       <p>{siteConfig.newsletter.promise}{siteConfig.newsletter.cadence}</p>
       <KitForm />
       <p class="article-end__fine">隨時一鍵退訂・<a href="/privacy/">資料怎麼用</a></p>
+    </div>
+
+    <div class="article-end__routes" aria-label="這篇之後可以做的事">
+      <a class="article-end__route-pill" href="/expertise/">免費 5 層健檢：拿手上的任務自己測 →</a>
+      <a class="article-end__route-pill" href="/courses/">{courseLabel} →</a>
+      <a class="article-end__route-pill" href="/services/consulting/">60 分鐘專案卡關諮詢 →</a>
     </div>
 
     <div class="article-end__author">
@@ -62,6 +84,34 @@ import { siteConfig } from '../config/siteConfig';
   .article-end .article-end__fine {
     font-size: 0.8rem;
     color: var(--text-muted);
+  }
+
+  .article-end__routes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .article-end .article-end__route-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.42rem 0.85rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-strong);
+    background: var(--surface-elevated);
+    color: var(--text-primary);
+    font-size: 0.84rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .article-end .article-end__route-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent-text);
+    transform: translateY(-1px);
   }
 
   .article-end__author {
