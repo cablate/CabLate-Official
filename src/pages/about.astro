@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { ArrowRight, Github, AtSign } from '@lucide/astro';
+import { ArrowRight, FolderGit2, AtSign } from '@lucide/astro';
 import { authorityProfile, deliveryExperienceProofs, moreOpenSource, openSourceProofs, personEntity } from '../config/authority';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 import QuoteBand from '../components/common/QuoteBand.astro';
@@ -29,7 +29,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
 ---
 
 <BaseLayout title="關於 Cab｜從工程師到 AI 講師" description="Cab（CabLate）非本科轉職工程師，做過政府標案系統，現在研究 Claude Code、Agent 和 Skill，寫課、做開源工具，也接 AI 諮詢與企業內訓。" image="/og/pages/about.png" imageAlt="關於 Cab：AI 做出來一次之後，我會再問下次還做不做得出來。" imageWidth={1200} imageHeight={630}>
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(personJsonLd)} />
 
   <article class="about-page paper-page">
     <header class="about-hero page-paper paper-card">
@@ -142,7 +142,7 @@ const [featuredOutput, ...supportingOutputs] = openSourceProofs;
         <div class="trust-evidence__channels" id="public-output-actions">
           <p>想看更多</p>
           <ul role="list">
-            <li><a class="btn btn-ghost" href={siteConfig.githubUrl} target="_blank" rel="noopener"><Github size={17} aria-hidden="true" /><span>GitHub 個人頁</span><ArrowRight size={15} aria-hidden="true" /></a></li>
+            <li><a class="btn btn-ghost" href={siteConfig.githubUrl} target="_blank" rel="noopener"><FolderGit2 size={17} aria-hidden="true" /><span>GitHub 個人頁</span><ArrowRight size={15} aria-hidden="true" /></a></li>
             <li><a class="btn btn-ghost" href={siteConfig.threadsUrl} target="_blank" rel="noopener"><AtSign size={17} aria-hidden="true" /><span>Threads 帳號</span><ArrowRight size={15} aria-hidden="true" /></a></li>
           </ul>
         </div>

@@ -9,7 +9,7 @@ const articleLastmod = new Map(
     .filter((file) => file.endsWith('.md'))
     .map((file) => {
       const frontmatter = readFileSync(`src/content/articles/${file}`, 'utf8').split('---')[1] ?? '';
-      const date = (key) => frontmatter.match(new RegExp(`^${key}:\\s*["']?([^"'\\n]+)`, 'm'))?.[1];
+      const date = (/** @type {string} */ key) => frontmatter.match(new RegExp(`^${key}:\\s*["']?([^"'\\n]+)`, 'm'))?.[1];
       const lastmod = date('updatedDate') ?? date('publishDate');
       return [`https://cablate.com/articles/${file.replace(/\.md$/, '')}/`, lastmod && new Date(lastmod).toISOString()];
     }),

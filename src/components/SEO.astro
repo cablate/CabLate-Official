@@ -165,11 +165,11 @@ const faqJsonLd = hasFaq
 <link rel="canonical" href={fullUrl.href} />
 
 <!-- JSON-LD 主結構化數據 -->
-<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
 <!-- JSON-LD FAQ（獨立 script，不衝突） -->
 {faqJsonLd && (
-  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqJsonLd)} />
 )}
 
 <!-- Additional Meta Tags -->
