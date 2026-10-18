@@ -1,5 +1,5 @@
 ---
-title: "當 AI 幫你寫了 871 支測試，線上照樣壞掉：六階段測試重整實錄"
+title: "AI 幫你寫的測試全綠，為什麼上線還是壞掉？"
 description: "871 支測試全綠，核心流程卻斷了兩天。拆解 AI 最常寫出的假測試、如何用破壞驗證抓出漏網之魚、把預檢從十幾分鐘壓到 20 秒內，文末附可直接貼給 AI 的體檢 Prompt。"
 publishDate: 2026-10-18
 category: 技術觀點
@@ -7,7 +7,7 @@ tags: [AI 工程實戰, 測試策略, CI/CD, TypeScript, Claude Code]
 readingTime: 10
 draft: false
 excerpt: "871 支測試全綠，卻連畫面被彈窗擋死兩天都抓不到。這篇順著我們踩過的坑，拆開 AI 假測試的長相、怎麼親眼驗出測試有沒有用，並附上一份可直接貼給 AI 的體檢 Prompt。"
-problemTag: "871 支測試，線上照樣壞掉"
+problemTag: "871 支測試全綠，核心流程卻斷了兩天"
 ogHighlight:
   label: "本機推送預檢"
   before: "超過 10 分鐘"
