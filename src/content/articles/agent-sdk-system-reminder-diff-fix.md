@@ -11,9 +11,9 @@ excerpt: "逆向 C26 函數找出 Agent SDK 每次重送 diff 的原因，在 re
 ogImage: "/images/articles/agent-sdk-system-reminder-diff-fix.webp"
 problemTag: "SDK 每輪對話都重建狀態並重送檔案 diff"
 ogHighlight:
-  label: "C26 File Tracking on Resume"
-  before: "每輪重建並重送完整 diff"
-  after: "JSONL 預處理後 0 筆觸發"
+  label: "Resume 後 diff 注入"
+  before: "每輪重送完整 diff"
+  after: "JSONL 預處理後 0 觸發"
 ---
 
 [前篇](/articles/claude-code-token-drain-system-reminder/)寫了我逆向 Claude Code v2.1.71、找出 system-reminder 重複注入 diff 的過程。
