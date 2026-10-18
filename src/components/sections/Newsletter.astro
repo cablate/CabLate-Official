@@ -19,26 +19,26 @@ import { siteConfig } from '../../config/siteConfig';
   .newsletter-section {
     min-width: 0;
     display: grid;
-    grid-template-columns: 1.15fr .85fr;
+    grid-template-columns: 1.1fr .9fr;
     align-items: center;
-    gap: clamp(2rem, 6vw, 5rem);
+    gap: clamp(1.5rem, 4vw, 3rem);
   }
 
   .newsletter-text h2 {
     margin: 0;
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     color: var(--text-primary, #253047);
-    font-size: clamp(2rem, 3.4vw, 3rem);
+    font-size: clamp(1.3rem, 2.1vw, 1.65rem);
     line-height: 1.35;
-    letter-spacing: -.03em;
+    letter-spacing: -.02em;
     text-wrap: balance;
   }
 
   .newsletter-copy {
-    margin: 1rem 0 0;
+    margin: .65rem 0 0;
     color: var(--text-secondary, #697184);
-    font-size: .92rem;
-    line-height: 1.75;
+    font-size: .95rem;
+    line-height: 1.7;
     text-wrap: pretty;
   }
 
@@ -47,25 +47,26 @@ import { siteConfig } from '../../config/siteConfig';
   }
 
   .newsletter-note {
-    margin: .85rem 0 0;
+    margin: .65rem 0 0;
     color: var(--text-muted, #7c8494);
-    font-size: .72rem;
+    font-size: .8rem;
     line-height: 1.6;
   }
 
   .newsletter-note a {
-    color: var(--accent, #8064ea);
+    color: var(--accent-text, #6248c8);
+    text-decoration: underline;
     text-underline-offset: .2em;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 900px) {
     .newsletter-section {
       grid-template-columns: minmax(0, 1fr);
-      gap: 1.75rem;
+      gap: 1.25rem;
     }
 
     .newsletter-text h2 {
-      font-size: clamp(1.9rem, 9vw, 2.65rem);
+      font-size: clamp(1.25rem, 5vw, 1.5rem);
     }
   }
 </style>

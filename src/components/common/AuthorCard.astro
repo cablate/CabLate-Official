@@ -24,16 +24,16 @@ const { label = '寫這些的人', class: className } = Astro.props;
 </aside>
 
 <style>
-  .author-card { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: clamp(1.25rem, 3vw, 2rem); align-items: center; padding: clamp(1.4rem, 3vw, 2rem); }
-  .author-card img { width: 7.5rem; height: 7.5rem; border-radius: 50%; object-fit: cover; object-position: 35% center; }
-  .author-card .section-label { margin: 0 0 .4rem; }
-  .author-card h2 { margin: 0; font-size: clamp(1.15rem, 2vw, 1.4rem); line-height: 1.4; }
-  .author-card p:not(.section-label) { max-width: 46rem; margin: .5rem 0 0; color: var(--text-secondary); line-height: 1.8; }
-  .author-card nav { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: .9rem; }
+  .author-card { display: grid; grid-template-columns: 5rem minmax(0, 1fr); gap: clamp(1rem, 2.5vw, 1.5rem); align-items: center; padding: clamp(1.25rem, 2.5vw, 1.75rem); border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-soft); background-image: none; box-shadow: var(--shadow-sm); filter: none; }
+  .author-card img { width: 5rem; height: 5rem; border-radius: 50%; object-fit: cover; object-position: 35% center; }
+  .author-card .section-label { margin: 0 0 .3rem; }
+  .author-card h2 { margin: 0; font-size: clamp(1.1rem, 1.8vw, 1.3rem); line-height: 1.4; }
+  .author-card p:not(.section-label) { max-width: 46rem; margin: .4rem 0 0; color: var(--text-secondary); font-size: .94rem; line-height: 1.7; }
+  .author-card nav { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; margin-top: .75rem; font-size: .9rem; }
   .author-card a { display: inline-flex; align-items: center; gap: .35rem; color: var(--accent-text); font-weight: 700; }
   .author-card a:hover { color: var(--accent-hover); }
   @media (max-width: 560px) {
-    .author-card { grid-template-columns: 4.5rem minmax(0, 1fr); align-items: start; }
-    .author-card img { width: 4.5rem; height: 4.5rem; }
+    .author-card { grid-template-columns: 3.75rem minmax(0, 1fr); align-items: start; }
+    .author-card img { width: 3.75rem; height: 3.75rem; }
   }
 </style>

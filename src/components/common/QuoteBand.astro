@@ -33,20 +33,20 @@ const postUrl = (id: string) => `${siteConfig.threadsUrl}/post/${id}`;
 <style>
   .quote-band {
     display: grid;
-    gap: clamp(1.5rem, 3vw, 2.25rem);
-    padding: clamp(2.2rem, 4vw, 3.5rem) clamp(1.5rem, 3.5vw, 3.2rem);
-    border-radius: var(--radius-sm);
+    gap: 1.15rem;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border-radius: var(--radius-md);
     background: var(--surface-dark);
     color: var(--surface-dark-text);
   }
-  .quote-band__header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 2rem; }
-  .quote-band__header h2 { margin: 0; color: var(--surface-dark-text); font-family: var(--font-serif); font-size: clamp(1.6rem, 2.8vw, 2.4rem); letter-spacing: -.03em; }
-  .quote-band__header p { margin: 0; color: var(--surface-dark-muted); font-size: .9rem; }
-  .quote-band__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 0; padding: 0; list-style: none; }
-  .quote-band__list li { display: grid; align-content: space-between; gap: 1.5rem; padding: 1.5rem 1.4rem 1.25rem; border: 1px solid var(--surface-dark-border); border-radius: var(--radius-sm); background: rgb(255 255 255 / .03); }
-  .quote-band blockquote { position: relative; margin: 0; padding-top: 1.6rem; color: var(--surface-dark-text); font-family: var(--font-serif); font-size: clamp(1.15rem, 1.6vw, 1.35rem); font-weight: 700; line-height: 1.6; text-wrap: pretty; }
-  .quote-band blockquote::before { content: '“'; position: absolute; top: -.6rem; left: -.1rem; color: var(--accent-bright); font-size: 3rem; line-height: 1; }
-  .quote-band a { color: var(--surface-dark-muted); font-family: var(--font-mono); font-size: .75rem; text-decoration: none; }
+  .quote-band__header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1.5rem; }
+  .quote-band__header h2 { margin: 0; color: var(--surface-dark-text); font-family: var(--font-sans); font-size: clamp(1.25rem, 2vw, 1.55rem); letter-spacing: -.02em; }
+  .quote-band__header p { margin: 0; color: var(--surface-dark-muted); font-size: .88rem; }
+  .quote-band__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; margin: 0; padding: 0; list-style: none; }
+  .quote-band__list li { display: grid; align-content: space-between; gap: 1rem; padding: 1.15rem 1.2rem; border: 1px solid var(--surface-dark-border); border-radius: var(--radius-sm); background: rgb(255 255 255 / .03); }
+  .quote-band blockquote { position: relative; margin: 0; padding-top: 1.15rem; color: var(--surface-dark-text); font-family: var(--font-sans); font-size: .98rem; font-weight: 600; line-height: 1.68; text-wrap: pretty; }
+  .quote-band blockquote::before { content: '“'; position: absolute; top: -.45rem; left: -.05rem; color: var(--accent-bright); font-family: var(--font-serif); font-size: 2.2rem; line-height: 1; }
+  .quote-band a { color: var(--surface-dark-muted); font-family: var(--font-mono); font-size: .76rem; text-decoration: none; }
   .quote-band a:hover { color: var(--accent-bright); }
 
   .quote-band--light { border: 1px solid var(--accent-border); background: var(--accent-subtle); color: var(--text-primary); }
@@ -55,7 +55,7 @@ const postUrl = (id: string) => `${siteConfig.threadsUrl}/post/${id}`;
   .quote-band--light .quote-band__list li { border-color: var(--accent-border); background: var(--bg-soft); }
   .quote-band--light blockquote::before { color: var(--accent); }
 
-  @media (max-width: 860px) {
+  @media (max-width: 960px) {
     .quote-band__list { grid-template-columns: 1fr; }
   }
 </style>
