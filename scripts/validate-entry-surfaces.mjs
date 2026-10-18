@@ -32,13 +32,13 @@ assert(!homeSource.includes('給還在觀望的你'), 'retired anxiety section i
 assert(!homeSource.includes('代表案例') && !homeSource.includes('stars／') && !homeSource.includes('位學員'), 'unapproved proof is rendered on home');
 
 const navBlock = navigationSource.match(/export const primaryNavigationGroups = \[([\s\S]*?)\] as const;/)?.[1] ?? '';
-assert(count(navBlock.replace(/^\s*\/\/.*$/gm, ''), /href:/g) === 9, 'primary navigation must contain exactly nine active destination links');
-for (const label of ['免費健檢', '課程與手冊', '電子報', '專案諮詢', 'AI 應用陪跑', '企業合作', '講師與內容', '作品與經歷', '關於 Cab']) {
+assert(count(navBlock.replace(/^\s*\/\/.*$/gm, ''), /href:/g) === 10, 'primary navigation must contain exactly ten active destination links');
+for (const label of ['免費健檢', '課程與手冊', '文章', '電子報', '專案諮詢', 'AI 應用陪跑', '企業合作', '講師與內容', '作品與經歷', '關於 Cab']) {
   assert(navBlock.includes(`label: '${label}'`), `navigation label missing: ${label}`);
 }
 assert(!headerSource.includes('site-rail__social'), 'header still renders external/social links');
 for (const label of ['免費健檢', '課程與手冊', '合作方式', '關於', 'CabAI 學習平台', 'Email', 'Threads', 'GitHub', '隱私權政策']) assert(layoutSource.includes(label), `footer label missing: ${label}`);
-assert(!layoutSource.includes('>RSS<') && !layoutSource.includes('>Articles<'), 'footer exposes a paused RSS or Articles entry');
+assert(layoutSource.includes('href="/articles/"') && layoutSource.includes('href="/rss.xml"'), 'footer must link to articles and RSS (decision D1)');
 
 assert(count(worksheetSource, /<fieldset class="layer-check"/g) === 1 && worksheetSource.includes('diagnosticLayers.map'), 'worksheet must render the five data-driven fieldsets');
 for (const code of ['task_contract', 'context_data', 'tools_permissions', 'memory_state', 'acceptance_recovery']) assert(layerSource.includes(`code: '${code}'`), `diagnostic result code missing: ${code}`);
