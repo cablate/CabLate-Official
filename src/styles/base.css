@@ -55,20 +55,23 @@
   --status-warning-border: #e7c58f;
 }
 
+/* Phones keep the 1x textures: the 2048px decode was most of the mobile LCP render delay. */
 @supports (background-image: image-set(url('/images/paper-ui/paper-white-1x.webp') 1x)) {
-  :root {
-    --paper-white-image: image-set(
-      url('/images/paper-ui/paper-white-1x.webp') type('image/webp') 1x,
-      url('/images/paper-ui/paper-white-2x.webp') type('image/webp') 2x
-    );
-    --paperclip-silver-image: image-set(
-      url('/images/paper-ui/paperclip-silver-1x.webp') type('image/webp') 1x,
-      url('/images/paper-ui/paperclip-silver-2x.webp') type('image/webp') 2x
-    );
-    --paper-reading-card-image: image-set(
-      url('/images/paper-ui/paper-reading-card-1x.webp') type('image/webp') 1x,
-      url('/images/paper-ui/paper-reading-card-2x.webp') type('image/webp') 2x
-    );
+  @media (min-width: 769px) {
+    :root {
+      --paper-white-image: image-set(
+        url('/images/paper-ui/paper-white-1x.webp') type('image/webp') 1x,
+        url('/images/paper-ui/paper-white-2x.webp') type('image/webp') 2x
+      );
+      --paperclip-silver-image: image-set(
+        url('/images/paper-ui/paperclip-silver-1x.webp') type('image/webp') 1x,
+        url('/images/paper-ui/paperclip-silver-2x.webp') type('image/webp') 2x
+      );
+      --paper-reading-card-image: image-set(
+        url('/images/paper-ui/paper-reading-card-1x.webp') type('image/webp') 1x,
+        url('/images/paper-ui/paper-reading-card-2x.webp') type('image/webp') 2x
+      );
+    }
   }
 }
 
