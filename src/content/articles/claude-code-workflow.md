@@ -9,6 +9,11 @@ ogImage: "/images/articles/claude-code-workflow.webp"
 readingTime: 8
 draft: false
 excerpt: "記錄我用 Claude Code 從零做完 CabLate 官網的過程：技術選型、元件切分、SEO 建置與改版時重做的教訓。"
+problemTag: "以為用 AI 做專案只要貼需求複製貼上"
+ogHighlight:
+  label: "全站主題改版（4 CSS + 7 元件）"
+  before: "手動修改約半天"
+  after: "AI 依規格 10 分鐘完成"
 ---
 
 很多人對「用 AI 寫程式」的想像停在「貼需求、拿 code、複製貼上」。

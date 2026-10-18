@@ -9,6 +9,11 @@ readingTime: 7
 draft: false
 excerpt: "逆向 Claude Code v2.1.71 原始碼後發現，system-reminder 會在背景重複注入檔案 diff 吃掉額度，Agent SDK 用戶受影響最大。"
 ogImage: "/images/articles/claude-code-token-drain-system-reminder.webp"
+problemTag: "編輯檔案後每則短訊息都偷吃 2-3% 額度"
+ogHighlight:
+  label: "Edit 後每輪 system-reminder"
+  before: "重複注入 diff（燒 2-3% 額度）"
+  after: "補一次 Read 同步後停止注入"
 ---
 
 這個月 token 額度燒得特別快。

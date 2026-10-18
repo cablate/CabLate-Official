@@ -9,6 +9,7 @@ readingTime: 5
 draft: false
 excerpt: "大部分人對龍蝦的需求，其實就只是自動化。殺雞用牛刀，不如先搞清楚自己要什麼。"
 ogImage: "/images/articles/blog-writing-openclaw.webp"
+problemTag: "把固定排程需求當成需要架整套 Agent"
 ---
 
 最近跟不少人聊到 OpenClaw，發現一個很有趣的現象：大部分人對龍蝦的需求，其實就只是「自動化」。

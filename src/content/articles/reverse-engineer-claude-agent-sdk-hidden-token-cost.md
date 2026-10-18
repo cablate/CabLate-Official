@@ -8,6 +8,11 @@ tags: [Claude Agent SDK, prompt caching, 逆向工程, token 成本優化, Claud
 readingTime: 15
 draft: false
 excerpt: "SDK 每則訊息吃 2-3% 額度，逆向 cli.js 找到根因，用 V2 persistent session 解決。"
+problemTag: "Agent SDK 每次呼叫都燒 2-3% 額度"
+ogHighlight:
+  label: "Prompt Cache Efficiency"
+  before: "25%（V1 query）"
+  after: "84%（V2 persistent）"
 ---
 
 用 Claude Agent SDK 跑多代理系統，每則訊息吃掉 2-3% 的 5 小時額度，訊息內容只有幾個字，成本卻跟寫一整段程式碼差不多。

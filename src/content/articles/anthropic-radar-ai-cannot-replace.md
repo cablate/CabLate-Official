@@ -9,6 +9,7 @@ readingTime: 7
 draft: false
 excerpt: "Anthropic 的職業覆蓋率雷達圖常被解讀成「AI 很快會取代這些工作」。但理論覆蓋率只看技術能不能做，離真實工作裡的判斷與責任還差很遠。"
 ogImage: "/images/articles/anthropic-radar-ai-cannot-replace.webp"
+problemTag: "把 AI 理論覆蓋率直接當成工作會被取代"
 ---
 
 最近看到 Anthropic 發布的一張雷達圖，覺得很值得聊。

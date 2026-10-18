@@ -40,13 +40,15 @@ tags: ["Claude Agent SDK", "prompt caching", "逆向工程"] # 選填，供內�
 readingTime: 15 # 建議填寫，預估閱讀分鐘數（以每分鐘 350–400 字加圖表閱讀時間估算）
 draft: false # 正式發佈設為 false
 excerpt: "SDK 每則訊息吃 2-3% 額度，逆向 cli.js 找到根因，用 V2 persistent session 解決。" # 強烈建議填寫，≤ 200 字元，會渲染為文章開頭的暖米底重點導言框
-problemTag: "Agent SDK 每次呼叫都燒 2–3% 額度" # 選填（階段 3 啟用），≤ 24 字元，顯示於列表頁卡片與 OG 圖左上角徽章
-ogHighlight: # 選填（階段 3 啟用），供 OG 圖生成高辨識度數據卡
+problemTag: "Agent SDK 每次呼叫都燒 2-3% 額度" # 選填（已啟用），≤ 24 字元，顯示於列表頁卡片與 OG 圖左上角徽章
+ogHighlight: # 選填（已啟用），供 OG 圖生成高辨識度數據卡
   label: "Prompt Cache Efficiency"
-  before: "25% (V1 query)"
-  after: "84% (V2 persistent)"
+  before: "25%（V1 query）"
+  after: "84%（V2 persistent）"
 ---
 ```
+
+- **`problemTag` 與 `ogHighlight` 用途與限制**：`problemTag` 用一句話直述讀者痛點（上限 24 字元），會顯示在文章列表與 OG 圖左上角徽章；`ogHighlight` 則在 OG 圖標題下方渲染 `before → after` 數據對比卡（`before` 與 `after` 建議各控制在 20 字元內，避免擠壓標題；無明確前後數字對比的觀點文可省略 `ogHighlight`）。兩個欄位皆受 `scripts/lint-copy.mjs` 掃描，值內禁止使用破折號、冒號揭示句與禁用詞。
 
 ---
 

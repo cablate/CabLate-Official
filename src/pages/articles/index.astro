@@ -10,8 +10,7 @@ const publishedArticles = allArticles
   .filter((entry) => !entry.data.draft)
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
-const featuredSlug = 'ai-tests-false-safety-six-phase-overhaul';
-const featuredArticle = publishedArticles.find((entry) => entry.slug === featuredSlug) ?? publishedArticles[0];
+const featuredArticle = publishedArticles[0];
 const restArticles = publishedArticles.filter((entry) => entry.slug !== featuredArticle?.slug);
 
 const breadcrumbJsonLd = {

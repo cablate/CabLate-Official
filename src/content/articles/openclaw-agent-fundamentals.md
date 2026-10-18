@@ -9,6 +9,7 @@ readingTime: 6
 draft: false
 excerpt: "李宏毅教授用 OpenClaw 拆解的五層架構，其實是一年多前就成熟的 Agent 底層做法。看懂這五層，換什麼框架都能上手。"
 ogImage: "/images/articles/openclaw-agent-fundamentals.webp"
+problemTag: "追新 Agent 框架卻搞不懂底層怎麼運作"
 ---
 
 OpenClaw 爆紅的時候，我身邊很多人把它當成全新的技術突破在追。這個專案確實把功能整合得很完整，社群也熱絡，但它底下的架構其實早就存在了。

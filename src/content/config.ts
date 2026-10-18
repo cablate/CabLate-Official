@@ -28,6 +28,14 @@ const articles = defineCollection({
     // 社群媒體
     ogImage: z.string().optional(),
     excerpt: z.string().max(200, '摘要不超過 200 字元').optional(),
+    problemTag: z.string().max(24, '問題標籤不超過 24 字元').optional(),
+    ogHighlight: z
+      .object({
+        label: z.string(),
+        before: z.string(),
+        after: z.string(),
+      })
+      .optional(),
 
     // 內容設定
     readingTime: z.number().optional(),  // 閱讀時間（分鐘）
