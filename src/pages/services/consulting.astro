@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
 import { getServiceApplicationHref } from '../../config/serviceApplication';
+import ProofStrip from '../../components/common/ProofStrip.astro';
+import QuoteBand from '../../components/common/QuoteBand.astro';
 import '../../styles/service-pages.css';
 
 const consultingApplicationHref = getServiceApplicationHref('consulting', 'consulting_page');
@@ -11,6 +13,12 @@ const deliverables = [
   ['主要卡點', '找出現在到底是哪一段沒有接上。'],
   ['該做與先不做', '判斷要繼續、縮小、換一條路，或暫時先停。'],
   ['一頁行動卡', '留下優先三步、先不做什麼、還缺哪些資訊，以及何時回頭檢查。'],
+];
+
+const priceReasons = [
+  ['先看過，適合才收費', '你先提交情境，我判斷這是不是 60 分鐘處理得了的問題。不適合，收費前就直接說。'],
+  ['處理的是你的真實專案', '不是通用課程，也不是泛聊。看你做過什麼、卡在哪，判斷該繼續、縮小還是換方向。'],
+  ['留下能照著做的東西', '最後整理成一頁行動卡。之後若 14 天內加入五週陪跑，諮詢費全額折抵。'],
 ];
 
 const faq = [
@@ -40,6 +48,8 @@ const faq = [
       </figure>
     </header>
 
+    <ProofStrip label="一些數字" class="service-shell service-proof" />
+
     <section class="service-shell service-section page-paper paper-card" aria-labelledby="outcomes-title">
       <header class="service-section__intro">
         <p class="section-label">你會帶走</p>
@@ -54,6 +64,19 @@ const faq = [
         <p><strong>看到的症狀：</strong>做法一直換，結果仍然需要重做。<br /><strong>可能的卡點：</strong>真正要完成什麼、怎樣算完成，還沒有說清楚。<br /><strong>這次要做的事：</strong>把題目縮成一個能測的輸出，再決定工具要不要換。</p>
       </aside>
     </section>
+
+    <section class="service-shell service-section page-paper paper-card" aria-labelledby="price-title">
+      <header class="service-section__intro">
+        <p class="section-label">費用</p>
+        <h2 id="price-title">NT$5,000 買的是判斷</h2>
+        <p>不是一小時的聊天，是針對你這個專案的取捨。</p>
+      </header>
+      <div class="service-deliverables">
+        {priceReasons.map(([title, body]) => <article><h3>{title}</h3><p>{body}</p></article>)}
+      </div>
+    </section>
+
+    <QuoteBand class="service-shell" title="我看問題的方式" lead="Threads 原文，沒有修過。" pick={[3, 0, 1]} />
 
     <section class="service-shell service-section service-fit-grid page-paper paper-card" aria-labelledby="fit-title">
       <header class="service-section__intro service-section__intro--compact">

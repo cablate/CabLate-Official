@@ -3,6 +3,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowRight } from '@lucide/astro';
 import { learningPath } from '../../config/authority';
 import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
+import { getServiceApplicationHref } from '../../config/serviceApplication';
+import ProofStrip from '../../components/common/ProofStrip.astro';
+import QuoteBand from '../../components/common/QuoteBand.astro';
+
+const enterpriseHref = getServiceApplicationHref('enterprise', 'courses_team');
 
 ---
 
@@ -16,6 +21,8 @@ import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
       <p class="learn-hero__intro">有人還看不出問題在哪，有人已經天天用 Claude Code，卻一直犯同一種錯。下面四種沒有先後，挑最像你現在狀況的那個就好。</p>
       <a class="learn-hero__cta" href="#learning-map">看哪個適合我 <ArrowRight size={18} aria-hidden="true" /></a>
     </header>
+
+    <ProofStrip label="教過的數字" class="learn-proof" />
 
     <section class="learn-map page-paper paper-card paper-card--clip paper-card--clip-left" id="learning-map" aria-labelledby="map-title">
       <header class="learn-map__header">
@@ -61,6 +68,8 @@ import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
       </ul>
     </section>
 
+    <QuoteBand class="learn-quotes" title="課堂上我最常提醒的事" lead="Threads 原文，沒有修過。" pick={[3, 4, 2]} />
+
     <section class="cabai-onboarding page-paper paper-card paper-card--clip-left" id="cabai-platform" aria-labelledby="cabai-onboarding-title">
       <div>
         <p class="section-label">在哪裡上課</p>
@@ -73,12 +82,24 @@ import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
         </div>
       </div>
     </section>
+    <section class="learn-team page-paper paper-card" aria-labelledby="learn-team-title">
+      <div>
+        <p class="section-label">想讓團隊一起學</p>
+        <h2 id="learn-team-title">同樣的內容，可以用你們自己的工作來上</h2>
+        <p>講座、半日或全日工作坊、兩日班都教過。先聊需求，不收費。</p>
+      </div>
+      <a class="learn-hero__cta" href={enterpriseHref} data-analytics-placement="courses_team">告訴我團隊的狀況 <ArrowRight size={17} aria-hidden="true" /></a>
+    </section>
   </article>
 </BaseLayout>
 
 <style>
   .learn-page { padding-top: 0; }
-  .learn-hero, .learn-map, .cabai-onboarding { width: min(100% - 3rem, 82rem); margin-inline: auto; }
+  .learn-hero, .learn-map, .cabai-onboarding, .learn-proof, .learn-quotes, .learn-team { width: min(100% - 3rem, 82rem); margin-inline: auto; }
+  .learn-proof, .learn-quotes, .learn-team { margin-block: 1.25rem; }
+  .learn-team { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.5rem 3rem; padding-block: clamp(2rem, 4vw, 3rem); }
+  .learn-team h2 { max-width: 16em; margin: 0; font-size: clamp(1.5rem, 2.6vw, 2.2rem); letter-spacing: -.03em; line-height: 1.35; }
+  .learn-team p:not(.section-label) { margin: .75rem 0 0; color: var(--text-secondary); line-height: 1.8; }
   #learning-map { scroll-margin-top: 2rem; }
   .learn-hero { padding-block: clamp(3.2rem, 7vw, 6rem); }
   .learn-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-inline-size: 0; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
@@ -137,7 +158,8 @@ import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
   }
 
   @media (max-width: 520px) {
-    .learn-hero, .learn-map, .cabai-onboarding { width: min(100% - 2rem, 82rem); }
+    .learn-hero, .learn-map, .cabai-onboarding, .learn-proof, .learn-quotes, .learn-team { width: min(100% - 2rem, 82rem); }
+    .learn-team .learn-hero__cta { width: 100%; justify-content: center; }
     .learn-page .display-heading > .heading-phrase { white-space: normal; }
     #learning-map { scroll-margin-top: 5.5rem; }
     .learn-hero__topline { align-items: flex-start; gap: .75rem; }

@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowRight } from '@lucide/astro';
 import { formatDate } from '../../utils/format';
+import AuthorCard from '../../components/common/AuthorCard.astro';
 import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
 
 const allArticles = await getCollection('articles');
@@ -126,6 +127,8 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
         {publishedArticles.length === 0 && <p class="empty-state">這裡還沒有公開文章。</p>}
       </div>
     </section>
+
+    <AuthorCard class="articles-author" />
   </div>
 </BaseLayout>
 
@@ -133,6 +136,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
   .articles-page { padding-top: 0; }
   .articles-section { width: min(100% - 3rem, 86rem); margin-inline: auto; padding-block: clamp(3.2rem, 7vw, 6rem) !important; }
   .articles-container { max-width: 72rem; margin-inline: auto; }
+  .articles-page :global(.articles-author) { width: min(100% - 3rem, 86rem); margin: 1.25rem auto 0; }
   .articles-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-inline-size: 0; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
   .articles-hero__topline .section-label { margin: 0; }
   .articles-hero__topline > span { min-inline-size: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; text-align: end; text-wrap: pretty; }

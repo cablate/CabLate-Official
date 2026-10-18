@@ -1,7 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkflowDiagnostic from '../components/sections/WorkflowDiagnostic.astro';
-import { ArrowDown } from '@lucide/astro';
+import AuthorCard from '../components/common/AuthorCard.astro';
+import { ArrowDown, ArrowRight } from '@lucide/astro';
+import { getServiceApplicationHref } from '../config/serviceApplication';
+
+const nextSteps = [
+  { label: '自己修得動', title: '照健檢結果，先修那一層', body: '多數問題修一層就會好很多。修完再拿同一件事跑一次，比較前後差在哪。', href: '/courses/', cta: '看課程與手冊' },
+  { label: '修了還是卡', title: '60 分鐘專案卡關諮詢', body: '帶著健檢結果來，我們直接從卡住的那層開始看，排出先做什麼、先不做什麼。', href: '/services/consulting/', cta: '看諮詢怎麼進行' },
+  { label: '整個團隊都這樣', title: '企業內訓或工作坊', body: '同一種錯在團隊裡反覆出現，通常是流程和驗收沒講好。用你們自己的工作來練。', href: getServiceApplicationHref('enterprise', 'expertise_next'), cta: '告訴我團隊的狀況' },
+];
 ---
 
 <BaseLayout
@@ -36,6 +44,25 @@ import { ArrowDown } from '@lucide/astro';
     </header>
 
     <WorkflowDiagnostic />
+
+    <section class="diagnostic-next" aria-labelledby="diagnostic-next-title">
+      <header>
+        <p class="section-label">檢查完之後</p>
+        <h2 id="diagnostic-next-title">找到該修哪一層，接下來看你的狀況</h2>
+      </header>
+      <div class="diagnostic-next__grid">
+        {nextSteps.map((step) => (
+          <article class="page-paper paper-card">
+            <small>{step.label}</small>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+            <a href={step.href} data-analytics-placement="expertise_next">{step.cta} <ArrowRight size={15} aria-hidden="true" /></a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <AuthorCard label="這份健檢的作者" />
   </article>
 </BaseLayout>
 
@@ -118,7 +145,23 @@ import { ArrowDown } from '@lucide/astro';
     line-height: 1.7;
   }
 
+  .diagnostic-next { display: grid; gap: 1.25rem; padding-block: clamp(1.5rem, 4vw, 2.5rem) .5rem; }
+  .diagnostic-next .section-label { margin: 0 0 .5rem; }
+  .diagnostic-next h2 { max-width: 18em; margin: 0; font-size: clamp(1.5rem, 2.6vw, 2.2rem); letter-spacing: -.03em; line-height: 1.35; }
+  .diagnostic-next__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .diagnostic-next article { display: grid; align-content: start; gap: .6rem; padding: 1.5rem 1.4rem; }
+  .diagnostic-next small { color: var(--accent-text); font-size: .75rem; font-weight: 700; }
+  .diagnostic-next h3 { margin: 0; font-size: 1.2rem; line-height: 1.4; }
+  .diagnostic-next p { margin: 0; color: var(--text-secondary); line-height: 1.75; }
+  .diagnostic-next a { display: inline-flex; align-items: center; gap: .35rem; margin-top: .4rem; color: var(--accent-text); font-weight: 700; }
+  .diagnostic-next a:hover { color: var(--accent-hover); }
+
+  @media (max-width: 860px) {
+    .diagnostic-next__grid { grid-template-columns: 1fr; }
+  }
+
   @media (max-width: 700px) {
+    .diagnostic-next { padding-inline: 1rem; }
     .expertise-page { gap: .65rem; padding-block: 0; }
     .diagnostic-hero { min-height: auto; grid-template-columns: 3rem minmax(0, 1fr); }
     .diagnostic-hero__index { padding: 1.25rem .5rem; }

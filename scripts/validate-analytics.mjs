@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const root = process.cwd();
@@ -46,6 +46,18 @@ for (const page of servicePages) {
 assert(application.includes("name: 'form_start'") && application.includes("name: 'generate_lead'"), 'application funnel events are not connected');
 for (const page of servicePages.slice(0, 5)) {
   assert(read(page).includes('data-analytics-placement'), `${page} has no attributed service CTA or route`);
+}
+
+const sourceAllowlist = head.match(/const SOURCES = new Set\(\[([^\]]*)\]\)/)?.[1] ?? '';
+const listSourceFiles = (dir) => readdirSync(join(root, dir), { withFileTypes: true }).flatMap((entry) => {
+  const path = `${dir}/${entry.name}`;
+  if (entry.isDirectory()) return listSourceFiles(path);
+  return /\.(astro|ts)$/.test(entry.name) ? [path] : [];
+});
+for (const path of listSourceFiles('src')) {
+  for (const [, source] of read(path).matchAll(/getServiceApplicationHref\(\s*'[^']+'\s*,\s*'([^']+)'/g)) {
+    assert(sourceAllowlist.includes(`'${source}'`), `${path} sends application source '${source}' that the runtime SOURCES allowlist drops`);
+  }
 }
 
 if (process.argv.includes('--built')) {
