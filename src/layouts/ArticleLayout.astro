@@ -359,7 +359,7 @@ const breadcrumbJsonLd = {
     line-height: 1.72;
     margin: 0;
     padding: 0.85rem 1.1rem;
-    background: #f6f3eb;
+    background: var(--surface-subtle);
     border-left: 3px solid var(--accent-text);
     border-radius: 0 6px 6px 0;
   }
@@ -376,7 +376,7 @@ const breadcrumbJsonLd = {
     padding: 0.75rem 1rem;
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
-    background: #faf7f0;
+    background: var(--surface-subtle);
   }
 
   .article-toc-mobile summary {
@@ -469,18 +469,18 @@ const breadcrumbJsonLd = {
 
   .article-content :global(code) {
     padding: 0.14rem 0.38rem;
-    background: #f2eee6;
-    border: 1px solid #e4decb;
+    background: var(--code-inline-bg);
+    border: 1px solid var(--code-inline-border);
     border-radius: 4px;
     font-family: var(--font-mono);
     font-size: 0.86em;
-    color: #3d2c8d;
+    color: var(--code-inline-text);
     overflow-wrap: break-word;
   }
 
   .article-content :global(pre) {
     padding: 1rem 1.2rem;
-    background: #f5f2ea !important;
+    background: var(--code-bg) !important;
     border-radius: 6px;
     overflow-x: auto;
     max-width: 100%;
@@ -536,7 +536,7 @@ const breadcrumbJsonLd = {
   }
 
   .article-content :global(th) {
-    background: #f3efe5;
+    background: var(--surface-subtle);
     padding: 0.65rem 0.85rem;
     text-align: left;
     font-weight: 700;
@@ -608,7 +608,7 @@ const breadcrumbJsonLd = {
 
   .article-content :global(.article-callout--note) {
     border-left-color: var(--accent-text);
-    background: #f1edff;
+    background: var(--accent-subtle);
   }
 
   .article-content :global(.article-callout--note .article-callout__title) {
@@ -616,21 +616,21 @@ const breadcrumbJsonLd = {
   }
 
   .article-content :global(.article-callout--tip) {
-    border-left-color: #26734f;
-    background: #eef7f1;
+    border-left-color: var(--status-success);
+    background: var(--status-success-bg);
   }
 
   .article-content :global(.article-callout--tip .article-callout__title) {
-    color: #26734f;
+    color: var(--status-success);
   }
 
   .article-content :global(.article-callout--warning) {
-    border-left-color: #9b6017;
-    background: #fff7e8;
+    border-left-color: var(--status-warning);
+    background: var(--status-warning-bg);
   }
 
   .article-content :global(.article-callout--warning .article-callout__title) {
-    color: #9b6017;
+    color: var(--status-warning);
   }
 
   /* Figures with captions + lightbox */
@@ -693,7 +693,7 @@ const breadcrumbJsonLd = {
     border: 1px solid var(--border);
     border-radius: 8px;
     overflow: hidden;
-    background: #f5f2ea;
+    background: var(--code-bg);
   }
 
   .article-content :global(.article-code__head) {
@@ -702,7 +702,7 @@ const breadcrumbJsonLd = {
     justify-content: space-between;
     padding: 0.4rem 0.55rem 0.4rem 0.95rem;
     border-bottom: 1px solid var(--border);
-    background: #ece7d9;
+    background: var(--code-head-bg);
   }
 
   .article-content :global(.article-code__lang) {
@@ -734,9 +734,9 @@ const breadcrumbJsonLd = {
   }
 
   .article-content :global(.article-code__copy.is-copied) {
-    border-color: #26734f;
-    background: #eef7f1;
-    color: #26734f;
+    border-color: var(--status-success);
+    background: var(--status-success-bg);
+    color: var(--status-success);
   }
 
   .article-content :global(.article-code pre) {
@@ -797,7 +797,7 @@ const breadcrumbJsonLd = {
   }
 
   .article-content :global(.anchor-link.is-copied) {
-    color: #26734f;
+    color: var(--status-success);
   }
 
   /* Interactive / animated SVG diagram container */
@@ -806,7 +806,7 @@ const breadcrumbJsonLd = {
     border: 1px solid var(--border-strong);
     border-radius: 8px;
     overflow: hidden;
-    background: #fffdf8;
+    background: var(--bg-soft);
   }
 
   .article-content :global(.article-diagram__head) {
@@ -816,7 +816,7 @@ const breadcrumbJsonLd = {
     align-items: center;
     padding: 0.65rem 0.8rem;
     border-bottom: 1px solid var(--border);
-    background: #f3efe5;
+    background: var(--surface-subtle);
   }
 
   .article-content :global(.diagram-mode) {
@@ -888,7 +888,7 @@ const breadcrumbJsonLd = {
     border-left: 3px solid var(--accent-text);
     padding: 0.5rem 1rem;
     margin: 1.35rem 0;
-    background: #faf7f0;
+    background: var(--surface-subtle);
     border-radius: 0 6px 6px 0;
     color: var(--text-secondary);
   }

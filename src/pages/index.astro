@@ -531,7 +531,7 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
   .home-hero__secondary-action:hover svg { animation: none; transform: translateX(4px); }
   .home-hero__secondary-action:focus-visible { outline: 3px solid var(--accent); outline-offset: .25rem; }
   .home-hero__portraits { grid-area: portraits; align-self: center; position: relative; z-index: 1; min-height: 16.5rem; margin: 0; }
-  .hero-photo { position: absolute; padding: .35rem; border: 1px solid rgb(66 56 82 / .2); background: #fffdf8; box-shadow: 0 .55rem 1.15rem rgb(58 48 38 / .12); transition: transform 260ms ease, box-shadow 260ms ease; }
+  .hero-photo { position: absolute; padding: .35rem; border: 1px solid rgb(66 56 82 / .2); background: var(--surface-elevated); box-shadow: 0 .55rem 1.15rem rgb(58 48 38 / .12); transition: transform 260ms ease, box-shadow 260ms ease; }
   .hero-photo:hover { box-shadow: 0 .85rem 1.5rem rgb(58 48 38 / .16); }
   .hero-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .hero-photo--primary { top: -.2rem; right: 0; z-index: 2; width: 64%; aspect-ratio: 1122 / 1402; transform: rotate(1.8deg); }
@@ -806,7 +806,7 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
     gap: 1.25rem;
     padding: clamp(2.2rem, 3.8vw, 3.5rem) clamp(1.5rem, 3.5vw, 3.2rem);
     border: 1px solid var(--border-strong);
-    background: #fffdf8;
+    background: var(--bg-soft);
     background-image: var(--paper-white-image);
     border-radius: var(--radius-sm);
   }
@@ -828,7 +828,7 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
     transition: transform 220ms cubic-bezier(.2, .8, .2, 1), box-shadow 220ms ease, border-color 220ms ease;
   }
   .route-card--self {
-    background: #fff;
+    background: var(--surface-elevated);
     border: 2px solid var(--border-strong);
     box-shadow: 0 3px 12px rgb(58 48 38 / .05);
   }
@@ -886,7 +886,7 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
   .plan-entry { display: grid; gap: 1.1rem; padding: clamp(1.35rem, 2.8vw, 2.25rem); border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-soft); box-shadow: var(--shadow-sm); }
   .plan-entry header h2 { margin: .35rem 0 0; font-family: var(--font-sans); font-size: clamp(1.3rem, 2vw, 1.6rem); letter-spacing: -.02em; line-height: 1.35; }
   .plan-entry__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-  .plan-entry__card { display: grid; align-content: start; gap: .45rem; padding: 1.5rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: #fff; color: inherit; text-decoration: none; transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease; }
+  .plan-entry__card { display: grid; align-content: start; gap: .45rem; padding: 1.5rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface-elevated); color: inherit; text-decoration: none; transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease; }
   .plan-entry__card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: var(--shadow-md); }
   .plan-entry__card.is-featured { border: 2px solid var(--accent); background: var(--accent-subtle); }
   .plan-entry__card small { color: var(--accent-text); font-size: .75rem; font-weight: 700; }
@@ -894,11 +894,11 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
   .plan-entry__length { color: var(--accent-text); font-size: .85rem; font-weight: 600; }
   .plan-entry__card p { margin: .35rem 0 .5rem; color: var(--text-secondary); font-size: .9rem; line-height: 1.7; }
   .plan-entry__more { display: inline-flex; align-items: center; gap: .3rem; color: var(--text-primary); font-size: .85rem; font-weight: 700; }
-  .two-door { display: grid; justify-items: center; gap: 1.25rem; padding: clamp(2.5rem, 5vw, 4rem) 1.5rem; border-radius: var(--radius-sm); background: var(--surface-ink); color: #fff; text-align: center; }
+  .two-door { display: grid; justify-items: center; gap: 1.25rem; padding: clamp(2.5rem, 5vw, 4rem) 1.5rem; border-radius: var(--radius-sm); background: linear-gradient(145deg, #253047 0%, #1a2233 100%); border: 1px solid var(--border-strong); color: #fff; text-align: center; }
   .two-door h2 { margin: 0; color: #fff; font-family: var(--font-sans); font-size: clamp(1.25rem, 2vw, 1.55rem); letter-spacing: -.02em; line-height: 1.4; }
   .two-door__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; }
   .two-door .btn-ghost { border-color: rgb(255 255 255 / .4); background: transparent; color: #fff; }
-  .two-door .btn-primary { background: #fff; color: var(--surface-ink); }
+  .two-door .btn-primary { background: #fff; color: #253047; border-color: #fff; }
   .two-door p { margin: 0; color: rgb(255 255 255 / .72); font-size: .88rem; }
   .audience-chips { display: flex; flex-wrap: wrap; gap: .45rem; margin: .35rem 0 .25rem; padding: 0; list-style: none; }
   .audience-chips li { padding: .3rem .7rem; border: 1px solid var(--accent-border); border-radius: var(--radius-full); background: var(--accent-subtle); color: var(--accent-text); font-size: .82rem; font-weight: 600; }
@@ -917,15 +917,15 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
   .speaker-record { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 1.25rem; min-height: 0; padding: .35rem .75rem 1.6rem 1.25rem; border-bottom: 1px solid var(--border); border-radius: var(--radius-sm); transition: opacity 200ms ease, color 200ms ease, background-color 200ms ease; }
   .speaker-record + .speaker-record { padding-top: 1.6rem; }
   .speaker-record::before { position: absolute; left: .02rem; width: .62rem; height: .62rem; margin-top: .45rem; border: 2px solid var(--bg); border-radius: 50%; background: var(--border-strong); content: ''; transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease; }
-  .speaker-record.is-active { background: rgb(255 255 255 / .32); }
-  .speaker-record.is-active::before { border-color: #fff; background: var(--accent); transform: scale(1.35); box-shadow: 0 0 0 3px rgb(128 100 234 / .3); }
+  .speaker-record.is-active { background: color-mix(in srgb, var(--surface-elevated) 55%, transparent); }
+  .speaker-record.is-active::before { border-color: var(--bg-soft); background: var(--accent); transform: scale(1.35); box-shadow: 0 0 0 3px rgb(128 100 234 / .3); }
   .speaker-record:not(.is-active) { color: var(--text-secondary); }
   .speaker-record__time { color: var(--accent-text); font-family: var(--font-mono); font-size: .7rem; font-weight: 700; line-height: 1.55; }
   .speaker-record__body { min-width: 0; }
   .speaker-record__body h3 { max-width: 17em; margin: 0; color: var(--text-primary); font-size: clamp(1.05rem, 1.7vw, 1.35rem); letter-spacing: -.025em; line-height: 1.4; }
   .speaker-record__body p { max-width: 38rem; margin: .55rem 0 0; color: var(--text-secondary); font-size: .88rem; line-height: 1.7; }
   .speaker-record__tags { display: flex; flex-wrap: wrap; gap: .3rem .45rem; margin: .65rem 0 0; padding: 0; list-style: none; }
-  .speaker-record__tags li { padding: .12rem .45rem; border-radius: var(--radius-sm); background: rgb(0 0 0 / .04); border: 1px solid rgb(0 0 0 / .07); color: var(--text-secondary); font-size: .7rem; font-weight: 600; font-family: var(--font-sans); }
+  .speaker-record__tags li { padding: .12rem .45rem; border-radius: var(--radius-sm); background: var(--surface-subtle); border: 1px solid var(--border); color: var(--text-secondary); font-size: .7rem; font-weight: 600; font-family: var(--font-sans); }
   .speaker-record.is-active .speaker-record__tags li { background: rgb(128 100 234 / .08); border-color: rgb(128 100 234 / .2); color: var(--accent-text); }
   .speaker-proof__side { display: grid; align-content: start; gap: 1.25rem; min-width: 0; }
   .speaker-media { position: sticky; top: 3.5rem; display: grid; min-height: 16rem; margin: 0; }
@@ -940,9 +940,9 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
     display: grid;
     gap: .75rem;
     padding: 1.15rem 1.25rem;
-    border: 1px solid rgb(128 100 234 / .18);
+    border: 1px solid rgb(128 100 234 / .24);
     border-radius: var(--radius-sm);
-    background: linear-gradient(128deg, rgb(238 231 255 / .72), rgb(255 253 248 / .45) 72%);
+    background: linear-gradient(128deg, var(--accent-subtle), color-mix(in srgb, var(--bg-soft) 65%, transparent) 72%);
     box-shadow: 0 .4rem 1.2rem rgb(58 48 38 / .06);
   }
   .threads-proof__header { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; }
@@ -951,7 +951,7 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
   .threads-proof__stat strong { color: var(--accent-text); font-family: var(--font-sans); font-size: 1.5rem; letter-spacing: -.02em; line-height: 1; }
   .threads-proof__stat span { color: var(--text-secondary); font-size: .78rem; }
   .threads-proof__content p { margin: 0 0 .55rem; color: var(--text-secondary); font-size: .84rem; line-height: 1.6; }
-  .threads-proof__cta { display: inline-flex; min-height: 2.35rem; align-items: center; gap: .45rem; width: fit-content; padding: .35rem .95rem; border-radius: var(--radius-sm); background: var(--text-primary); color: #fff; border: 1px solid color-mix(in srgb, var(--text-primary) 80%, black); font-size: .8rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 6px rgb(37 48 71 / .18); transition: all 200ms cubic-bezier(.2, .8, .2, 1); }
+  .threads-proof__cta { display: inline-flex; min-height: 2.35rem; align-items: center; gap: .45rem; width: fit-content; padding: .35rem .95rem; border-radius: var(--radius-sm); background: var(--btn-primary-bg); color: #fff; border: 1px solid var(--btn-primary-border); font-size: .8rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 6px rgb(37 48 71 / .18); transition: all 200ms cubic-bezier(.2, .8, .2, 1); }
   .threads-proof__cta:hover { background: var(--accent-text); border-color: var(--accent); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px rgb(128 100 234 / .3); }
   .threads-proof__cta svg { animation: icon-ambient-nudge 4.5s ease-in-out infinite; transition: transform 200ms cubic-bezier(.34, 1.56, .64, 1); }
   .threads-proof__cta:hover svg { animation: none; transform: translateX(3px); }

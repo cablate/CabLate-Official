@@ -40,8 +40,24 @@ const currentYear = new Date().getFullYear();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preload" as="image" href="/images/paper-ui/paper-white-1x.webp" media="(max-width: 768px)" fetchpriority="high">
-    <link rel="preload" as="image" href="/images/paper-ui/paper-white-1x.webp" imagesrcset="/images/paper-ui/paper-white-1x.webp 1x, /images/paper-ui/paper-white-2x.webp 2x" media="(min-width: 769px)" fetchpriority="high">
+    <script is:inline>
+      (function () {
+        function syncThemeOverride() {
+          try {
+            var saved = localStorage.getItem('cablate_theme');
+            if (saved === 'dark' || saved === 'light') {
+              document.documentElement.dataset.theme = saved;
+              return;
+            }
+          } catch (_) {}
+          delete document.documentElement.dataset.theme;
+        }
+        syncThemeOverride();
+        document.addEventListener('astro:after-swap', syncThemeOverride);
+      })();
+    </script>
+    <link rel="preload" as="image" href="/images/paper-ui/paper-white-1x.webp" media="(prefers-color-scheme: light) and (max-width: 768px)" fetchpriority="high">
+    <link rel="preload" as="image" href="/images/paper-ui/paper-white-1x.webp" imagesrcset="/images/paper-ui/paper-white-1x.webp 1x, /images/paper-ui/paper-white-2x.webp 2x" media="(prefers-color-scheme: light) and (min-width: 769px)" fetchpriority="high">
     {!noSEO && (
       <SEO
         title={seoTitle}

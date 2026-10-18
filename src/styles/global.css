@@ -6,13 +6,14 @@ body {
 
 .paper-card {
   position: relative;
-  border: 0;
+  border: 1px solid var(--paper-surface-border);
   border-radius: 0.2rem;
-  background-color: transparent;
+  background-color: var(--paper-surface-bg);
   background-image: var(--paper-white-image);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 115.2% 115.2%;
+  box-shadow: var(--paper-surface-shadow);
   filter: drop-shadow(0 0.55rem 0.62rem rgb(69 58 43 / 0.11));
   isolation: isolate;
 }
@@ -60,12 +61,12 @@ body {
   z-index: 3;
   min-width: 4.7rem;
   padding: 0.36rem 0.75rem;
-  background-color: #eee7ff;
+  background-color: var(--paper-label-bg);
   background-image: var(--paper-reading-card-image);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 145% 240%;
-  color: #615493;
+  color: var(--paper-label-text);
   font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -192,13 +193,14 @@ body {
   display: flex;
   flex-direction: column;
   padding: 1.25rem 0.85rem 1rem;
-  border: 0;
+  border: 1px solid var(--paper-surface-border);
   border-radius: 0.2rem;
-  background-color: transparent;
+  background-color: var(--paper-surface-bg);
   background-image: var(--paper-white-image);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 115.2% 115.2%;
+  box-shadow: var(--paper-surface-shadow);
   filter: drop-shadow(0 0.55rem 0.75rem rgb(69 58 43 / 0.13));
   isolation: isolate;
 }
@@ -558,9 +560,9 @@ body.site-shell-bare #main-content {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #253047 0%, #1a2233 100%);
+  background: var(--btn-primary-bg);
   color: #fff;
-  border-color: color-mix(in srgb, var(--text-primary) 80%, black);
+  border-color: var(--btn-primary-border);
   box-shadow: 0 4px 14px rgb(37 48 71 / 0.22), inset 0 1px 0 rgb(255 255 255 / 0.15);
   animation: btn-primary-ambient-heartbeat 4.8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
 }
@@ -702,7 +704,7 @@ main .articles-section {
 main .articles-section > .container {
   border: 1px solid var(--border);
   border-radius: 0.35rem;
-  background: rgb(255 253 248 / 0.96);
+  background: var(--bg-soft);
   box-shadow: 0 0.45rem 1.2rem rgb(69 58 43 / 0.09);
 }
 
@@ -857,14 +859,15 @@ main .articles-title {
     align-items: center;
     gap: 0.35rem;
     padding: 0.45rem 0.65rem;
-    border: 0;
+    border: 1px solid var(--paper-surface-border);
     border-radius: 0.2rem;
-    background-color: transparent;
+    background-color: var(--paper-surface-bg);
     background-image: var(--paper-white-image);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 132% 145%;
     color: var(--text-primary);
+    box-shadow: var(--paper-surface-shadow);
     filter: drop-shadow(0 0.25rem 0.42rem rgb(69 58 43 / 0.12));
     font-size: 0.72rem;
     font-weight: 700;
@@ -898,13 +901,14 @@ main .articles-title {
     max-height: calc(100dvh - 6rem);
     overflow-y: auto;
     padding: 0.75rem 0.85rem;
-    border: 0;
+    border: 1px solid var(--paper-surface-border);
     border-radius: 0.2rem;
-    background-color: transparent;
+    background-color: var(--paper-surface-bg);
     background-image: var(--paper-white-image);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 115.2% 115.2%;
+    box-shadow: var(--paper-surface-shadow);
     filter: drop-shadow(0 0.5rem 0.7rem rgb(69 58 43 / 0.11));
     isolation: isolate;
   }
