@@ -12,7 +12,7 @@ interface Props {
   analytics?: 'default' | 'disabled';
 }
 
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import SEO from '../components/SEO.astro';
 import ArchiveNavigation from '../components/ArchiveNavigation.astro';
 import AnalyticsHead from '../components/analytics/AnalyticsHead.astro';
@@ -58,7 +58,7 @@ const currentYear = new Date().getFullYear();
     )}
     {/* noSEO 模式：title 由子 layout 透過 slot="head" 的 SEO 元件提供 */}
     <slot name="head" />
-    <ViewTransitions />
+    <ClientRouter />
     <link rel="icon" type="image/webp" href="/favicon.webp">
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32">
     <!-- Articles inbound links paused: RSS endpoint 保留，但暫不在全站主動曝光。 -->
@@ -161,41 +161,6 @@ const currentYear = new Date().getFullYear();
 
     {analytics === 'default' && <AnalyticsConsent />}
 
-    <!-- Scroll Reveal Observer -->
-    <script is:inline>
-      (function initReveal() {
-        const selectors = '.reveal';
-        const els = document.querySelectorAll(selectors);
-        if (!els.length) return;
-
-        if (!('IntersectionObserver' in window)) {
-          // Fallback：不支援的瀏覽器直接顯示
-          els.forEach(el => el.classList.add('visible'));
-          return;
-        }
-
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-        els.forEach(el => observer.observe(el));
-
-        // ViewTransitions：頁面切換後重新觀察
-        document.addEventListener('astro:after-swap', () => {
-          const newEls = document.querySelectorAll(selectors);
-          newEls.forEach(el => {
-            if (!el.classList.contains('visible')) {
-              observer.observe(el);
-            }
-          });
-        });
-      })();
-    </script>
     {analytics === 'default' && (
       <script is:inline>
         document.addEventListener('click', (event) => {

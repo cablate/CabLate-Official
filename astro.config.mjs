@@ -11,8 +11,6 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) =>
-        !page.includes('/search/') &&
-        !page.includes('/work/') &&
         !page.includes('/confirm-subscription/') &&
         !page.includes('/articles/category/') &&
         !page.includes('/articles/tag/') &&

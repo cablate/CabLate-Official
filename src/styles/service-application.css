@@ -805,10 +805,6 @@
     justify-content: center;
   }
 
-  .application-ready__actions {
-    justify-items: stretch;
-  }
-
   .application-ready__receipt {
     align-items: stretch;
   }

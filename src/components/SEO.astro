@@ -6,12 +6,9 @@
  * 支援類型：
  * - website：預設，首頁/通用頁
  * - article：文章頁
- * - course：課程銷售頁（Course + Offer Schema.org）
  *
  * FAQ Schema：任何頁面只要傳入 faq prop 即可自動生成 FAQPage JSON-LD
  */
-
-import { type CourseStatus, getCourseOfferConfig } from '../config/courseDisplay';
 
 interface FaqItem {
   question: string;
@@ -25,18 +22,13 @@ interface Props {
   imageAlt?: string;
   imageWidth?: number;
   imageHeight?: number;
-  type?: 'website' | 'article' | 'course';
+  type?: 'website' | 'article';
   noindex?: boolean;
   publishDate?: Date;
   modifiedDate?: Date;
   tags?: string[];
   author?: string;
-  // Course-specific
-  coursePrice?: number;
-  courseDuration?: string;
-  courseStatus?: CourseStatus;
-  checkoutUrl?: string;
-  // FAQ（可用於 article 和 course）
+  // FAQ
   faq?: FaqItem[];
 }
 
@@ -53,10 +45,6 @@ const {
   modifiedDate,
   tags = [],
   author = 'CabLate',
-  coursePrice,
-  courseDuration,
-  courseStatus,
-  checkoutUrl,
   faq,
 } = Astro.props;
 
@@ -66,51 +54,13 @@ const fullUrl = new URL(Astro.url.pathname, siteUrl);
 const fullImageUrl = image.startsWith('http') ? image : new URL(image, siteUrl).href;
 
 // JSON-LD headline 不含站名後綴（Google 要求 headline 與 h1 一致）
-const jsonLdHeadline = title.replace(/\s*\|\s*CabLate$/, '').replace(/\s*\|\s*課程\s*\|\s*CabLate$/, '');
+const jsonLdHeadline = title.replace(/\s*\|\s*CabLate$/, '');
 
 // ─── 主要 JSON-LD ───
 
 let jsonLd: Record<string, unknown>;
 
-if (type === 'course') {
-  // Course Schema.org — offer availability driven by courseStatus + checkoutUrl
-  const offerConfig = courseStatus
-    ? getCourseOfferConfig(courseStatus, checkoutUrl)
-    : null;
-
-  jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Course',
-    name: jsonLdHeadline,
-    description,
-    url: fullUrl.href,
-    image: fullImageUrl,
-    provider: {
-      '@type': 'Person',
-      name: author,
-      url: siteUrl,
-    },
-    ...(coursePrice !== undefined && offerConfig && {
-      offers: {
-        '@type': 'Offer',
-        price: coursePrice,
-        priceCurrency: 'TWD',
-        availability: offerConfig.availability,
-        ...(offerConfig.includeUrl && checkoutUrl && { url: checkoutUrl }),
-      },
-    }),
-    ...(courseDuration && {
-      hasCourseInstance: {
-        '@type': 'CourseInstance',
-        courseMode: 'online',
-        courseWorkload: courseDuration,
-      },
-    }),
-    ...(publishDate && { datePublished: publishDate.toISOString() }),
-    ...(modifiedDate && { dateModified: modifiedDate.toISOString() }),
-    ...(tags.length > 0 && { keywords: tags.join(', ') }),
-  };
-} else if (type === 'article') {
+if (type === 'article') {
   // Article Schema.org
   jsonLd = {
     '@context': 'https://schema.org',
@@ -185,9 +135,6 @@ const faqJsonLd = hasFaq
       })),
     }
   : null;
-
-// OG type mapping
-const ogType = type === 'article' || type === 'course' ? 'article' : 'website';
 ---
 
 <!-- Primary Meta Tags -->
@@ -197,7 +144,7 @@ const ogType = type === 'article' || type === 'course' ? 'article' : 'website';
 {noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow" />}
 
 <!-- Open Graph / Facebook -->
-<meta property="og:type" content={ogType} />
+<meta property="og:type" content={type} />
 <meta property="og:url" content={fullUrl.href} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />

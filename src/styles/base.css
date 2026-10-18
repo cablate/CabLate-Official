@@ -22,7 +22,6 @@
   --font-mono: ui-monospace, 'SFMono-Regular', Consolas, monospace;
   --radius-sm: .2rem;
   --radius-md: .6rem;
-  --radius-lg: 1.2rem;
   --radius-full: 999px;
   --shadow-sm: 0 1px 2px rgb(23 24 22 / .08);
   --shadow-md: 0 14px 40px rgb(23 24 22 / .12);
@@ -30,7 +29,6 @@
   --transition-fast: 150ms ease;
   --transition-normal: 260ms ease;
   --paper-white-image: url('/images/paper-ui/paper-white-1x.webp');
-  --paper-white-clip-image: url('/images/paper-ui/paper-white-paperclip-1x.webp');
   --paperclip-silver-image: url('/images/paper-ui/paperclip-silver-1x.webp');
   --paper-reading-card-image: url('/images/paper-ui/paper-reading-card-1x.webp');
   color-scheme: light;
@@ -38,26 +36,6 @@
   --accent-light: var(--accent-hover);
   --accent-subtle: #f1edff;
   --accent-border: #d8d2e9;
-  --gold: #b86d18;
-  --gold-light: #f1d4aa;
-  --purple-900: var(--text-primary);
-  --purple-800: #30322e;
-  --purple-700: var(--text-secondary);
-  --purple-600: var(--accent);
-  --purple-500: var(--accent-bright);
-  --purple-400: #b9acf5;
-  --purple-300: #cbc2f8;
-  --purple-200: #ddd7fb;
-  --purple-100: #f1edff;
-  --white: #fff;
-  --white-90: rgb(255 255 255 / .9);
-  --white-70: rgb(255 255 255 / .7);
-  --white-60: rgb(255 255 255 / .6);
-  --white-50: rgb(255 255 255 / .5);
-  --white-30: rgb(255 255 255 / .3);
-  --white-10: rgb(255 255 255 / .1);
-  --dark: var(--text-primary);
-  --cyan: #267a75;
   --status-success: #26734f;
   --status-success-bg: #eef7f1;
   --status-success-border: #aed7be;
@@ -74,10 +52,6 @@
     --paper-white-image: image-set(
       url('/images/paper-ui/paper-white-1x.webp') type('image/webp') 1x,
       url('/images/paper-ui/paper-white-2x.webp') type('image/webp') 2x
-    );
-    --paper-white-clip-image: image-set(
-      url('/images/paper-ui/paper-white-paperclip-1x.webp') type('image/webp') 1x,
-      url('/images/paper-ui/paper-white-paperclip-2x.webp') type('image/webp') 2x
     );
     --paperclip-silver-image: image-set(
       url('/images/paper-ui/paperclip-silver-1x.webp') type('image/webp') 1x,
