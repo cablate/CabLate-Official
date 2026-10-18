@@ -121,6 +121,8 @@ GitHub 上的相關 issue 已經存在半年了。
 
 我自己是 Agent SDK 的用戶，這個問題對我的影響直接。研究完這些之後，大概得自己去動 source code 來緩解，等官方修是等不住的。
 
+（後續更新：後來我實際動手逆向了 SDK，先在〈[Agent SDK 的 diff 注入怎麼繞過：逆向 C26 函數與 JSONL 預處理](/articles/agent-sdk-system-reminder-diff-fix/)〉做出第一版繞過方案，接著在〈[逆向 Claude Agent SDK：找出每則訊息 2-3% 額度消耗的根因與解法](/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/)〉用 V2 persistent session 把 cache 命中率拉到 84%。如果你想系統化掌握 Claude Code 底層機制與 Context 成本控制，也可以參考我的 [Claude Code 深度工程手冊](/courses/)。）
+
 如果你用 Claude Code 有遇到類似的額度問題，或是對 system-reminder 的注入機制有更多觀察，歡迎到 [Threads](https://www.threads.net/@cab_late) 跟我說。
 
 如果你遇到的是 Windows 版 Codex 在切換對話、送出訊息或載入紀錄時反覆凍結，可以接著看 CabAI 整理的 [Windows 版 Codex 卡頓原因與暫時處理方式](https://cabai.cablate.com/library/windows-codex-lag-troubleshooting-20260718?utm_source=cablate&utm_medium=article&utm_campaign=claude_code_troubleshooting)。

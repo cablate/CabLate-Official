@@ -30,7 +30,7 @@ const collectTyped = (node, type, found = []) => {
 
 const sitemap = existsSync(join(dist, 'sitemap-0.xml')) ? readFileSync(join(dist, 'sitemap-0.xml'), 'utf8') : '';
 
-const publicDir = resolve('public');
+const publicDir = resolve(dist, '../public');
 for (const file of walk(dist).filter((path) => path.endsWith('.html'))) {
   const route = relative(dist, file).replaceAll('\\', '/');
   if (existsSync(join(publicDir, route))) continue;
@@ -54,6 +54,17 @@ for (const file of walk(dist).filter((path) => path.endsWith('.html'))) {
   assert(!/href="\/articles\/(?:tag|tags|category)\//.test(html), `${route}: links to a removed tag or category page (decision D2)`);
   assert((html.match(/<main[\s>]/gi) ?? []).length === 1, `${route}: expected exactly one <main>`);
   assert((html.match(/<h1[\s>]/gi) ?? []).length === 1, `${route}: expected exactly one <h1>`);
+
+  // seo-coach W5 / 04-on-page checks: no heading level skips (e.g. H1 -> H3) and every <img> has an alt attribute
+  const headingLevels = [...html.matchAll(/<(h[1-6])[\s>]/gi)].map(([, tag]) => Number.parseInt(tag[1], 10));
+  for (let i = 1; i < headingLevels.length; i += 1) {
+    assert(
+      headingLevels[i] <= headingLevels[i - 1] + 1,
+      `${route}: heading hierarchy skipped from H${headingLevels[i - 1]} to H${headingLevels[i]}`
+    );
+  }
+  const missingAltImages = [...html.matchAll(/<img\b[^>]*>/gi)].filter(([tag]) => !/\balt=/i.test(tag));
+  assert(missingAltImages.length === 0, `${route}: found ${missingAltImages.length} <img> tag(s) without alt attribute`);
 }
 
 const apply = readFileSync(join(dist, 'services/apply/index.html'), 'utf8');
@@ -92,6 +103,20 @@ expectJsonLdTypes('services/enterprise/index.html', ['Service', 'FAQPage', 'Brea
 expectJsonLdTypes('services/partnerships/index.html', ['Service', 'FAQPage', 'BreadcrumbList']);
 expectJsonLdTypes('courses/index.html', ['BreadcrumbList', 'ItemList']);
 expectJsonLdTypes('services/index.html', ['BreadcrumbList', 'ItemList']);
+
+// seo-coach 04-on-page / 40-chinese-seo-specifics: core commercial/hub pages must include descriptive topic keywords in <title>
+const expectTitleKeywords = (route, keywords) => {
+  const html = readFileSync(join(dist, route), 'utf8');
+  const title = (html.match(/<title>([^<]*)<\/title>/i) ?? [])[1] ?? '';
+  for (const kw of keywords) {
+    assert(title.includes(kw), `${route}: expected <title> ("${title}") to include "${kw}"`);
+  }
+};
+expectTitleKeywords('articles/index.html', ['AI Agent', 'Claude Code']);
+expectTitleKeywords('courses/index.html', ['Claude Code', 'AgentSkill']);
+expectTitleKeywords('expertise/index.html', ['AI 工作流']);
+expectTitleKeywords('services/consulting/index.html', ['AI', '諮詢']);
+expectTitleKeywords('services/partnerships/index.html', ['AI', '工作坊']);
 
 const llmsPath = join(dist, 'llms.txt');
 const llms = existsSync(llmsPath) ? readFileSync(llmsPath, 'utf8') : '';

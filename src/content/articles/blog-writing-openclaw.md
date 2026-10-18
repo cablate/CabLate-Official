@@ -84,4 +84,4 @@ OpenClaw 的核心價值不在排程，而在「即時互動」和「動態決�
 
 目前盡量參考安裝的部分就好，模型串接請避免用 Antigravity 或 Claude Code 這類訂閱型的服務，會被鎖。
 
-先搞清楚自己要的是「自動化」還是「龍蝦」再動手。如果你想更深入理解龍蝦底下的 [Agent 架構到底在做什麼](/articles/openclaw-agent-fundamentals/)，可以看這篇。這個判斷本身不花時間，但能幫你省下不少走彎路的力氣。
+先搞清楚自己要的是「自動化」還是「龍蝦」再動手。如果你想更深入理解龍蝦底下的 [Agent 架構到底在做什麼](/articles/openclaw-agent-fundamentals/)，可以看這篇；若想自己動手寫出可複用的 Skill 工作流，也可以參考我的 [AgentSkill 實戰課程與手冊](/courses/)。這個判斷本身不花時間，但能幫你省下不少走彎路的力氣。

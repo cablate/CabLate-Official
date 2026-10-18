@@ -115,4 +115,6 @@ AI 在這種「大範圍但規則明確」的改動特別有效率。手動改�
 - 品質標準（判斷 AI 的產出好不好）
 - 迭代耐心（第一次不會完美，但方向對就行）
 
+如果你在做專案時常遇到 AI 反覆重做、改 A 壞 B，可以先用免費的 [AI 工作流五層健檢](/expertise/) 找出卡在哪一層，或看〈[AI 幫你寫的測試全綠，為什麼上線還是壞掉？](/articles/ai-tests-false-safety-six-phase-overhaul/)〉拆解怎麼守住交付品質。
+
 如果你同時使用 Codex，不確定日常開發、長任務或高難度推理該選哪個模型，CabAI 也整理了 [Codex 模型與 Fast Mode 的選擇建議](https://cabai.cablate.com/library/codex-model-selection-fast-mode-20260731?utm_source=cablate&utm_medium=article&utm_campaign=codex_model_selection)。

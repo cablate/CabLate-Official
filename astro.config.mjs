@@ -5,11 +5,12 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { rehypeArticleEnhance } from './src/plugins/rehype-article-enhance.mjs';
 
 /** Article URL → last real edit, so sitemap lastmod reflects content instead of build time. */
+const articlesDir = new URL('./src/content/articles/', import.meta.url);
 const articleLastmod = new Map(
-  readdirSync('src/content/articles')
+  readdirSync(articlesDir)
     .filter((file) => file.endsWith('.md'))
     .map((file) => {
-      const frontmatter = readFileSync(`src/content/articles/${file}`, 'utf8').split('---')[1] ?? '';
+      const frontmatter = readFileSync(new URL(file, articlesDir), 'utf8').split('---')[1] ?? '';
       const date = (/** @type {string} */ key) => frontmatter.match(new RegExp(`^${key}:\\s*["']?([^"'\\n]+)`, 'm'))?.[1];
       const lastmod = date('updatedDate') ?? date('publishDate');
       return [`https://cablate.com/articles/${file.replace(/\.md$/, '')}/`, lastmod && new Date(lastmod).toISOString()];

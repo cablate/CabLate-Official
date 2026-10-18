@@ -403,6 +403,8 @@ V2 persistent session 是目前唯一有效的解法，但它還在 alpha，需�
 
 如果你想自己逆向 cli.js，minified code 每次升級都會重新混淆變數名，但字串常量不會變。搜 `"was modified, either by the user"` 找檔案變更注入，搜 `"Cannot send to closed session"` 找 V2 Session class，搜 `"DISABLE_PROMPT_CACHING"` 找 caching 開關。用這些字串當錨點，就能在任何版本中定位對應函數。
 
+如果你正在把 Claude Code 或 Agent SDK 放進日常開發與生產環境，想系統化掌握 Context 管理、Hook 守門與測試防呆，可以參考我的 [Claude Code 深度工程手冊](/courses/)，或接著看〈[AI 幫你寫的測試全綠，為什麼上線還是壞掉？](/articles/ai-tests-false-safety-six-phase-overhaul/)〉。
+
 ---
 
 ## 延伸閱讀
