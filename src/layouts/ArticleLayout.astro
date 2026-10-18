@@ -1,6 +1,6 @@
 ---
 /**
- * Article Layout - 文章佈局
+ * Article Layout - 文章閱讀版面（支援手機、平板直/橫向、桌機多斷點 RWD）
  */
 
 import type { CollectionEntry } from 'astro:content';
@@ -51,15 +51,14 @@ const breadcrumbJsonLd = {
   <div class="article-page paper-page">
     <article class="article-container page-paper">
       <div class="article-shell">
-        <nav class="breadcrumb" aria-label="麵包屑導覽">
-          <ol>
-            <li><a href="/">首頁</a></li>
-            <li><a href="/articles/">文章</a></li>
-            <li aria-current="page">{entry.data.title}</li>
-          </ol>
-        </nav>
-
-        <header class="article-header">
+        <div class="article-topline">
+          <nav class="breadcrumb" aria-label="麵包屑導覽">
+            <ol>
+              <li><a href="/">首頁</a></li>
+              <li><a href="/articles/">文章</a></li>
+              <li aria-current="page">{entry.data.title}</li>
+            </ol>
+          </nav>
           <div class="article-meta">
             <span class="article-category">{entry.data.category}</span>
             <time class="article-date" datetime={entry.data.publishDate.toISOString()}>
@@ -74,22 +73,18 @@ const breadcrumbJsonLd = {
               <span class="article-reading-time">{entry.data.readingTime} 分鐘閱讀</span>
             )}
           </div>
-
-          <h1 class="article-title">{entry.data.title}</h1>
-
-          {entry.data.excerpt && (
-            <p class="article-excerpt">{entry.data.excerpt}</p>
-          )}
-        </header>
-
-        {entry.data.ogImage && (
-          <figure class="article-banner">
-            <img src={entry.data.ogImage} alt="" width="1200" height="630" loading="eager" fetchpriority="high" />
-          </figure>
-        )}
+        </div>
 
         <div class="article-body-layout">
           <div class="article-body-main">
+            <header class="article-header">
+              <h1 class="article-title">{entry.data.title}</h1>
+
+              {entry.data.excerpt && (
+                <p class="article-excerpt">{entry.data.excerpt}</p>
+              )}
+            </header>
+
             {h2Headings.length >= 2 && (
               <details class="article-toc-mobile">
                 <summary>這篇的段落（{h2Headings.length}）</summary>
@@ -120,42 +115,49 @@ const breadcrumbJsonLd = {
 
 <style>
   :global(html) {
-    scroll-padding-top: 3rem;
+    scroll-padding-top: 2.5rem;
   }
 
   .article-page > .article-container {
     background-color: var(--bg-soft) !important;
     background-image: none !important;
     border: 1px solid var(--border-strong) !important;
-    border-radius: var(--radius-sm) !important;
+    border-radius: var(--radius-md) !important;
     box-shadow: var(--shadow-sm) !important;
+    padding: clamp(1.5rem, 3.2vw, 2.5rem) clamp(1.25rem, 4vw, 3rem) !important;
   }
 
   .article-shell {
-    max-width: 66rem;
+    max-width: 60rem;
     margin-inline: auto;
   }
 
-  .breadcrumb {
-    padding-bottom: 1.15rem;
-    margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+  .article-topline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem 1.25rem;
+    padding-bottom: 0.9rem;
+    margin-bottom: 1.5rem;
     border-bottom: 1px solid var(--border);
   }
 
   .breadcrumb ol {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.45rem;
+    align-items: center;
+    gap: 0.4rem;
     list-style: none;
     padding: 0;
     margin: 0;
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     color: var(--text-muted);
   }
 
   .breadcrumb li + li::before {
     content: '/';
-    margin-right: 0.45rem;
+    margin-right: 0.4rem;
     color: var(--border-strong);
   }
 
@@ -163,7 +165,7 @@ const breadcrumbJsonLd = {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: min(26rem, 65vw);
+    max-width: min(20rem, 55vw);
   }
 
   .breadcrumb a {
@@ -175,67 +177,34 @@ const breadcrumbJsonLd = {
     color: var(--text-primary);
   }
 
-  .article-header {
-    max-width: 48rem;
-    margin-bottom: clamp(2rem, 4vw, 3rem);
-  }
-
   .article-meta {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.35rem 1rem;
-    margin-bottom: 1rem;
-    font-size: 0.88rem;
+    gap: 0.35rem 0.75rem;
+    font-size: 0.84rem;
     color: var(--text-muted);
   }
 
   .article-category {
+    padding: 0.12rem 0.55rem;
+    border-radius: 4px;
+    background: var(--accent-subtle);
     color: var(--accent-text);
     font-weight: 700;
+    font-size: 0.8rem;
   }
 
   .article-updated,
   .article-reading-time {
-    font-size: 0.86rem;
+    font-size: 0.84rem;
     color: var(--text-muted);
   }
 
-  .article-title {
-    font-family: var(--font-serif);
-    font-size: clamp(1.85rem, 4.2vw, 2.75rem);
-    font-weight: 700;
-    line-height: 1.32;
-    margin: 0 0 1.25rem;
-    color: var(--text-primary);
-    text-wrap: pretty;
-  }
-
-  .article-excerpt {
-    font-size: 1.12rem;
-    color: var(--text-secondary);
-    line-height: 1.75;
-    margin: 0;
-    padding-left: 1rem;
-    border-left: 2px solid var(--border-strong);
-  }
-
-  .article-banner {
-    margin: 0 0 clamp(2.25rem, 4vw, 3.25rem);
-  }
-
-  .article-banner img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border);
-  }
-
   .article-body-layout {
-    --article-measure: 42rem;
+    --article-measure: 41rem;
     display: grid;
-    grid-template-columns: minmax(0, var(--article-measure)) 13.5rem;
+    grid-template-columns: minmax(0, var(--article-measure)) 13rem;
     justify-content: space-between;
     gap: 2.5rem;
     align-items: start;
@@ -246,17 +215,45 @@ const breadcrumbJsonLd = {
     max-width: var(--article-measure);
   }
 
+  .article-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .article-title {
+    font-family: var(--font-sans);
+    font-size: clamp(1.5rem, 2.6vw, 1.95rem);
+    font-weight: 700;
+    line-height: 1.36;
+    letter-spacing: -0.015em;
+    margin: 0 0 1rem;
+    color: var(--text-primary);
+    text-wrap: pretty;
+  }
+
+  .article-excerpt {
+    font-size: 0.98rem;
+    color: var(--text-primary);
+    line-height: 1.72;
+    margin: 0;
+    padding: 0.85rem 1.1rem;
+    background: #f6f3eb;
+    border-left: 3px solid var(--accent-text);
+    border-radius: 0 6px 6px 0;
+  }
+
   .article-toc-sidebar {
     display: block;
+    position: sticky;
+    top: 1.5rem;
   }
 
   .article-toc-mobile {
     display: none;
-    margin: 0 0 2rem;
-    padding: 0.9rem 1.15rem;
+    margin: 0 0 1.5rem;
+    padding: 0.75rem 1rem;
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
-    background: rgb(255 253 248 / 0.7);
+    background: #faf7f0;
   }
 
   .article-toc-mobile summary {
@@ -267,7 +264,7 @@ const breadcrumbJsonLd = {
   }
 
   .article-toc-mobile ol {
-    margin: 0.75rem 0 0;
+    margin: 0.65rem 0 0;
     padding-left: 1.25rem;
     display: grid;
     gap: 0.4rem;
@@ -283,9 +280,14 @@ const breadcrumbJsonLd = {
     color: var(--accent-text);
   }
 
-  @media (max-width: 1024px) {
+  /* Below 1180px the left desktop rail + article + right TOC would crowd; collapse TOC into the inline details drawer */
+  @media (max-width: 1180px) {
+    .article-shell {
+      max-width: 43rem;
+    }
+
     .article-body-layout {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .article-toc-sidebar {
@@ -298,18 +300,25 @@ const breadcrumbJsonLd = {
   }
 
   .article-content {
-    font-size: 1.1rem;
-    line-height: 1.85;
+    font-size: 1.0625rem;
+    line-height: 1.8;
     color: var(--text-primary);
   }
 
   .article-content :global(h2) {
-    font-family: var(--font-serif);
-    font-size: clamp(1.45rem, 2.6vw, 1.75rem);
-    line-height: 1.38;
-    margin-top: 3rem;
-    margin-bottom: 1.15rem;
+    font-family: var(--font-sans);
+    font-size: clamp(1.25rem, 2vw, 1.42rem);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-top: 2.5rem;
+    margin-bottom: 0.9rem;
+    padding-left: 0.75rem;
+    border-left: 3px solid var(--accent);
     color: var(--text-primary);
+  }
+
+  .article-content :global(h2:first-child) {
+    margin-top: 0;
   }
 
   .article-content :global(hr + h2) {
@@ -317,15 +326,17 @@ const breadcrumbJsonLd = {
   }
 
   .article-content :global(h3) {
-    font-size: clamp(1.18rem, 2vw, 1.35rem);
+    font-family: var(--font-sans);
+    font-size: clamp(1.08rem, 1.6vw, 1.18rem);
+    font-weight: 700;
     line-height: 1.45;
-    margin-top: 2.25rem;
-    margin-bottom: 0.85rem;
+    margin-top: 1.85rem;
+    margin-bottom: 0.65rem;
     color: var(--text-primary);
   }
 
   .article-content :global(p) {
-    margin: 0 0 1.45rem;
+    margin: 0 0 1.25rem;
   }
 
   .article-content :global(strong) {
@@ -334,29 +345,31 @@ const breadcrumbJsonLd = {
   }
 
   .article-content :global(code) {
-    padding: 0.15rem 0.4rem;
-    background: var(--accent-subtle);
+    padding: 0.14rem 0.38rem;
+    background: #f2eee6;
+    border: 1px solid #e4decb;
     border-radius: 4px;
     font-family: var(--font-mono);
-    font-size: 0.88em;
-    color: var(--accent-text);
+    font-size: 0.86em;
+    color: #3d2c8d;
     overflow-wrap: break-word;
   }
 
   .article-content :global(pre) {
-    padding: 1.25rem 1.4rem;
+    padding: 1rem 1.2rem;
     background: #f5f2ea !important;
-    border-radius: var(--radius-sm);
+    border-radius: 6px;
     overflow-x: auto;
     max-width: 100%;
-    margin: 0 0 1.65rem;
+    margin: 0 0 1.4rem;
     border: 1px solid var(--border);
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     line-height: 1.65;
   }
 
   .article-content :global(pre code) {
     background: transparent;
+    border: 0;
     padding: 0;
     color: var(--text-primary);
     font-size: inherit;
@@ -365,16 +378,21 @@ const breadcrumbJsonLd = {
 
   .article-content :global(ul),
   .article-content :global(ol) {
-    margin: 0 0 1.5rem;
-    padding-left: 1.4rem;
+    margin: 0 0 1.35rem;
+    padding-left: 1.35rem;
   }
 
   .article-content :global(li) {
-    margin-bottom: 0.45rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .article-content :global(li::marker) {
+    color: var(--accent-text);
   }
 
   .article-content :global(a) {
     color: var(--accent-text);
+    font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 0.18em;
   }
@@ -386,25 +404,32 @@ const breadcrumbJsonLd = {
   .article-content :global(table) {
     width: 100%;
     border-collapse: collapse;
-    margin: 1.75rem 0;
-    font-size: 0.94rem;
-    line-height: 1.65;
+    margin: 1.5rem 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
   }
 
   .article-content :global(th) {
-    background: #f5f2ea;
-    padding: 0.7rem 0.9rem;
+    background: #f3efe5;
+    padding: 0.65rem 0.85rem;
     text-align: left;
     font-weight: 700;
     color: var(--text-primary);
-    border-bottom: 2px solid var(--border-strong);
+    border-bottom: 1px solid var(--border-strong);
   }
 
   .article-content :global(td) {
-    padding: 0.7rem 0.9rem;
+    padding: 0.65rem 0.85rem;
     border-bottom: 1px solid var(--border);
     color: var(--text-primary);
     vertical-align: top;
+  }
+
+  .article-content :global(tr:last-child td) {
+    border-bottom: 0;
   }
 
   .article-content :global(th:first-child),
@@ -416,13 +441,15 @@ const breadcrumbJsonLd = {
     border: none;
     height: 1px;
     background: var(--border);
-    margin: 2.75rem 0;
+    margin: 2rem 0;
   }
 
   .article-content :global(blockquote) {
     border-left: 3px solid var(--accent-text);
-    padding: 0.25rem 0 0.25rem 1.25rem;
-    margin: 1.65rem 0;
+    padding: 0.5rem 1rem;
+    margin: 1.35rem 0;
+    background: #faf7f0;
+    border-radius: 0 6px 6px 0;
     color: var(--text-secondary);
   }
 
@@ -433,58 +460,74 @@ const breadcrumbJsonLd = {
   .article-content :global(img) {
     max-width: 100%;
     height: auto;
-    border-radius: var(--radius-sm);
+    border-radius: 6px;
     border: 1px solid var(--border);
-    margin: 2rem auto;
+    margin: 1.5rem auto;
     display: block;
   }
 
   .article-content :global(figure) {
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     text-align: center;
   }
 
   .article-content :global(figure img) {
-    margin: 0 auto 0.75rem;
+    margin: 0 auto 0.6rem;
   }
 
   .article-content :global(figcaption) {
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     color: var(--text-muted);
     line-height: 1.5;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 680px) {
+    .article-page > .article-container {
+      padding: 1.2rem 1.05rem !important;
+    }
+
+    .article-topline {
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.75rem;
+    }
+
+    .breadcrumb {
+      display: none;
+    }
+
     .article-title {
-      font-size: clamp(1.55rem, 6vw, 2.05rem);
+      font-size: clamp(1.35rem, 5.4vw, 1.6rem);
+      margin-bottom: 0.85rem;
     }
 
     .article-excerpt {
-      font-size: 1rem;
+      font-size: 0.94rem;
+      padding: 0.75rem 0.95rem;
     }
 
     .article-content {
-      font-size: 1.0625rem;
+      font-size: 1rem;
+      line-height: 1.78;
     }
 
     .article-content :global(h2) {
-      font-size: 1.35rem;
-      margin-top: 2.25rem;
-      margin-bottom: 0.9rem;
+      font-size: 1.2rem;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
     }
 
     .article-content :global(h3) {
-      font-size: 1.15rem;
-      margin-top: 1.75rem;
+      font-size: 1.06rem;
+      margin-top: 1.5rem;
     }
 
     .article-content :global(p) {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.15rem;
     }
 
     .article-content :global(pre) {
-      padding: 1rem;
-      font-size: 0.82rem;
+      padding: 0.85rem 0.95rem;
+      font-size: 0.8125rem;
     }
 
     .article-content :global(table) {
@@ -496,12 +539,12 @@ const breadcrumbJsonLd = {
 
     .article-content :global(th),
     .article-content :global(td) {
-      padding: 0.55rem 0.75rem;
-      min-width: 7rem;
+      padding: 0.55rem 0.7rem;
+      min-width: 6.5rem;
     }
 
     .article-content :global(img) {
-      margin: 1.5rem auto;
+      margin: 1.25rem auto;
     }
   }
 </style>

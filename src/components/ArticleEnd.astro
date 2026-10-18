@@ -8,58 +8,74 @@ import { siteConfig } from '../config/siteConfig';
 ---
 
 <section class="article-end" aria-labelledby="article-end-title">
-  <h2 id="article-end-title">下一個 AI 卡點，寄到你信箱</h2>
-  <p>{siteConfig.newsletter.promise}{siteConfig.newsletter.cadence}</p>
-  <KitForm />
-  <p class="article-end__fine">隨時一鍵退訂・<a href="/privacy/">資料怎麼用</a></p>
+  <div class="article-end__box">
+    <div class="article-end__newsletter">
+      <h2 id="article-end-title">下一個 AI 卡點，寫好先寄給你</h2>
+      <p>{siteConfig.newsletter.promise}{siteConfig.newsletter.cadence}</p>
+      <KitForm />
+      <p class="article-end__fine">隨時一鍵退訂・<a href="/privacy/">資料怎麼用</a></p>
+    </div>
 
-  <div class="article-end__author">
-    <img src="/images/photos/cablate-portrait-real-v1.webp" alt="" width="1400" height="1400" loading="lazy" decoding="async" />
-    <p>寫這篇的是 Cab，在第一線教 AI 落地，從農會推廣人員教到外商工程團隊。<a href="/about/">我的經歷</a>・團隊想導入，看<a href="/services/enterprise/" data-analytics-placement="article_end">企業內訓</a>。</p>
+    <div class="article-end__author">
+      <img src="/images/photos/cablate-portrait-real-v1.webp" alt="" width="1400" height="1400" loading="lazy" decoding="async" />
+      <p>寫這篇的是 Cab，在第一線教 AI 落地，從農會推廣人員教到外商工程團隊。<a href="/about/">我的經歷</a>・團隊想導入，看<a href="/services/enterprise/" data-analytics-placement="article_end">企業內訓</a>。</p>
+    </div>
   </div>
 </section>
 
 <style>
   .article-end {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .article-end__box {
     display: grid;
-    gap: 1rem;
-    margin-top: 3.5rem;
-    padding-top: 2.5rem;
-    border-top: 1px solid var(--border-strong);
+    gap: 1.15rem;
+    padding: 1.35rem 1.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: #f8f5ed;
+  }
+
+  .article-end__newsletter {
+    display: grid;
+    gap: 0.65rem;
   }
 
   .article-end h2 {
     margin: 0;
-    font-family: var(--font-serif);
-    font-size: clamp(1.3rem, 3vw, 1.6rem);
+    font-family: var(--font-sans);
+    font-size: clamp(1.15rem, 2.2vw, 1.32rem);
+    font-weight: 700;
     line-height: 1.4;
   }
 
-  .article-end > p {
+  .article-end__newsletter > p {
     margin: 0;
     color: var(--text-secondary);
-    line-height: 1.8;
+    font-size: 0.94rem;
+    line-height: 1.68;
   }
 
   .article-end .article-end__fine {
-    font-size: .85rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
   }
 
   .article-end__author {
     display: grid;
-    grid-template-columns: 3rem minmax(0, 1fr);
-    gap: 1rem;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    gap: 0.85rem;
     align-items: center;
-    margin-top: 1.5rem;
-    padding: 1rem 1.25rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
   }
 
   .article-end__author img {
-    width: 3rem;
-    height: 3rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: 50%;
     object-fit: cover;
     object-position: 35% center;
@@ -67,13 +83,21 @@ import { siteConfig } from '../config/siteConfig';
 
   .article-end__author p {
     margin: 0;
-    font-size: .92rem;
-    line-height: 1.7;
+    font-size: 0.88rem;
+    line-height: 1.65;
     color: var(--text-secondary);
   }
 
   .article-end a {
     color: var(--accent-text);
     font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  @media (max-width: 640px) {
+    .article-end__box {
+      padding: 1.15rem 1.1rem;
+    }
   }
 </style>
