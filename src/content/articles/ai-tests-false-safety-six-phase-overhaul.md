@@ -41,7 +41,7 @@ expect(source).toMatch(/reset_project_data_v2/);
   <div class="article-diagram__scroll">
     <svg viewBox="0 0 720 300" role="img" aria-labelledby="fakeTestTitle">
       <title id="fakeTestTitle">同一個改壞的產品，行為測試會亮紅燈，讀原始碼比對字串的測試永遠綠燈</title>
-      <text x="24" y="28" font-size="13" font-weight="700" fill="#5f687a">同一個改壞的產品，兩種測試的判決</text>
+      <text x="24" y="28" font-size="13" font-weight="700" fill="#5f687a">同一個改壞的產品，兩種測試的結果</text>
       <rect class="pulse-node" x="24" y="96" width="216" height="112" rx="8" fill="#fff1ef" stroke="#b4352f" stroke-width="1.5"/>
       <text x="40" y="122" font-size="15" font-weight="700" fill="#b4352f">產品邏輯被改壞</text>
       <text x="40" y="146" font-size="12.5" fill="#253047" style="font-family:var(--font-mono)">if (true) return;</text>
@@ -69,7 +69,7 @@ expect(source).toMatch(/reset_project_data_v2/);
 
 ---
 
-## 兩個問題，測出測試有沒有在上班
+## 兩個問題，分辨測試是真是假
 
 判斷一支測試該留、該改、該砍，不用統計行數，逐支問它兩個問題。把它保護的功能改壞，它會紅嗎？不會紅的是假測試。把內部寫法重構、使用者看到的功能完全不變，它會紅嗎？會紅的是綁死實作，也要改。
 
