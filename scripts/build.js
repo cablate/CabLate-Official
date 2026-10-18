@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import { readdirSync, statSync } from 'fs';
 import { join } from 'path';
 
-const isCI = Boolean(process.env.CF_PAGES || process.env.CI);
+const isProductionDeploy = process.env.CF_PAGES === '1' && process.env.CF_PAGES_BRANCH === 'master';
 
 // 0. Content validation — fail fast before building
 execSync('node scripts/validate-content.js', { stdio: 'inherit' });
@@ -12,22 +12,10 @@ execSync('node scripts/validate-analytics.mjs', { stdio: 'inherit' });
 execSync('npx astro build', { stdio: 'inherit' });
 execSync('node scripts/validate-analytics.mjs --built', { stdio: 'inherit' });
 
-// 2. Sitemap ping — only notify search engines after a CI build.
-if (isCI) {
-  try {
-    await fetch('https://www.google.com/ping?sitemap=https://cablate.com/sitemap.xml');
-    console.log('[postbuild] Sitemap ping sent');
-  } catch {
-    console.log('[postbuild] Sitemap ping failed (network)');
-  }
-} else {
-  console.log('[postbuild] Sitemap ping skipped — not in CI environment');
-}
-
-// 3. IndexNow — only runs in CI (Cloudflare Pages or generic CI)
+// 2. IndexNow — only for the Cloudflare Pages production build, never previews or GitHub CI
 async function submitIndexNow() {
-  if (!isCI) {
-    console.log('[indexnow] Skipping — not in CI environment');
+  if (!isProductionDeploy) {
+    console.log('[indexnow] Skipping — not a production deploy');
     return;
   }
 
