@@ -1,0 +1,39 @@
+---
+/**
+ * Newsletter Page - 站內導覽與頁尾的電子報入口
+ * 與 /subscribe/ 共用 NewsletterCard；/subscribe/ 是站外分享用的無邊框版本。
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NewsletterCard from '../components/common/NewsletterCard.astro';
+import { siteConfig } from '../config/siteConfig';
+---
+
+<BaseLayout
+  title="訂閱 Cab 的電子報"
+  description={`Cab 的電子報。${siteConfig.newsletter.promise}`}
+  image="/og/pages/subscribe.png"
+  imageAlt="訂閱 Cab 的電子報：每封拆一個 AI 卡點"
+  imageWidth={1200}
+  imageHeight={630}
+>
+  <div class="newsletter-page">
+    <NewsletterCard />
+  </div>
+</BaseLayout>
+
+<style>
+  .newsletter-page {
+    display: grid;
+    place-items: center;
+    min-height: calc(100vh - 14rem);
+    padding: 2rem 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .newsletter-page {
+      min-height: calc(100vh - 10rem);
+      padding: 1.5rem .75rem 2.5rem;
+    }
+  }
+</style>

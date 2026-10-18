@@ -24,6 +24,8 @@ interface Props {
   imageHeight?: number;
   type?: 'website' | 'article';
   noindex?: boolean;
+  /** 重複內容頁用：canonical、og:url 與 JSON-LD url 改指向此路徑 */
+  canonicalPath?: string;
   publishDate?: Date;
   modifiedDate?: Date;
   tags?: string[];
@@ -41,6 +43,7 @@ const {
   imageHeight,
   type = 'website',
   noindex = false,
+  canonicalPath,
   publishDate,
   modifiedDate,
   tags = [],
@@ -50,7 +53,7 @@ const {
 
 // 網站基礎資訊
 const siteUrl = import.meta.env.SITE || 'https://cablate.com';
-const fullUrl = new URL(Astro.url.pathname, siteUrl);
+const fullUrl = new URL(canonicalPath ?? Astro.url.pathname, siteUrl);
 const fullImageUrl = image.startsWith('http') ? image : new URL(image, siteUrl).href;
 
 // JSON-LD headline 不含站名後綴（Google 要求 headline 與 h1 一致）

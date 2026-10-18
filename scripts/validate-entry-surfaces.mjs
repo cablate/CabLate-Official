@@ -1,5 +1,5 @@
-import { readFileSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { join, relative } from 'node:path';
 
 const root = process.cwd();
 const read = (path) => readFileSync(join(root, path), 'utf8');
@@ -18,6 +18,11 @@ const navigationSource = read('src/config/authority.ts');
 const headerSource = read('src/components/ArchiveNavigation.astro');
 const layoutSource = read('src/layouts/BaseLayout.astro');
 const notFoundSource = read('src/pages/404.astro');
+const kitFormId = read('src/config/siteConfig.ts').match(/formId: '(\d+)'/)?.[1];
+const walk = (dir) => readdirSync(dir).flatMap((name) => {
+  const path = join(dir, name);
+  return statSync(path).isDirectory() ? walk(path) : [path];
+});
 
 assert(count(homeSource, /<h1\b/g) === 1, 'home source must contain exactly one H1');
 assert(count(expertiseSource, /<h1\b/g) === 1, 'expertise source must contain exactly one H1');
@@ -57,10 +62,27 @@ if (existsSync(join(root, 'dist'))) {
   assert(count(expertiseHtml, /<fieldset class="layer-check"/g) === 5, 'built expertise must contain five check fieldsets');
   assert(!/<script[^>]+src=["']https:\/\/www\.googletagmanager\.com/i.test(expertiseHtml), 'built expertise eagerly loads an outbound analytics script');
   assert(notFoundHtml.includes('noindex, follow'), 'built 404 robots contract is missing');
-  for (const route of ['', 'expertise', 'courses', 'services', 'about', 'privacy']) {
+  for (const route of ['', 'expertise', 'courses', 'services', 'about', 'privacy', 'newsletter']) {
     const path = route ? join(root, 'dist', route, 'index.html') : join(root, 'dist', 'index.html');
     assert(existsSync(path), `built internal route is missing: /${route}`);
   }
+
+  for (const file of walk(join(root, 'dist')).filter((path) => path.endsWith('.html'))) {
+    const route = relative(join(root, 'dist'), file).replaceAll('\\', '/');
+    const html = readFileSync(file, 'utf8');
+    assert(html.split('src="https://f.convertkit.com/ckjs/ck.5.js"').length <= 2, `${route}: ck.5.js must load at most once`);
+    for (const [, formId] of html.matchAll(/data-sv-form="([^"]*)"/g)) {
+      assert(formId === kitFormId, `${route}: newsletter form ${formId} does not match siteConfig formId ${kitFormId}`);
+    }
+    for (const [, action] of html.matchAll(/action="(https:\/\/app\.kit\.com\/forms\/[^"]*)"/g)) {
+      assert(action === `https://app.kit.com/forms/${kitFormId}/subscriptions`, `${route}: newsletter form posts to ${action}`);
+    }
+  }
+  const newsletterHtml = read('dist/newsletter/index.html');
+  const subscribeHtml = read('dist/subscribe/index.html');
+  assert(newsletterHtml.includes('class="site-shell-desk"'), 'built /newsletter/ must use the desk shell');
+  assert(subscribeHtml.includes('class="site-shell-bare"'), 'built /subscribe/ must use the bare shell');
+  assert(subscribeHtml.includes('<link rel="canonical" href="https://cablate.com/newsletter/"'), 'built /subscribe/ canonical must point to /newsletter/');
 }
 
 if (failures.length) {

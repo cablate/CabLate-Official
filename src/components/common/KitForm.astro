@@ -1,216 +1,163 @@
 ---
 /**
- * Kit Form Component - ConvertKit 嵌入表單元件
+ * Kit Form Component - 全站唯一的電子報訂閱表單
+ *
+ * ck.5.js 只依賴 form 上的 data-sv-form 與 data-element 屬性，不注入樣式，
+ * 所以版面全部用自有的 .kit-form 類別，不覆寫 Kit 的 formkit-* 類別。
+ * 成功訊息由 ck.5.js 動態插入 .formkit-alert-success。
  */
 
 import { siteConfig } from '../../config/siteConfig';
 
 interface Props {
-  formId?: string;
-  uid?: string;
-  successMessage?: string;
   submitLabel?: string;
 }
 
-const {
-  formId = siteConfig.convertKit.formId,
-  uid = siteConfig.convertKit.uid,
-  successMessage = "資料已送出，請到信箱點擊確認連結，完成訂閱。",
-  submitLabel = "加入通知名單",
-} = Astro.props;
+const { submitLabel = '免費訂閱' } = Astro.props;
+const { formId, uid } = siteConfig.convertKit;
+const inputId = `kit-email-${formId}`;
+const options = JSON.stringify({
+  settings: {
+    after_subscribe: { action: 'message', success_message: siteConfig.newsletter.successMessage, redirect_url: '' },
+    analytics: { google: null, fathom: null, facebook: null, segment: null, pinterest: null, sparkloop: null, googletagmanager: null },
+    modal: { trigger: 'timer', scroll_percentage: null, timer: 5, devices: 'all', show_once_every: 15 },
+    powered_by: { show: false, url: '' },
+    recaptcha: { enabled: false },
+    return_visitor: { action: 'show', custom_content: '' },
+    slide_in: { display_in: 'bottom_right', trigger: 'timer', scroll_percentage: null, timer: 5, devices: 'all', show_once_every: 15 },
+    sticky_bar: { display_in: 'top', trigger: 'timer', scroll_percentage: null, timer: 5, devices: 'all', show_once_every: 15 },
+  },
+  version: '5',
+});
 ---
 
-<div class="kit-form-wrapper">
-  <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
+<div class="kit-form">
+  <script is:inline defer src="https://f.convertkit.com/ckjs/ck.5.js"></script>
   <form
     action={`https://app.kit.com/forms/${formId}/subscriptions`}
-    class="seva-form formkit-form"
+    class="seva-form formkit-form kit-form__form"
     method="post"
     data-sv-form={formId}
     data-uid={uid}
     data-format="inline"
     data-version="5"
-    data-options={`{"settings":{"after_subscribe":{"action":"message","success_message":"${successMessage}","redirect_url":""},"analytics":{"google":null,"fathom":null,"facebook":null,"segment":null,"pinterest":null,"sparkloop":null,"googletagmanager":null},"modal":{"trigger":"timer","scroll_percentage":null,"timer":5,"devices":"all","show_once_every":15},"powered_by":{"show":false,"url":""},"recaptcha":{"enabled":false},"return_visitor":{"action":"show","custom_content":""},"slide_in":{"display_in":"bottom_right","trigger":"timer","scroll_percentage":null,"timer":5,"devices":"all","show_once_every":15},"sticky_bar":{"display_in":"top","trigger":"timer","scroll_percentage":null,"timer":5,"devices":"all","show_once_every":15}},"version":"5"}`}
+    data-options={options}
   >
-    <div data-element="fields" data-stacked="false" class="formkit-fields">
-      <div class="formkit-field">
-        <label class="formkit-label" for={`kit-email-${formId}`}>電子信箱</label>
-        <input
-          id={`kit-email-${formId}`}
-          class="formkit-input"
-          name="email_address"
-          placeholder="you@example.com"
-          required
-          type="email"
-          inputmode="email"
-          autocomplete="email"
-          enterkeyhint="done"
-        >
-      </div>
-      <button data-element="submit" class="formkit-submit" type="submit">
+    <div data-element="fields" class="kit-form__fields">
+      <label class="kit-form__label" for={inputId}>電子信箱</label>
+      <input
+        id={inputId}
+        class="kit-form__input"
+        name="email_address"
+        placeholder="you@example.com"
+        required
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        enterkeyhint="send"
+      />
+      <button data-element="submit" class="kit-form__submit btn btn-primary" type="submit">
         <span>{submitLabel}</span>
       </button>
     </div>
-    <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert" aria-live="polite" aria-atomic="true"></ul>
+    <ul class="kit-form__errors" data-element="errors" data-group="alert" aria-live="polite" aria-atomic="true"></ul>
   </form>
 </div>
 
 <style>
-  /* Kit Form Override Styles */
-  .kit-form-wrapper {
+  .kit-form {
+    container-type: inline-size;
     width: 100%;
   }
 
-  .kit-form-wrapper .formkit-form {
-    background: transparent !important;
-    padding: 0 !important;
+  .kit-form__fields {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: .4rem .65rem;
   }
 
-  .kit-form-wrapper .formkit-fields {
-    display: flex !important;
-    justify-content: center;
-    gap: 0.75rem;
-    margin: 0 auto !important;
-    max-width: 500px;
-  }
-
-  .kit-form-wrapper .formkit-field {
-    flex: 1;
-    margin: 0 !important;
-  }
-
-  .kit-form-wrapper .formkit-label {
-    display: block;
-    margin-bottom: .35rem;
+  .kit-form__label {
     color: var(--text-secondary);
     font-size: .78rem;
     font-weight: 700;
     text-align: left;
   }
 
-  .kit-form-wrapper .formkit-input {
-    width: 100% !important;
-    padding: 0.85rem 1.25rem !important;
-    background: var(--bg) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: var(--radius-sm) !important;
-    color: var(--text-primary) !important;
-    font-size: 0.9rem !important;
-    font-family: inherit !important;
-    font-weight: 400 !important;
+  .kit-form__input {
+    width: 100%;
+    min-height: 3.1rem;
+    padding: .8rem 1rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / .04);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: 1rem;
   }
 
-  .kit-form-wrapper .formkit-input:focus {
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 0 3px rgb(128 100 234 / .25) !important;
+  .kit-form__input::placeholder {
+    color: var(--text-muted);
+    opacity: .8;
   }
 
-  .kit-form-wrapper .formkit-input:focus-visible {
-    outline: 2px solid var(--accent) !important;
+  .kit-form__input:focus-visible {
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
-    border-color: var(--accent-text) !important;
-    box-shadow: 0 0 0 3px rgb(128 100 234 / .25) !important;
+    border-color: var(--accent-text);
   }
 
-  .kit-form-wrapper .formkit-input::placeholder {
-    color: var(--text-muted) !important;
-    opacity: 0.8 !important;
-  }
-
-  .kit-form-wrapper .formkit-submit {
-    position: relative !important;
-    background: linear-gradient(135deg, #253047 0%, #1a2233 100%) !important;
-    border: 1px solid color-mix(in srgb, var(--text-primary) 80%, black) !important;
-    border-radius: var(--radius-sm) !important;
-    color: #fff !important;
-    font-size: 0.9rem !important;
-    font-weight: 700 !important;
-    padding: 0.85rem 1.75rem !important;
-    cursor: pointer !important;
-    box-shadow: 0 4px 14px rgb(37 48 71 / 0.22), inset 0 1px 0 rgb(255 255 255 / 0.15) !important;
-    overflow: hidden !important;
-    isolation: isolate !important;
-    animation: btn-primary-ambient-heartbeat 4.8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite !important;
-    transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform 160ms ease !important;
-    margin: 0 !important;
+  .kit-form__submit {
+    position: relative;
+    width: 100%;
+    min-height: 3.1rem;
     white-space: nowrap;
   }
 
-  .kit-form-wrapper .formkit-submit::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: -100% !important;
-    width: 60% !important;
-    height: 100% !important;
-    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.15), transparent) !important;
-    transform: skewX(-20deg) !important;
-    animation: btn-primary-ambient-shimmer 4.8s ease-in-out infinite !important;
-    pointer-events: none !important;
+  .kit-form__submit span {
+    position: relative;
+    z-index: 1;
   }
 
-  .kit-form-wrapper .formkit-submit:hover {
-    animation: btn-wiggle-bounce 450ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
-    background: linear-gradient(135deg, #3d2f78 0%, #271e50 100%) !important;
-    border-color: var(--accent) !important;
-    color: #fff !important;
-    box-shadow: 0 8px 22px rgb(98 72 200 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.25) !important;
-  }
-
-  .kit-form-wrapper .formkit-submit:hover::before {
-    animation: none !important;
-    left: 140% !important;
-    transition: left 400ms ease !important;
-  }
-
-  .kit-form-wrapper .formkit-submit:active {
-    animation: none !important;
-    transform: translateY(1px) scale(0.99) !important;
-    box-shadow: 0 2px 6px rgb(23 24 22 / 0.2) !important;
-  }
-
-  .kit-form-wrapper .formkit-submit span {
-    position: relative !important;
-    z-index: 1 !important;
-    padding: 0 !important;
-  }
-
-  .kit-form-wrapper .formkit-alert-success {
-    background: rgba(16, 191, 122, 0.2) !important;
-    border-color: #10bf7a !important;
-    color: #10bf7a !important;
-    border-radius: var(--radius-sm) !important;
-    margin-top: 1rem !important;
-    text-align: center !important;
-    max-width: 500px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-
-  .kit-form-wrapper .formkit-alert-error {
-    background: rgba(242, 100, 59, 0.2) !important;
-    border-color: #f2643b !important;
-    color: #f2643b !important;
-    border-radius: var(--radius-sm) !important;
-    margin-top: 1rem !important;
-  }
-
-  .kit-form-wrapper .formkit-powered-by-convertkit-container {
-    display: none !important;
-  }
-
-  @media (max-width: 768px) {
-    .kit-form-wrapper .formkit-fields {
-      flex-direction: column;
+  @container (min-width: 26rem) {
+    .kit-form__fields {
+      grid-template-columns: minmax(0, 1fr) auto;
     }
 
-    .kit-form-wrapper .formkit-submit {
-      width: 100%;
+    .kit-form__label {
+      grid-column: 1 / -1;
     }
 
-    .kit-form-wrapper .formkit-input {
-      min-height: 3.25rem;
-      font-size: 1rem !important;
+    .kit-form__submit {
+      width: auto;
     }
+  }
+
+  .kit-form__errors:empty {
+    display: none;
+  }
+
+  .kit-form__errors,
+  .kit-form :global(.formkit-alert-success) {
+    margin: .75rem 0 0;
+    padding: .6rem .8rem;
+    border: 1px solid;
+    border-radius: var(--radius-sm);
+    font-size: .88rem;
+    line-height: 1.6;
+    list-style: none;
+  }
+
+  .kit-form__errors {
+    border-color: var(--status-error-border);
+    background: var(--status-error-bg);
+    color: var(--status-error);
+  }
+
+  .kit-form :global(.formkit-alert-success) {
+    border-color: var(--status-success-border);
+    background: var(--status-success-bg);
+    color: var(--status-success);
+    text-align: center;
   }
 </style>

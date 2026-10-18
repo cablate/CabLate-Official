@@ -258,7 +258,7 @@ export const primaryNavigationGroups = [
     items: [
       { label: '免費健檢', railLabel: '五個問題找出 AI 卡在哪', href: '/expertise/' },
       { label: '課程與手冊', railLabel: 'AgentSkill、Claude Code 手冊', href: '/courses/' },
-      { label: '電子報', railLabel: '每封拆一個 AI 卡點', href: '/subscribe/?shell=desk' },
+      { label: '電子報', railLabel: '每封拆一個 AI 卡點', href: '/newsletter/' },
     ],
   },
   {

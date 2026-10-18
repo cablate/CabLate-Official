@@ -12,6 +12,7 @@ export default defineConfig({
     sitemap({
       filter: (page) =>
         !page.includes('/confirm-subscription/') &&
+        !page.includes('/subscribe/') &&
         !page.includes('/articles/category/') &&
         !page.includes('/articles/tag/') &&
         !page.includes('/articles/tags/') &&

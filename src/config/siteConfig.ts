@@ -31,6 +31,7 @@ export const siteConfig = {
     promise: '每封拆一個真實的 AI 卡點：我怎麼判斷、哪裡容易出錯、什麼時候不該用 AI。',
     cadence: '有值得寫的才寄，不會天天寄。新課程和講座開放時也會通知你。',
     privacyUse: '寄送電子報內容，以及新課程、手冊更新或公開活動的通知',
+    successMessage: '資料已送出，請到信箱點擊確認連結，完成訂閱。',
   },
 
   // External service IDs
