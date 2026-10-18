@@ -33,21 +33,21 @@ const { tone = 'paper', label = '目前的數字', class: className } = Astro.pr
   .proof-strip li {
     display: grid;
     align-content: start;
-    gap: .25rem;
-    padding: 1rem 1.2rem;
+    gap: .3rem;
+    padding: 1.1rem 1.4rem;
     border-left: 1px solid var(--border);
   }
-  .proof-strip li:first-child { border-left: 0; }
+  .proof-strip li:first-child { border-left: 0; padding-left: 0; }
   .proof-strip strong {
     color: var(--text-primary);
-    font-family: var(--font-sans);
-    font-size: clamp(1.35rem, 2vw, 1.7rem);
+    font-family: var(--font-serif);
+    font-size: clamp(1.6rem, 2.4vw, 2.05rem);
     font-weight: 700;
-    letter-spacing: -.02em;
-    line-height: 1.15;
+    letter-spacing: -.025em;
+    line-height: 1.1;
   }
   .proof-strip strong span {
-    margin-left: .2rem;
+    margin-left: .25rem;
     color: var(--accent-text);
     font-family: var(--font-sans);
     font-size: .88rem;
@@ -57,21 +57,22 @@ const { tone = 'paper', label = '目前的數字', class: className } = Astro.pr
   .proof-strip p {
     margin: 0;
     color: var(--text-secondary);
-    font-size: .88rem;
-    line-height: 1.5;
+    font-size: .9rem;
+    line-height: 1.55;
   }
   .proof-strip small {
     color: var(--text-muted);
     font-size: .76rem;
   }
-  .proof-strip--paper {
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-md);
-    background: var(--bg-soft);
-    box-shadow: var(--shadow-sm);
-  }
+  .proof-strip,
+  .proof-strip--paper,
   .proof-strip--plain {
+    border: 0;
     border-block: 1px solid var(--border);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    padding-block: 0.35rem;
   }
 
   @media (max-width: 960px) {

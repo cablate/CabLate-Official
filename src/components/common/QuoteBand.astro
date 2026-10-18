@@ -33,26 +33,27 @@ const postUrl = (id: string) => `${siteConfig.threadsUrl}/post/${id}`;
 <style>
   .quote-band {
     display: grid;
-    gap: 1.15rem;
-    padding: clamp(1.5rem, 3vw, 2.25rem);
-    border-radius: var(--radius-md);
-    background: var(--surface-dark);
-    color: var(--surface-dark-text);
+    gap: 1.35rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--text-primary);
   }
   .quote-band__header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1.5rem; }
-  .quote-band__header h2 { margin: 0; color: var(--surface-dark-text); font-family: var(--font-sans); font-size: clamp(1.25rem, 2vw, 1.55rem); letter-spacing: -.02em; }
-  .quote-band__header p { margin: 0; color: var(--surface-dark-muted); font-size: .88rem; }
-  .quote-band__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; margin: 0; padding: 0; list-style: none; }
-  .quote-band__list li { display: grid; align-content: space-between; gap: 1rem; padding: 1.15rem 1.2rem; border: 1px solid var(--surface-dark-border); border-radius: var(--radius-sm); background: rgb(255 255 255 / .03); }
-  .quote-band blockquote { position: relative; margin: 0; padding-top: 1.15rem; color: var(--surface-dark-text); font-family: var(--font-sans); font-size: .98rem; font-weight: 600; line-height: 1.68; text-wrap: pretty; }
-  .quote-band blockquote::before { content: '“'; position: absolute; top: -.45rem; left: -.05rem; color: var(--accent-bright); font-family: var(--font-serif); font-size: 2.2rem; line-height: 1; }
-  .quote-band a { color: var(--surface-dark-muted); font-family: var(--font-mono); font-size: .76rem; text-decoration: none; }
-  .quote-band a:hover { color: var(--accent-bright); }
+  .quote-band__header h2 { margin: 0; color: var(--text-primary); font-family: var(--font-serif); font-size: clamp(1.45rem, 2.3vw, 1.9rem); letter-spacing: -.025em; }
+  .quote-band__header p { margin: 0; color: var(--text-muted); font-size: .88rem; }
+  .quote-band__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.15rem; margin: 0; padding: 0; list-style: none; }
+  .quote-band__list li { display: grid; align-content: space-between; gap: 1.1rem; padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface-elevated); box-shadow: var(--shadow-sm); }
+  .quote-band blockquote { position: relative; margin: 0; padding-top: 1.2rem; color: var(--text-primary); font-family: var(--font-sans); font-size: .98rem; font-weight: 600; line-height: 1.7; text-wrap: pretty; }
+  .quote-band blockquote::before { content: '“'; position: absolute; top: -.45rem; left: -.05rem; color: var(--accent); font-family: var(--font-serif); font-size: 2.2rem; line-height: 1; }
+  .quote-band a { color: var(--text-muted); font-family: var(--font-mono); font-size: .76rem; text-decoration: none; transition: color var(--transition-fast); }
+  .quote-band a:hover { color: var(--accent-text); }
 
-  .quote-band--light { border: 1px solid var(--accent-border); background: var(--accent-subtle); color: var(--text-primary); }
+  .quote-band--light { border: 0; background: transparent; color: var(--text-primary); }
   .quote-band--light .quote-band__header h2, .quote-band--light blockquote { color: var(--text-primary); }
-  .quote-band--light .quote-band__header p, .quote-band--light a { color: var(--text-secondary); }
-  .quote-band--light .quote-band__list li { border-color: var(--accent-border); background: var(--bg-soft); }
+  .quote-band--light .quote-band__header p, .quote-band--light a { color: var(--text-muted); }
+  .quote-band--light .quote-band__list li { border-color: var(--border); background: var(--surface-elevated); }
   .quote-band--light blockquote::before { color: var(--accent); }
 
   @media (max-width: 960px) {

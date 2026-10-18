@@ -23,15 +23,18 @@
 .application-stage {
   display: grid;
   grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1.28fr);
-  gap: 1rem;
+  gap: clamp(2rem, 4vw, 3.5rem);
   align-items: start;
-  padding-block: 0.75rem 2rem;
+  padding-block: 0.75rem 2.5rem;
 }
 
 .application-hero {
   position: sticky;
-  top: 1rem;
-  padding: clamp(1.5rem, 3vw, 2.5rem);
+  top: 1.5rem;
+  padding: 0.5rem 0;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .application-hero .application-selected-service {
@@ -41,9 +44,10 @@
 .application-hero h1 {
   max-width: 14em;
   margin: 0.9rem 0 0;
-  font-size: clamp(1.5rem, 2.2vw, 1.85rem);
-  line-height: 1.3;
-  letter-spacing: -0.02em;
+  font-family: var(--font-serif);
+  font-size: clamp(1.85rem, 2.8vw, 2.4rem);
+  line-height: 1.26;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
@@ -200,17 +204,24 @@
   gap: 0.8rem;
   align-items: start;
   min-block-size: 6rem;
-  padding: 1rem;
-  border: 1px solid var(--border-strong);
-  background: var(--surface-input);
+  padding: 1.15rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-subtle);
   cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.application-choice__grid label:hover,
+.application-focus__grid label:hover {
+  border-color: var(--accent-border);
 }
 
 .application-choice__grid label:has(input:checked),
 .application-focus__grid label:has(input:checked) {
-  border-color: var(--accent-text);
-  background: var(--surface-warm-tint);
-  box-shadow: inset 0.2rem 0 var(--accent-text);
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  box-shadow: inset 0.22rem 0 var(--accent);
 }
 
 .application-choice__grid input,
@@ -268,14 +279,15 @@
 .application-field :is(input, textarea) {
   width: 100%;
   min-block-size: 3.25rem;
-  padding: 0.8rem 0.9rem;
+  padding: 0.85rem 1rem;
   border: 1px solid var(--border-strong);
-  border-radius: 0.15rem;
+  border-radius: var(--radius-sm);
   background: var(--surface-input);
   color: var(--text-primary);
   font: inherit;
   font-size: 1rem;
   line-height: 1.65;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .application-field textarea {
@@ -338,9 +350,10 @@
 
 .application-selected-service {
   display: grid;
-  padding: 0.75rem 0.85rem 0.85rem;
-  border: 1px solid var(--border-strong);
-  background: var(--surface-warm-tint);
+  padding: 0.95rem 1.05rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-subtle);
 }
 
 .application-selected-service[hidden] {
@@ -361,9 +374,9 @@
 .application-selected-service select {
   width: 100%;
   min-block-size: 3rem;
-  padding: 0.65rem 0.75rem;
+  padding: 0.65rem 0.85rem;
   border: 1px solid var(--border-strong);
-  border-radius: 0;
+  border-radius: var(--radius-sm);
   background-color: var(--surface-input);
   color: var(--text-primary);
   font: inherit;

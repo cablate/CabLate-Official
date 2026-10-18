@@ -24,10 +24,10 @@ const { label = '寫這些的人', class: className } = Astro.props;
 </aside>
 
 <style>
-  .author-card { display: grid; grid-template-columns: 5rem minmax(0, 1fr); gap: clamp(1rem, 2.5vw, 1.5rem); align-items: center; padding: clamp(1.25rem, 2.5vw, 1.75rem); border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-soft); background-image: none; box-shadow: var(--shadow-sm); filter: none; }
-  .author-card img { width: 5rem; height: 5rem; border-radius: 50%; object-fit: cover; object-position: 35% center; }
-  .author-card .section-label { margin: 0 0 .3rem; }
-  .author-card h2 { margin: 0; font-size: clamp(1.1rem, 1.8vw, 1.3rem); line-height: 1.4; }
+  .author-card { display: grid; grid-template-columns: 5rem minmax(0, 1fr); gap: clamp(1.15rem, 2.5vw, 1.65rem); align-items: center; padding: clamp(1.5rem, 2.8vw, 2rem) !important; border: 1px solid var(--border) !important; border-radius: var(--radius-lg) !important; background: var(--surface-elevated) !important; background-image: none; box-shadow: var(--shadow-sm) !important; filter: none; }
+  .author-card img { width: 5rem; height: 5rem; border-radius: 50%; object-fit: cover; object-position: 35% center; border: 1px solid var(--border-strong); box-shadow: var(--shadow-sm); }
+  .author-card .section-label { margin: 0 0 .35rem; }
+  .author-card h2 { margin: 0; font-family: var(--font-serif); font-size: clamp(1.2rem, 1.9vw, 1.45rem); letter-spacing: -.02em; line-height: 1.35; }
   .author-card p:not(.section-label) { max-width: 46rem; margin: .4rem 0 0; color: var(--text-secondary); font-size: .94rem; line-height: 1.7; }
   .author-card nav { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; margin-top: .75rem; font-size: .9rem; }
   .author-card a { display: inline-flex; align-items: center; gap: .35rem; color: var(--accent-text); font-weight: 700; }
