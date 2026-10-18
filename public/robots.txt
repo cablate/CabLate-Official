@@ -29,5 +29,4 @@ Allow: /
 # Sitemap
 Sitemap: https://cablate.com/sitemap-index.xml
 
-# LLMs
-Llms-txt: https://cablate.com/llms.txt
+# LLMs: https://cablate.com/llms.txt

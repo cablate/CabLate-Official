@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowRight } from '@lucide/astro';
 import { formatDate } from '../../utils/format';
 import AuthorCard from '../../components/common/AuthorCard.astro';
+import { personEntity } from '../../config/authority';
 import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
 
 const allArticles = await getCollection('articles');
@@ -46,7 +47,7 @@ const collectionJsonLd = {
     headline: entry.data.title,
     url: `https://cablate.com/articles/${entry.slug}/`,
     datePublished: entry.data.publishDate.toISOString(),
-    author: { '@type': 'Person', name: 'CabLate', url: 'https://cablate.com/about/' },
+    author: personEntity,
   })),
 };
 

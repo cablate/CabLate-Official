@@ -13,6 +13,16 @@ export const authorityProfile = {
   ],
 } as const;
 
+/** 全站唯一的作者實體；Article author、ProfilePage mainEntity、Service provider 都用它 */
+export const personEntity = {
+  '@type': 'Person',
+  '@id': `${authorityProfile.authorUrl}#person`,
+  name: 'Cab',
+  alternateName: 'CabLate',
+  url: authorityProfile.authorUrl,
+  sameAs: authorityProfile.sameAs,
+} as const;
+
 /** 首頁、服務頁與 About 共用的證據數字；更新時連日期一起改 */
 export const proofPoints = [
   { value: '500+', unit: '人', label: '上過我的講座、工作坊和企業內訓', asOf: '2026-09' },

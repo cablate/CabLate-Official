@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ArrowRight, Github, AtSign } from '@lucide/astro';
-import { authorityProfile, deliveryExperienceProofs, moreOpenSource, openSourceProofs } from '../config/authority';
+import { authorityProfile, deliveryExperienceProofs, moreOpenSource, openSourceProofs, personEntity } from '../config/authority';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 import QuoteBand from '../components/common/QuoteBand.astro';
 
@@ -10,14 +10,9 @@ const personJsonLd = {
   '@type': 'ProfilePage',
   dateModified: '2026-10-06',
   mainEntity: {
-    '@type': 'Person',
-    '@id': `${authorityProfile.authorUrl}#person`,
-    name: authorityProfile.publicName,
-    alternateName: authorityProfile.alternateName,
-    url: authorityProfile.authorUrl,
+    ...personEntity,
     jobTitle: 'AI 應用講師／全端工程師',
     description: authorityProfile.shortBio,
-    sameAs: authorityProfile.sameAs,
     knowsAbout: ['AI Agent', 'Claude Code', 'Vibe Coding', 'Context Engineering', 'Harness Engineering', 'Skill Design'],
   },
 };

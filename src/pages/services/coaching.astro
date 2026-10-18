@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SEO from '../../components/SEO.astro';
 import { ArrowLeft, ArrowRight, Check, X } from '@lucide/astro';
 import { getServiceApplicationHref } from '../../config/serviceApplication';
+import { personEntity } from '../../config/authority';
 import ProofStrip from '../../components/common/ProofStrip.astro';
 import QuoteBand from '../../components/common/QuoteBand.astro';
 import '../../styles/service-pages.css';
@@ -36,11 +37,7 @@ const serviceJsonLd = {
   description: seoDescription,
   url: 'https://cablate.com/services/coaching/',
   image: `https://cablate.com${seoImage}`,
-  provider: {
-    '@type': 'Person',
-    name: 'Cab',
-    url: 'https://cablate.com/about/',
-  },
+  provider: personEntity,
   areaServed: {
     '@type': 'Country',
     name: '台灣',
