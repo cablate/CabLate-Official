@@ -32,12 +32,6 @@ const articles = defineCollection({
     // 內容設定
     readingTime: z.number().optional(),  // 閱讀時間（分鐘）
     featured: z.boolean().default(false),  // 是否精選
-
-    // SEO 強化
-    faq: z.array(z.object({
-      question: z.string(),
-      answer: z.string(),
-    })).optional(),  // FAQ 結構化資料
   }),
 });
 

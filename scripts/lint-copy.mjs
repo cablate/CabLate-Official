@@ -23,7 +23,7 @@ const files = [
   ...dirFiles('src/config', ['.ts']),
   ...dirFiles('src/components/common', ['.astro']),
   ...dirFiles('src/components/sections', ['.astro']),
-  'src/components/NewsletterCTA.astro',
+  'src/components/ArticleEnd.astro',
 ].filter((file) => existsSync(join(root, file)));
 
 // A sentence never crosses 。！？ or a line break, so contrast patterns stay inside one sentence.

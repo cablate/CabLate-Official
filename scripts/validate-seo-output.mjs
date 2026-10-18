@@ -46,6 +46,10 @@ for (const file of walk(dist).filter((path) => path.endsWith('.html'))) {
     assert(person['@id'] === PERSON_ID, `${route}: Person node has @id ${person['@id'] ?? '(none)'} instead of ${PERSON_ID}`);
   }
 
+  if (route.startsWith('articles/')) {
+    assert(collectTyped(nodes, 'FAQPage').length === 0, `${route}: article pages carry no FAQPage (decision D3)`);
+    assert(!html.includes('giscus.app'), `${route}: comments were removed from article pages (decision D3)`);
+  }
   assert(!/<meta name="article:/i.test(html), `${route}: article:* meta uses name= instead of property=`);
   assert((html.match(/<main[\s>]/gi) ?? []).length === 1, `${route}: expected exactly one <main>`);
   assert((html.match(/<h1[\s>]/gi) ?? []).length === 1, `${route}: expected exactly one <h1>`);
