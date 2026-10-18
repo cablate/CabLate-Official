@@ -5,7 +5,7 @@ export const authorityProfile = {
   alternateName: 'Cab',
   claim: '判斷力比執行力值錢。',
   shortBio: '在第一線教 AI 落地的講師：從農會推廣人員教到外商工程團隊。工程師出身，每天用 Claude Code 工作，也做有人在用的開源工具。',
-  humanBio: '我教的是判斷，也就是 AI 該不該用、怎麼用才划算。教過非技術團隊，也教過工程團隊。',
+  humanBio: '我教的是怎麼判斷 AI 該不該用、怎麼用才划算。教過非技術團隊，也教過工程團隊。',
   authorUrl: 'https://cablate.com/about/',
   sameAs: [
     siteConfig.threadsUrl,
