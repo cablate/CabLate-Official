@@ -4,7 +4,7 @@ import Newsletter from '../components/sections/Newsletter.astro';
 import ProofStrip from '../components/common/ProofStrip.astro';
 import QuoteBand from '../components/common/QuoteBand.astro';
 import WhyDifferent from '../components/common/WhyDifferent.astro';
-import { ArrowLeft, ArrowRight, Braces, Database, GitBranch } from '@lucide/astro';
+import { ArrowRight, Braces, Database, GitBranch } from '@lucide/astro';
 import { siteConfig, withCabAiAttribution } from '../config/siteConfig';
 import { audienceTypes, proofPoints, teachingSessions } from '../config/authority';
 
@@ -82,11 +82,11 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
 
 <BaseLayout title="CabLate｜AI 企業內訓、講座與 Claude Code" description="Cab 在第一線教 AI 落地：從農會推廣人員教到外商工程團隊，自己每天用 Claude Code 工作。提供企業內訓、講座、工作坊，也接 AI 諮詢與陪跑。" image="/og/pages/home.png" imageAlt="CabLate：我在第一線教 AI 落地，自己也每天用它工作。" imageWidth={1200} imageHeight={630}>
   <div class="home-page">
-    <section class="home-hero paper-card" aria-labelledby="home-title" data-hero-copy-rotation data-messages={JSON.stringify(heroMessages)}>
+    <section class="home-hero paper-card" aria-labelledby="home-title">
       <header class="home-hero__lede">
         <h1 id="home-title"><span>AI 課上完，</span><span>大家有真的用進工作嗎？</span></h1>
-        <p class="home-hero__statement" id="home-hero-statement" data-hero-statement aria-live="off">
-          {heroMessages[0].statement.map((line) => <span data-hero-statement-line>{line}</span>)}
+        <p class="home-hero__statement" id="home-hero-statement">
+          {heroMessages[0].statement.map((line) => <span>{line}</span>)}
         </p>
       </header>
 
@@ -113,15 +113,7 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
       </figure>
 
       <div class="home-hero__body">
-        <p class="home-hero__result" id="home-hero-result" data-hero-result aria-live="off">{heroMessages[0].result}</p>
-        <div class="home-hero__rotation-meta">
-          <div class="home-hero__rotation-controls" data-hero-rotation-controls role="group" aria-label="切換介紹內容" hidden>
-            <button type="button" data-hero-previous aria-label="上一則介紹" aria-controls="home-hero-statement home-hero-result"><ArrowLeft size={15} aria-hidden="true" /></button>
-            <span class="rotation-controls__count" aria-hidden="true"><span data-hero-current>01</span> / {String(heroMessages.length).padStart(2, '0')}</span>
-            <button type="button" data-hero-next aria-label="下一則介紹" aria-controls="home-hero-statement home-hero-result"><ArrowRight size={15} aria-hidden="true" /></button>
-          </div>
-          <span class="visually-hidden" data-hero-rotation-status aria-live="polite" aria-atomic="true"></span>
-        </div>
+        <p class="home-hero__result" id="home-hero-result">{heroMessages[0].result}</p>
         <div class="home-hero__actions">
           <a class="btn btn-primary hero-action" href="/services/enterprise/">邀請我上課或內訓 <ArrowRight size={18} aria-hidden="true" /></a>
           <a class="home-hero__secondary-action" href="#identity-title">看我教過誰 <ArrowRight size={16} aria-hidden="true" /></a>
@@ -354,88 +346,6 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
 </BaseLayout>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  const initializeHeroCopyRotation = () => {
-    const heroes = document.querySelectorAll<HTMLElement>('[data-hero-copy-rotation]');
-
-    heroes.forEach((hero) => {
-      if (hero.dataset.rotationReady === 'true') return;
-
-      const statementLines = Array.from(hero.querySelectorAll<HTMLElement>('[data-hero-statement-line]'));
-      const result = hero.querySelector<HTMLElement>('[data-hero-result]');
-      const statement = hero.querySelector<HTMLElement>('[data-hero-statement]');
-      const controls = hero.querySelector<HTMLElement>('[data-hero-rotation-controls]');
-      const previous = hero.querySelector<HTMLButtonElement>('[data-hero-previous]');
-      const next = hero.querySelector<HTMLButtonElement>('[data-hero-next]');
-      const currentLabel = hero.querySelector<HTMLElement>('[data-hero-current]');
-      const status = hero.querySelector<HTMLElement>('[data-hero-rotation-status]');
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-      if (!statement || statementLines.length === 0 || !result || !controls || !previous || !next || !currentLabel || !status || !hero.dataset.messages) return;
-
-      const messages = JSON.parse(hero.dataset.messages) as Array<{ statement: string[]; result: string }>;
-      if (messages.length < 2) return;
-
-      hero.dataset.rotationReady = 'true';
-      let currentIndex = 0;
-      let transitionId = 0;
-
-      const render = (index: number) => {
-        currentIndex = index;
-        statementLines.forEach((line, lineIndex) => {
-          line.textContent = messages[currentIndex].statement[lineIndex] ?? '';
-        });
-        result.textContent = messages[currentIndex].result;
-        currentLabel.textContent = String(currentIndex + 1).padStart(2, '0');
-      };
-
-      const announce = () => {
-        status.textContent = `第 ${currentIndex + 1} 則介紹：${messages[currentIndex].statement.join(' ')}。${messages[currentIndex].result.replace('\n', ' ')}`;
-      };
-
-      const changeTo = (index: number) => {
-        const nextIndex = (index + messages.length) % messages.length;
-        if (nextIndex === currentIndex) return;
-
-        statement.classList.add('is-switching');
-        result.classList.add('is-switching');
-
-        window.clearTimeout(transitionId);
-        transitionId = window.setTimeout(() => {
-          render(nextIndex);
-          requestAnimationFrame(() => {
-            statement.classList.remove('is-switching');
-            result.classList.remove('is-switching');
-          });
-          announce();
-        }, reduceMotion.matches ? 0 : 180);
-      };
-
-      const handlePrevious = () => changeTo(currentIndex - 1);
-      const handleNext = () => changeTo(currentIndex + 1);
-
-      controls.hidden = false;
-      previous.addEventListener('click', handlePrevious);
-      next.addEventListener('click', handleNext);
-
-      const cleanup = () => {
-        window.clearTimeout(transitionId);
-        previous.removeEventListener('click', handlePrevious);
-        next.removeEventListener('click', handleNext);
-        hero.dataset.rotationReady = 'false';
-      };
-
-      document.addEventListener('astro:before-swap', cleanup, { once: true });
-    });
-  };
-
-  initializeHeroCopyRotation();
-  document.addEventListener('astro:page-load', initializeHeroCopyRotation);
-
   const initializeSpeakerEvidence = () => {
     const sections = document.querySelectorAll<HTMLElement>('[data-speaker-section]');
 
@@ -453,7 +363,6 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
 
       section.dataset.speakerReady = 'true';
       let activeFrame = mediaFrames.find((frame) => frame.dataset.speakerMedia === records[0]?.dataset.speakerVisual) ?? mediaFrames[0];
-      let context: gsap.Context | null = null;
       let destroyed = false;
 
       const setActive = (record: HTMLElement) => {
@@ -469,24 +378,26 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
 
       records[0]?.classList.add('is-active');
 
-      if (!reduceMotion.matches && desktop.matches) {
-        context = gsap.context(() => {
-          records.forEach((record) => {
-            ScrollTrigger.create({
-              trigger: record,
-              start: 'top 68%',
-              end: 'bottom 32%',
-              onEnter: () => setActive(record),
-              onEnterBack: () => setActive(record),
-            });
-          });
-        }, section);
+      let observer: IntersectionObserver | null = null;
+      if (!reduceMotion.matches && desktop.matches && 'IntersectionObserver' in window) {
+        observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting && entry.target instanceof HTMLElement) {
+                setActive(entry.target);
+              }
+            }
+          },
+          { rootMargin: '-32% 0px -32% 0px', threshold: 0 }
+        );
+        records.forEach((record) => observer?.observe(record));
       }
 
       const cleanup = () => {
         if (destroyed) return;
         destroyed = true;
-        context?.revert();
+        observer?.disconnect();
+        observer = null;
         section.dataset.speakerReady = 'false';
       };
 
@@ -514,15 +425,6 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
   .home-hero__statement span { display: block; text-align: left; }
   .home-hero__body { grid-area: body; position: relative; z-index: 3; align-self: start; min-width: 0; max-width: 36rem; text-align: left; margin-top: .15rem; }
   .home-hero__result { min-height: 0; margin: 0; color: var(--text-secondary); font-size: .96rem; font-weight: 400; line-height: 1.72; text-align: left; white-space: pre-line; text-wrap: pretty; }
-  .home-hero__rotation-meta { display: flex; align-items: center; justify-content: flex-start; margin-top: .35rem; }
-  .home-hero__rotation-meta:not(:has([data-hero-rotation-controls]:not([hidden]))) { display: none; }
-  .home-hero__rotation-controls { display: inline-grid; grid-template-columns: 1.8rem auto 1.8rem; gap: .3rem; align-items: center; }
-  .home-hero__rotation-controls[hidden] { display: none; }
-  .home-hero__rotation-controls button { display: grid; width: 1.8rem; height: 1.8rem; padding: 0; place-items: center; border: 1px solid var(--border-strong); border-radius: 50%; background: color-mix(in srgb, var(--bg-soft) 88%, transparent); color: var(--text-secondary); cursor: pointer; transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease, transform 120ms ease; }
-  .home-hero__rotation-controls button:hover { border-color: var(--accent); background: var(--accent-subtle); color: var(--accent-text); }
-  .home-hero__rotation-controls button:active { transform: translateY(1px); }
-  .home-hero__rotation-controls button:focus-visible { outline: 3px solid var(--accent); outline-offset: .2rem; }
-  .rotation-controls__count { min-width: 2.8rem; color: var(--text-muted); font-family: var(--font-mono); font-size: .68rem; letter-spacing: .035em; text-align: center; }
   .home-hero__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: .75rem 1rem; margin-top: 1rem; }
   .hero-action { white-space: nowrap; }
   .home-hero__secondary-action { display: inline-flex; align-items: center; gap: .5rem; min-height: 3rem; padding: .6rem 1.05rem; border-radius: var(--radius-sm); border: 1px solid rgb(128 100 234 / .35); background: rgb(128 100 234 / .08); color: var(--accent-text); font-size: .9rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 6px rgb(128 100 234 / .08); transition: all 200ms cubic-bezier(.2, .8, .2, 1); }
@@ -584,8 +486,6 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
     text-transform: uppercase;
   }
   @media (prefers-reduced-motion: no-preference) {
-    .home-hero__statement, .home-hero__result { transition: opacity 180ms ease; }
-    .home-hero__statement.is-switching, .home-hero__result.is-switching { opacity: 0; }
     .hero-photo--primary { animation: hero-photo-primary-in 500ms cubic-bezier(.2, .72, .2, 1) both; }
     .hero-photo--secondary { animation: hero-photo-secondary-in 550ms 80ms cubic-bezier(.2, .72, .2, 1) both; }
     .home-hero__annotation { animation: hero-note-in 380ms 300ms cubic-bezier(.2, .72, .2, 1) both; }
@@ -1115,11 +1015,6 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
       line-height: 1.65;
       text-align: left;
     }
-    .home-hero__rotation-meta {
-      justify-content: flex-start;
-      margin-top: .45rem;
-      min-height: 0;
-    }
     .home-hero__actions {
       display: grid;
       gap: .65rem;
@@ -1213,7 +1108,6 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .home-hero__rotation-controls button { transition: none; }
     .symptom-choice__surface { transition: none; }
     .trace-panel, .diagnosis-stamp, .trace-reading { animation: none; }
     .speaker-record, .speaker-record::before, .speaker-media__frame, .threads-proof__cta svg { transition: none; }

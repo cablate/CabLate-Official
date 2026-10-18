@@ -127,9 +127,11 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
       const validation = root.querySelector<HTMLElement>('[data-validation-message]');
       const copyStatus = root.querySelector<HTMLElement>('[data-copy-status]');
       const cta = root.querySelector<HTMLAnchorElement>('[data-result-cta]');
+      const serviceLink = root.querySelector<HTMLAnchorElement>('.result-service-link');
       const resultLayerTitle = root.querySelector<HTMLElement>('[data-result-layer-title]');
       const resultExplanation = root.querySelector<HTMLElement>('[data-result-explanation]');
       let startEmitted = false;
+      let isLayerAutoSelected = false;
 
       const emitStart = (placement: 'hero' | 'worksheet') => {
         if (startEmitted) return;
@@ -149,8 +151,82 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
         });
       });
 
-      const value = (key: string) => root.querySelector<HTMLTextAreaElement>(`[data-field="${key}"]`)?.value.trim() ?? '';
+      const getField = (key: string) => root.querySelector<HTMLTextAreaElement>(`[data-field="${key}"]`);
+      const value = (key: string) => getField(key)?.value.trim() ?? '';
       const selectedLayerCode = () => root.querySelector<HTMLInputElement>('input[name="result-layer"]:checked')?.value as DiagnosticLayerCode | undefined;
+      const checkChoiceValue = (code: DiagnosticLayerCode) => root.querySelector<HTMLInputElement>(`input[name="check-${code}"]:checked`)?.value;
+      const isMissingChoice = (choice?: string) => choice === 'missing' || choice === 'no';
+      const isUncertainChoice = (choice?: string) => choice === 'uncertain' || choice === 'unsure';
+
+      const findAutoLayerCode = (excludeCode?: DiagnosticLayerCode): DiagnosticLayerCode | undefined => {
+        const candidates = diagnosticLayers.filter((item) => item.code !== excludeCode);
+        const missingLayer = candidates.find((item) => isMissingChoice(checkChoiceValue(item.code)));
+        if (missingLayer) return missingLayer.code;
+        const uncertainLayer = candidates.find((item) => isUncertainChoice(checkChoiceValue(item.code)));
+        return uncertainLayer?.code;
+      };
+
+      const prefillFromLayer = (layerCode: DiagnosticLayerCode) => {
+        const layer = diagnosticLayers.find((item) => item.code === layerCode);
+        if (!layer) return;
+
+        const nextCode = findAutoLayerCode(layerCode);
+        const nextLayer = nextCode ? diagnosticLayers.find((item) => item.code === nextCode) : undefined;
+        const defaults: Record<string, string> = {
+          evidence: layer.symptom,
+          correction: layer.correction,
+          expected: `確認「${layer.check}」已落實，且不再重複發生同類問題。`,
+          next: nextLayer
+            ? `接著查「${nextLayer.title}」：${nextLayer.check}`
+            : '觀察下一次實際交付是否還需要人工重工。',
+        };
+
+        for (const [key, text] of Object.entries(defaults)) {
+          const field = getField(key);
+          if (!field) continue;
+          if (!field.value.trim() || field.dataset.autofilled === 'true') {
+            field.value = text;
+            field.dataset.autofilled = 'true';
+          }
+        }
+      };
+
+      for (const key of ['evidence', 'correction', 'expected', 'next']) {
+        getField(key)?.addEventListener('input', (event) => {
+          const target = event.currentTarget as HTMLTextAreaElement | null;
+          if (target) target.dataset.autofilled = 'false';
+        });
+      }
+
+      root.querySelectorAll<HTMLInputElement>('input[name^="check-"]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+          const currentSelected = selectedLayerCode();
+          if (!currentSelected || isLayerAutoSelected) {
+            const autoCode = findAutoLayerCode();
+            if (autoCode) {
+              const targetRadio = root.querySelector<HTMLInputElement>(`input[name="result-layer"][value="${autoCode}"]`);
+              if (targetRadio) {
+                targetRadio.checked = true;
+                isLayerAutoSelected = true;
+                prefillFromLayer(autoCode);
+                return;
+              }
+            }
+          }
+          if (currentSelected) {
+            prefillFromLayer(currentSelected);
+          }
+        });
+      });
+
+      root.querySelectorAll<HTMLInputElement>('input[name="result-layer"]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+          isLayerAutoSelected = false;
+          const code = selectedLayerCode();
+          if (code) prefillFromLayer(code);
+        });
+      });
+
       const showValidation = (message: string, target?: HTMLElement | null) => {
         if (!validation) return;
         validation.textContent = message;
@@ -167,33 +243,39 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
       root.addEventListener('change', clearValidation);
 
       root.querySelector<HTMLButtonElement>('[data-generate-result]')?.addEventListener('click', () => {
-        const layerCode = selectedLayerCode();
+        let layerCode = selectedLayerCode();
+        if (!layerCode) {
+          const autoCode = findAutoLayerCode();
+          if (autoCode) {
+            const targetRadio = root.querySelector<HTMLInputElement>(`input[name="result-layer"][value="${autoCode}"]`);
+            if (targetRadio) {
+              targetRadio.checked = true;
+              isLayerAutoSelected = true;
+              layerCode = autoCode;
+            }
+          }
+        }
         if (!layerCode) {
           showValidation('目前還沒有足夠證據選出一層。回到五項檢查，各補一個實際例子後再選。', root.querySelector<HTMLElement>('input[name="result-layer"]'));
           return;
         }
 
-        const required = [
-          ['task', '請先寫下這次要檢查的任務。'],
-          ['evidence', '請寫下你實際看到的問題。'],
-          ['correction', '請寫下這次先修哪一個地方。'],
-          ['expected', '請寫下修好之後應該看到什麼。'],
-          ['next', '請寫下如果沒變好，下一個要查什麼。'],
-        ] as const;
-        for (const [key, message] of required) {
-          if (!value(key)) {
-            showValidation(message, root.querySelector<HTMLElement>(`[data-field="${key}"]`));
-            return;
-          }
+        if (!value('evidence') || !value('correction') || !value('expected') || !value('next')) {
+          prefillFromLayer(layerCode);
         }
 
         const layer = diagnosticLayers.find((item) => item.code === layerCode);
         if (!layer || !resultPanel || !resultText || !cta || !resultLayerTitle || !resultExplanation) return;
 
+        const taskText = value('task') || '未命名 AI 工作流任務';
+        const actualText = value('actual');
+        const unusableText = value('unusable');
         resultText.textContent = [
           '我的 AI 工作流健檢結果',
           '',
-          `任務：${value('task')}`,
+          `任務：${taskText}`,
+          ...(actualText ? [`實際結果：${actualText}`] : []),
+          ...(unusableText ? [`不能直接用的原因：${unusableText}`] : []),
           `最主要失效層：${layer.title}`,
           `我看到的問題：${value('evidence')}`,
           `我先做的一個修正：${value('correction')}`,
@@ -206,6 +288,16 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
         cta.href = layer.destination;
         cta.dataset.layer = layer.code;
         cta.dataset.destination = layer.destinationCategory;
+        if (serviceLink) {
+          const handoffSummary = [
+            '[AI 工作流健檢結果]',
+            `主要卡點：${layer.title}`,
+            `任務：${value('task') || '（未填）'}`,
+            `看到的問題：${value('evidence')}`,
+            `預計先修：${value('correction')}`,
+          ].join('\n').slice(0, 500);
+          serviceLink.href = `/services/apply/?service=consulting&source=direct&diagnostic=${encodeURIComponent(handoffSummary)}`;
+        }
         resultPanel.hidden = false;
         clearValidation();
         emitEntrySurfaceEvent({ name: 'diagnostic_complete', properties: { page: '/expertise/', version: 'b20-v1' } });
@@ -238,11 +330,16 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
       root.querySelector<HTMLButtonElement>('[data-reset-result]')?.addEventListener('click', () => {
         const hasValue = fields.some((field) => field.value.trim()) || Boolean(root.querySelector('input:checked'));
         if (hasValue && !window.confirm('要清除這次健檢的所有本機內容嗎？')) return;
-        fields.forEach((field) => { field.value = ''; });
+        fields.forEach((field) => {
+          field.value = '';
+          delete field.dataset.autofilled;
+        });
+        isLayerAutoSelected = false;
         root.querySelectorAll<HTMLInputElement>('input:checked').forEach((input) => { input.checked = false; });
         if (resultText) resultText.textContent = '';
         if (resultPanel) resultPanel.hidden = true;
         if (copyStatus) copyStatus.textContent = '';
+        if (serviceLink) serviceLink.href = '/services/consulting/';
         clearValidation();
         root.querySelector<HTMLElement>('#workflow-check-title')?.focus();
       });

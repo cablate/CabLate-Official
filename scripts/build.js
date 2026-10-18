@@ -1,5 +1,5 @@
 import { execSync } from 'child_process';
-import { readdirSync, statSync } from 'fs';
+import { existsSync, readdirSync, statSync, unlinkSync } from 'fs';
 import { join } from 'path';
 
 const isProductionDeploy = process.env.CF_PAGES === '1' && process.env.CF_PAGES_BRANCH === 'master';
@@ -8,10 +8,33 @@ const isProductionDeploy = process.env.CF_PAGES === '1' && process.env.CF_PAGES_
 execSync('node scripts/validate-content.js', { stdio: 'inherit' });
 execSync('node scripts/validate-analytics.mjs', { stdio: 'inherit' });
 
+// 0.5. Invalidate stale Astro content cache — content/config plumbing changes
+// must not be served from a previous build's data-store snapshot.
+const dataStorePath = join(process.cwd(), 'node_modules', '.astro', 'data-store.json');
+if (existsSync(dataStorePath)) {
+  const cacheMtime = statSync(dataStorePath).mtimeMs;
+  const cacheWatchTargets = [
+    'src/plugins/rehype-article-enhance.mjs',
+    'src/content/config.ts',
+    'astro.config.mjs',
+  ];
+  const isStale = cacheWatchTargets.some((relativePath) => {
+    const fullPath = join(process.cwd(), relativePath);
+    return existsSync(fullPath) && statSync(fullPath).mtimeMs > cacheMtime;
+  });
+
+  if (isStale) {
+    unlinkSync(dataStorePath);
+    console.log('[build] Invalidated stale node_modules/.astro/data-store.json');
+  }
+}
+
 // 1. Astro build
 execSync('npx astro build', { stdio: 'inherit' });
 execSync('node scripts/validate-analytics.mjs --built', { stdio: 'inherit' });
 execSync('node scripts/subset-serif-font.mjs', { stdio: 'inherit' });
+execSync('node scripts/validate-seo-output.mjs', { stdio: 'inherit' });
+execSync('node scripts/validate-service-application.js', { stdio: 'inherit' });
 
 // 2. IndexNow — only for the Cloudflare Pages production build, never previews or GitHub CI
 async function submitIndexNow() {

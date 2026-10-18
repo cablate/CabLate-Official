@@ -358,6 +358,10 @@ const serviceCopy = Object.fromEntries(serviceApplicationOptions.map((option) =>
       submitNote: submitNote?.textContent?.trim() ?? '',
     };
     const params = new URLSearchParams(window.location.search);
+    const diagnosticText = params.get('diagnostic');
+    if (diagnosticText && situationInput && !situationInput.value.trim()) {
+      situationInput.value = diagnosticText.slice(0, 1000);
+    }
     const safeAttribution = (value: string | null, fallback = '') => value && /^[A-Za-z0-9._~-]{1,100}$/.test(value) ? value : fallback;
     const analyticsServices = new Set<ServiceId>(['consulting', 'coaching', 'enterprise', 'partnerships']);
     const analyticsSources = new Set(['direct', 'coaching_page', 'consulting_page', 'enterprise_page', 'partnerships_page', 'services_page']);

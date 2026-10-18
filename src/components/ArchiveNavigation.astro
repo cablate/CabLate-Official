@@ -1,6 +1,6 @@
 ---
 import { primaryNavigationGroups } from '../config/authority';
-import { Menu, X } from '@lucide/astro';
+import { Menu, Moon, Sun, X } from '@lucide/astro';
 
 const currentPath = Astro.url.pathname;
 const isCurrent = (href: string) => currentPath === href;
@@ -36,6 +36,11 @@ const isCurrent = (href: string) => currentPath === href;
         </div>
       ))}
     </nav>
+    <button type="button" class="site-theme-toggle" data-theme-toggle aria-label="切換深色或淺色模式">
+      <Sun class="site-theme-toggle__sun" size={15} aria-hidden="true" />
+      <Moon class="site-theme-toggle__moon" size={15} aria-hidden="true" />
+      <span data-theme-toggle-label>外觀模式</span>
+    </button>
   </aside>
 
   <div class="site-mobile-header">
@@ -69,12 +74,61 @@ const isCurrent = (href: string) => currentPath === href;
             </ul>
           </div>
         ))}
+        <button type="button" class="site-theme-toggle site-theme-toggle--mobile" data-theme-toggle aria-label="切換深色或淺色模式">
+          <Sun class="site-theme-toggle__sun" size={16} aria-hidden="true" />
+          <Moon class="site-theme-toggle__moon" size={16} aria-hidden="true" />
+          <span data-theme-toggle-label>外觀模式</span>
+        </button>
       </nav>
     </details>
   </div>
 </header>
 
 <script>
+  const getEffectiveTheme = (): 'dark' | 'light' => {
+    const override = document.documentElement.dataset.theme;
+    if (override === 'dark' || override === 'light') return override;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  };
+
+  const updateToggleButtons = () => {
+    const theme = getEffectiveTheme();
+
+    document.querySelectorAll<HTMLElement>('.site-theme-toggle').forEach((button) => {
+      button.dataset.currentTheme = theme;
+
+      const label = button.querySelector<HTMLElement>('[data-theme-toggle-label]');
+      if (label) label.textContent = theme === 'dark' ? '切換淺色' : '切換深色';
+
+      button.setAttribute(
+        'aria-label',
+        theme === 'dark' ? '目前為深色模式，點擊切換為淺色模式' : '目前為淺色模式，點擊切換為深色模式',
+      );
+    });
+  };
+
+  const initializeThemeToggles = () => {
+    document.querySelectorAll<HTMLElement>('[data-theme-toggle]').forEach((button) => {
+      if (button.dataset.toggleReady === 'true') return;
+
+      button.dataset.toggleReady = 'true';
+      button.addEventListener('click', () => {
+        const next = getEffectiveTheme() === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        try {
+          localStorage.setItem('cablate_theme', next);
+        } catch (_) {}
+        updateToggleButtons();
+      });
+    });
+
+    updateToggleButtons();
+  };
+
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', () => updateToggleButtons());
+
   const initializeMobileMenu = () => {
     document.querySelectorAll<HTMLElement>('.site-mobile-menu').forEach((menu) => {
       if (menu.dataset.menuReady === 'true') return;
@@ -98,5 +152,7 @@ const isCurrent = (href: string) => currentPath === href;
   };
 
   initializeMobileMenu();
+  initializeThemeToggles();
   document.addEventListener('astro:page-load', initializeMobileMenu);
+  document.addEventListener('astro:page-load', initializeThemeToggles);
 </script>
