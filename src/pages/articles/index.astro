@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ArrowRight } from '@lucide/astro';
 import { formatDate } from '../../utils/format';
-import AuthorCard from '../../components/common/AuthorCard.astro';
 import { personEntity } from '../../config/authority';
 import { siteConfig, withCabAiAttribution } from '../../config/siteConfig';
 
@@ -12,10 +11,6 @@ const publishedArticles = allArticles
   .filter((entry) => !entry.data.draft)
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
-const categoryCounts = [...new Set(publishedArticles.map((entry) => entry.data.category))]
-  .sort()
-  .map((category) => ({ category, count: publishedArticles.filter((entry) => entry.data.category === category).length }));
-
 const readingRoutes = [
   { problem: '想把 AI 寫程式從嘗試變成完整流程', title: '先看一個網站怎麼從零做到上線', description: '這篇攤開一次真實建站流程：怎麼規劃、部署，以及哪些決策最容易造成重做。', slug: 'claude-code-workflow' },
   { problem: '不知道該用自動化，還是需要 Agent', title: '先分清楚問題，再決定工具', description: '先分清楚排程、固定規則和自主判斷的差別，再看你的問題是否真的需要 Agent。', slug: 'blog-writing-openclaw' },
@@ -23,8 +18,6 @@ const readingRoutes = [
   { problem: 'Agent SDK 每次呼叫都付出不合理成本', title: '檢查 Session 與 Prompt Cache 是否真的被沿用', description: '這篇比較不同 Session 寫法，找出重複成本從哪裡產生。', slug: 'reverse-engineer-claude-agent-sdk-hidden-token-cost' },
 ].filter((route) => publishedArticles.some((article) => article.slug === route.slug));
 
-const routedSlugs = new Set(readingRoutes.map((route) => route.slug));
-const otherArticles = publishedArticles.filter((entry) => !routedSlugs.has(entry.slug));
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
@@ -55,18 +48,18 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
 ---
 
 <BaseLayout title="文章｜CabLate" description={pageDescription}>
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify(collectionJsonLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(collectionJsonLd)} />
 
   <div class="articles-page paper-page">
     <section class="articles-section page-paper paper-card paper-card--clip">
       <div class="articles-container">
         <header class="articles-hero">
           <div class="articles-hero__topline">
-            <p class="section-label">早期的實作筆記</p>
+            <p class="section-label">文章</p>
           </div>
           <h1 class="display-heading"><span class="heading-phrase">挑一個</span><span class="heading-phrase">跟你問題最像的</span><span class="heading-phrase">開始讀。</span></h1>
-          <p>這裡是 2026 年 2 到 3 月寫的 {publishedArticles.length} 篇實作筆記，照問題排，不照時間排。之後的新文章都放在 <a href={withCabAiAttribution(siteConfig.cabAi.libraryUrl, 'articles_hero')} target="_blank" rel="noopener">CabAI 文章區</a>，免費看。</p>
+          <p>我用 AI 工具做事時卡住的地方，和後來怎麼判斷。先照問題挑一篇，想看全部就往下。CabAI 的操作和排查教學放在 <a href={withCabAiAttribution(siteConfig.cabAi.libraryUrl, 'articles_hero')} target="_blank" rel="noopener">CabAI 文章區</a>。</p>
         </header>
 
         <section class="reading-routes" aria-labelledby="routes-title">
@@ -91,31 +84,16 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
           </ol>
         </section>
 
-        {categoryCounts.length > 0 && (
-          <nav class="topic-index" aria-label="文章主題索引">
-            <header>
-              <p class="section-label">主題索引</p>
-              <h2>照主題找</h2>
-            </header>
-            <div class="topic-index__list">
-              {categoryCounts.map(({ category, count }) => (
-                <a href={`/articles/category/${category}/`}><span>{String(count).padStart(2, '0')}</span><strong>{category}</strong><ArrowRight size={16} aria-hidden="true" /></a>
-              ))}
-              <a class="topic-index__tags" href="/articles/tags/"><span>#</span><strong>查看全部標籤</strong><ArrowRight size={16} aria-hidden="true" /></a>
-            </div>
-          </nav>
-        )}
-
-        {otherArticles.length > 0 && (
+        {publishedArticles.length > 0 && (
           <section class="other-articles" aria-labelledby="other-articles-title">
             <header>
-              <p class="section-label">其他筆記</p>
-              <h2 id="other-articles-title">其他幾篇</h2>
+              <p class="section-label">依時間</p>
+              <h2 id="other-articles-title">全部文章</h2>
             </header>
             <div class="article-list">
-              {otherArticles.map((entry) => (
+              {publishedArticles.map((entry) => (
                 <a href={`/articles/${entry.slug}/`} class="article-list__item">
-                  <div><small>{entry.data.category}</small><h3>{entry.data.title}</h3></div>
+                  <h3>{entry.data.title}</h3>
                   <p>{entry.data.description}</p>
                   <time datetime={entry.data.publishDate.toISOString()}>{formatDate(entry.data.publishDate)}</time>
                   <ArrowRight size={16} aria-hidden="true" />
@@ -126,10 +104,10 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
         )}
 
         {publishedArticles.length === 0 && <p class="empty-state">這裡還沒有公開文章。</p>}
+
+        <p class="articles-subscribe">新文章會先寄給電子報讀者。<a href="/newsletter/">訂閱電子報 <ArrowRight size={15} aria-hidden="true" /></a></p>
       </div>
     </section>
-
-    <AuthorCard class="articles-author" />
   </div>
 </BaseLayout>
 
@@ -137,7 +115,6 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
   .articles-page { padding-top: 0; }
   .articles-section { width: min(100% - 3rem, 86rem); margin-inline: auto; padding-block: clamp(3.2rem, 7vw, 6rem) !important; }
   .articles-container { max-width: 72rem; margin-inline: auto; }
-  .articles-page :global(.articles-author) { width: min(100% - 3rem, 86rem); margin: 1.25rem auto 0; }
   .articles-hero__topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-inline-size: 0; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
   .articles-hero__topline .section-label { margin: 0; }
   .articles-hero__topline > span { min-inline-size: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: .62rem; letter-spacing: .08em; text-align: end; text-wrap: pretty; }
@@ -146,8 +123,8 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
   .articles-page a:focus-visible { outline: 2px solid var(--accent); outline-offset: .3rem; }
 
   .reading-routes { margin-top: clamp(4rem, 8vw, 7rem); }
-  .reading-routes > header, .topic-index > header, .other-articles > header { max-width: 52rem; margin-bottom: 2.5rem; }
-  .reading-routes h2, .topic-index h2, .other-articles h2 { max-width: 15em; margin: 0; font-size: clamp(2rem, 3.8vw, 3.4rem); letter-spacing: -.05em; line-height: 1.06; }
+  .reading-routes > header, .other-articles > header { max-width: 52rem; margin-bottom: 2.5rem; }
+  .reading-routes h2, .other-articles h2 { max-width: 15em; margin: 0; font-size: clamp(2rem, 3.8vw, 3.4rem); letter-spacing: -.05em; line-height: 1.06; }
   .reading-routes ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border-strong); }
   .reading-routes li { border-bottom: 1px solid var(--border); }
   .reading-routes a { display: grid; grid-template-columns: 4rem minmax(0, 1fr) auto; gap: 2rem; align-items: start; min-inline-size: 0; padding: 1.8rem 0; }
@@ -159,26 +136,19 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
   .reading-route__action { display: inline-flex; align-items: center; gap: .45rem; padding-top: .2rem; color: var(--accent); font-size: .76rem; font-weight: 700; white-space: nowrap; }
   .reading-routes a:hover h3, .reading-routes a:hover .reading-route__action { color: var(--accent); }
 
-  .topic-index { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2.5rem, 8vw, 8rem); margin-top: clamp(4rem, 8vw, 7rem); padding-block: clamp(3rem, 6vw, 5rem); border-block: 1px solid var(--border); }
-  .topic-index__list { border-top: 1px solid var(--border-strong); }
-  .topic-index__list a { display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; gap: 1rem; align-items: center; min-inline-size: 0; padding: 1rem 0; border-bottom: 1px solid var(--border); }
-  .topic-index__list a > span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; }
-  .topic-index__list strong { font-size: .95rem; }
-  .topic-index__list svg { color: var(--accent); }
-  .topic-index__tags strong { color: var(--accent); }
-
   .other-articles { margin-top: clamp(4rem, 8vw, 7rem); }
   .article-list { border-top: 1px solid var(--border-strong); }
   .article-list__item { display: grid; grid-template-columns: minmax(15rem, 1.05fr) minmax(0, 1fr) 6.5rem 1rem; gap: 1.5rem; align-items: center; min-inline-size: 0; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
-  .article-list__item small, .article-list__item time { color: var(--text-muted); font-size: .7rem; }
-  .article-list__item h3 { margin: .35rem 0 0; font-size: 1.08rem; }
-  .article-list__item p { margin: 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.65; }
+  .article-list__item time { color: var(--text-muted); font-size: .75rem; }
+  .article-list__item h3 { margin: 0; font-size: 1.08rem; line-height: 1.5; }
+  .article-list__item p { display: -webkit-box; margin: 0; overflow: hidden; color: var(--text-secondary); font-size: .82rem; line-height: 1.65; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; }
   .article-list__item > svg { color: var(--accent); }
   .article-list__item:hover h3 { color: var(--accent); }
   .empty-state { padding: 4rem 2rem; color: var(--text-muted); text-align: center; }
+  .articles-subscribe { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; margin: clamp(3rem, 6vw, 4.5rem) 0 0; color: var(--text-secondary); }
+  .articles-subscribe a { display: inline-flex; align-items: center; gap: .35rem; color: var(--accent-text); font-weight: 700; }
 
   @media (max-width: 800px) {
-    .topic-index { grid-template-columns: 1fr; gap: 2.5rem; }
     .article-list__item { grid-template-columns: minmax(0, 1fr) 1rem; gap: .75rem 1.25rem; }
     .article-list__item p { grid-column: 1; }
     .article-list__item time { grid-column: 1; }
@@ -191,12 +161,11 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
     .articles-hero__topline > span { inline-size: 10ch; max-inline-size: 10ch; margin-inline-end: 2.25rem; padding-top: .1rem; font-size: .56rem; line-height: 1.45; }
     .articles-hero h1 { margin-top: 2.2rem; font-size: 2.75rem; }
     .reading-routes { margin-top: 3.5rem; }
-    .reading-routes > header, .topic-index > header, .other-articles > header { margin-bottom: 2rem; }
+    .reading-routes > header, .other-articles > header { margin-bottom: 2rem; }
     .reading-routes a { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; padding-block: 1.5rem; }
     .reading-route__body h3 { font-size: 1.3rem; }
     .reading-route__body p { font-size: .82rem; }
     .reading-route__action { grid-column: 2; justify-self: start; max-inline-size: 100%; padding-top: 0; }
-    .topic-index { margin-top: 3.5rem; padding-block: 2.75rem; }
     .other-articles { margin-top: 3.5rem; }
     .article-list__item h3 { font-size: 1rem; }
   }

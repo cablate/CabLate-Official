@@ -1,3 +1,66 @@
 # CabLate URL Redirects
 # Format: /old-path /new-path 301
 # Add a redirect here whenever you change a URL to preserve SEO value
+
+# Tag, category and tag-index pages were removed (decision D2, 2026-10-18).
+# A tag that belongs to one article, or has an obvious best article, points there.
+/articles/tag/%E8%87%AA%E5%8B%95%E5%8C%96/ /articles/blog-writing-openclaw/ 301
+/articles/tag/%E8%87%AA%E5%8B%95%E5%8C%96 /articles/blog-writing-openclaw/ 301
+/articles/tag/%E6%9D%8E%E5%AE%8F%E6%AF%85/ /articles/openclaw-agent-fundamentals/ 301
+/articles/tag/%E6%9D%8E%E5%AE%8F%E6%AF%85 /articles/openclaw-agent-fundamentals/ 301
+/articles/tag/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/ /articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/ 301
+/articles/tag/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B /articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/ 301
+/articles/tag/%E6%8E%92%E7%A8%8B/ /articles/blog-writing-openclaw/ 301
+/articles/tag/%E6%8E%92%E7%A8%8B /articles/blog-writing-openclaw/ 301
+/articles/tag/%E9%96%8B%E7%99%BC%E5%AF%A6%E6%88%B0/ /articles/claude-code-workflow/ 301
+/articles/tag/%E9%96%8B%E7%99%BC%E5%AF%A6%E6%88%B0 /articles/claude-code-workflow/ 301
+/articles/tag/%E8%81%B7%E6%B6%AF%E8%A7%80%E9%BB%9E/ /articles/anthropic-radar-ai-cannot-replace/ 301
+/articles/tag/%E8%81%B7%E6%B6%AF%E8%A7%80%E9%BB%9E /articles/anthropic-radar-ai-cannot-replace/ 301
+/articles/tag/Agent%20%E6%9E%B6%E6%A7%8B/ /articles/openclaw-agent-fundamentals/ 301
+/articles/tag/Agent%20%E6%9E%B6%E6%A7%8B /articles/openclaw-agent-fundamentals/ 301
+/articles/tag/Agent%20SDK/ /articles/agent-sdk-system-reminder-diff-fix/ 301
+/articles/tag/Agent%20SDK /articles/agent-sdk-system-reminder-diff-fix/ 301
+/articles/tag/AI%20%E5%B7%A5%E5%85%B7/ /articles/claude-code-token-drain-system-reminder/ 301
+/articles/tag/AI%20%E5%B7%A5%E5%85%B7 /articles/claude-code-token-drain-system-reminder/ 301
+/articles/tag/AI%20%E5%8D%94%E4%BD%9C/ /articles/claude-code-workflow/ 301
+/articles/tag/AI%20%E5%8D%94%E4%BD%9C /articles/claude-code-workflow/ 301
+/articles/tag/AI%20%E5%BB%BA%E7%AB%99/ /articles/claude-code-workflow/ 301
+/articles/tag/AI%20%E5%BB%BA%E7%AB%99 /articles/claude-code-workflow/ 301
+/articles/tag/AI%20Agent/ /articles/openclaw-agent-fundamentals/ 301
+/articles/tag/AI%20Agent /articles/openclaw-agent-fundamentals/ 301
+/articles/tag/AI%E5%8F%96%E4%BB%A3/ /articles/anthropic-radar-ai-cannot-replace/ 301
+/articles/tag/AI%E5%8F%96%E4%BB%A3 /articles/anthropic-radar-ai-cannot-replace/ 301
+/articles/tag/AI%E7%90%86%E8%AB%96%E8%A6%86%E8%93%8B%E7%8E%87/ /articles/anthropic-radar-ai-cannot-replace/ 301
+/articles/tag/AI%E7%90%86%E8%AB%96%E8%A6%86%E8%93%8B%E7%8E%87 /articles/anthropic-radar-ai-cannot-replace/ 301
+/articles/tag/Anthropic/ /articles/anthropic-radar-ai-cannot-replace/ 301
+/articles/tag/Anthropic /articles/anthropic-radar-ai-cannot-replace/ 301
+/articles/tag/Astro/ /articles/claude-code-workflow/ 301
+/articles/tag/Astro /articles/claude-code-workflow/ 301
+/articles/tag/Claude%20Agent%20SDK/ /articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/ 301
+/articles/tag/Claude%20Agent%20SDK /articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/ 301
+/articles/tag/CLI%20%E5%B7%A5%E5%85%B7/ /articles/blog-writing-openclaw/ 301
+/articles/tag/CLI%20%E5%B7%A5%E5%85%B7 /articles/blog-writing-openclaw/ 301
+/articles/tag/Cloudflare%20Pages/ /articles/claude-code-workflow/ 301
+/articles/tag/Cloudflare%20Pages /articles/claude-code-workflow/ 301
+/articles/tag/JSONL/ /articles/agent-sdk-system-reminder-diff-fix/ 301
+/articles/tag/JSONL /articles/agent-sdk-system-reminder-diff-fix/ 301
+/articles/tag/LLM/ /articles/anthropic-radar-ai-cannot-replace/ 301
+/articles/tag/LLM /articles/anthropic-radar-ai-cannot-replace/ 301
+/articles/tag/MCP/ /articles/openclaw-agent-fundamentals/ 301
+/articles/tag/MCP /articles/openclaw-agent-fundamentals/ 301
+/articles/tag/OpenClaw/ /articles/openclaw-agent-fundamentals/ 301
+/articles/tag/OpenClaw /articles/openclaw-agent-fundamentals/ 301
+/articles/tag/prompt%20caching/ /articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/ 301
+/articles/tag/prompt%20caching /articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/ 301
+/articles/tag/readFileState/ /articles/claude-code-token-drain-system-reminder/ 301
+/articles/tag/readFileState /articles/claude-code-token-drain-system-reminder/ 301
+/articles/tag/system-reminder/ /articles/claude-code-token-drain-system-reminder/ 301
+/articles/tag/system-reminder /articles/claude-code-token-drain-system-reminder/ 301
+/articles/tag/token%20%E6%88%90%E6%9C%AC%E5%84%AA%E5%8C%96/ /articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/ 301
+/articles/tag/token%20%E6%88%90%E6%9C%AC%E5%84%AA%E5%8C%96 /articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/ 301
+/articles/tag/token%20%E6%B6%88%E8%80%97/ /articles/claude-code-token-drain-system-reminder/ 301
+/articles/tag/token%20%E6%B6%88%E8%80%97 /articles/claude-code-token-drain-system-reminder/ 301
+/articles/tag/* /articles/ 301
+/articles/category/* /articles/ 301
+/articles/tags/ /articles/ 301
+/articles/tags /articles/ 301

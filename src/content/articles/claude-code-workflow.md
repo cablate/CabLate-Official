@@ -6,7 +6,6 @@ updatedDate: 2026-04-04
 category: "AI工具實戰"
 tags: ["Claude Code", "AI 協作", "Astro", "開發實戰", "AI 建站", "Cloudflare Pages"]
 ogImage: "/images/articles/claude-code-workflow.webp"
-featured: true
 readingTime: 8
 draft: false
 excerpt: "不是叫 AI 寫 code 就好——從架構決策到 SEO 校正，分享我用 Claude Code 建站的完整工作流。"

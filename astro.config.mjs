@@ -14,9 +14,6 @@ export default defineConfig({
         !page.includes('/confirm-subscription/') &&
         !page.includes('/subscribe/') &&
         !page.includes('/services/apply/') &&
-        !page.includes('/articles/category/') &&
-        !page.includes('/articles/tag/') &&
-        !page.includes('/articles/tags/') &&
         !page.includes('/404'),
     }),
   ],

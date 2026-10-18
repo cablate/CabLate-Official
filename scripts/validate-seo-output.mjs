@@ -51,6 +51,7 @@ for (const file of walk(dist).filter((path) => path.endsWith('.html'))) {
     assert(!html.includes('giscus.app'), `${route}: comments were removed from article pages (decision D3)`);
   }
   assert(!/<meta name="article:/i.test(html), `${route}: article:* meta uses name= instead of property=`);
+  assert(!/href="\/articles\/(?:tag|tags|category)\//.test(html), `${route}: links to a removed tag or category page (decision D2)`);
   assert((html.match(/<main[\s>]/gi) ?? []).length === 1, `${route}: expected exactly one <main>`);
   assert((html.match(/<h1[\s>]/gi) ?? []).length === 1, `${route}: expected exactly one <h1>`);
 }
