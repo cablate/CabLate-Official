@@ -8,11 +8,13 @@
     "check": "astro check",
     "lint:copy": "node scripts/lint-copy.mjs",
     "validate:content": "node scripts/validate-content.js",
+    "validate:svg": "node scripts/validate-svg-diagrams.mjs",
     "validate:service-application": "node scripts/validate-service-application.js && node scripts/test-service-application-function.js",
     "validate:analytics": "node scripts/validate-analytics.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "validate:seo": "node scripts/validate-seo-output.mjs"
+    "validate:seo": "node scripts/validate-seo-output.mjs",
+    "prepare": "git config core.hooksPath .githooks || true"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.15",

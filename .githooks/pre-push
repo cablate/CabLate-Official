@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+set -e
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+node "$REPO_ROOT/scripts/lint-copy.mjs" --strict
+node "$REPO_ROOT/scripts/validate-content.js"
+if [ -d "$REPO_ROOT/dist/articles" ]; then
+  node "$REPO_ROOT/scripts/validate-svg-diagrams.mjs" --built "$REPO_ROOT/dist"
+fi

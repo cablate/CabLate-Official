@@ -6,6 +6,8 @@ companion_docs:
   - docs/content/copy-voice-guidelines-2026-07-11.md
   - scripts/lint-copy.mjs
   - scripts/validate-content.js
+  - scripts/validate-svg-diagrams.mjs
+  - .claude/hooks/article-svg-guard.mjs
 ---
 
 # CabLate 文章寫作、Markdown 排版與 AI 圖解規範
@@ -139,8 +141,10 @@ ogHighlight: # 選填（已啟用），供 OG 圖生成高辨識度數據卡
    - 桌面版 SVG `viewBox` 寬度統一設為 `720` 或 `760`（完美貼合文章 `41rem` ≈ `656px` 閱讀欄寬）。
    - 在 `viewBox="0 0 720 H"` 座標系下，**正文字級不得小於 `13px`，次要標籤不得小於 `11.5px`，節點主標題為 `14px–16px`（`font-weight: 700`）**。
    - 若流程圖橫向超過 4 個節點，在窄螢幕（或預設排版）優先採用**「由上而下（Vertical Flow）」或「雙排折返（Z-Flow）」**構圖，避免在 `375px` 手機上縮成一整排看不清的小字。
-3. **無障礙與動畫禮儀（Accessibility & Motion）**：
-   - 每個 `<svg>` 必須包含 `role="img"` 與 `<title>`／`<desc>`，外層包裹 `<figure class="article-diagram">` 與 `<figcaption>` 說明圖表結論。
+3. **無障礙、動畫禮儀與 Markdown HTML 區塊鐵則（Accessibility, Motion & No-Blank-Line Rule）**：
+   - **禁止在 `<figure>` 或 `<svg>` 內部留空行（Blank Lines）**：Markdown（CommonMark）遇到空行會強制終止 HTML 區塊，並把後續縮排滿 4 格的 `<path>`／`<rect>`／`<text>` 轉成 `<pre><code>` 程式碼區塊。`<figure>...</figure>` 內所有行必須緊密相連，不得出現空白行。
+   - **容器與邊界契約**：每個 `<text>` 的預估寬度必須完全落在所屬 `<rect>`（右邊界至少留 `4px`）與 `viewBox` 內，禁止文字壓框、出框或上下行重疊（由 `scripts/validate-svg-diagrams.mjs` 機械驗證）。
+   - 每個 `<svg>` 必須包含 `role="img"` 與 `<title id="...">`（對應 `aria-labelledby`），外層包裹 `<figure class="article-diagram">` 與 `<figcaption>` 說明圖表結論。
    - **動畫必加降級保護**：所有 CSS `@keyframes` 動態效果必須放在 `@media (prefers-reduced-motion: no-preference)` 內，或於 `@media (prefers-reduced-motion: reduce)` 下設為 `animation: none;`，確保靜態終態依然完整可讀。
    - **禁止高頻閃爍**：流動光點或脈衝週期控制在 `2.5s–4s`，柔和不搶奪正文閱讀注意力。
 
@@ -170,12 +174,29 @@ ogHighlight: # 選填（已啟用），供 OG 圖生成高辨識度數據卡
 # 1. 檢查文案是否有 AI 禁用詞或破折號（必須為 0 total）
 npm run lint:copy -- --strict
 
-# 2. 檢查 Frontmatter 日期時區、禁用標記與圖片路徑
+# 2. 檢查 Frontmatter 日期時區、禁用標記、圖片路徑與內嵌 SVG 圖解幾何／結構契約
 npm run validate:content
+npm run validate:svg
 
 # 3. 檢查 TypeScript 與 Astro 模板型別（必須 0 errors, 0 warnings, 0 hints）
 npx astro check
 
-# 4. 完整建置並驗證 SEO / JSON-LD / 入口契約（若修改了 src/plugins/ 或 src/content/config.ts，建置前須先執行 rm -f node_modules/.astro/data-store.json 清除內容快取）
+# 4. 完整建置並驗證 SEO / JSON-LD / 編譯後 SVG 完整性 / 入口契約（若修改了 src/plugins/ 或 src/content/config.ts，建置前須先執行 rm -f node_modules/.astro/data-store.json 清除內容快取）
 npm run build && node scripts/validate-entry-surfaces.mjs && npm run validate:seo
 ```
+
+---
+
+## 8. 官網 SEO 待發文章佇列（能發就發，不限每週一篇）
+
+依 2026-10-19 決策，只要知識庫（`D:/_CabLate_Agents/general/knowledge/tech-kb/atoms/` 與《講師與企業培訓經歷主檔》）已有完整真實素材，採**「能發就發」**節奏轉化上線，並由 AI 主動提醒推進。完整策略見 `D:/_CabLate_Agents/general/knowledge/business/seo-topic-cluster-小型站點內容成長策略.md`。
+
+| 順序 | 狀態 | 預定標題與主題 | 真實素材來源 | 導流 Hub |
+|---|---|---|---|---|
+| **#0** | ✅ 已發布 (`4f3b865`) | **寫了 Skill 卻死都不觸發？拆解 CLAUDE.md、Skill 與 MCP 的分工** (`/articles/claude-code-skill-vs-claude-md-and-mcp/`) | `tech-kb/atoms/ai-skills/`（untriggering、漸進式揭露、MCP 對照、10 秒決策樹） | `/courses/`、`/expertise/` |
+| **#1** | ⏳ 待發（第一優先） | **企業 AI 課上完，為什麼大家回去還是沒用？從 30 場內訓看「聽得很嗨」跟「做得出東西」的差別** | `講師與企業培訓經歷主檔.md`（四健會 23 個網站、證券業 PM/QA、外商工程班）＋ `企業內訓教學方法論.md` | `/services/enterprise/`、`/services/partnerships/` |
+| **#2** | ⏳ 待發 | **Claude Code 開多個視窗或派 Subagent，為什麼反而越跑越慢、額度掉更快？** | `claude-code-multi-window-management.md`、`sub-agent-context-management-tradeoffs.md`、`hook-subagent-cost-impact.md` | `/courses/`（工程手冊） |
+| **#3** | ⏳ 待發 | **用 Vibe Coding 做出網站只要兩小時，為什麼不敢直接上線收錢？前端與金流最常漏掉的安全底線** | `T003 免費網站資安入門講座`（200 人報名）＋ `D001 金流串接實戰` ＋ `bypass-permission-danger.md` | `/courses/`、`/services/consulting/` |
+| **#4** | ⏳ 待發 | **給了 AI 一堆參考文件還是亂寫？拆解 Context 塞爆與漸進式知識庫的整理法** | `references-correct-usage.md`、`skill-over-doc-folder.md`、`llm-atomic-wiki`（149 stars） | `/courses/`（AgentSkill）、`/expertise/` |
+| **#5** | ⏳ 待發 | **AI 改 A 壞 B、一直鬼打牆怎麼辦？不重寫 Prompt 的五層排錯順序** | `claude-code-ai-loses-track-sop.md`、`ai-deleted-commit-reflog-recovery.md`、`W07-workflow-debugging.md` | `/expertise/`、`/services/coaching/` |
+

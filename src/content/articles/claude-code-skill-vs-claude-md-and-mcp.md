@@ -80,37 +80,33 @@ ogHighlight:
         <rect x="40" y="204" width="178" height="26" rx="4" fill="#fffdf8" stroke="#efb4ae"/>
         <text x="50" y="221" font-size="12" fill="#b4352f">✗ 金流 Webhook 驗簽步驟</text>
         <text x="40" y="252" font-size="12" font-weight="700" fill="#b4352f" style="font-family:var(--font-mono)">常駐消耗：4,500+ tokens / 輪</text>
-
         <path class="flow-edge" d="M234 158 H298" stroke="#b4352f" stroke-width="2" fill="none"/>
         <path d="M298 152 L310 158 L298 164 Z" fill="#b4352f"/>
-
         <rect class="pulse-node" x="314" y="64" width="382" height="188" rx="8" fill="#fff1ef" stroke="#b4352f" stroke-width="1.5"/>
         <text x="334" y="94" font-size="15" font-weight="700" fill="#b4352f">Context Window 被無關規定塞滿</text>
         <text x="334" y="124" font-size="13" fill="#253047">1. 改一行 CSS 也要替寫作與金流規範付錢</text>
         <text x="334" y="150" font-size="13" fill="#253047">2. 規則互相干擾，真正重要的紅線反而被漏看</text>
         <text x="334" y="176" font-size="13" fill="#253047">3. 改動單一流程時，整份 CLAUDE.md 越來越難維護</text>
         <rect x="334" y="198" width="342" height="34" rx="6" fill="#fffdf8" stroke="#efb4ae"/>
-        <text x="348" y="220" font-size="12.5" font-weight="700" fill="#b4352f">結果：額度掉得快，AI 卻還是常常忘記你寫過的規定</text>
+        <text x="346" y="220" font-size="12.5" font-weight="700" fill="#b4352f">結果：額度掉得快，AI 卻還是常常忘記你寫過的規定</text>
       </svg>
     </div>
     <div data-pane="progressive-skill" style="display:none">
       <svg viewBox="0 0 720 310" role="img" aria-labelledby="progSkillTitle">
         <title id="progSkillTitle">用 CLAUDE.md 放通用底線，搭配 Skill 三層漸進式揭露，平時只佔約 100 tokens，命中情境才載入完整 SOP</title>
         <text x="24" y="28" font-size="13" font-weight="700" fill="#5f687a">情境：平時只載入極薄索引，說出「幫我寫新文章」才展開對應 SOP</text>
-        <rect x="24" y="46" width="200" height="224" rx="8" fill="#eef7f1" stroke="#aed7be" stroke-width="1.5"/>
-        <text x="40" y="74" font-size="14" font-weight="700" fill="#26734f">常駐 Context（極輕量）</text>
-        <rect x="40" y="90" width="168" height="58" rx="6" fill="#fffdf8" stroke="#aed7be"/>
-        <text x="50" y="112" font-size="12.5" font-weight="700" fill="#253047">精簡 CLAUDE.md</text>
-        <text x="50" y="132" font-size="11.5" fill="#5f687a">架構、測試指令、安全底線</text>
-        <rect x="40" y="160" width="168" height="68" rx="6" fill="#f1edff" stroke="#b8afc9"/>
-        <text x="50" y="182" font-size="12.5" font-weight="700" fill="#6248c8">Level 1：Skill 索引</text>
-        <text x="50" y="200" font-size="11.5" fill="#5f687a">只載入 name + description</text>
-        <text x="50" y="217" font-size="11.5" font-weight="700" fill="#6248c8" style="font-family:var(--font-mono)">每支約 100 tokens</text>
-        <text x="40" y="252" font-size="12" font-weight="700" fill="#26734f">改 CSS 時完全不載入寫作規範</text>
-
-        <path class="flow-edge" d="M224 194 H276" stroke="#6248c8" stroke-width="2" fill="none"/>
+        <rect x="24" y="46" width="204" height="224" rx="8" fill="#eef7f1" stroke="#aed7be" stroke-width="1.5"/>
+        <text x="38" y="74" font-size="14" font-weight="700" fill="#26734f">常駐 Context（極輕量）</text>
+        <rect x="38" y="90" width="176" height="58" rx="6" fill="#fffdf8" stroke="#aed7be"/>
+        <text x="48" y="112" font-size="12.5" font-weight="700" fill="#253047">精簡 CLAUDE.md</text>
+        <text x="48" y="132" font-size="11.5" fill="#5f687a">架構、測試指令、安全底線</text>
+        <rect x="38" y="160" width="176" height="68" rx="6" fill="#f1edff" stroke="#b8afc9"/>
+        <text x="48" y="182" font-size="12.5" font-weight="700" fill="#6248c8">Level 1：Skill 索引</text>
+        <text x="48" y="200" font-size="11.5" fill="#5f687a">只讀 name 與 description</text>
+        <text x="48" y="217" font-size="11.5" font-weight="700" fill="#6248c8" style="font-family:var(--font-mono)">每支約 100 tokens</text>
+        <text x="38" y="252" font-size="12" font-weight="700" fill="#26734f">改 CSS 時不載入寫作規範</text>
+        <path class="flow-edge" d="M228 194 H276" stroke="#6248c8" stroke-width="2" fill="none"/>
         <path d="M276 188 L288 194 L276 200 Z" fill="#6248c8"/>
-
         <rect x="292" y="56" width="194" height="204" rx="8" fill="#f1edff" stroke="#b8afc9" stroke-width="1.5"/>
         <text x="308" y="84" font-size="14" font-weight="700" fill="#6248c8">Level 2：SKILL.md</text>
         <text x="308" y="106" font-size="12" fill="#253047">命中「寫文章」情境才讀取：</text>
@@ -118,10 +114,8 @@ ogHighlight:
         <text x="308" y="154" font-size="12" fill="#5f687a">• 疑問鏈與問句小標規則</text>
         <text x="308" y="176" font-size="12" fill="#5f687a">• 禁用詞與發布前檢查</text>
         <text x="308" y="236" font-size="11.5" font-weight="700" fill="#6248c8" style="font-family:var(--font-mono)">按需載入：約 800 tokens</text>
-
         <path class="flow-edge" d="M486 158 H526" stroke="#26734f" stroke-width="2" fill="none"/>
         <path d="M526 152 L538 158 L526 164 Z" fill="#26734f"/>
-
         <rect x="542" y="76" width="154" height="164" rx="8" fill="#eef7f1" stroke="#aed7be" stroke-width="1.5"/>
         <text x="556" y="104" font-size="13.5" font-weight="700" fill="#26734f">Level 3：附屬檔案</text>
         <text x="556" y="130" font-size="12" fill="#253047" style="font-family:var(--font-mono)">references/</text>
@@ -171,49 +165,41 @@ ogHighlight:
 
 <figure class="article-diagram">
   <div class="article-diagram__scroll">
-    <svg viewBox="0 0 720 350" role="img" aria-labelledby="decisionTreeTitle">
+    <svg viewBox="0 0 760 350" role="img" aria-labelledby="decisionTreeTitle">
       <title id="decisionTreeTitle">十秒判斷一條需求該放對話、MCP、CLAUDE.md 還是 AgentSkill 的決策樹</title>
-      <rect x="24" y="20" width="200" height="58" rx="8" fill="#f1edff" stroke="#6248c8" stroke-width="1.5"/>
-      <text x="40" y="45" font-size="13.5" font-weight="700" fill="#6248c8">Q1：這件事下次還會遇到嗎？</text>
-      <text x="40" y="65" font-size="11.5" fill="#5f687a">（我希望 AI 永遠記得這個做法嗎？）</text>
-
-      <path d="M224 49 H292" stroke="#5f687a" stroke-width="1.5" fill="none"/>
-      <text x="236" y="42" font-size="11.5" font-weight="700" fill="#9b6017">不會（一次性）</text>
-      <rect x="296" y="22" width="396" height="54" rx="8" fill="#fff7e8" stroke="#e7c58f"/>
-      <text x="314" y="45" font-size="13.5" font-weight="700" fill="#9b6017">直接在當下對話講清楚就好</text>
-      <text x="314" y="64" font-size="12" fill="#5f687a">例如：今天會議的臨時議程、單次活動的促銷文案，做完就丟，別塞進設定檔。</text>
-
-      <path d="M124 78 V122" stroke="#6248c8" stroke-width="1.5" fill="none"/>
-      <text x="134" y="104" font-size="11.5" font-weight="700" fill="#6248c8">會（需要長期記住）</text>
-
-      <rect x="24" y="124" width="200" height="58" rx="8" fill="#f1edff" stroke="#6248c8" stroke-width="1.5"/>
-      <text x="40" y="149" font-size="13.5" font-weight="700" fill="#6248c8">Q2：是欠缺外部工具權限，</text>
-      <text x="40" y="169" font-size="13.5" font-weight="700" fill="#6248c8">還是欠缺做事步驟與判斷？</text>
-
-      <path d="M224 153 H292" stroke="#5f687a" stroke-width="1.5" fill="none"/>
-      <text x="232" y="146" font-size="11.5" font-weight="700" fill="#253047">欠外部連線</text>
-      <rect x="296" y="126" width="396" height="54" rx="8" fill="#f8f5ed" stroke="#d7d1c6"/>
-      <text x="314" y="149" font-size="13.5" font-weight="700" fill="#253047">接上對應的 MCP Server（或 CLI 腳本）</text>
-      <text x="314" y="168" font-size="12" fill="#5f687a">例如：讀取 Supabase 資料表、查 Google 行事曆。只開必要的工具，用完即關。</text>
-
-      <path d="M124 182 V226" stroke="#6248c8" stroke-width="1.5" fill="none"/>
-      <text x="134" y="208" font-size="11.5" font-weight="700" fill="#6248c8">欠做事步驟／判斷標準</text>
-
-      <rect x="24" y="228" width="200" height="58" rx="8" fill="#f1edff" stroke="#6248c8" stroke-width="1.5"/>
-      <text x="40" y="253" font-size="13.5" font-weight="700" fill="#6248c8">Q3：每一輪對話都必須遵守，</text>
-      <text x="40" y="273" font-size="13.5" font-weight="700" fill="#6248c8">還是特定任務才用得到？</text>
-
-      <path d="M224 246 H292" stroke="#26734f" stroke-width="1.5" fill="none"/>
-      <text x="232" y="239" font-size="11.5" font-weight="700" fill="#26734f">每輪必守底線</text>
-      <rect x="296" y="212" width="396" height="52" rx="8" fill="#eef7f1" stroke="#aed7be"/>
-      <text x="314" y="234" font-size="13.5" font-weight="700" fill="#26734f">寫進 CLAUDE.md（控制在精簡行數）</text>
-      <text x="314" y="253" font-size="12" fill="#5f687a">例如：專案目錄結構、禁止碰的分支、執行測試的指令、預設語言。</text>
-
-      <path d="M224 272 H292" stroke="#6248c8" stroke-width="2" fill="none"/>
-      <text x="232" y="290" font-size="11.5" font-weight="700" fill="#6248c8">特定任務才用</text>
-      <rect class="pulse-node" x="296" y="274" width="396" height="58" rx="8" fill="#f1edff" stroke="#6248c8" stroke-width="1.5"/>
-      <text x="314" y="298" font-size="14" font-weight="700" fill="#6248c8">封裝成 AgentSkill（.claude/skills/）</text>
-      <text x="314" y="318" font-size="12" fill="#253047">例如：文章寫作與圖解規範、PR 安全審查清單、報表清理步驟（哪怕一季只用一次）。</text>
+      <rect x="20" y="20" width="216" height="58" rx="8" fill="#f1edff" stroke="#6248c8" stroke-width="1.5"/>
+      <text x="34" y="44" font-size="13.5" font-weight="700" fill="#6248c8">Q1：這件事下次還會遇到嗎？</text>
+      <text x="34" y="64" font-size="11.5" fill="#5f687a">（希望 AI 永遠記得這個做法嗎？）</text>
+      <path d="M236 49 H312" stroke="#5f687a" stroke-width="1.5" fill="none"/>
+      <text x="242" y="41" font-size="11.5" font-weight="700" fill="#9b6017">不會（單次）</text>
+      <rect x="316" y="22" width="424" height="54" rx="8" fill="#fff7e8" stroke="#e7c58f"/>
+      <text x="332" y="44" font-size="13.5" font-weight="700" fill="#9b6017">直接在當下對話講清楚就好</text>
+      <text x="332" y="64" font-size="12" fill="#5f687a">例：今天會議的臨時議程、單次活動文案，做完就丟，別塞進設定檔。</text>
+      <path d="M128 78 V122" stroke="#6248c8" stroke-width="1.5" fill="none"/>
+      <text x="138" y="104" font-size="11.5" font-weight="700" fill="#6248c8">會（需要長期記住）</text>
+      <rect x="20" y="124" width="216" height="58" rx="8" fill="#f1edff" stroke="#6248c8" stroke-width="1.5"/>
+      <text x="34" y="148" font-size="13.5" font-weight="700" fill="#6248c8">Q2：是欠缺外部工具權限，</text>
+      <text x="34" y="168" font-size="13.5" font-weight="700" fill="#6248c8">還是欠缺做事步驟與判斷？</text>
+      <path d="M236 153 H312" stroke="#5f687a" stroke-width="1.5" fill="none"/>
+      <text x="242" y="145" font-size="11.5" font-weight="700" fill="#253047">欠外部連線</text>
+      <rect x="316" y="126" width="424" height="54" rx="8" fill="#f8f5ed" stroke="#d7d1c6"/>
+      <text x="332" y="148" font-size="13.5" font-weight="700" fill="#253047">接上對應的 MCP Server（或 CLI 腳本）</text>
+      <text x="332" y="168" font-size="12" fill="#5f687a">例：讀 Supabase 資料表、查 Google 行事曆。只開必要工具，用完即關。</text>
+      <path d="M128 182 V226" stroke="#6248c8" stroke-width="1.5" fill="none"/>
+      <text x="138" y="208" font-size="11.5" font-weight="700" fill="#6248c8">欠做事步驟／判斷標準</text>
+      <rect x="20" y="228" width="216" height="58" rx="8" fill="#f1edff" stroke="#6248c8" stroke-width="1.5"/>
+      <text x="34" y="252" font-size="13.5" font-weight="700" fill="#6248c8">Q3：每輪對話都必須遵守，</text>
+      <text x="34" y="272" font-size="13.5" font-weight="700" fill="#6248c8">還是特定任務才用得到？</text>
+      <path d="M236 246 H312" stroke="#26734f" stroke-width="1.5" fill="none"/>
+      <text x="240" y="238" font-size="11.5" font-weight="700" fill="#26734f">每輪必守底線</text>
+      <rect x="316" y="212" width="424" height="52" rx="8" fill="#eef7f1" stroke="#aed7be"/>
+      <text x="332" y="234" font-size="13.5" font-weight="700" fill="#26734f">寫進 CLAUDE.md（控制在精簡行數）</text>
+      <text x="332" y="253" font-size="12" fill="#5f687a">例：專案目錄結構、禁止碰的分支、執行測試指令、預設語言。</text>
+      <path d="M236 272 H312" stroke="#6248c8" stroke-width="2" fill="none"/>
+      <text x="240" y="290" font-size="11.5" font-weight="700" fill="#6248c8">特定任務才用</text>
+      <rect class="pulse-node" x="316" y="274" width="424" height="58" rx="8" fill="#f1edff" stroke="#6248c8" stroke-width="1.5"/>
+      <text x="332" y="298" font-size="14" font-weight="700" fill="#6248c8">封裝成 AgentSkill（.claude/skills/）</text>
+      <text x="332" y="318" font-size="12" fill="#253047">例：文章寫作與圖解規範、PR 安全審查清單、每季報表清理步驟。</text>
     </svg>
   </div>
   <figcaption>不要用「每天用不用得到」決定要不要寫 Skill；只要那個流程下次再做時你不想重講一遍，就值得收進 Skill。</figcaption>

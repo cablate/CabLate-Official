@@ -5,6 +5,7 @@ import { join } from 'path';
 const isProductionDeploy = process.env.CF_PAGES === '1' && process.env.CF_PAGES_BRANCH === 'master';
 
 // 0. Content validation — fail fast before building
+execSync('node scripts/lint-copy.mjs --strict', { stdio: 'inherit' });
 execSync('node scripts/validate-content.js', { stdio: 'inherit' });
 execSync('node scripts/validate-analytics.mjs', { stdio: 'inherit' });
 
@@ -31,6 +32,7 @@ if (existsSync(dataStorePath)) {
 
 // 1. Astro build
 execSync('npx astro build', { stdio: 'inherit' });
+execSync('node scripts/validate-svg-diagrams.mjs --built', { stdio: 'inherit' });
 execSync('node scripts/validate-analytics.mjs --built', { stdio: 'inherit' });
 execSync('node scripts/subset-serif-font.mjs', { stdio: 'inherit' });
 execSync('node scripts/validate-seo-output.mjs', { stdio: 'inherit' });

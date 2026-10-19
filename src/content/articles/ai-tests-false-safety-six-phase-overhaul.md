@@ -217,7 +217,7 @@ expect(source).toMatch(/reset_project_data_v2/);
 
 <figure class="article-diagram">
   <div class="article-diagram__scroll">
-    <svg viewBox="0 0 720 340" role="img" aria-labelledby="constraintTitle">
+    <svg viewBox="0 0 720 348" role="img" aria-labelledby="constraintTitle">
       <title id="constraintTitle">約束優先序五層，越高層擋得越早、越不需要人與 AI 記住</title>
       <text x="24" y="28" font-size="13" font-weight="700" fill="#5f687a">越高層的約束，擋得越早、越便宜，也越不靠任何人記得</text>
       <rect x="24" y="48" width="672" height="48" rx="8" fill="#f1edff" stroke="#b8afc9"/>

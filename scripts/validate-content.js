@@ -13,9 +13,12 @@
 
 import { existsSync, readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
+import { fileURLToPath } from 'url';
+import { validateMarkdownFile } from './validate-svg-diagrams.mjs';
 
-const ARTICLES_DIR = join(process.cwd(), 'src', 'content', 'articles');
-const PUBLIC_DIR = join(process.cwd(), 'public');
+const ROOT_DIR = fileURLToPath(new URL('..', import.meta.url));
+const ARTICLES_DIR = join(ROOT_DIR, 'src', 'content', 'articles');
+const PUBLIC_DIR = join(ROOT_DIR, 'public');
 
 const FORBIDDEN_PATTERNS = [
   { pattern: /\[TEST(?:\s+DATA)?\]/gi, label: '[TEST] marker' },
@@ -48,6 +51,8 @@ for (const file of readdirSync(ARTICLES_DIR).filter((f) => f.endsWith('.md'))) {
   if (ogImage && !ogImage.startsWith('http') && !existsSync(join(PUBLIC_DIR, ogImage))) {
     failures.push(`${file}: ogImage ${ogImage} does not exist under public/`);
   }
+
+  failures.push(...validateMarkdownFile(join(ARTICLES_DIR, file)));
 }
 
 if (failures.length > 0) {

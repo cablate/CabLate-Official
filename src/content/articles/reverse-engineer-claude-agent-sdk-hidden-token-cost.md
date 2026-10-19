@@ -310,13 +310,13 @@ const replacement = 'settingSources:Q.settingSources??[]';
         <text x="88" y="142" text-anchor="middle" font-size="12" fill="#5f687a">SDK query()</text>
         <path d="M156 128 H196" stroke="#5f687a" stroke-width="1.5" fill="none"/>
         <path d="M196 122 L208 128 L196 134 Z" fill="#5f687a"/>
-        <rect x="216" y="36" width="296" height="52" rx="8" fill="#ffffff" stroke="#b4352f" stroke-dasharray="5 4"/>
+        <rect x="216" y="36" width="296" height="52" rx="8" fill="#fffdf8" stroke="#b4352f" stroke-dasharray="5 4"/>
         <text x="232" y="58" font-size="13" font-weight="700" fill="#253047">cli.js process #1</text>
         <text x="232" y="76" font-size="12" fill="#5f687a">spawn → 組 request → 結束</text>
-        <rect x="216" y="100" width="296" height="52" rx="8" fill="#ffffff" stroke="#b4352f" stroke-dasharray="5 4"/>
+        <rect x="216" y="100" width="296" height="52" rx="8" fill="#fffdf8" stroke="#b4352f" stroke-dasharray="5 4"/>
         <text x="232" y="122" font-size="13" font-weight="700" fill="#253047">cli.js process #2</text>
         <text x="232" y="140" font-size="12" fill="#5f687a">spawn → 組 request → 結束</text>
-        <rect x="216" y="164" width="296" height="52" rx="8" fill="#ffffff" stroke="#b4352f" stroke-dasharray="5 4"/>
+        <rect x="216" y="164" width="296" height="52" rx="8" fill="#fffdf8" stroke="#b4352f" stroke-dasharray="5 4"/>
         <text x="232" y="186" font-size="13" font-weight="700" fill="#253047">cli.js process #3</text>
         <text x="232" y="204" font-size="12" fill="#5f687a">spawn → 組 request → 結束</text>
         <text x="364" y="238" text-anchor="middle" font-size="13" font-weight="700" fill="#b4352f">每次 query() 都 spawn 新 process · 注入重組</text>
