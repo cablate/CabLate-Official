@@ -7,16 +7,26 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NewsletterCard from '../components/common/NewsletterCard.astro';
 import { siteConfig } from '../config/siteConfig';
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://cablate.com/' },
+    { '@type': 'ListItem', position: 2, name: '電子報', item: 'https://cablate.com/newsletter/' },
+  ],
+};
 ---
 
 <BaseLayout
-  title="訂閱 Cab 的電子報"
-  description={`Cab 的電子報。${siteConfig.newsletter.promise}`}
+  title="訂閱 Cab 的 AI 電子報｜每封拆解一個 AI 工作流與 Claude Code 卡點"
+  description={`Cab 的電子報。${siteConfig.newsletter.promise}${siteConfig.newsletter.cadence}`}
   image="/og/pages/subscribe.png"
   imageAlt="訂閱 Cab 的電子報：每封拆一個 AI 卡點"
   imageWidth={1200}
   imageHeight={630}
 >
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
   <div class="newsletter-page">
     <NewsletterCard />
   </div>

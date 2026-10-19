@@ -10,18 +10,19 @@ import NewsletterCard from '../components/common/NewsletterCard.astro';
 import { ArrowLeft } from '@lucide/astro';
 import { siteConfig } from '../config/siteConfig';
 
-const pageDescription = `Cab 的電子報。${siteConfig.newsletter.promise}`;
+const pageTitle = '訂閱 Cab 的 AI 電子報｜每封拆解一個 AI 工作流與 Claude Code 卡點 | CabLate';
+const pageDescription = `Cab 的電子報。${siteConfig.newsletter.promise}${siteConfig.newsletter.cadence}`;
 ---
 
 <BaseLayout
-  title="訂閱 Cab 的電子報"
+  title={pageTitle}
   description={pageDescription}
   shell="bare"
   noSEO={true}
 >
   <SEO
     slot="head"
-    title="訂閱 Cab 的電子報"
+    title={pageTitle}
     description={pageDescription}
     image="/og/pages/subscribe.png"
     imageAlt="訂閱 Cab 的電子報：每封拆一個 AI 卡點"

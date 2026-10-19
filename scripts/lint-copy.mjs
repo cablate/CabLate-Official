@@ -3,8 +3,9 @@
 // Exits 1 only with --strict and at least one hit.
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = process.cwd();
+const root = fileURLToPath(new URL('..', import.meta.url));
 const strict = process.argv.includes('--strict');
 const quiet = process.argv.includes('--quiet');
 

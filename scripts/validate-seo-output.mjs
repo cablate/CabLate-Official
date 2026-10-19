@@ -46,9 +46,18 @@ for (const file of walk(dist).filter((path) => path.endsWith('.html'))) {
     assert(person['@id'] === PERSON_ID, `${route}: Person node has @id ${person['@id'] ?? '(none)'} instead of ${PERSON_ID}`);
   }
 
-  if (route.startsWith('articles/')) {
+  if (route.startsWith('articles/') && route !== 'articles/index.html') {
     assert(collectTyped(nodes, 'FAQPage').length === 0, `${route}: article pages carry no FAQPage (decision D3)`);
     assert(!html.includes('giscus.app'), `${route}: comments were removed from article pages (decision D3)`);
+    for (const article of collectTyped(nodes, 'Article')) {
+      assert(typeof article.articleSection === 'string' && article.articleSection.length > 0, `${route}: Article node must include articleSection`);
+      assert(!/[|｜]\s*CabLate$/.test(article.headline ?? ''), `${route}: Article headline must not retain brand suffix`);
+    }
+  }
+  for (const webPage of collectTyped(nodes, 'WebPage')) {
+    if (typeof webPage.name === 'string') {
+      assert(!/[|｜]\s*CabLate$/.test(webPage.name), `${route}: WebPage.name ("${webPage.name}") must not retain brand suffix`);
+    }
   }
   assert(!/<meta name="article:/i.test(html), `${route}: article:* meta uses name= instead of property=`);
   assert(!/href="\/articles\/(?:tag|tags|category)\//.test(html), `${route}: links to a removed tag or category page (decision D2)`);
@@ -99,10 +108,13 @@ const expectJsonLdTypes = (route, expected) => {
 };
 
 expectJsonLdTypes('services/consulting/index.html', ['Service', 'FAQPage', 'BreadcrumbList']);
+expectJsonLdTypes('services/coaching/index.html', ['Service', 'FAQPage', 'BreadcrumbList']);
 expectJsonLdTypes('services/enterprise/index.html', ['Service', 'FAQPage', 'BreadcrumbList']);
 expectJsonLdTypes('services/partnerships/index.html', ['Service', 'FAQPage', 'BreadcrumbList']);
 expectJsonLdTypes('courses/index.html', ['BreadcrumbList', 'ItemList']);
 expectJsonLdTypes('services/index.html', ['BreadcrumbList', 'ItemList']);
+expectJsonLdTypes('about/index.html', ['ProfilePage', 'BreadcrumbList', 'VideoObject']);
+expectJsonLdTypes('newsletter/index.html', ['BreadcrumbList']);
 
 // seo-coach 04-on-page / 40-chinese-seo-specifics: core commercial/hub pages must include descriptive topic keywords in <title>
 const expectTitleKeywords = (route, keywords) => {
@@ -115,8 +127,14 @@ const expectTitleKeywords = (route, keywords) => {
 expectTitleKeywords('articles/index.html', ['AI Agent', 'Claude Code']);
 expectTitleKeywords('courses/index.html', ['Claude Code', 'AgentSkill']);
 expectTitleKeywords('expertise/index.html', ['AI 工作流']);
+expectTitleKeywords('services/index.html', ['AI', '企業內訓']);
 expectTitleKeywords('services/consulting/index.html', ['AI', '諮詢']);
+expectTitleKeywords('services/coaching/index.html', ['AI 應用陪跑']);
+expectTitleKeywords('services/enterprise/index.html', ['企業 AI 內訓', '工作坊']);
 expectTitleKeywords('services/partnerships/index.html', ['AI', '工作坊']);
+expectTitleKeywords('about/index.html', ['Cab', 'Claude Code']);
+expectTitleKeywords('newsletter/index.html', ['AI 電子報', 'Claude Code']);
+expectTitleKeywords('subscribe/index.html', ['AI 電子報', 'CabLate']);
 
 const llmsPath = join(dist, 'llms.txt');
 const llms = existsSync(llmsPath) ? readFileSync(llmsPath, 'utf8') : '';

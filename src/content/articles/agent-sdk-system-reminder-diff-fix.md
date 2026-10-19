@@ -191,4 +191,4 @@ const result = query({
 
 這不是優雅的解法。這是在[用 Claude Code 建構自動化系統](/articles/claude-code-workflow/)的過程中，官方沒在動、但問題實際影響開發效率，所以自己能做的事。
 
-官方 issue 還開著。後來我繼續往下追，發現就算擋掉 diff 注入，SDK V1 每次重開 process 還是會讓 prompt cache 失效——完整根因與 V2 persistent session 的最終解法整理在下一篇〈[逆向 Claude Agent SDK：找出每則訊息 2-3% 額度消耗的根因與解法](/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/)〉；想一次摸透 Claude Code 底層架構的人，也可以看 [Claude Code 深度工程手冊](/courses/)。
+官方 issue 還開著。後來我繼續往下追，發現就算擋掉 diff 注入，SDK V1 每次重開 process 還是會讓 prompt cache 失效。完整根因與 V2 persistent session 的最終解法整理在下一篇〈[逆向 Claude Agent SDK：找出每則訊息 2-3% 額度消耗的根因與解法](/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/)〉；想一次摸透 Claude Code 底層架構的人，也可以看 [Claude Code 深度工程手冊](/courses/)。

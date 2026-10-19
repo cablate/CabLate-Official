@@ -8,13 +8,34 @@ import QuoteBand from '../components/common/QuoteBand.astro';
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
-  dateModified: '2026-10-06',
+  dateModified: '2026-10-19',
   mainEntity: {
     ...personEntity,
     jobTitle: 'AI 應用講師／全端工程師',
     description: authorityProfile.shortBio,
     knowsAbout: ['AI Agent', 'Claude Code', 'Vibe Coding', 'Context Engineering', 'Harness Engineering', 'Skill Design'],
   },
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://cablate.com/' },
+    { '@type': 'ListItem', position: 2, name: '關於 Cab', item: 'https://cablate.com/about/' },
+  ],
+};
+
+const videoJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: '我們早就在接觸 Harness 了，誰跟你說這是新東西？',
+  description: 'Cab（CabLate）拆解 Harness Engineering 的本質與 AI 工作流實作經驗。',
+  thumbnailUrl: 'https://i.ytimg.com/vi/rgyuQNXyYvc/hqdefault.jpg',
+  uploadDate: '2026-06-01T00:00:00+08:00',
+  contentUrl: 'https://youtu.be/rgyuQNXyYvc',
+  embedUrl: 'https://www.youtube.com/embed/rgyuQNXyYvc',
+  author: personEntity,
 };
 
 const timeline = [
@@ -28,8 +49,10 @@ const timeline = [
 const [featuredOutput, ...supportingOutputs] = openSourceProofs;
 ---
 
-<BaseLayout title="關於 Cab｜從工程師到 AI 講師" description="Cab（CabLate）非本科轉職工程師，做過政府標案系統，現在研究 Claude Code、Agent 和 Skill，寫課、做開源工具，也接 AI 諮詢與企業內訓。" image="/og/pages/about.png" imageAlt="關於 Cab：AI 做出來一次之後，我會再問下次還做不做得出來。" imageWidth={1200} imageHeight={630}>
+<BaseLayout title="關於 Cab（CabLate）｜從全端工程師到 AI 企業內訓與 Claude Code 講師" description="Cab（CabLate）非本科轉職工程師，做過政府標案系統，現在研究 Claude Code、Agent 和 Skill，寫課、做開源工具，也接 AI 諮詢與企業內訓。" image="/og/pages/about.png" imageAlt="關於 Cab：AI 做出來一次之後，我會再問下次還做不做得出來。" imageWidth={1200} imageHeight={630}>
   <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(personJsonLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(videoJsonLd)} />
 
   <article class="about-page paper-page">
     <header class="about-hero page-paper paper-card">

@@ -275,7 +275,7 @@ import { diagnosticChoices, diagnosticLayers } from '../../config/workflowDiagno
           '',
           `任務：${taskText}`,
           ...(actualText ? [`實際結果：${actualText}`] : []),
-          ...(unusableText ? [`不能直接用的原因：${unusableText}`] : []),
+          ...(unusableText ? [`哪裡不能直接用：${unusableText}`] : []),
           `最主要失效層：${layer.title}`,
           `我看到的問題：${value('evidence')}`,
           `我先做的一個修正：${value('correction')}`,

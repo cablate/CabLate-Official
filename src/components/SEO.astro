@@ -31,6 +31,7 @@ interface Props {
   publishDate?: Date;
   modifiedDate?: Date;
   tags?: string[];
+  category?: string;
   // FAQ
   faq?: FaqItem[];
 }
@@ -48,6 +49,7 @@ const {
   publishDate,
   modifiedDate,
   tags = [],
+  category,
   faq,
 } = Astro.props;
 
@@ -57,7 +59,7 @@ const fullUrl = new URL(canonicalPath ?? Astro.url.pathname, siteUrl);
 const fullImageUrl = image.startsWith('http') ? image : new URL(image, siteUrl).href;
 
 // JSON-LD headline 不含站名後綴（Google 要求 headline 與 h1 一致）
-const jsonLdHeadline = title.replace(/\s*\|\s*CabLate$/, '');
+const jsonLdHeadline = title.replace(/\s*[|｜]\s*CabLate$/, '');
 
 // ─── 主要 JSON-LD ───
 
@@ -72,6 +74,7 @@ if (type === 'article') {
     description,
     url: fullUrl.href,
     mainEntityOfPage: { '@type': 'WebPage', '@id': fullUrl.href },
+    isPartOf: { '@id': new URL('/#website', siteUrl).href },
     inLanguage: 'zh-TW',
     image: fullImageUrl,
     author: personEntity,
@@ -84,6 +87,7 @@ if (type === 'article') {
         url: new URL('/favicon.webp', siteUrl).href,
       },
     },
+    ...(category && { articleSection: category }),
     ...(publishDate && { datePublished: publishDate.toISOString() }),
     ...(modifiedDate && { dateModified: modifiedDate.toISOString() }),
     ...(tags.length > 0 && { keywords: tags.join(', ') }),

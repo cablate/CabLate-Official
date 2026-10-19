@@ -60,12 +60,14 @@ const faq = [
   ['什麼時候會收到正式方案？', '問題和必要資訊確認之後，我會給你包含工作內容、分工、時程、費用的方案。填表不代表已經報價或成立合作。'],
 ];
 
+const enterpriseDescription = '企業 AI 內訓、實作工作坊與團隊導入。涵蓋非技術人員 Claude 實戰、PM 與營運業務 Agent、工程團隊 Claude Code 系統化開發，用團隊真實工作當練習題。';
+
 const serviceJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: '企業 AI 內訓、工作坊與導入',
   serviceType: '企業 AI 內訓與導入',
-  description: '用團隊自己的工作當練習題。先看大家實際怎麼工作、卡在哪，再安排內訓、工作坊或小規模試做。',
+  description: enterpriseDescription,
   url: 'https://cablate.com/services/enterprise/',
   image: 'https://cablate.com/og/pages/enterprise.png',
   provider: personEntity,
@@ -83,7 +85,7 @@ const breadcrumbJsonLd = {
 };
 ---
 
-<BaseLayout title="企業 AI 內訓、工作坊與導入" description="用團隊自己的工作當練習題。先看大家實際怎麼工作、卡在哪，再安排內訓、工作坊或小規模試做。" image="/og/pages/enterprise.png" imageAlt="企業合作：讓團隊用 AI 做出來的東西，別人接得住。" imageWidth={1200} imageHeight={630} faq={faq.map(([question, answer]) => ({ question, answer }))}>
+<BaseLayout title="企業 AI 內訓、工作坊與團隊導入" description={enterpriseDescription} image="/og/pages/enterprise.png" imageAlt="企業合作：讓團隊用 AI 做出來的東西，別人接得住。" imageWidth={1200} imageHeight={630} faq={faq.map(([question, answer]) => ({ question, answer }))}>
   <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(serviceJsonLd)} />
   <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
   <article class="service-page paper-page">

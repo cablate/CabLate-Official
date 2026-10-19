@@ -45,6 +45,7 @@ const breadcrumbJsonLd = {
     publishDate={entry.data.publishDate}
     modifiedDate={entry.data.updatedDate}
     tags={entry.data.tags}
+    category={entry.data.category}
   />
   <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbJsonLd)} />
 
