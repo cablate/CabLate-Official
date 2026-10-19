@@ -36,7 +36,6 @@ for (const file of readdirSync(ARTICLES_DIR).filter((f) => f.endsWith('.md'))) {
     failures.push(`${file}: missing frontmatter`);
     continue;
   }
-  if (/^draft:\s*true/m.test(frontmatter)) continue;
 
   for (const { pattern, label } of FORBIDDEN_PATTERNS) {
     const matches = content.match(pattern);

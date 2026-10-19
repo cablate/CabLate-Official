@@ -80,6 +80,11 @@ function stripFencedCodeBlocks(markdown) {
 }
 
 function validateSvgPane(svgChunk, vw, vh, label, failures) {
+  if (!/<(?:path|line|polyline|polygon|circle)\b/i.test(svgChunk)) {
+    failures.push(
+      `${label}: whiteboard_role violation — pane contains only <rect> and <text> without any flow/connector elements (<path>, <line>, <circle>, <polygon>). Draw causal flows, gates, or proportions instead of Bento text cards.`
+    );
+  }
   const rects = [...svgChunk.matchAll(/<rect\b([^>]*)\/?>/g)]
     .map((rm) => {
       const a = rm[1];
@@ -146,6 +151,49 @@ function validateSvgPane(svgChunk, vw, vh, label, failures) {
     }
   }
 
+  // Extract vertical segments from <path d="M... L..."> and <line> to catch text crossed by connector lines
+  const verticalSegments = [];
+  for (const pm of svgChunk.matchAll(/<path\b([^>]*)\/?>/g)) {
+    const d = getAttr(pm[1], 'd') ?? '';
+    const pts = [...d.matchAll(/([ML])\s*(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)/gi)].map((m) => ({
+      cmd: m[1].toUpperCase(),
+      x: Number(m[2]),
+      y: Number(m[3]),
+    }));
+    for (let i = 1; i < pts.length; i += 1) {
+      if (pts[i].cmd === 'L' && Math.abs(pts[i].x - pts[i - 1].x) < 0.5 && Math.abs(pts[i].y - pts[i - 1].y) >= 12) {
+        verticalSegments.push({
+          x: pts[i].x,
+          yMin: Math.min(pts[i].y, pts[i - 1].y),
+          yMax: Math.max(pts[i].y, pts[i - 1].y),
+        });
+      }
+    }
+  }
+  for (const lm of svgChunk.matchAll(/<line\b([^>]*)\/?>/g)) {
+    const a = lm[1];
+    const x1 = Number(getAttr(a, 'x1') ?? NaN);
+    const y1 = Number(getAttr(a, 'y1') ?? NaN);
+    const x2 = Number(getAttr(a, 'x2') ?? NaN);
+    const y2 = Number(getAttr(a, 'y2') ?? NaN);
+    if (Number.isFinite(x1) && Math.abs(x1 - x2) < 0.5 && Math.abs(y2 - y1) >= 12) {
+      verticalSegments.push({ x: x1, yMin: Math.min(y1, y2), yMax: Math.max(y1, y2) });
+    }
+  }
+
+  for (const t of texts) {
+    if (!Number.isFinite(t.fontSize)) continue;
+    const tTop = t.y - t.fontSize * 0.8;
+    const tBot = t.y + t.fontSize * 0.15;
+    for (const seg of verticalSegments) {
+      if (t.left < seg.x - 1 && t.right > seg.x + 1 && tBot > seg.yMin + 1 && tTop < seg.yMax - 1) {
+        failures.push(
+          `${label}: <text> "${t.inner}" (span [${t.left.toFixed(1)}, ${t.right.toFixed(1)}], y=${t.y}) is crossed by vertical line at x=${seg.x} (y=[${seg.yMin}, ${seg.yMax}])`
+        );
+      }
+    }
+  }
+
   for (let i = 0; i < texts.length; i += 1) {
     for (let j = i + 1; j < texts.length; j += 1) {
       const a = texts[i];
@@ -169,8 +217,6 @@ export function validateMarkdownFile(filePath) {
   const failures = [];
   const labelFile = basename(filePath);
   const raw = readFileSync(filePath, 'utf8').replace(/\r\n/g, '\n');
-  const frontmatter = raw.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? '';
-  if (/^draft:\s*true/m.test(frontmatter)) return failures;
 
   const stripped = stripFencedCodeBlocks(raw);
 
