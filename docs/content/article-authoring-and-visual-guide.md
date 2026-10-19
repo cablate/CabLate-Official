@@ -7,7 +7,6 @@ companion_docs:
   - scripts/lint-copy.mjs
   - scripts/validate-content.js
   - scripts/validate-svg-diagrams.mjs
-  - .claude/hooks/article-svg-guard.mjs
 ---
 
 # CabLate 文章寫作、Markdown 排版與 AI 圖解規範
@@ -187,16 +186,12 @@ npm run build && node scripts/validate-entry-surfaces.mjs && npm run validate:se
 
 ---
 
-## 8. 官網 SEO 待發文章佇列（能發就發，不限每週一篇）
+## 8. 與內容產製中心及知識帳本的銜接
 
-依 2026-10-19 決策，只要知識庫（`D:/_CabLate_Agents/general/knowledge/tech-kb/atoms/` 與《講師與企業培訓經歷主檔》）已有完整真實素材，採**「能發就發」**節奏轉化上線，並由 AI 主動提醒推進。完整策略見 `D:/_CabLate_Agents/general/knowledge/business/seo-topic-cluster-小型站點內容成長策略.md`。
+本站文章的選題、查重複、寫作節奏與完稿沉澱，統一由**內容產製中心**管理，不在本技術規範重複維護清單：
+- **流程與選題入口**：`D:/_CabLate_Agents/general/projects/內容與媒體/內容生產與再利用/README.md`
+- **已發文章索引與待發候選佇列（能發就發）**：`D:/_CabLate_Agents/general/projects/內容與媒體/內容生產與再利用/知識帳本.md`
+- **跨專案唯一寫作與疑問鏈節奏正本**：`D:/_CabLate_Agents/general/knowledge/writing/public-content-methodology.md`
+- **SEO 主題叢集與 GSC 複查規劃**：`D:/_CabLate_Agents/general/knowledge/business/seo-topic-cluster-小型站點內容成長策略.md`
 
-| 順序 | 狀態 | 預定標題與主題 | 真實素材來源 | 導流 Hub |
-|---|---|---|---|---|
-| **#0** | ✅ 已發布 (`4f3b865`) | **寫了 Skill 卻死都不觸發？拆解 CLAUDE.md、Skill 與 MCP 的分工** (`/articles/claude-code-skill-vs-claude-md-and-mcp/`) | `tech-kb/atoms/ai-skills/`（untriggering、漸進式揭露、MCP 對照、10 秒決策樹） | `/courses/`、`/expertise/` |
-| **#1** | ⏳ 待發（第一優先） | **企業 AI 課上完，為什麼大家回去還是沒用？從 30 場內訓看「聽得很嗨」跟「做得出東西」的差別** | `講師與企業培訓經歷主檔.md`（四健會 23 個網站、證券業 PM/QA、外商工程班）＋ `企業內訓教學方法論.md` | `/services/enterprise/`、`/services/partnerships/` |
-| **#2** | ⏳ 待發 | **Claude Code 開多個視窗或派 Subagent，為什麼反而越跑越慢、額度掉更快？** | `claude-code-multi-window-management.md`、`sub-agent-context-management-tradeoffs.md`、`hook-subagent-cost-impact.md` | `/courses/`（工程手冊） |
-| **#3** | ⏳ 待發 | **用 Vibe Coding 做出網站只要兩小時，為什麼不敢直接上線收錢？前端與金流最常漏掉的安全底線** | `T003 免費網站資安入門講座`（200 人報名）＋ `D001 金流串接實戰` ＋ `bypass-permission-danger.md` | `/courses/`、`/services/consulting/` |
-| **#4** | ⏳ 待發 | **給了 AI 一堆參考文件還是亂寫？拆解 Context 塞爆與漸進式知識庫的整理法** | `references-correct-usage.md`、`skill-over-doc-folder.md`、`llm-atomic-wiki`（149 stars） | `/courses/`（AgentSkill）、`/expertise/` |
-| **#5** | ⏳ 待發 | **AI 改 A 壞 B、一直鬼打牆怎麼辦？不重寫 Prompt 的五層排錯順序** | `claude-code-ai-loses-track-sop.md`、`ai-deleted-commit-reflog-recovery.md`、`W07-workflow-debugging.md` | `/expertise/`、`/services/coaching/` |
 
