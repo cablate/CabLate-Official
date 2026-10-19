@@ -141,6 +141,7 @@ const llms = existsSync(llmsPath) ? readFileSync(llmsPath, 'utf8') : '';
 assert(llms.length > 0, 'llms.txt: dynamic endpoint output must exist in dist');
 assert(llms.includes('/articles/ai-tests-false-safety-six-phase-overhaul/'), 'llms.txt: must list /articles/ai-tests-false-safety-six-phase-overhaul/');
 assert(llms.includes('/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/'), 'llms.txt: must list /articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/');
+assert(llms.includes('/articles/claude-code-skill-vs-claude-md-and-mcp/'), 'llms.txt: must list /articles/claude-code-skill-vs-claude-md-and-mcp/');
 
 const robots = readFileSync(join(dist, 'robots.txt'), 'utf8');
 for (const line of robots.split(/\r?\n/)) {
