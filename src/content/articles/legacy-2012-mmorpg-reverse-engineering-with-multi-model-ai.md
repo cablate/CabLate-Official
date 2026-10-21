@@ -191,4 +191,4 @@ ogHighlight:
 3. **封存前有沒有守住「與 `.bak` 逐位元組對帳」的基準線？**
    先把第一版鎖定在「100% 不改業務與核心數值的原版優化基準」，每一處二進位或設定修改都必須說得出對應的根因位址，才不會在優化過程中把原作者的細節一起洗掉。
 
-如果你想把這套「單視窗秒切各家模型 ＋ 直接指派低阻攔子代理」的工作台裝進自己的終端機，可以直接看上一篇〈[想在 Claude Code 混用 Gemini 與 GLM，為什麼一改設定檔就全亂套？](/articles/claude-code-multi-model-routing-and-subagent-relay/)〉，或參考〈[AI 幫你寫的測試全綠，為什麼上線還是壞掉？](/articles/ai-tests-false-safety-six-phase-overhaul/)〉看看我們怎麼設計不會被表面綠燈騙過去的驗收防線。
+如果你想把這套「單視窗秒切各家模型 ＋ 直接指派低阻攔子代理」的工作台裝進自己的終端機，可以直接看上一篇〈[想在 Claude Code 混用 Gemini 與 GLM，為什麼一改設定檔就全亂套？](/articles/claude-code-multi-model-routing-and-subagent-relay/)〉，或參考〈[AI 幫你寫的測試全綠，為什麼上線還是壞掉？](/articles/ai-tests-false-safety-six-phase-overhaul/)〉看看我們怎麼設計不會被表面綠燈騙過去的驗收防線；想盤點自己手上的 AI 除錯與驗證流程卡在哪一層，也可以先做[免費的 AI 工作流五層健檢](/expertise/)。

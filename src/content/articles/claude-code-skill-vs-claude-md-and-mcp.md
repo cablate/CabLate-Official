@@ -180,4 +180,4 @@ description: |
 3. 檢查現有 SKILL.md 的 description：哪幾支寫得太籠統容易被略過？請直接改寫成「一句話產出＋觸發原話＋不處理邊界」版本。
 ```
 
-等它列出清單，你花五分鐘看過點頭再讓它動手拆。如果你想看我是怎麼把這套分工用在整座網站的開發上，可以接著讀〈[Claude Code 實戰：我怎麼用 AI 寫完一整個網站](/articles/claude-code-workflow/)〉；完整的 Skill 拆解範例與 18 章 Claude Code 配置實務都在 [AgentSkill 實戰課程與工程手冊](/courses/)裡，也可以先用[免費的 AI 工作流五層健檢](/expertise/)測測看你手上的流程現在卡在哪一層。
+等它列出清單，你花五分鐘看過點頭再讓它動手拆。如果你想進一步把日常讀檔與子代理雜活分流給 Gemini、GLM 或 DeepSeek 等不同模型，可以接著看〈[想在 Claude Code 混用 Gemini 與 GLM，為什麼一改設定檔就全亂套？](/articles/claude-code-multi-model-routing-and-subagent-relay/)〉與〈[Claude Code 實戰：我怎麼用 AI 寫完一整個網站](/articles/claude-code-workflow/)〉；完整的 Skill 拆解範例與 18 章 Claude Code 配置實務都在 [AgentSkill 實戰課程與工程手冊](/courses/)裡，也可以先用[免費的 AI 工作流五層健檢](/expertise/)測測看你手上的流程現在卡在哪一層。

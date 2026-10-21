@@ -143,4 +143,4 @@ claude plugin install model-relay@model-relay
 /provider                        # 在輸入框上方開啟互動控制面板（熱鍵 1-9 切換單一視窗、p 測速）
 ```
 
-開源專案與完整中英文說明都在 GitHub（[`cablate/model-relay`](https://github.com/cablate/model-relay)）。如果你想看怎麼把省下來的額度搭配三層 Skill 與子代理分工，可以接著讀〈[寫了 Skill 卻死都不觸發？拆解 CLAUDE.md、Skill 與 MCP 的分工](/articles/claude-code-skill-vs-claude-md-and-mcp/)〉與〈[逆向 Claude Agent SDK：找出每則訊息 2-3% 額度消耗的根因與解法](/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/)〉；也可以先用[免費的 AI 工作流五層健檢](/expertise/)看看你目前的開發配置還卡在哪一層。
+開源專案與完整中英文說明都在 GitHub（[`cablate/model-relay`](https://github.com/cablate/model-relay)）。如果你想看這套多模型工作台在極端無原始碼場景下的威力，可以接著看〈[帶著 AI 把 2012 年的無原始碼老遊戲從零救活：多模型逆向除錯與本機 v1.0.0 優化實錄](/articles/legacy-2012-mmorpg-reverse-engineering-with-multi-model-ai/)〉，或是讀〈[寫了 Skill 卻死都不觸發？拆解 CLAUDE.md、Skill 與 MCP 的分工](/articles/claude-code-skill-vs-claude-md-and-mcp/)〉與〈[逆向 Claude Agent SDK：找出每則訊息 2-3% 額度消耗的根因與解法](/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/)〉把額度花在刀口上；也可以先用[免費的 AI 工作流五層健檢](/expertise/)看看你目前的開發配置還卡在哪一層。
