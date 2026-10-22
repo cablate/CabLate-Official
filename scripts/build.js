@@ -16,7 +16,7 @@ if (existsSync(dataStorePath)) {
   const cacheMtime = statSync(dataStorePath).mtimeMs;
   const cacheWatchTargets = [
     'src/plugins/rehype-article-enhance.mjs',
-    'src/content/config.ts',
+    'src/content.config.ts',
     'astro.config.mjs',
   ];
   const isStale = cacheWatchTargets.some((relativePath) => {

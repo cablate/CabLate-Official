@@ -3,14 +3,16 @@
  * 定義文章的 Frontmatter Schema
  */
 
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 // ═══════════════════════════════════════════════════════════
 // Articles Collection - 文章集合
 // ═══════════════════════════════════════════════════════════
 
 const articles = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/articles' }),
   schema: z.object({
     // SEO 基礎
     title: z.string().max(60, '標題不超過 60 字元'),

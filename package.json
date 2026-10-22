@@ -17,14 +17,15 @@
     "prepare": "git config core.hooksPath .githooks || true"
   },
   "dependencies": {
+    "@astrojs/markdown-remark": "7.2.4",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.2",
-    "@lucide/astro": "^0.562.0",
-    "astro": "^5.16.6",
+    "@lucide/astro": "^1.61.0",
+    "astro": "^7.2.8",
     "markdown-it": "^14.3.3",
     "sanitize-html": "^2.18.0",
     "satori": "^0.26.0",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.5",
     "subset-font": "^2.9.0"
   },
   "devDependencies": {

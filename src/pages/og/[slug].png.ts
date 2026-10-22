@@ -26,7 +26,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return articles
     .filter((entry) => !entry.data.draft)
     .map((entry) => ({
-      params: { slug: entry.slug },
+      params: { slug: entry.id },
       props: {
         title: entry.data.title,
         category: entry.data.category,

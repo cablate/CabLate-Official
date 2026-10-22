@@ -11,7 +11,7 @@ const publishedArticles = allArticles
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
 const featuredArticle = publishedArticles[0];
-const restArticles = publishedArticles.filter((entry) => entry.slug !== featuredArticle?.slug);
+const restArticles = publishedArticles.filter((entry) => entry.id !== featuredArticle?.id);
 const categoryCounts = publishedArticles.reduce<Record<string, number>>((acc, entry) => {
   acc[entry.data.category] = (acc[entry.data.category] ?? 0) + 1;
   return acc;
@@ -37,7 +37,7 @@ const collectionJsonLd = {
   hasPart: publishedArticles.slice(0, 10).map((entry) => ({
     '@type': 'Article',
     headline: entry.data.title,
-    url: `https://cablate.com/articles/${entry.slug}/`,
+    url: `https://cablate.com/articles/${entry.id}/`,
     datePublished: entry.data.publishDate.toISOString(),
     author: personEntity,
   })),
@@ -72,7 +72,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
         </header>
 
         {featuredArticle && (
-          <a href={`/articles/${featuredArticle.slug}/`} class="featured-card" data-article-category={featuredArticle.data.category}>
+          <a href={`/articles/${featuredArticle.id}/`} class="featured-card" data-article-category={featuredArticle.data.category}>
             <div class="featured-card__meta">
               <span class="meta-category">{featuredArticle.data.category}</span>
               <time datetime={featuredArticle.data.publishDate.toISOString()}>{formatDate(featuredArticle.data.publishDate)}</time>
@@ -94,7 +94,7 @@ const pageDescription = `CabLate 關於 Harness Engineering、Context Engineerin
 
         <div class="article-feed">
           {restArticles.map((entry) => (
-            <a href={`/articles/${entry.slug}/`} class="article-item" data-article-category={entry.data.category}>
+            <a href={`/articles/${entry.id}/`} class="article-item" data-article-category={entry.data.category}>
               <div class="article-item__main">
                 <div class="article-item__meta">
                   <span class="meta-category">{entry.data.category}</span>

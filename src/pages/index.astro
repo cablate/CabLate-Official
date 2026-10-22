@@ -310,7 +310,7 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
         </header>
 
         <div class="home-writing__grid">
-          <a class="home-writing__featured" href={`/articles/${featuredArticle.slug}/`}>
+          <a class="home-writing__featured" href={`/articles/${featuredArticle.id}/`}>
             <div class="home-writing__meta">
               <span class="home-writing__category">{featuredArticle.data.category}</span>
               <time datetime={featuredArticle.data.publishDate.toISOString()}>{formatDate(featuredArticle.data.publishDate)}</time>
@@ -331,7 +331,7 @@ const threadsProof = proofPoints.find((point) => point.label.includes('Threads')
 
           <div class="home-writing__side">
             {recentArticles.map((article) => (
-              <a class="home-writing__item" href={`/articles/${article.slug}/`}>
+              <a class="home-writing__item" href={`/articles/${article.id}/`}>
                 <div class="home-writing__meta">
                   <span class="home-writing__category">{article.data.category}</span>
                   <time datetime={article.data.publishDate.toISOString()}>{formatDate(article.data.publishDate)}</time>

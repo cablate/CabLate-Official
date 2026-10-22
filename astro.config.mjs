@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { readdirSync, readFileSync } from 'node:fs';
+import { unified } from '@astrojs/markdown-remark';
 import { rehypeArticleEnhance } from './src/plugins/rehype-article-enhance.mjs';
 
 /** Article URL → last real edit, so sitemap lastmod reflects content instead of build time. */
@@ -51,6 +52,6 @@ export default defineConfig({
         dark: 'github-dark',
       },
     },
-    rehypePlugins: [rehypeArticleEnhance],
+    processor: unified({ rehypePlugins: [rehypeArticleEnhance] }),
   },
 });

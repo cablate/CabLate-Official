@@ -17,12 +17,12 @@ const sorted = allArticles
   .filter(a => !a.data.draft)
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
-const currentArticle = sorted.find(a => a.slug === currentSlug);
+const currentArticle = sorted.find(a => a.id === currentSlug);
 const currentTags = new Set(currentArticle?.data.tags ?? []);
 const currentCategory = currentArticle?.data.category ?? '';
 
 const related = sorted
-  .filter(a => a.slug !== currentSlug)
+  .filter(a => a.id !== currentSlug)
   .map(a => {
     const sharedTags = (a.data.tags ?? []).filter(t => currentTags.has(t)).length;
     const sameCategory = a.data.category === currentCategory ? 1 : 0;
@@ -41,7 +41,7 @@ const nextArticle = related[1]?.entry ?? null;
   <nav class="article-nav" aria-label="延伸拆解文章">
     <div class="article-nav-inner">
       {prevArticle ? (
-        <a href={`/articles/${prevArticle.slug}/`} class="article-nav-item article-nav-prev">
+        <a href={`/articles/${prevArticle.id}/`} class="article-nav-item article-nav-prev">
           <span class="article-nav-label">延伸拆解 · {prevArticle.data.category}</span>
           <span class="article-nav-title">{prevArticle.data.title}</span>
         </a>
@@ -49,7 +49,7 @@ const nextArticle = related[1]?.entry ?? null;
         <div class="article-nav-item article-nav-placeholder"></div>
       )}
       {nextArticle ? (
-        <a href={`/articles/${nextArticle.slug}/`} class="article-nav-item article-nav-next">
+        <a href={`/articles/${nextArticle.id}/`} class="article-nav-item article-nav-next">
           <span class="article-nav-label">延伸拆解 · {nextArticle.data.category}</span>
           <span class="article-nav-title">{nextArticle.data.title}</span>
         </a>

@@ -20,9 +20,9 @@ export async function GET(context: APIContext) {
       title: entry.data.title,
       pubDate: entry.data.publishDate,
       description: entry.data.description,
-      link: `/articles/${entry.slug}/`,
+      link: `/articles/${entry.id}/`,
       categories: [entry.data.category, ...entry.data.tags],
-      content: sanitizeHtml(parser.render(entry.body), {
+      content: sanitizeHtml(parser.render(entry.body ?? ''), {
         allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
       }).replace(/src="\/(?!\/)/g, `src="${context.site?.href || 'https://cablate.com/'}`),
     })),
