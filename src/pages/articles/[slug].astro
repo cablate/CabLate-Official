@@ -3,7 +3,7 @@
  * Articles [slug] Page - 動態文章頁面
  */
 
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
 // 取得所有文章
@@ -14,13 +14,13 @@ export async function getStaticPaths() {
   const publishedArticles = articles.filter(entry => !entry.data.draft);
 
   return publishedArticles.map(entry => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
-const { headings } = await entry.render();
+const { headings } = await render(entry);
 ---
 
 <ArticleLayout entry={entry} headings={headings} />

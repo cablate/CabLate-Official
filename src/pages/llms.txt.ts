@@ -8,7 +8,7 @@ export const GET: APIRoute = async () => {
 
   const articleLines = publishedArticles.map(
     (a) =>
-      `- [${a.data.title}](https://cablate.com/articles/${a.slug}/)：${a.data.description}${a.data.ogHighlight ? `（實測數據：${a.data.ogHighlight.label} ${a.data.ogHighlight.before} → ${a.data.ogHighlight.after}）` : ''}`,
+      `- [${a.data.title}](https://cablate.com/articles/${a.id}/)：${a.data.description}${a.data.ogHighlight ? `（實測數據：${a.data.ogHighlight.label} ${a.data.ogHighlight.before} → ${a.data.ogHighlight.after}）` : ''}`,
   );
 
   const body = `# CabLate

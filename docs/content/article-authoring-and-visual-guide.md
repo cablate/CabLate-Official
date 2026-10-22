@@ -28,7 +28,7 @@ companion_docs:
 
 ## 2. Frontmatter 欄位契約
 
-每篇 `.md` 檔案頂部必須包含以下 YAML Frontmatter（由 `src/content/config.ts` 與 `scripts/validate-content.js` 自動驗證）：
+每篇 `.md` 檔案頂部必須包含以下 YAML Frontmatter（由 `src/content.config.ts` 與 `scripts/validate-content.js` 自動驗證）：
 
 ```yaml
 ---
@@ -224,7 +224,7 @@ npm run validate:svg
 # 3. 檢查 TypeScript 與 Astro 模板型別（必須 0 errors, 0 warnings, 0 hints）
 npx astro check
 
-# 4. 完整建置並驗證 SEO / JSON-LD / 編譯後 SVG 完整性 / 入口契約（若修改了 src/plugins/ 或 src/content/config.ts，建置前須先執行 rm -f node_modules/.astro/data-store.json 清除內容快取）
+# 4. 完整建置並驗證 SEO / JSON-LD / 編譯後 SVG 完整性 / 入口契約（若修改了 src/plugins/ 或 src/content.config.ts，建置前須先執行 rm -f node_modules/.astro/data-store.json 清除內容快取）
 npm run build && node scripts/validate-entry-surfaces.mjs && npm run validate:seo
 ```
 
