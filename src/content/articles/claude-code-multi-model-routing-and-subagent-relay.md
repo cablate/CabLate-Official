@@ -14,17 +14,15 @@ ogHighlight:
   after: "單視窗熱切＋自動註冊子代理"
 ---
 
-手上有 Claude、Gemini 或其他模型，想在 Claude Code 同時使用：一個對話留給架構判斷，另一個對話處理別的工作，還想派不同模型當子代理。
+手上有 Claude、Gemini 或其他模型時，很自然會想在 Claude Code 分工，一個對話留給主線模型做架構決策，另一個對話或子代理切給其他模型掃前端、讀大檔案或跑批次測試。
 
-原本的想法很單純：架構決策交給主線模型，前端掃描、讀大檔案或跑批次測試就切給其他模型分擔。但直接改共用的 `~/.claude/settings.json`，變更可能影響其他使用同一份設定的對話，並不適合拿來替每個對話獨立選模型；想派別家模型當子代理，也需要處理設定。為了不再每天手改設定，我把這套分流機制整理成開源外掛 **`model-relay`**。
+但直接改共用的 `~/.claude/settings.json`，變更可能影響其他使用同一份設定的對話，不適合替每個對話獨立選模型；想派別家模型當子代理，也得另外處理設定。為了不再每天手改設定，我把這套分流機制整理成開源外掛 **`model-relay`**。
 
 ---
 
 ## 為甚麼共用設定不適合切換單一對話？
 
-**因為 `~/.claude/settings.json` 是使用者層級的共用設定；實際生效時機與影響範圍仍取決於設定項目、版本和其他層級的設定。**
-
-直接看下面這張同屏對照，就能看出「手改全域設定檔」跟「用 `model-relay` 搭配 `magpie` 分流」的差異：
+**因為 `~/.claude/settings.json` 是使用者層級的共用設定，改了可能影響其他對話。** 實際生效時機與影響範圍，仍取決於設定項目、版本和其他層級的設定。
 
 <figure class="article-diagram">
   <div class="article-diagram__scroll">
@@ -68,15 +66,13 @@ ogHighlight:
   <figcaption>上方是共用設定可能影響多個對話的情況；下方透過 model-relay 依對話 Session ID 獨立路由，單視窗切換與子代理派工互不干擾。</figcaption>
 </figure>
 
-因為 `model-relay` 在本機（`127.0.0.1:8950`）會認得每個對話視窗自己的 `x-claude-code-session-id`，當你在對話裡打 `/provider` 叫出輸入框上方的互動面板、按下熱鍵 `1–9` 切去 `GLM` 或 `Gemini` 時，它只會把**眼前這一個視窗**固定到該模型，其他對話可各自維持路由設定。
+改用 `model-relay` 搭配本機 `magpie` 分流時，`127.0.0.1:8950` 會認得每個對話視窗自己的 `x-claude-code-session-id`。你在對話裡打 `/provider` 叫出輸入框上方的互動面板、按熱鍵 `1–9` 切去 `GLM` 或 `Gemini`，只會把**眼前這一個視窗**固定到該模型，其他對話可各自維持路由設定。單一視窗切好後，下一步就是同一個任務裡怎麼派別家模型當子代理。
 
 ---
 
-## 怎麼不用寫設定檔，就把別家模型直接當成子代理派出去？
+## 怎麼免寫設定檔，直接派別家模型當子代理？
 
-**只要把模型接進 `model-relay`，外掛會在執行期自動幫每一家註冊專屬的 `model-relay:<名稱>` 子代理型別，可使用的工具仍受環境與權限限制。**
-
-以前想在同一個任務裡混用不同模型，最煩的就是維護一堆靜態設定檔。現在我們把「切換與派工」拆成三個互不打架的層級，讓你可以像調度團隊一樣把各家 Token 額度榨到最滿：
+**只要把模型接進 `model-relay`，外掛會在執行期自動註冊專屬的 `model-relay:<名稱>` 子代理型別。** 可使用的工具仍受環境與權限限制，但不用再維護一堆靜態設定檔。切換與派工分成三個互不干擾的層級，主線用 `/provider` 隨切隨用，平行任務點名派 `model-relay:<名稱>` 子代理，日常高頻率的讀檔、搜尋與摘要雜活則用 `/provider alias haiku glm` 導給指定模型。
 
 <figure class="article-diagram">
   <div class="article-diagram__scroll">
@@ -108,42 +104,34 @@ ogHighlight:
   <figcaption>主線可隨時用 `/provider` 切換，底下同時支援點名派出 `model-relay:<名稱>` 子代理，或用 `alias` 把預設 `haiku` 雜活導給指定模型。</figcaption>
 </figure>
 
-這裡有一個我們自己踩過才補上的細節：如果使用者的 `settings.json` 設了 `availableModels` 白名單，卻忘了把外廠模型名字列進去，我們曾遇到子代理實際使用的模型被換回主線模型，表面上不容易察覺。所以我們在 `model-relay` 加了雙重核對，子代理啟動時看回報模型、結束時看轉發站實際收到的請求，發現不一致時提示，叫你跑 `/provider doctor` 一鍵抓出來。
+實際派工時我們踩過一個坑。若 `settings.json` 設了 `availableModels` 白名單，卻忘了列進外廠模型名字，我們曾遇到子代理實際使用的模型被換回主線模型，表面上不容易察覺。所以 `model-relay` 加了雙重核對，在子代理啟動時看回報模型、結束時看轉發站實際收到的請求，不一致時提示你跑 `/provider doctor` 一鍵抓出來。確認模型沒派錯後，還要看原本的工具能不能照常運作。
 
 ---
 
-## 換成 GLM 或 Gemini 後，Artifact、Chrome 與手機遙控怎麼確認？
+## 換成 GLM 或 Gemini 後，Artifact、Chrome 與手機遙控還能用嗎？
 
-**我們搭配 `magpie` 測試過這些功能；能否使用仍取決於供應商、版本、權限與本機設定。`model-relay` 提供相容處理與本機 HTTPS 代理模式，設定後仍要自己驗證。**
-
-很多人不敢在 Claude Code 切去別家模型，是怕一換過去就變成「半殘版」。我們搭配 `magpie` 實測時特別把三個最常壞掉的地方補齊了：
+**我們搭配 `magpie` 測試過這些功能，但能否使用仍取決於供應商、版本、權限與本機設定。** 很多人不敢在 Claude Code 切去別家模型，是怕一換過去就變「半殘版」。`model-relay` 提供相容處理與本機 HTTPS 代理模式，補齊三個最常壞掉的地方，設定後仍要自己驗證。
 
 | 以前換模型常壞掉的地方 | 為甚麼會壞 | `model-relay` 怎麼保住它 |
 |---|---|---|
 | **工具整批消失或報 HTTP 400** | 第三方端點或轉接層看不懂 Claude Code 的 `ToolSearch` 與 `cache_control` 標記 | 內建供應商預設集（`/provider setup` 自動帶入），送出前自動洗掉不支援欄位 |
 | **Claude Artifact 與 Chrome 自動化** | 以為換了模型就用不到官方外掛與 MCP 工具 | 工具呼叫仍由 Claude Code 宿主執行，我們曾在 GLM 或 Gemini 測試 Artifact 與 Chrome；你的環境需重新驗證 |
-| **手機 Remote Control 拒絕啟動** | 改用非 Anthropic API 位址時，可能無法啟用手機遙控 | 打 `/provider rc on`（或按面板熱鍵 `x`）開啟本機代理模式：位址維持官方不變，使用本機 HTTPS 代理；請先看專案文件並確認信任設定 |
+| **手機 Remote Control 拒絕啟動** | 改用非 Anthropic API 位址時，可能無法啟用手機遙控 | 打 `/provider rc on`（或按面板熱鍵 `x`）開啟本機代理模式，位址維持官方不變並使用本機 HTTPS 代理；請先看專案文件並確認信任設定 |
 
 ---
 
-相關問題可接著看〈[帶著 AI 把 2012 年的無原始碼老遊戲從零救活：多模型逆向除錯與本機 v1.0.0 優化實錄](/articles/legacy-2012-mmorpg-reverse-engineering-with-multi-model-ai/)〉。
-
-相關問題可接著看〈[寫了 Skill 卻死都不觸發？拆解 CLAUDE.md、Skill 與 MCP 的分工](/articles/claude-code-skill-vs-claude-md-and-mcp/)〉。
-
-相關問題可接著看〈[逆向 Claude Agent SDK：找出每則訊息 2-3% 額度消耗的根因與解法](/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/)〉。
-
-若要把本文的判準用在自己的工作，可參考[AI 工作流健檢](/expertise/)的適用範圍。
+相關問題可接著看〈[帶著 AI 把 2012 年的無原始碼老遊戲從零救活：多模型逆向除錯與本機 v1.0.0 優化實錄](/articles/legacy-2012-mmorpg-reverse-engineering-with-multi-model-ai/)〉、〈[寫了 Skill 卻死都不觸發？拆解 CLAUDE.md、Skill 與 MCP 的分工](/articles/claude-code-skill-vs-claude-md-and-mcp/)〉與〈[逆向 Claude Agent SDK：找出每則訊息 2-3% 額度消耗的根因與解法](/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/)〉；若要把本文的判準用在自己的工作，可參考[AI 工作流健檢](/expertise/)的適用範圍。
 
 ## 現在怎麼裝起來、讓 AI 帶你一次設定好？
 
-不用自己翻文件手改 JSON，也不用把 API 金鑰貼進對話框。先在終端機把你手上的金鑰設進環境變數（或開好本機 `magpie`），接著跑這兩行安裝外掛：
+**先在終端機設好金鑰環境變數（或開好本機 `magpie`），跑這兩行裝好外掛就能交給 AI 設定。** 不用自己翻文件手改 JSON，也不用把 API 金鑰貼進對話框。
 
 ```bash
 claude plugin marketplace add cablate/model-relay
 claude plugin install model-relay@model-relay
 ```
 
-裝好後打開 Claude Code，直接輸入下面這三個指令就能上手：
+裝好後打開 Claude Code，輸入這三個指令即可上手。
 
 ```text
 /provider setup                  # 讓 Claude 帶你新增供應商或設定 haiku 別名分流（改設定前會先預覽）
