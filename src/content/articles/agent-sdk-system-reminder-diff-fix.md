@@ -1,194 +1,97 @@
 ---
-title: "Agent SDK 的 diff 注入怎麼繞過：逆向 C26 函數與 JSONL 預處理"
-description: "Agent SDK 每次 `submitMessage()` 都重建 `readFileState`，因此重複注入 diff。本文逆向 C26 函數找到原因，示範如何在 resume 前用 JSONL 預處理避開注入，並附 TypeScript 實作。"
+title: "擋掉 diff，為甚麼還沒省到額度？一次 Agent SDK 修法的代價"
+description: "我曾改寫 JSONL，繞過 Claude Code v2.1.71 的檔案追蹤重建條件。但少了 diff 不等於修好快取，刪 Write content 也會改變歷史。這篇保留修法思路與後來修正的判斷。"
 publishDate: 2026-03-10T14:00:00+08:00
-updatedDate: 2026-04-04
+updatedDate: 2026-10-29
 category: 技術觀點
 tags: [Agent SDK, Claude Code, system-reminder, token 消耗, JSONL]
-readingTime: 8
+readingTime: 6
 draft: false
-excerpt: "逆向 C26 函數找出 Agent SDK 每次重送 diff 的原因，在 resume 前預處理 JSONL 繞開注入，附 TypeScript 實作。"
+excerpt: "繞過 C26 的收集條件可以改變檔案追蹤，但不能直接證明額度改善。這次歷史 workaround 的教訓，在於你為了修狀態，究竟改掉了哪些證據。"
 ogImage: "/images/articles/agent-sdk-system-reminder-diff-fix.webp"
-problemTag: "SDK 每輪對話都重建狀態並重送檔案 diff"
+problemTag: "擋掉重複 diff 後仍未證明省額度"
 ogHighlight:
-  label: "Resume 後 diff 注入"
-  before: "每輪重送完整 diff"
-  after: "JSONL 預處理後 0 觸發"
+  label: "歷史 workaround"
+  before: "改 JSONL 避開追蹤"
+  after: "仍須驗成本與歷史完整性"
 ---
 
-[前篇](/articles/claude-code-token-drain-system-reminder/)寫了我逆向 Claude Code v2.1.71、找出 system-reminder 重複注入 diff 的過程。
+我曾經為了擋掉 Agent SDK 重複注入的檔案 diff，直接改它要讀回的 JSONL 對話紀錄。
 
-結論是 Agent SDK 用戶幾乎無解。官方 GitHub issue 開了半年沒動靜。
+做法看起來很有效率：既然狀態重建只認某幾種工具紀錄，那就改掉收集條件，讓它建不出那份追蹤資料。
 
-所以我自己動手修了。這篇說的是我怎麼做的。
+但後來的成本追查提醒了我兩件事。擋掉 diff，沒有自動換來快取改善；而我原先寫的「不影響對話內容或理解」，也說得太滿。**刪掉歷史 Write 的內容，就是改掉了一部分歷史。**
 
-以下分析基於 Claude Code **v2.1.71**，不同版本行為可能已有不同。
+這篇說明當時為甚麼會這樣修，以及你要付出的代價。
 
-## Agent SDK 的 readFileState 為什麼跟 CLI 不一樣
+> 歷史範圍：Claude Code v2.1.71，以及當時逐輪重新呼叫並 resume 的 SDK 使用方式。`C26` 是那份 minified 程式裡的函數名，不是穩定 API。2026-10-29 未重跑舊程式，也未確認現行版本仍採相同收集條件。
 
-在 CLI 裡，Edit 之後做一次 Read，下一輪就不會再注入，因為 Read 更新了 readFileState 的 Offset 狀態，後續對話就會視為已同步。
+## 為甚麼在對話裡 Read，下一輪仍可能重送？
 
-在 Agent SDK 裡，這個方法完全沒用。
+**因為我當時的下一輪會重新還原狀態，上輪記憶體裡更新過的資料不一定繼續沿用。**
 
-**因為 readFileState 在這裡是區域變數，每次都會重新建立，沒有存成 class property。**
+在 CLI 持續互動時，Read 能更新當下的檔案追蹤。但我的 SDK 程式每次重新呼叫、resume，都會從保存的工具歷史再建一次 `readFileState`。因此，這輪補讀有效，不代表下輪重建後仍有相同狀態。
 
-每次 `submitMessage()` 被呼叫，Claude Code 就會跑一個叫 C26 的函數，從 JSONL 重建整張 readFileState 表：
+原文把這件事概括成「Agent SDK 每輪都會丟掉狀態」。現在應該說清楚，我追到的是那個版本、那條呼叫路徑；SDK 也有持續輸入的多輪方式，不能只靠產品名稱判斷生命週期。
 
-```
-submitMessage()
-  → readFileState = C26(mutableMessages)  ← 從 JSONL 全量重建
-  → stale check → diff 注入
-  → 主迴圈跑完，Edit/Write 更新了記憶體中的 readFileState
-  → 下一次 submitMessage()
-  → readFileState = C26(mutableMessages)  ← 又從頭重建，之前的更新全丟
-  → 永遠注入
-```
+## C26 當時用哪些工具紀錄建表？
 
-你在對話過程中做了幾百次 Read，全都是在一個每輪都會被丟棄的記憶體結構上操作。下一輪，C26 拿 JSONL 重新建表，一切歸零。
+**依當時的逆向紀錄，它收集符合條件的 Read 與 Write。**
 
-CLI 用戶的 readFileState 活在 process 的生命週期裡，修一次就好。Agent SDK 每次 API call 都重建，在對話中怎麼修都沒用。
+| 工具紀錄 | 收集條件 |
+|---|---|
+| Read | `input.offset === undefined && input.limit === undefined` |
+| Write | `input.file_path && input.content` |
+| Edit | 那段收集邏輯未處理 |
 
-## C26 實際上只收集哪些檔案
+這裡有個容易混淆的地方：讀取「從第一行開始」，和工具輸入裡「明確存在 `offset: 1`」，在程式判斷上可以不同。模型或呼叫端實際有沒有送這個欄位，要看紀錄，不能因為工具預設從第一行開始，就說它幾乎永遠不會進表。
 
-知道為什麼修不了之後，下一步是看 C26 建表時到底從 JSONL 裡收集什麼。
+我當時想到的 workaround，就是讓歷史紀錄不再符合這兩個條件：替缺少 offset 的 Read 補上 `offset: 1`，再移除 Write 的 `content`。
 
-C26 從 tool_use 裡收集兩種東西：
+這改的是重建函數的輸入，沒有修正重建函數本身。就像把清單上的資料拿掉，後面的程式當然不會再按同一份資料追蹤；但清單同時也少了原本保存的東西。
 
-| 來源 | 收集條件 |
-|------|---------|
-| Read tool | `input.offset === undefined && input.limit === undefined` |
-| Write tool | `input.file_path && input.content` |
+## 刪掉 Write content，會失去甚麼？
 
-Edit tool 不在收集範圍內，C26 不處理 Edit。
+**會失去那次寫入的完整內容，後來的對話與查核可能受影響。**
 
-這裡有個反直覺的發現：**Read 工具預設傳 `offset=1`，所以它幾乎永遠不會被 C26 收進追蹤表。**
+JSONL 裡的 `tool_use` 記錄了模型當時要求工具做的事。移除 `Write.input.content` 後，歷史不再完整描述那次操作。
 
-實際會進入追蹤表的只有兩種情況：
+例如後續想比較「第一次寫了哪個版本」與「目前檔案差在哪裡」，如果當時寫入內容已刪，就不能只靠那筆歷史還原。模型接續時是否受影響，則取決於它還看得到哪些其他資訊，不能預先保證完全沒差。
 
-| 來源 | offset | limit | 是否被追蹤 |
-|------|--------|-------|-----------|
-| CLAUDE.md / MEMORY.md（預設載入） | undefined | undefined | 永遠 |
-| Write tool | undefined | undefined | 永遠 |
-| C26 從 JSONL 重建的所有 entry | undefined | undefined | 永遠 |
-| Read tool（offset=1 預設值） | 1 | undefined | 不追蹤 |
+補 Read 的欄位也改動了歷史工具呼叫。即使讀取範圍在某個版本等效，仍應承認這是為了影響還原邏輯而改寫紀錄。
 
-C26 重建所有 entry 時，timestamp 用的是 JSONL 裡記錄的過去時間。檔案的 mtime 幾乎必然比那個時間新，所以每次重建完，stale check 一跑就觸發注入。
+另外，執行中的程序可能仍在追加 JSONL。若另一段程式同時整份讀入、改完再寫回，就有覆蓋新紀錄的風險。備份能保留先前副本，不能代替對寫入時機與還原結果的確認。
 
-## 解法：在 resume 前預處理 JSONL
+因此我不再把原來那段直接修改原檔的 TypeScript，當成今天可直接採用的整合範例。它缺少完整性、同時寫入與接續結果的驗證，也依賴內部儲存格式與路徑規則。
 
-修不了 C26 的邏輯，但可以在它執行前動它的輸入。
+## 那次修法到底解決了多少？
 
-C26 有兩個收集條件：
+**它針對部分追蹤紀錄的收集條件，沒有證明整體成本已改善。**
 
-- **Read 的條件**：`offset === undefined && limit === undefined`
-- **Write 的條件**：`file_path && content`
+原來的想法有三段，需要各自成立：
 
-只要在 resume 前把 JSONL 改掉，讓這兩個條件都不成立，C26 就建不出有效的追蹤 entry，注入就不會發生。
+1. 改寫歷史後，重建出的追蹤資料是否真的改變？
+2. 追蹤資料改變後，要消除的那種 diff 是否真的不再送出？
+3. 同樣工作量下，輸入、快取與整體消耗是否改善？
 
-具體做法：
-- Read 的 tool_use → 加上 `offset: 1`，讓 C26 的收集條件不成立
-- Write 的 tool_use → 移除 `content`，讓 C26 的收集條件不成立
+第一段就算成立，也不能跳過後兩段。其他內部來源仍可能提供檔案或動態資訊；少一種 diff，也可能還留著另一個破壞快取前綴的來源。
 
-這個改法不影響對話內容或 Claude 的理解，只影響 C26 的建表邏輯。
+後續實驗裡，大量建立快取的情況仍在，紀錄的讀取比例只有約 15–25%。該表沒有把 sanitizer 的獨立開關完整列出，所以不能反過來精算這段程式單獨有多少效益。它能否定的是當初那個太快的宣告：**做到繞過一段收集邏輯，還不能說原本的額度問題修好了。**
 
-## 實作
+相關問題可接著看〈[我逆向了 Claude Code v2.1.71，找到 token 消耗暴增的根因](/articles/claude-code-token-drain-system-reminder/)〉。
 
-### 第一步：找到 JSONL 路徑
+相關問題可接著看〈[Claude Code 實戰：我怎麼用 AI 寫完一整個網站](/articles/claude-code-workflow/)〉。
 
-JSONL 放在 `~/.claude/projects/{project-hash}/{session-id}.jsonl`。
+若要把本文的判準用在自己的工作，可參考[課程與工程手冊](/courses/)的適用範圍。
 
-project-hash 的算法是把工作目錄路徑的所有非英數字元替換成 `-`（超過 200 字元則截斷後加 charCode hash）：
+## 現在要怎麼判斷這類 workaround 值不值得留？
 
-```typescript
-import { homedir } from 'os';
-import { join } from 'path';
+**把省下的用量，和改動歷史造成的損失放在一起看。**
 
-function projectHash(cwd: string): string {
-  const result = cwd.replace(/[^a-zA-Z0-9]/g, '-');
-  if (result.length <= 200) return result;
+如果同一問題能用官方支援的 session 生命週期或持續輸入方式處理，先比較那條路。2026-10-29 的 [官方 SDK 文件](https://code.claude.com/docs/en/agent-sdk/typescript-v2-preview)建議使用 `query()` 的 `AsyncIterable<SDKUserMessage>` 維持多輪，或用 `options.resume` 接續已保存的 session；當年的 V2 已移除，不能再視為現行替代方案。
 
-  let h = 0;
-  for (let i = 0; i < cwd.length; i++) {
-    h = (h << 5) - h + cwd.charCodeAt(i);
-    h |= 0;
-  }
-  return result.slice(0, 200) + '-' + Math.abs(h).toString(36);
-}
+若你在維護鎖定舊版本的系統，必須研究類似修法，最低限度也要能回答：原始紀錄是否完整保留、實驗期間誰會寫入、是否確實少送目標內容，以及接續後能否正確完成原任務。沒有這些證據，只看到「程式沒報錯」還不夠。
 
-function getJsonlPath(cwd: string, sessionId: string): string {
-  return join(homedir(), '.claude', 'projects', projectHash(cwd), `${sessionId}.jsonl`);
-}
-```
+當初我動手，是因為問題已經影響實際工作，等不下去。這個動機保留，對效果的判斷則要跟著證據更新。
 
-### 第二步：sanitizeJsonl（破壞 C26 的收集條件）
-
-```typescript
-import { readFileSync, writeFileSync, copyFileSync } from 'fs';
-
-function sanitizeJsonl(jsonlPath: string): { reads: number; writes: number } {
-  const stats = { reads: 0, writes: 0 };
-
-  // 備份，改壞了還能救
-  copyFileSync(jsonlPath, jsonlPath + '.bak');
-
-  const content = readFileSync(jsonlPath, 'utf-8');
-  const lines = content.split('\n').map(line => {
-    if (!line.trim()) return line;
-
-    const msg = JSON.parse(line);
-    if (msg.type !== 'assistant' || !Array.isArray(msg.message?.content)) {
-      return line;
-    }
-
-    for (const block of msg.message.content) {
-      if (block.type !== 'tool_use') continue;
-
-      // Read without offset → 加 offset=1，讓 C26 的收集條件不成立
-      if (block.name === 'Read' && block.input?.offset == null) {
-        block.input.offset = 1;
-        stats.reads++;
-      }
-
-      // Write with content → 移除 content，讓 C26 的收集條件不成立
-      if (block.name === 'Write' && 'content' in (block.input ?? {})) {
-        delete block.input.content;
-        stats.writes++;
-      }
-    }
-
-    return JSON.stringify(msg);
-  });
-
-  writeFileSync(jsonlPath, lines.join('\n'), 'utf-8');
-  return stats;
-}
-
-export { projectHash, getJsonlPath, sanitizeJsonl };
-```
-
-### 第三步：整合到 Agent SDK
-
-在每次 resume 前呼叫：
-
-```typescript
-import { sanitizeJsonl, getJsonlPath } from './sanitize-jsonl';
-
-const jsonlPath = getJsonlPath(process.cwd(), sessionId);
-const { reads, writes } = sanitizeJsonl(jsonlPath);
-console.log(`Patched ${reads} Read + ${writes} Write entries`);
-
-const result = query({
-  prompt: 'continue',
-  options: { cwd: process.cwd(), resume: true, sessionId }
-});
-```
-
-## 這個修法的代價
-
-說清楚：這是在動 JSONL 原始檔案。
-
-備份是有的，改壞了可以還原。不過這個做法建立在「C26 收集邏輯不變」的前提上；如果 Anthropic 哪天改了 C26 的實作，它就會失效，而且不會噴 error，只會悄悄恢復注入。
-
-這不是優雅的解法。這是在[用 Claude Code 建構自動化系統](/articles/claude-code-workflow/)的過程中，官方沒在動、但問題實際影響開發效率，所以自己能做的事。
-
-官方 issue 還開著。後來我繼續往下追，發現就算擋掉 diff 注入，SDK V1 每次重開 process 還是會讓 prompt cache 失效。完整根因與 V2 persistent session 的最終解法整理在下一篇〈[逆向 Claude Agent SDK：找出每則訊息 2-3% 額度消耗的根因與解法](/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/)〉；想一次摸透 Claude Code 底層架構的人，也可以看 [Claude Code 深度工程手冊](/courses/)。
+接著看〈[Agent SDK 每句吃 2–3% 額度：我怎麼從失敗修法追到快取問題](/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/)〉，裡面放了後續比較。它能幫你看出，一次修法消掉症狀之後，還有哪些問題沒有一起消失。
