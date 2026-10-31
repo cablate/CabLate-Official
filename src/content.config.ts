@@ -16,6 +16,7 @@ const articles = defineCollection({
   schema: z.object({
     // SEO 基礎
     title: z.string().max(60, '標題不超過 60 字元'),
+    seoTitle: z.string().max(60, 'SEO 標題不超過 60 字元').optional(),
     description: z.string().max(160, '描述不超過 160 字元'),
 
     // 發布資訊

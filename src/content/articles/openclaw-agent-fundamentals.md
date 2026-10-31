@@ -1,5 +1,6 @@
 ---
 title: "換一套 Agent 又要重學？從 OpenClaw 拆開五個運作問題"
+seoTitle: "OpenClaw 與 AI Agent 架構教學：拆解指令、工具、記憶與上下文運作原理"
 description: "從 Cab 自製 Deep Research、ClaudeCab 的經驗出發，把 Agent 拆成指令、工具、記憶、上下文與喚醒五個問題。框架實作會變，但遇到問題時，你可以先查資料在哪裡進出。"
 publishDate: 2026-03-10T18:00:00+08:00
 updatedDate: 2026-10-29

@@ -32,10 +32,11 @@ const breadcrumbJsonLd = {
 };
 ---
 
-<BaseLayout title={entry.data.title} noSEO={true}>
+<BaseLayout title={entry.data.seoTitle ?? entry.data.title} noSEO={true}>
   <SEO
     slot="head"
-    title={`${entry.data.title} | CabLate`}
+    title={`${entry.data.seoTitle ?? entry.data.title} | CabLate`}
+    ogTitle={`${entry.data.title} | CabLate`}
     description={entry.data.description}
     image={`/og/${entry.id}.png`}
     imageAlt={entry.data.title}

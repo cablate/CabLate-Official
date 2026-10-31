@@ -1,5 +1,6 @@
 ---
 title: "Agent SDK 每句吃 2–3% 額度：我怎麼從失敗修法追到快取問題"
+seoTitle: "Claude Code 與 Agent SDK 逆向實戰：Prompt Cache 失效與 Token 暴增排查"
 description: "2026 年 3 月，我用 Claude Agent SDK v0.2.76 追查短訊息的高消耗：擋 diff 沒讓快取改善，改用當時的 V2 後升到 84%。保留實驗數據，也交代 V2 已移除後該怎麼判斷。"
 publishDate: 2026-03-25
 updatedDate: 2026-10-29
