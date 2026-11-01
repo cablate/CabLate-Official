@@ -149,7 +149,7 @@ problemTag: "多家模型額度分散、切換工具斷工作流"
 | 自己改設定常遇到的狀況 | 背後原因是甚麼 | `model-relay` 幫你做了甚麼處理 |
 |---|---|---|
 | **聊到第二輪突然忘記前面講甚麼，或外掛工具消失** | Claude Code 有時只傳送「最新一輪的變動片段」，而且中途重連的外部工具（MCP）只寫在系統提示裡，非官方伺服器不會自動拼回去 | 送出前自動幫外部模型拼回完整對話紀錄，並把中途重連的外部工具放回正式工具清單（展開 `message-threads` 與合併 `tool_addition`） |
-| **搜尋網頁（`WebFetch`）或外掛工具無法呼叫、直接報錯** | Claude Code 會送出專屬的「按需尋找工具」指令與快取標記，許多外部模型不認得 | 自動把工具轉成外部模型能直接呼叫的形式，並拿掉不相容的快取欄位（改寫 `ToolSearch` 與剝除 `cache_control`） |
+| **搜尋網頁（`WebFetch`）或外掛工具無法呼叫、直接報錯** | Claude Code 會送出專屬的「按需尋找工具」指令與附加欄位，許多外部模型不認得 | 自動把工具轉成外部模型能直接呼叫的形式，並拿掉對方不認得的附加欄位（改寫 `ToolSearch` 與剝除 `cache_control`） |
 | **明明點名派 Gemini 子代理，帳單卻還是扣在 Claude 上** | 如果 Claude Code 設定檔裡設了「允許使用的模型白名單（`availableModels`）」卻漏填外部模型，系統會在內部偷偷換回預設的 Claude，不跳任何錯誤 | 在子代理啟動前與結束時雙重核對「實際收到的請求是不是你點名的模型」，被偷換就會立刻跳出警告並教你用 `/provider doctor` 補齊 |
 | **手機遠端遙控（Remote Control）被鎖死、狀態列顯示舊名字** | Claude Code 只要發現連線網址被改掉，就會關閉手機遙控功能；內建狀態列也不會顯示切換後的模型名 | 打 `/provider rc on` 就能在不改動官方網址的前提下分流模型、保住手機遙控；同時把當前視窗的真實模型寫進狀態檔供狀態列顯示 |
 
@@ -161,10 +161,10 @@ problemTag: "多家模型額度分散、切換工具斷工作流"
 
 ## 第一步：安裝 `magpie` 並登入你的模型或填入 API 金鑰
 
-到 **[usemagpie.ai](https://usemagpie.ai)** 下載桌面版安裝檔（支援 macOS、Windows、Linux），或在終端機執行安裝指令（執行前建議先檢視腳本內容）：
+直接到 **[usemagpie.ai](https://usemagpie.ai)** 下載桌面版安裝檔（支援 Windows、macOS、Linux），像裝一般軟體一樣點開即可；習慣用終端機的人也可以跑一行安裝指令：
 
 ```bash
-# macOS / Linux 安裝（Windows 可直接從 usemagpie.ai 下載桌面版安裝檔）
+# macOS / Linux 終端機安裝（Windows 與一般使用者直接從 usemagpie.ai 下載桌面版最省事）
 curl -fsSL https://usemagpie.ai/install.sh | sh
 ```
 
@@ -174,7 +174,7 @@ curl -fsSL https://usemagpie.ai/install.sh | sh
 
 ## 第二步：在 Claude Code 安裝 `model-relay` 外掛
 
-在終端機執行這兩行指令安裝外掛（如果 Claude Code 已經開著，裝完在對話框輸入 `/reload-plugins` 即可載入）：
+在終端機貼上這兩行指令安裝外掛（如果 Claude Code 已經開著，裝完在對話框輸入 `/reload-plugins` 即可載入）：
 
 ```bash
 claude plugin marketplace add cablate/model-relay
@@ -183,21 +183,15 @@ claude plugin install model-relay@model-relay
 
 ## 第三步：複製這段提示詞貼給 Claude Code，讓 AI 幫你自動設好並測通
 
-不用自己研究設定檔怎麼寫。把下面這段文字**整段複製貼進 Claude Code 對話框**（裡面那些網址跟英文參數都是寫給 AI 看的，你完全不用懂，只要把最後一行改成你在 `magpie` 裡有開通的模型名稱就好；提示詞也已規定 AI 改動設定檔前要先給你看變更預覽）：
+不用自己研究設定檔，也**不用修改這段提示詞裡的任何一個字**。直接把下面這段文字**整段複製貼進 Claude Code 對話框**，AI 就會自動去查你在 `magpie` 開通了哪些模型、幫你寫好設定並跑完連線測試：
 
 ```text
-請幫我把 model-relay 跟本機的 magpie（http://127.0.0.1:3425）串接起來，完成以下設定與驗證（改動 ~/.claude/settings.json 前請先給我看預覽）：
+請幫我把 model-relay 跟本機的 magpie 串接起來，依序完成以下 4 步（修改 ~/.claude/settings.json 前，請先用白話告訴我會改哪裡並等我確認）：
 
-1. 先執行 `/provider init` 建立 format 2 的 `~/.claude/model-relay.json`，並檢查本機 `127.0.0.1:3425`（magpie）是否有回應，以及裡面有哪些可用模型。
-2. 透過 model-relay 的 `setup.mjs`（或 `/provider setup`），把我在 magpie 裡開通的模型加進 `~/.claude/model-relay.json` 的 `providers`：
-   - `baseUrl` 指向 `http://127.0.0.1:3425`
-   - `stripCacheControl` 設為 `true`
-   - 加上 `launch: { "command": "magpie", "args": ["serve"] }`，讓連接埠沒開時自動在背景啟動 magpie
-   - 為每個供應商填寫清楚的 `agent.description`（說明什麼任務適合派給這個 `model-relay:<名稱>` 子代理）
-3. 若我的 `~/.claude/settings.json` 有設定 `availableModels` 白名單，請把這些外部模型的 `model` ID 一併補進去，避免子代理被偷偷換回主線模型。
-4. 設定完成後，請執行 `/provider restart` 與 `/provider doctor --ping`，確認每個模型都亮綠燈（`✓ answers`）並顯示反應秒數，最後用白話跟我說我現在可以用哪些指令切換視窗或點名派子代理。
-
-我目前在 magpie 裡想接進來的模型有：GPT（Codex）、Gemini、GLM、DeepSeek。
+1. 自動偵測可用模型：先執行 `/provider init` 建立 `~/.claude/model-relay.json`（format 2），並檢查本機 `http://127.0.0.1:3425`（magpie）有哪些我已經登入或開通的模型（若 magpie 還沒啟動，請先幫我執行 `magpie serve`）。
+2. 自動註冊成子代理：透過 model-relay 的 `setup.mjs`（或 `/provider setup`），把我在 magpie 裡開通的模型加進 `providers`（設定 `baseUrl: "http://127.0.0.1:3425"`、`stripCacheControl: true`、`launch: { "command": "magpie", "args": ["serve"] }` 自動背景啟動，並替每個模型填寫清楚的 `agent.description` 派工說明）。
+3. 補齊模型白名單：若我的 `~/.claude/settings.json` 有設定 `availableModels` 白名單，請把這些外部模型的 ID 一併補進去，避免子代理被偷偷換回主線模型。
+4. 測試亮綠燈並教我怎麼用：執行 `/provider restart` 與 `/provider doctor --ping`，確認每個模型都亮綠燈（`✓ answers`），最後用白話列出我現在可以點名呼叫哪些 `model-relay:<名稱>` 子代理。
 ```
 
 等 AI 跑完、看到畫面上的模型全部亮起綠燈 `✓`，你就可以在對話框打 `/provider` 切換眼前視窗的模型，或直接跟 Claude 說「派 Gemini 幫我潤稿」「派 GPT 幫我檢查這段邏輯」了！
