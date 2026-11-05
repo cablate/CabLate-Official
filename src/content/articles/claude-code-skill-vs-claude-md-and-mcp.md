@@ -14,19 +14,15 @@ ogHighlight:
   after: "依用途安排與測試"
 ---
 
-用 Claude Code 一段時間之後，幾乎每個人都會踩進同一個坑：每次 AI 犯了一個錯，你就在 `CLAUDE.md` 加一條規定。
+AI 每犯一次錯，你就在 `CLAUDE.md` 補一條規定；幾個月後連調個按鈕間距，都得帶著寫作與資料庫規定進場。[官方文件](https://code.claude.com/docs/en/memory)建議 `CLAUDE.md` 控制在 200 行內，越長越難照做，多步驟流程應移到 Skill（也稱 AgentSkill）。
 
-過了兩個月，整份檔案塞滿了寫作排版、API 錯誤處理、Git 格式與資料庫命名，膨脹到好幾千字。這時兩件事會同時發生：第一，就算你只是請它把按鈕間距調大 `4px`，額度也掉得特別快；第二，規則明明寫在裡面，它卻越來越常漏看。
+於是你把規定拆進五個 `SKILL.md` 資料夾，結果開新對話怎麼問，Claude 都當作沒看到。
 
-於是你聽說可以把不同任務的 SOP 拆進 `.claude/skills/` 底下的 `SKILL.md`。你花了一個下午把規則分門別類搬進五個資料夾，結果打開新對話怎麼問，**Claude 從頭到尾連一次都沒有主動載入過你的 Skill**。
+## 為甚麼寫進 SKILL.md，它卻當作沒看到？
 
----
+**Claude 決定要不要自動打開一支 Skill 時，先看到的只有名稱和描述（`description`），完整正文要等呼叫時才會載入。**
 
-## 明明把規則寫進 SKILL.md 了，為甚麼 Claude 當作沒看到？
-
-**因為 Claude 自動選擇 Skill 時，先看到名稱和 `description`；完整正文等到呼叫時才載入。**
-
-`CLAUDE.md` 會依適用範圍載入共通指引；Skill 則把描述、任務正文與參考文件分開，讓需要的內容逐步載入。下面用同一個調整按鈕的任務，看兩種安排的差異。圖中長條表示內容安排，並非實測 token 比例。
+Skill 的實現就是 Prompt，在終端機呼叫時雖只顯示一行 `/{skill-name}`，其實是把整份 `SKILL.md` 加進對話。為免預先塞滿空間，系統按圖中 L1、L2、L3 三階段載入，L1 描述常駐供比對、L2 正文呼叫時載入、L3 參考檔（`references/`）用到才讀。
 
 <figure class="article-diagram">
   <div class="article-diagram__scroll">
@@ -70,33 +66,49 @@ ogHighlight:
   <figcaption>示意共通指引、Skill 描述與任務內容的安排；圖中長度不代表實際 token 比例。</figcaption>
 </figure>
 
-問題就出在 **L1 描述到 L2 正文的選擇**。如果 `description` 只寫「處理文件整理」，你請 Claude「把筆記改成官網文章」時，模型看不到正文已寫好的文章步驟。把描述改成「撰寫或改寫官網文章；適用於將筆記改成文章」，才能提供判斷情境的線索。
+## 改描述之前，先查這三件事
 
-但在改描述之前，先確認 Skill 是否出現在模型的可用清單，以及是否設了 `disable-model-invocation: true`；這個設定會禁止模型自行呼叫。[官方 Skill 文件](https://code.claude.com/docs/en/skills)說明了描述與正文的載入差異。描述明確後，仍要用實際任務測試。
+遇到 Skill 不觸發，先排除三個設定問題：
 
+1. **在不在清單裡**：打 `/skills` 或問 Claude 有哪些可用。沒出現的話，可能是對話開始後才新增（跑 `/reload-skills`）、從上層目錄啟動尚未讀到子資料夾 `.claude/skills/`，或名稱含非法字元。
+2. **開頭設定寫壞或鎖成手動**：`SKILL.md` 開頭 `---` 間的設定（YAML）若格式寫錯，打 `/名稱` 還叫得動，但 Claude 讀不到描述會略過（加 `--debug` 可查錯）；設了 `disable-model-invocation: true` 則只能手動打 `/名稱`。
+3. **描述被拿掉**：依[官方文件](https://code.claude.com/docs/en/skills)，描述清單預算為模型 context 的 1%（單支上限 1,536 字元），裝太多時系統會依呼叫頻率從最少用的開始拿掉描述；可用 `/context` 或 `/doctor` 檢查。
+
+## 描述寫開口會講的話，開新對話用三句話測
+
+設定正常卻沒觸發，就把描述（`description`）改成三項：一句話說產出甚麼、平常開口的原話、不處理的情況。
+
+```yaml
+# ❌ 功能介紹寫法（沒有指出任務情境）
+---
+name: article-helper
+description: 用於處理部落格文章撰寫、排版優化與品質檢查相關的任務。
 ---
 
-## 那 CLAUDE.md、Skill 跟 MCP 到底怎麼分工？
+# ✅ 情境寫法（一句話產出 ＋ 開口原話 ＋ 不處理邊界）
+---
+name: cablate-article-writer
+description: |
+  撰寫或改寫 cablate.com 技術文章，套用疑問鏈節奏、SVG 圖解色票與去 AI 味檢查。
+  觸發情境：「幫我寫一篇新文章」「把這份筆記改成官網文章」「幫這段加一張 SVG 圖解」。
+  不處理：Threads 短貼文、純課程操作手冊（交給 social-post 處理）。
+---
+```
 
-分工時先看需求：專案共通指引、特定任務做法，以及外部系統連線，各有適用位置：
+改完**開新對話用三句話測**（前兩句叫得動、第三句不動才算完）：直接講一句描述裡的原話、換句白話講同一件事、講一個相近但不該觸發的任務。若是組織導入，建議設 hook 記錄所有 Skill 調用狀況，用大量情況調描述（含誤觸發），沒有更好的做法。
+
+## 哪些規則才該放進 Skill？
+
+順著三個問題分流：
+- **Q1 下次還會遇到嗎？** 先問「這個知識，我希望 AI 永遠記得嗎？」，單次任務留當下對話。
+- **Q2 缺連線還是缺做法？** 缺資料庫等外部連線開 MCP Server，缺步驟往下走。
+- **Q3 每輪必守還是特定任務？** 每輪底線放 `CLAUDE.md`，特定任務做法放 Skill。
 
 | 機制 | 用途 | 何時使用 | 適合放甚麼 |
 |---|---|---|---|
 | **`CLAUDE.md`** | **適用範圍的共通指引** | 依檔案位置與設定載入 | 專案目錄結構、常用測試指令、不可違反的安全紅線 |
 | **`AgentSkill`** | **特定任務的做法** | 適用或明確呼叫時載入 | 特定任務的 SOP、檢查清單與 `references/` 範例 |
-| **`MCP Server`** | **外部工具與資料的連接方式** | 依工具與設定提供或搜尋 | 真正需要連線的外部服務（如查資料庫、讀行事曆） |
-
-看懂這張表，就能順手避開兩個最常見的錢坑：
-
-第一是**一口氣掛了十幾個 MCP Server**。工具定義如何載入，會受版本及工具搜尋設定影響，不能假設所有環境都一次塞入。先檢查可用工具與實際用量；底層成本追查可參考〈[逆向 Claude Agent SDK 的快取成本](/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/)〉。
-
-第二是**裝了 Skill，卻沒確認描述是否可見**。我們當時測試 63 支 Skill 的大型套件，在約 15,000 字元的描述預算下，觀察到 18 支描述被截斷。這是當時環境的個案，未取得原始測試紀錄重新核對，也不能當成所有版本的固定上限。若 Skill 不觸發，先看它是否出現在可用清單，再改描述。
-
----
-
-## 怎麼在十秒內決定：一條規則該放哪裡？
-
-不要問這件事「每天用不用得到」，要問：**「下次再遇到這件事，我還想不想重講一遍？」** 順著下面三個問題走，十秒鐘就能分流：
+| **`MCP Server`** | **外部工具與資料的連接方式** | 依工具與設定提供或搜尋 | 真正需要連線的外部服務（如查資料庫、讀行事曆）|
 
 <figure class="article-diagram">
   <div class="article-diagram__scroll">
@@ -140,38 +152,18 @@ ogHighlight:
   <figcaption>十秒分流：單次任務留對話、外部連線靠 MCP、每輪紅線放 CLAUDE.md、特定任務 SOP 封裝成 Skill。</figcaption>
 </figure>
 
----
+只有部分常見功能已被模型內建，用了發現卡手或不如預期，就還需要寫 Skill。寫 `SKILL.md` 時必做事項直接寫在裡面並標清檔案索引；同時要「陳述原則，不要窮舉規則」，窮舉通常只能做好少數情境，任務一變或資訊不足就容易「變智障」，貼太緊案例也難複用。
 
-## 決定寫成 Skill 之後，description 怎麼寫才會準確觸發？
+## 下次 Skill 不觸發，先做這四步
 
-**戒掉「產品說明書」寫法，直接寫出你平常開口會講的那幾句原話，以及甚麼情況不要觸發。**
+1. 打 `/skills` 確認在不在清單。
+2. 查開頭設定有無寫壞或設了 `disable-model-invocation`。
+3. 把 `description` 改成開口原話與不處理邊界。
+4. 開新對話用三句話測。
 
-直接對比下面兩種寫法：前者只有功能範圍，後者給了模型選擇 Skill 所需的任務情境。
+**Claude 只先看描述，寫得像說明書它就不會打開。**
 
-```yaml
-# ❌ 功能介紹寫法（沒有指出任務情境）
----
-name: article-helper
-description: 用於處理部落格文章撰寫、排版優化與品質檢查相關的任務。
----
-
-# ✅ 情境暗號寫法（一句話產出 ＋ 開口原話 ＋ 不處理邊界）
----
-name: cablate-article-writer
-description: |
-  撰寫或改寫 cablate.com 技術文章，套用疑問鏈節奏、SVG 圖解色票與去 AI 味檢查。
-  觸發情境：「幫我寫一篇新文章」「把這份筆記改成官網文章」「幫這段加一張 SVG 圖解」。
-  不處理：Threads 短貼文、純課程操作手冊（交給 social-post 處理）。
----
-```
-
-寫完後開新對話測三種情境，記錄它是否按預期載入。講一句 `觸發情境` 原話看它讀不讀、換句白話描述問題看語義通不通、再講一句 `不處理` 的任務確認它不會亂載入。
-
----
-
-## 現在就能拿去幫 CLAUDE.md 減肥的體檢指令
-
-如果你手上的 `CLAUDE.md` 已經塞了好幾百行，直接把下面這段話貼給 Claude Code，讓它先幫你列出一份拆分清單：
+想盤點現有專案，貼下面指令就會先在對話列出分類與 `description` 改寫建議，確認後再動檔：
 
 ```text
 請讀取專案裡的 CLAUDE.md 以及 .claude/skills/ 底下的所有 SKILL.md（先不要修改檔案），幫我分成三類列出：
@@ -180,4 +172,4 @@ description: |
 3. 檢查現有 SKILL.md 的 description：哪幾支寫得太籠統容易被略過？請直接改寫成「一句話產出＋觸發原話＋不處理邊界」版本。
 ```
 
-等它列出清單，你花五分鐘看過點頭再讓它動手拆。如果你想進一步把日常讀檔與子代理雜活分流給 Gemini、GLM 或 DeepSeek 等不同模型，可以接著看〈[想在 Claude Code 混用 Gemini 與 GLM，為甚麼一改設定檔就全亂套？](/articles/claude-code-multi-model-routing-and-subagent-relay/)〉與〈[Claude Code 實戰：我怎麼用 AI 寫完一整個網站](/articles/claude-code-workflow/)〉；完整的 Skill 拆解範例與 18 章 Claude Code 配置實務都在 [AgentSkill 實戰課程與工程手冊](/courses/)裡，也可以先用[免費的 AI 工作流五層健檢](/expertise/)測測看你手上的流程現在卡在哪一層。
+延伸參考：〈[逆向 Claude Agent SDK 的快取成本](/articles/reverse-engineer-claude-agent-sdk-hidden-token-cost/)〉、〈[想在 Claude Code 混用 Gemini 與 GLM，為甚麼一改設定檔就全亂套？](/articles/claude-code-multi-model-routing-and-subagent-relay/)〉、〈[Claude Code 實戰：我怎麼用 AI 寫完一整個網站](/articles/claude-code-workflow/)〉；團隊導入與盤點見 [AgentSkill 實戰課程與工程手冊](/courses/)、[AI 工作流健檢](/expertise/)。
