@@ -1,6 +1,6 @@
 ---
 title: "每天自動跑一次任務，需要架 OpenClaw 嗎？"
-seoTitle: "每天自動跑一次任務：排程、AI CLI 與 OpenClaw Agent 怎麼選"
+seoTitle: "OpenClaw 是什麼？每天自動跑任務要先架 Agent，還是用排程配 Claude Code 就夠？"
 description: "固定排程、AI 判斷與即時互動是三個不同需求。先拆開任務，再決定用排程、AI 命令列工具，還是常駐 Agent。"
 publishDate: 2026-02-24T10:00:00+08:00
 updatedDate: 2026-10-29

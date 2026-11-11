@@ -37,7 +37,9 @@ export STRIX_LLM="openai/gpt-6.1-sol"
 export LLM_API_KEY="你的_API_Key"
 ```
 
-`STRIX_LLM` 僅指定單一模型（`openai/gpt-6.1-sol` 需 Daybreak），官方查無拆分子代理的設定，我是請 AI 把主模型改 Sol、子代理改 Luna，可複製這段範本請 AI 改。官方也要求透過 API 呼叫時在請求帶上 Daybreak 設定（`access_programs.cyber`），範本裡一併請 AI 確認：
+`STRIX_LLM` 僅指定單一模型（`openai/gpt-6.1-sol` 需 Daybreak），官方查無拆分子代理的設定，我是請 AI 把主模型改 Sol、子代理改 Luna。
+
+可複製這段範本請 AI 改。官方也要求透過 API 呼叫時在請求帶上 Daybreak 設定（`access_programs.cyber`），範本裡一併請 AI 確認：
 
 ```text
 請閱讀 Strix 的 README 與設定文件，幫我把測試目標設定為我的靶機網址（確認不要連到正式站），並修改 Strix 的模型呼叫配置：將主模型設為 GPT-6 Sol，子代理設為 GPT-6 Luna，並確認 API 請求有帶上 Daybreak 的 `access_programs.cyber` 設定。改完先列出修改位置與啟動方式給我看。
