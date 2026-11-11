@@ -61,4 +61,4 @@ Strix 會實際測試指定目標，只讓它打獨立靶機，被打壞就刪�
 
 同時 OpenAI Cyber Abuse Policy 與 Strix「Authorized use only」都規定，只能測自己擁有或獲書面授權的系統。
 
-下次想請 AI 掃自己產品的漏洞，記住「先拿許可、再進練習場」：先拿 Daybreak 權限，再讓 Strix 打獨立靶機。歡迎轉給自己做網站的朋友。
+下次想請 AI 掃自己產品的漏洞，記住「先拿許可、再進練習場」：先拿 Daybreak 權限，再讓 Strix 打獨立靶機。歡迎轉給自己做網站的朋友，或到 [IG 圖卡](https://www.instagram.com/p/DflP5BcjaWw/?utm_source=blog&utm_medium=article&utm_campaign=ai-security-scan-daybreak-strix)留言「靶機」，會自動私訊傳 Strix 設定提示詞給你。
