@@ -1,5 +1,5 @@
 ---
-title: "AI 寫程式怎麼驗收才敢放手？Cursor 工程師 Lauren Tan 的五層防錯法（26 頁中文 PDF）"
+title: "AI 怎麼驗收才敢放手？Lauren Tan 的五層防錯法"
 seoTitle: "AI agent 怎麼驗收才敢放手？Lauren Tan 五層防錯法中文整理（免費 PDF）"
 description: "Cursor 工程師 Lauren Tan 怎麼讓 AI agent 自己寫、自己驗、自己合併？她的答案是環境讓它很難做錯、做完能自己拿出證據。這篇整理她的五層防錯法與先做的三件事，附 26 頁中文 PDF 免費下載，不用留 email。"
 publishDate: 2026-11-19T22:00:00+08:00
