@@ -9,35 +9,79 @@ draft: false
 excerpt: "AI 在你電腦上 push，用的就是你的帳號，分支保護預設管不到管理員。勾三個選項，讓 main 只能走 PR、檢查過才合併，連你自己也不能繞過。"
 problemTag: "AI 推上 main 就直接上線"
 ---
-你讓 Claude Code 或 Cursor 改完程式，順手請它 `git commit`、`git push`。<br><br>如果有部署上 Vercel 把 main 當正式環境分支，終端機一跑完，Vercel 部署成功的通知就來了，因為只要推上 `main` 就會直接部署，你還沒看過的程式馬上換上正式站。<br><br>而這其中就有一些風險存在，你可能還沒確認好，服務就更新了。<br>只要有用戶就要對用戶負責，影響實際用戶就是破壞體驗與信任。<br><br>靠 AI 寫程式的 Vibe Coder 很多可能沒經歷過正式開發流程，而我們正式開發時，有幾道流程有助於填補高速開發到上線的落差。<br><br>做法其實很簡單：去 GitHub 把 `main` 設好三個勾，讓 AI 不能直接推、只能先開 PR，等你看過預覽網址確認沒問題再合併上線。
+用 Claude Code、Codex 或 Cursor 寫程式，最煩的就是它改完順手 `git commit` 加 `git push`。終端機剛跑完，Vercel 正式部署通知就跳出來，還沒看它改了什麼，正式站已經更新了。
 
-## 為甚麼防線要設在 GitHub，不是叮嚀 AI 別推？
+解法很簡單，直接把 `main` 鎖在 GitHub 遠端就好。沒鎖前，AI 一行指令就換掉正式站；鎖住後，它改完只能先開 PR，等你看完 Vercel 預覽再按合併。
 
-因為 Claude Code 直接在你的終端機操作 git，口頭叮嚀是攔不住已送出的推送指令的，除非你有運用 [Hook](https://code.claude.com/docs/en/hooks)。<br><br>Claude Code 官方 repo [issue #74844](https://github.com/anthropics/claude-code/issues/74844) 就有使用者自述喊了「stop everything」，但完全沒用，AI 照樣未經他審核就把分支合進 `main` 推上去並刪了原分支。<br><br>因此設好 GitHub 分支保護規則才是正解，直接推 `main` 就會當場跳錯誤，AI 會收到類似 `GH006: Protected branch update failed`。
+## 口頭交代跟本地擋，為什麼還不夠穩
 
-## 在 GitHub 勾三個選項，讓 main 只能走 PR
+很多人一開始會在對話裡交代 AI 改完別 push，但口頭約定根本攔不住送出去的指令。只要 AI 判斷這輪任務結束了，照樣有可能直接推上遠端。
 
-如果想要有這樣的效果，最簡單也最常見做法是在 GitHub 設 `main` 不准直接推，更新一律開 PR（合併請求）並跑自動檢查把關。<br><br>靠 PR 檢查能養成監控與保護的習慣；不檢查就直接把分支合進 `main` 等於少一層緩衝，所以只要有正式環境，我都不會這樣做。<br><br>至於有信心或是覺得炸了再修沒差的人，那我也尊重，這就是一種開發習慣而已，沒有絕對的對錯。
+在 Claude Code 官方 repo 的 [issue #74844](https://github.com/anthropics/claude-code/issues/74844) 裡，就有人回報明明喊了 "stop everything"，改動還是直接被合進 `main`，連分支都被刪掉。
 
-| | AI 直接推 main | AI 推新分支、開 PR |
-|---|---|---|
-| Vercel 做甚麼 | 建正式部署，正式站馬上換 | 只建預覽部署 |
-| 誰決定上線 | 沒有人，推上去就上線 | 你看過預覽、檢查通過後按合併 |
+如果想先在本機擋一層，Claude Code 可以照 [Hooks 官方文件](https://code.claude.com/docs/en/hooks) 用 `PreToolUse` 攔 `git push`。但這只管得到 Claude Code，換用 Cursor 或 Codex 就失效了。
 
-你需要親自到 GitHub repo 勾這三格 (或者讓 AI 幫你操作也可以)：
+最硬、最不挑工具的防線，還是直接鎖在 GitHub 遠端。只要推同一個 repo，不管換哪套工具都會被擋下來。
 
-路徑：Settings → Branches → Add classic branch protection rule，Branch name pattern 填 `main`。
+## GitHub 兩條設定路：新版 Rulesets 跟舊版 Classic
 
-1. Require a pull request before merging
-2. Require status checks to pass before merging
-3. Do not allow bypassing the above settings
+GitHub 目前有兩條路可以鎖 `main`。新專案直接用新版 Rulesets 最省事；舊專案如果還在用 Classic 頁面，要小心它預設放行管理員的坑。
 
-第一個，擋直接推 `main`。<br>第二個擋檢查沒過的 PR；只接 Vercel 的專案，選 Vercel 每個 commit 回報的部署狀態，只要預覽部署失敗就合不進去。<br>第三個用來擋管理員：規則預設是不理管理員的，但自己的 repo 你就是管理員，AI 在你電腦操作 git 也是用你的帳號，所以這條不勾選的話一切都形同虛設。
+| 比較項目 | 新版 Rulesets（2026 主推） | 舊版 Classic |
+| --- | --- | --- |
+| 設定路徑 | `Settings → Rules → Rulesets` | `Settings → Branches` |
+| 管理員權限 | 預設連管理員一起擋 | 預設放行管理員，漏勾等於白設 |
+| 必開設定 | 切 `Active`、開 PR 與狀態檢查 | 一定要勾滿三格（含禁止繞過） |
+| 暫時關掉 | 切 `Disabled` 就好，不用刪規則 | 舊介面較多專案沿用，但易踩坑 |
 
-用 Claude Code 的人調整 `CLAUDE.md` 或是設定 Hook 讓它改走 PR：
+## 作法一：新版 Rulesets（最省事）
+
+新開的專案直接走新版 Rulesets 最省事。打開 GitHub 專案頁面之後，照著下面這個順序點過去就行了：
+
+1. 進到 `Settings → Rules → Rulesets → New branch ruleset`。
+2. 把 `Enforcement status` 切到 `Active`（新建預設是 `Disabled`，沒切換就直接存檔會沒生效）。
+3. 套用目標選 `Default branch`，一般就是 `main`。
+4. 開啟 `Require a pull request before merging`，強制改動一律走 PR。
+5. 開啟 `Require status checks to pass`，沒寫自動測試的話，選 Vercel 回報的部署狀態即可。
+
+Rulesets 最大的好處，是預設連 repo 管理員都不能繞過，除非你自己把 admin 加進 Bypass list。想暫時關掉時直接切 `Disabled` 就好，不用整條刪掉。
+
+## 作法二：舊版 Classic（避開管理員大坑）
+
+如果舊專案還在用 Classic 頁面，路徑在 `Settings → Branches → Add classic branch protection rule`，分支名稱填 `main`。
+
+舊版有個大坑，就是預設放行管理員。自己的 repo 你就是管理員，AI 在你電腦推的時候用的是你的帳號，只勾前兩格根本擋不住。走 Classic 下面這三格一定要勾滿：
+
+1. `Require a pull request before merging`：擋掉直接推 `main`。
+2. `Require status checks to pass before merging`：檢查或 Vercel 部署沒過就不能合。
+3. `Do not allow bypassing the above settings`：少了這格，你跟 AI 照樣推得上去，前面等於白設。
+
+## 一個人開發別勾 Require approvals
+
+不管新版還是舊版，設定時都別勾 `Require approvals`（需要他人核准）。GitHub 規定 PR 作者不能核准自己的 PR，一個人開發勾了會把自己鎖在門外，連自己都按不了合併。
+
+## 在 CLAUDE.md 順手補一句，少讓 AI 撞牆
+
+GitHub 遠端鎖死後，AI 已經推不上去了。但為了省得它每次改完先撞牆報錯再重來，我會在 `CLAUDE.md` 或工具的規則檔（Cursor 放 `.cursor/rules`，Codex 放 `AGENTS.md`）補上這句：
 
 ```text
 改完先開一條新分支推上去，用 gh pr create 開 PR，不要直接推 main。
 ```
 
-下次讓 AI 改一個推上 `main` 就會上線的專案，先把 `main` 設成只能走 PR、檢查過才合併，連你自己也不能繞過。要讓 AI 寫測試放進第二格當檢查，先看〈[AI 幫你寫的測試全綠，為甚麼上線還是壞掉？](/articles/ai-tests-false-safety-six-phase-overhaul/)〉。
+如果電腦沒裝 `gh` CLI，把後半句改成「推上新分支後印出 GitHub 開 PR 網址讓我點」就好。遠端負責擋死，本地這句先跟 AI 講清楚規矩，它改完就會直接開新分支建 PR，跑起來順很多。
+
+## 設完馬上測一次：看到 GH006 才算穩
+
+規則存檔後別急著關掉網頁，直接叫 AI 試著推一次 `main`，親眼確認有跑到這三步才算真的鎖穩：
+
+1. 直接推 `main` 時，終端機立刻跳 `GH006: Protected branch update failed` 退回。
+2. 改成開新分支提 PR 後，Vercel 只建預覽網址，不會動到正式站。
+3. 你自己看過預覽沒問題，再回 GitHub 按 Merge 上線。
+
+## 走不走 PR，看你的專案階段
+
+最後講一下我自己的立場。只要專案有正式環境與用戶，我一定鎖 PR，確保東西上線前自己有先看過 Vercel 預覽。
+
+但如果你現在做的只是小實驗，覺得炸了當場修也沒差、想直接推求快，我也完全尊重。這只是開發習慣，沒有絕對對錯。
+
+如果你之後不只想驗 Vercel 部署狀態，還打算把自動測試也接進狀態檢查，可以接著看〈[AI 幫你寫的測試全綠，為甚麼上線還是壞掉？](/articles/ai-tests-false-safety-six-phase-overhaul/)〉。
