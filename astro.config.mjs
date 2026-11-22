@@ -12,7 +12,7 @@ const articleLastmod = new Map(
     .filter((file) => file.endsWith('.md'))
     .map((file) => {
       const frontmatter = readFileSync(new URL(file, articlesDir), 'utf8').split('---')[1] ?? '';
-      const date = (/** @type {string} */ key) => frontmatter.match(new RegExp(`^${key}:\\s*["']?([^"'\\n]+)`, 'm'))?.[1];
+      const date = (/** @type {string} */ key) => frontmatter.match(new RegExp(`^${key}:\\s*["']?([^"'\\n]+)`, 'm'))?.[1]?.trim();
       const lastmod = date('updatedDate') ?? date('publishDate');
       return [`https://cablate.com/articles/${file.replace(/\.md$/, '')}/`, lastmod && new Date(lastmod).toISOString()];
     }),
