@@ -32,7 +32,7 @@ Cursor 工程師 Lauren Tan（@poteto）公開談過，她怎麼讓 AI agent 自
 | 4 | 寫一點規則 | 規則只留給要臨場判斷的事 |
 | 5 | 人工審查 | 成本最高，留給日常抽樣和最後一道關卡 |
 
-![一頁看完：她的核心主張、一個錯誤的五種擋法，以及先做的三件事](/images/articles/lauren-tan-p04-onepage-v4.webp)
+![一頁看完：她的核心主張、一個錯誤的五種擋法，以及先做的三件事](/images/articles/lauren-tan-p04-onepage-v4-1.webp)
 
 ## 想試試看，先從哪三件開始？
 
@@ -46,7 +46,7 @@ Cursor 工程師 Lauren Tan（@poteto）公開談過，她怎麼讓 AI agent 自
 
 下面這張對照拿「匯出 CSV 報表，用 Excel 打開變亂碼」當例子，例子是我自己擬的。上面是常見的寫法，下面是照她的方式只交代五件事：
 
-![對強模型派工：常見寫法和只交代五件事的寫法對照](/images/articles/lauren-tan-p09-prompt-card-v4.webp)
+![對強模型派工：常見寫法和只交代五件事的寫法對照](/images/articles/lauren-tan-p09-prompt-card-v4-1.webp)
 
 ## 她的條件跟我不同，照做得來嗎？
 
