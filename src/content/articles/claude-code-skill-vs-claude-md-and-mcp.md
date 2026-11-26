@@ -1,5 +1,6 @@
 ---
 title: "寫了 Skill 卻沒觸發？先看 CLAUDE.md、Skill 與 MCP 怎麼分工"
+seoTitle: "CLAUDE.md、Skill、MCP 差在哪？Skill 沒觸發先看三者分工"
 description: "規則放在 CLAUDE.md、Skill 還是 MCP？從各自用途、Skill description 到實際觸發測試，整理可以直接使用的判斷方式。"
 publishDate: 2026-10-19T14:00:00+08:00
 category: "AI工具實戰"

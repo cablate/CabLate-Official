@@ -1,6 +1,6 @@
 ---
 title: "不用再切視窗換工具：用 model-relay 接上 magpie，在 Claude Code 派各家子代理"
-seoTitle: "Claude Code 混用多家模型：model-relay 搭配 magpie 單視窗切換與子代理設定指南"
+seoTitle: "Magpie 設定教學：Claude Code 混用多家模型、派子代理（model-relay）"
 description: "想在 Claude Code 同時調用 ChatGPT 訂閱、Gemini、GLM 與 DeepSeek？拆解 model-relay 子代理分流與 magpie 怎麼分工，附複製給 AI 自動設定到好的提示詞。"
 publishDate: 2026-10-20T15:00:00+08:00
 category: AI工具實戰
